@@ -258,7 +258,11 @@ void Player::Respawn()
 void Player::draw() 
 {
 	if (current_action == SKILL) // TODO: guarrada temporal fins que es toqui el sistema d'atac
+	{
 		current_action = BASIC_ATTACK;
+		if (current_animation->isOver())
+			current_animation->Reset();
+	}
 
 	switch (currentPhase)
 	{
@@ -278,8 +282,8 @@ void Player::draw()
 	{
 		SDL_Rect section = current_animation->getCurrentFrame();
 		iPoint pos(p_position.x, p_position.y);
-		//iPoint pivot(current_animation->pivot.x, current_animation->pivot.y);
-		iPoint pivot(0, 0);
+		iPoint pivot(current_animation->pivot.x, current_animation->pivot.y);
+		//iPoint pivot(0, 0);
 		sprite->updateSprite(pos, pivot, section);
 	}
 
@@ -1270,7 +1274,7 @@ bool Player::loadAnimations()
 		{
 			for (pugi::xml_node action = ent.child("IDLE"); action != NULL; action = action.next_sibling())
 			{
-				for (pugi::xml_node dir = action.child("UP"); dir != NULL; dir = dir.next_sibling())
+				for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
 				{
 					std::pair<ACTION_STATE, DIRECTION> p;
 					int state = action.child("name").attribute("value").as_int();
@@ -1297,19 +1301,23 @@ bool Player::loadAnimations()
 					anims.pivot.y = pivotY;
 
 					int entity = ent.child("name").attribute("value").as_int();
-
+					iPoint piv;
 					switch (entity)
 					{
 					case 0:
 						barbarianAnim.insert(std::pair<std::pair<ACTION_STATE, DIRECTION>, Animation >(p, anims));
+						barbarianAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+						piv = barbarianAnim.find({ p.first, p.second })->second.pivot;
 						break;
 
 					case 1:
 						butcherAnim.insert(std::pair<std::pair<ACTION_STATE, DIRECTION>, Animation >(p, anims));
+						butcherAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
 						break;
 
 					case 2:
 						diabloAnim.insert(std::pair<std::pair<ACTION_STATE, DIRECTION>, Animation >(p, anims));
+						diabloAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
 						break;
 					}
 
