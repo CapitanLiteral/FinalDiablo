@@ -75,13 +75,14 @@ bool snIntro::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_SPACE) == true)
 	{
 		//The scene manager changes the scene to outdoor1
-		app->sm->ChangeScene(app->sm->outdoor1);
+		app->sm->fadeToBlack(app->sm->outdoor1);
 	}
 	//
 	*/
 	if (pass == true)
 	{
-		app->sm->ChangeScene(app->sm->dungeon1);
+		app->sm->fadeToBlack(app->sm->dungeon1);
+		pass = false;
 	}
 
 	else if (exit == true)

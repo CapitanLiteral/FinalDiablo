@@ -41,7 +41,7 @@ bool snWin::update(float dt)
 	app->render->Blit(back, -225, 0, NULL);
 
 	if (ret.ReadSec() > 5)
-		app->sm->ChangeScene(app->sm->intro);
+		app->sm->fadeToBlack(app->sm->intro);
 	return true;
 }
 

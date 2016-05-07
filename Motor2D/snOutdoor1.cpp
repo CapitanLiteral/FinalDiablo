@@ -312,7 +312,7 @@ bool snOutdoor1::postUpdate()
 	{
 		Scene* destiny = app->game->player->getDestiny();
 		app->game->player->ResetTeleport();
-		app->sm->ChangeScene(destiny);
+		app->sm->fadeToBlack(destiny);
 	}
 
 	return true;

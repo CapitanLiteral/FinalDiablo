@@ -335,6 +335,9 @@ bool Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, S
 {
 	bool ret = true;
 
+	if (texture == NULL)
+		return false;
+
 	//Camera culling
 	if (section)
 		if (!(x + section->w > -camera.x && x < -camera.x + camera.w &&

@@ -52,9 +52,10 @@ bool hudPause::preUpdate()
 	}
 
 	if (main_menu == true)
-	{
+	{	
+		main_menu = false;
 		ActivateMenu();
-		app->sm->ChangeScene(app->sm->intro);
+		app->sm->fadeToBlack(app->sm->intro);
 	}
 
 	return true;

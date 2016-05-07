@@ -26,7 +26,7 @@ enum spriteLayer
 struct Sprite
 {
 	Sprite();
-	Sprite(SDL_Texture* texture = NULL, iPoint position = { 0, 0 },
+	Sprite(SDL_Texture* texture, iPoint position = { 0, 0 },
 		SDL_Rect section = { 0, 0, 0, 0 }, spriteLayer layer = SCENE,
 		SDL_Color tint = { 255, 255, 255, 0 }, iPoint pivot = { 0, 0 },
 		double angle = 0, SDL_RendererFlip flip = SDL_FLIP_NONE);

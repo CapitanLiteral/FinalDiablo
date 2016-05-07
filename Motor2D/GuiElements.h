@@ -127,11 +127,26 @@ public:
 class GuiImage : public GuiElement
 {
 public:
-	GuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list);
+	GuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list = NULL);
 	~GuiImage(){};
 
 	void draw();
 	void update(GuiElement* hover, GuiElement* focus);
+};
+
+class Fader : public GuiElement
+{
+public:
+
+	Fader(iPoint p, SDL_Rect r, GuiElement* par, Module* list = NULL, SDL_Texture* tex = NULL,  int alpha = 0);
+	~Fader(){};
+
+	void draw();
+	void update(GuiElement* hover, GuiElement* focus){}
+	void setAlpha(int alpha = 0);
+
+	SDL_Texture* tex = NULL;
+	int alpha = 0;
 };
 
 class GuiInputBox : public GuiElement

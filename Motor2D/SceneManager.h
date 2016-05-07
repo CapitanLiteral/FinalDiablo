@@ -3,6 +3,9 @@
 
 #include "Module.h"
 #include <list>
+#include "Render.h"
+#include "Timer.h"
+#include "Gui.h"
 
 using namespace std;
 
@@ -41,6 +44,7 @@ public:
 	// Methods
 	void addScene(Scene* scene);
 	bool ChangeScene(Scene* new_scene);
+	bool fadeToBlack(Scene* new_scene, float time = 2.0f);
 
 public:
 	snIntro*	intro = NULL;
@@ -51,6 +55,22 @@ public:
 private:
 	list<Scene*>	scenes;
 	Scene*		current_scene = NULL;
+	Scene*		next_scene = NULL;
+
+	//FADER
+
+	
+
+	bool fadeIn = false;
+	bool fadeOut = false;
+	float fadeTime;
+
+	SDL_Texture* blackTexture = NULL;
+	Sprite black;
+
+	Fader* image = NULL;
+
+	Timer fadeTimer;
 };
 
 #endif // __SCENEMANAGER_H__

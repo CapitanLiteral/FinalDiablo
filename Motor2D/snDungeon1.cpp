@@ -150,12 +150,12 @@ bool snDungeon1::postUpdate()
 	{
 		Scene* destiny = app->game->player->getDestiny();
 		app->game->player->ResetTeleport();
-		app->sm->ChangeScene(destiny);
+		app->sm->fadeToBlack(destiny);
 	}
 
 	if (win)
 	{
-		app->sm->ChangeScene(app->sm->win);
+		app->sm->fadeToBlack(app->sm->win);
 	}
 	return true;
 }

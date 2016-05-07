@@ -41,6 +41,7 @@ public:
 
 	// Gui creation functions
 	GuiImage* addGuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list);
+	Fader* addFader(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex = NULL, int alpha = 0);
 	GuiImage* addGuiImageWithLabel(iPoint p, SDL_Rect r, p2SString t, _TTF_Font* f, iPoint i, GuiElement* par, Module* list);
 	GuiLabel* addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par, TextColor color, Module* list);
 	GuiLabel* addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par, Module* list);

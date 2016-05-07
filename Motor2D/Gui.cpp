@@ -251,6 +251,13 @@ GuiImage* Gui::addGuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list)
 	return image;
 }
 
+Fader* Gui::addFader(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex, int alpha)
+{
+	Fader* fade = new Fader(p, r, par, list, tex, alpha);
+	gui_elements.push_back(fade);
+	return fade;
+}
+
 GuiLabel* Gui::addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par,TextColor color, Module* list)
 {
 	GuiLabel* label;

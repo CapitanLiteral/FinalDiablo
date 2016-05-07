@@ -47,7 +47,7 @@ GuiLabel::GuiLabel(p2SString t, _TTF_Font* f, iPoint p, TextColor color, GuiElem
 }
 
 
-GuiImage::GuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list = NULL) 
+GuiImage::GuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list)
 	: GuiElement(p, r, GUI_IMAGE, par, list)
 {}
 
@@ -506,4 +506,27 @@ float GuiSlider::getValue()const
 {
 	float dvalue = max_value / width;
 	return thumb_pos*dvalue;
+}
+
+
+Fader::Fader(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex, int alpha)
+	: GuiElement(p, r, GUI_IMAGE, par, list), tex(tex), alpha(alpha)
+{}
+
+void Fader::setAlpha(int a)
+{
+	if (a >= 0 && a <= 255)
+	{
+		alpha = a;
+	}
+}
+
+void Fader::draw()
+{
+	iPoint p = getScreenPosition();
+
+	app->render->Blit(tex,
+		p.x - app->render->camera.x,
+		p.y - app->render->camera.y,
+		&tex_rect, { 255, 255, 255, alpha });
 }

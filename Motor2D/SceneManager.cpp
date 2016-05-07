@@ -5,6 +5,8 @@
 #include "snOutdoor1.h"
 #include "snDungeon1.h"
 #include "snWin.h"
+#include "Render.h"
+#include "Textures.h"
 
 #include "Game.h"
 
@@ -37,7 +39,17 @@ bool SceneManager::awake(pugi::xml_node& conf)
 // Called before the first frame
 bool SceneManager::start()
 {
+	
+	
+	black = Sprite(blackTexture, {1,1});
+	black.y = INT_MAX - 1;
+	black.setAlpha(0);
+
 	current_scene->start();
+
+	blackTexture = app->tex->Load("textures/Black.png");
+	image = app->gui->addFader({ 0, 0 }, { 0, 0, 640, 600 }, NULL, this, blackTexture, 80);
+	image->active = false;
 	return true;
 }
 
@@ -52,13 +64,56 @@ bool SceneManager::preUpdate()
 bool SceneManager::update(float dt)
 {
 	current_scene->update(dt);
-	return true;
+
+	bool ret = true;
+
+	if (current_scene != nullptr)
+	{
+		current_scene->update(dt);
+	}
+
+	if (fadeIn)
+	{
+		if (fadeTimer.ReadSec() <= fadeTime)
+		{
+			image->setAlpha(int(fadeTimer.ReadSec() * 255) / fadeTime);
+		}
+		else
+		{
+			ChangeScene(next_scene);
+			fadeIn = false;
+			fadeOut = true;
+			fadeTimer.start();
+		}
+	}
+	else
+	{
+		if (fadeTimer.ReadSec() <= fadeTime)
+		{
+			image->setAlpha(255 - int(fadeTimer.ReadSec() * 255) / fadeTime);
+		}
+		else
+		{
+			fadeOut = false;
+		}
+	}
+
+	if (fadeIn || fadeOut)
+		app->render->addSpriteToList(&black);
+
+	image->active = (fadeIn || fadeOut);
+
+	return ret;
 }
 
 //postUpdate
 bool SceneManager::postUpdate()
 {
 	current_scene->postUpdate();
+
+	if (fadeIn || fadeOut)
+		app->render->DrawSprite(&black);
+
 	return true;
 }
 
@@ -110,4 +165,19 @@ bool SceneManager::ChangeScene(Scene* new_scene)
 	current_scene->Load();
 
 	return true;
+}
+
+bool SceneManager::fadeToBlack(Scene* new_scene, float time)
+{
+	bool ret = true;
+
+	if (!fadeIn || !fadeOut)
+	{
+		next_scene = new_scene;
+		fadeTime = time;
+		fadeIn = true;
+		fadeTimer.start();
+	}
+	
+	return ret;
 }
