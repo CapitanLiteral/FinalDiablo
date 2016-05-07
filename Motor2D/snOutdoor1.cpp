@@ -14,7 +14,7 @@
 #include "Pathfinding.h"
 #include "Entity.h"
 #include "Game.h"
-#include "snDungeon1.h"
+#include "Act1.h"
 #include "EntPortal.h"
 #include "EntEnemy.h"
 
@@ -68,7 +68,7 @@ bool snOutdoor1::start()
 	entity_list.push_back(to_add);
 	EntPortal* portal = (EntPortal*)to_add;
 	if (portal)
-		portal->SetDestiny(portal->destiny = app->sm->dungeon1);
+		portal->SetDestiny(portal->destiny = app->sm->act1);
 
 	//NOTE: Test Sprite
 
@@ -188,7 +188,7 @@ bool snOutdoor1::update(float dt)
 		//if (a == 1)
 			EntPortal* ent = (EntPortal*)app->game->em->add(p, PORTAL);
 			if (ent)
-				ent->SetDestiny(app->sm->dungeon1);
+				ent->SetDestiny(app->sm->act1);
 			
 	}
 

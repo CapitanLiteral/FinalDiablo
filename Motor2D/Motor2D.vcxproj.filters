@@ -136,6 +136,9 @@
     <ClCompile Include="Hud.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud</Filter>
     </ClCompile>
+    <ClCompile Include="Act1.cpp">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -306,6 +309,9 @@
     <ClInclude Include="Hud.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud</Filter>
     </ClInclude>
+    <ClInclude Include="Act1.h">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -409,6 +415,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Player\Skills\Player skills">
       <UniqueIdentifier>{a9f15b31-d592-4c86-a031-e9582e38013a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\Act1">
+      <UniqueIdentifier>{aa9cdba2-c345-4244-8b87-b17ce8d41e76}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
