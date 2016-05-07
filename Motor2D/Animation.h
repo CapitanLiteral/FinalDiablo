@@ -4,6 +4,7 @@
 #include "p2DynArray.h"
 #include "SDL/include/SDL.h"
 #include <vector>
+#include "p2Point.h"
 
 using namespace std;
 
@@ -13,6 +14,7 @@ public:
 	float speed;
 	bool loop;
 	vector<SDL_Rect> frames;
+	iPoint pivot;
 
 private:
 	float current_frame;
@@ -64,6 +66,24 @@ public:
 	int CurrentFrame() const
 	{
 		return (int)current_frame;
+	}
+
+	float getCurrentFrame()const
+	{
+		return current_frame;
+	}
+
+	bool isOver()
+	{
+		return (current_frame + 1 >= frames.size() && loop == false);
+	}
+
+	void setAnimation(int x, int y, int w, int h, int frameNum, int margin)
+	{
+		for (int i = 0; i < frameNum; ++i)
+		{
+			frames.push_back({ x + (w + margin) * i, y, w, h });
+		}
 	}
 };
 

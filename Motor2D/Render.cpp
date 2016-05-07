@@ -435,6 +435,14 @@ void Sprite::updateSprite(SDL_Texture* tex, iPoint& p, iPoint& piv, SDL_Rect& se
 	y = p.y;
 }
 
+void Sprite::updateSprite(iPoint& p, iPoint& piv, SDL_Rect& section)
+{
+	position_map = p;
+	section_texture = section;
+	pivot = piv;
+	y = p.y;
+}
+
 void Sprite::DrawSprite()
 {
 	//app->render->Blit(texture, )

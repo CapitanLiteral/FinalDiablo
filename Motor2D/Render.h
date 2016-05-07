@@ -19,6 +19,7 @@ struct Sprite
 	~Sprite();
 
 	void updateSprite(SDL_Texture* tex, iPoint& p, iPoint& piv, SDL_Rect& section);
+	void updateSprite(iPoint& p, iPoint& piv, SDL_Rect& section);
 	void DrawSprite();
 
 	SDL_Texture*	texture;
