@@ -3,7 +3,7 @@
 #include "App.h"
 #include "snIntro.h"
 #include "snOutdoor1.h"
-#include "snDungeon1.h"
+#include "Act1.h"	
 #include "snWin.h"
 
 #include "Game.h"
@@ -13,13 +13,13 @@ SceneManager::SceneManager() : Module()
 {
 	intro = new snIntro();
 	outdoor1 = new snOutdoor1();
-	dungeon1 = new snDungeon1();
+	act1 = new Act1();
 	win = new snWin();
 
 	addScene(win);
 	addScene(intro);
 	addScene(outdoor1);
-	addScene(dungeon1);
+	addScene(act1);
 }
 
 

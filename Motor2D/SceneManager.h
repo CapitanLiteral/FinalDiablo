@@ -9,7 +9,7 @@ using namespace std;
 class Scene;
 class snIntro;
 class snOutdoor1;
-class snDungeon1;
+class Act1;
 class snWin;
 
 class SceneManager : public Module
@@ -45,7 +45,7 @@ public:
 public:
 	snIntro*	intro = NULL;
 	snOutdoor1*	outdoor1 = NULL;
-	snDungeon1* dungeon1 = NULL;
+	Act1*		act1 = NULL;
 	snWin*		win = NULL;
 
 private:

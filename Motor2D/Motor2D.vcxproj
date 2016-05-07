@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Act1.cpp" />
     <ClCompile Include="EntEnemy.cpp" />
     <ClCompile Include="EntItem.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -127,6 +128,7 @@
     <ClCompile Include="snWin.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Act1.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="EntEnemy.h" />
     <ClInclude Include="EntItem.h" />

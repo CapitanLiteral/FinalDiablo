@@ -9,7 +9,7 @@
 #include "SceneManager.h"
 #include "p2Point.h"
 #include "snWin.h"
-#include "snDungeon1.h"
+#include "Act1.h"
 #include "Collision.h"
 //Provisional?
 #include "Audio.h"
@@ -856,7 +856,7 @@ bool EntEnemyCouncil::update(float dt)
 	{
 		if (win.ReadSec() > 5)
 		{
-			app->sm->dungeon1->win = true;
+			app->sm->act1->win = true;
 		}
 	}
 
