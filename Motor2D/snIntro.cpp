@@ -4,7 +4,7 @@
 #include "SceneManager.h"
 #include "Input.h"
 #include "snOutdoor1.h"
-#include "snDungeon1.h"
+#include "Act1.h"
 #include "Gui.h"
 #include "Audio.h"
 
@@ -81,7 +81,7 @@ bool snIntro::update(float dt)
 	*/
 	if (pass == true)
 	{
-		app->sm->fadeToBlack(app->sm->dungeon1);
+		app->sm->fadeToBlack(app->sm->act1);
 		pass = false;
 	}
 

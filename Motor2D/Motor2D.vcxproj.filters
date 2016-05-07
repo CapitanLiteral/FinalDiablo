@@ -136,6 +136,9 @@
     <ClCompile Include="Hud.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="Hud.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

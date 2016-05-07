@@ -36,6 +36,8 @@ struct Sprite
 	~Sprite();
 	
 	void updateSprite(SDL_Texture* tex, iPoint& p, iPoint& piv, SDL_Rect& section);
+	void updateSprite(iPoint& p, iPoint& piv, SDL_Rect& section);
+	void DrawSprite();
 
 	void setAlpha(int alpha);
 

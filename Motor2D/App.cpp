@@ -18,6 +18,7 @@
 #include "App.h"
 #include "Game.h"
 #include "Collision.h"
+#include "ParticleManager.h"
 
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
@@ -37,6 +38,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	gui = new Gui();
 	game = new Game();
 	collision = new Collision();
+	particleManager = new ParticleManager();
 
 	// Ordered for awake / start / update
 	// Reverse order of cleanUp
@@ -48,6 +50,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	addModule(map);
 	addModule(pathfinding);
 	addModule(font);
+	addModule(particleManager);
 	addModule(gui);
 
 	// scene manager
