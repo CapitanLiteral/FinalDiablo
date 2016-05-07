@@ -13,9 +13,6 @@
     <ClCompile Include="snIntro.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snIntro</Filter>
     </ClCompile>
-    <ClCompile Include="snOutdoor1.cpp">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snOutdoor1</Filter>
-    </ClCompile>
     <ClCompile Include="hudBelt.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBelt</Filter>
     </ClCompile>
@@ -51,9 +48,6 @@
     </ClCompile>
     <ClCompile Include="hudInventory.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudInventory</Filter>
-    </ClCompile>
-    <ClCompile Include="snDungeon1.cpp">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snDungeon</Filter>
     </ClCompile>
     <ClCompile Include="snWin.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snWin</Filter>
@@ -139,6 +133,9 @@
     <ClCompile Include="ParticleManager.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
     </ClCompile>
+    <ClCompile Include="Act1.cpp">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -173,9 +170,6 @@
     </ClInclude>
     <ClInclude Include="snIntro.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snIntro</Filter>
-    </ClInclude>
-    <ClInclude Include="snOutdoor1.h">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snOutdoor1</Filter>
     </ClInclude>
     <ClInclude Include="memleaks.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
@@ -218,9 +212,6 @@
     </ClInclude>
     <ClInclude Include="hudInventory.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudInventory</Filter>
-    </ClInclude>
-    <ClInclude Include="snDungeon1.h">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snDungeon</Filter>
     </ClInclude>
     <ClInclude Include="snWin.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snWin</Filter>
@@ -312,6 +303,9 @@
     <ClInclude Include="ParticleManager.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
     </ClInclude>
+    <ClInclude Include="Act1.h">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -340,12 +334,6 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\snIntro">
       <UniqueIdentifier>{afb39d9a-e8a5-43c4-9ad0-6306f02e49b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\snOutdoor1">
-      <UniqueIdentifier>{4d5586d9-f352-4224-9ccb-6028ed85f905}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\snDungeon">
-      <UniqueIdentifier>{4305708b-481b-48c2-bb28-eaec19279639}</UniqueIdentifier>
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\snWin">
       <UniqueIdentifier>{d25bc987-7973-438c-a1c7-a4360353fdb8}</UniqueIdentifier>
@@ -415,6 +403,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Player\Skills\Player skills">
       <UniqueIdentifier>{a9f15b31-d592-4c86-a031-e9582e38013a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\Act1">
+      <UniqueIdentifier>{16e3b917-2201-45ad-90b0-b06cc87bcac0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
