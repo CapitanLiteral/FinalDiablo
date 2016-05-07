@@ -1058,11 +1058,11 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 {
 	int i = 0;
 }
-/*
+
 /*
 //-------Structural functions
 */
-
+/*
 void Player::SetAnimations()
 {
 	//Idle
