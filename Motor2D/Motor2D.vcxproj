@@ -111,7 +111,6 @@
     <ClCompile Include="playerParticle.cpp" />
     <ClCompile Include="PlayerSkills.cpp" />
     <ClCompile Include="Skill.cpp" />
-    <ClCompile Include="snDungeon1.cpp" />
     <ClCompile Include="snIntro.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="PerfTimer.cpp" />
@@ -124,7 +123,6 @@
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="GuiElements.cpp" />
-    <ClCompile Include="snOutdoor1.cpp" />
     <ClCompile Include="snWin.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +158,6 @@
     <ClInclude Include="playerParticle.h" />
     <ClInclude Include="PlayerSkills.h" />
     <ClInclude Include="Skill.h" />
-    <ClInclude Include="snDungeon1.h" />
     <ClInclude Include="snIntro.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="PerfTimer.h" />
@@ -183,7 +180,6 @@
     <ClInclude Include="p2SString.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
-    <ClInclude Include="snOutdoor1.h" />
     <ClInclude Include="ExtraSTL.h" />
     <ClInclude Include="snWin.h" />
   </ItemGroup>

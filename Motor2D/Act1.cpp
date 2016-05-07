@@ -11,7 +11,6 @@
 #include "SceneManager.h"
 #include "snWin.h"
 #include "Audio.h"
-#include "snOutdoor1.h"
 #include "Player.h"
 #include "EntPortal.h"
 #include "EntEnemy.h"
@@ -84,9 +83,9 @@ bool Act1::update(float dt)
 			//if (a == 0)
 			//app->game->em->add(p, ENEMY);
 			//app->game->em->add(p, ENEMY_CRAWLER);
-			EntPortal* portal = (EntPortal*)app->game->em->add(p, PORTAL);
-			if (portal)
-				portal->destiny = app->sm->outdoor1;
+			EntPortal* portal = (EntPortal*)app->game->em->add(p, PORTAL); //Maybe ERROR, watch out // Descomentar lo de portal per canviar d'escena amb un trigger o algo
+			//if (portal)
+			//	portal->destiny = app->sm->outdoor1; 
 
 			p = app->map->WorldToMap(p.x, p.y);
 			int i = 0;

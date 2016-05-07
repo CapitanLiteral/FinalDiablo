@@ -3,7 +3,6 @@
 #include "Render.h"
 #include "SceneManager.h"
 #include "Input.h"
-#include "snOutdoor1.h"
 #include "Act1.h"
 #include "Gui.h"
 #include "Audio.h"
