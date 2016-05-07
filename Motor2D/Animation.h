@@ -24,7 +24,7 @@ public:
 	Animation() : frames(0), speed(1.0f), current_frame(0), loop(true), loops(0)
 	{}
 
-	Animation(const Animation& a) : frames(a.frames), speed(a.speed), current_frame(0), loop(a.loop), loops(0)
+	Animation(const Animation& a) : frames(a.frames), speed(a.speed), current_frame(0), loop(a.loop), loops(0), pivot(a.pivot)
 	{}
 
 	void SetFrames(int x, int y, int sprite_w, int sprite_h, int num_frames, int margin = 0)

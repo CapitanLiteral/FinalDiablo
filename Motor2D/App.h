@@ -24,6 +24,7 @@ class Fonts;
 class Gui;
 class Game;
 class Collision;
+class ParticleManager;
 
 class App
 {
@@ -103,6 +104,7 @@ public:
 	Gui*				gui = NULL;
 	Game*				game = NULL;
 	Collision*			collision = NULL;
+	ParticleManager*	particleManager = NULL;
 
 	//NOTE: Now the debug mode is global form the app, ask Ric
 	bool                debug = false;
