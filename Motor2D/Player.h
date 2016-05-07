@@ -10,6 +10,7 @@
 //#include "PlayerSkills.h"
 #include <vector>
 #include <list>
+#include <map>
 
 using namespace std;
 
@@ -27,14 +28,14 @@ using namespace std;
 //NOTE: provisional, this will go somewhere alse to apply to all entities, or maybe deleted because the state machine
 enum DIRECTION
 {
-	D_FRONT,
-	D_FRONT_LEFT,
-	D_LEFT,
-	D_BACK_LEFT,
 	D_BACK,
 	D_BACK_RIGHT,
 	D_RIGHT,
 	D_FRONT_RIGHT,
+	D_FRONT,
+	D_FRONT_LEFT,
+	D_LEFT,
+	D_BACK_LEFT,
 	D_DEFAULT
 };
 
@@ -55,11 +56,12 @@ enum PLAYER_EVENT
 
 enum ACTION_STATE
 {
-	IDLE,
-	WALKING,
-	RUNNING,
+	IDLE = 0,
+	WALKING = 1,
+	BASIC_ATTACK = 2,
+	DEATH = 3,
+	RUNNING = 4,
 	SKILL,
-	DEATH,
 	NOTHING,
 };
 
@@ -71,6 +73,13 @@ enum INPUT_STATE
 	INPUT_SKILL,
 	INPUT_DEATH,
 	INPUT_NULL,
+};
+
+enum PHASE
+{
+	BARBARIAN,
+	BUTCHER,
+	DIABLO
 };
 
 class EntEnemy;
@@ -156,7 +165,7 @@ public:
 	SDL_Rect	getPlayerRect() const;
 
 	//Estructuralfunctions
-	void SetAnimations();
+	//void SetAnimations();
 	void SetDirection();
 	void SetDirection(fPoint pos);
 	void SetPosition(fPoint pos);
@@ -215,30 +224,6 @@ public:
 	bool		attacking;
 	int			atk_damage = 50;
 
-	//Textures
-	Sprite* sprite = NULL;
-	SDL_Texture* p_debug = NULL;
-	SDL_Texture* p_sprite = NULL;
-	SDL_Texture* p_idle = NULL;
-	SDL_Texture* p_walk = NULL;
-	SDL_Texture* p_run = NULL;
-	SDL_Texture* p_attack = NULL;
-	SDL_Texture* p_casting = NULL;
-	SDL_Texture* p_death = NULL;
-
-	//Rects for each state and direction
-	//--------------------
-	Animation* current_animation;
-	//Idle
-	//NOTE : Can i make this more elegant (maybe with a list)
-	vector<Animation> idle;
-	vector<Animation> walk;
-	vector<Animation> attack;
-	vector<Animation> cast;
-	vector<Animation> run;
-	vector<Animation> death;
-	//--------------------
-
 	//Attributes
 	int HP_max;
 	int HP_current;
@@ -293,6 +278,50 @@ public:
 
 	//Collider
 	Collider* p_collider;
+
+	//--------------------------------------
+	//Animations and sprites section
+	Sprite* sprite = NULL;
+
+	std::map<std::pair<ACTION_STATE, DIRECTION>, Animation>	barbarianAnim;
+	std::map<std::pair<ACTION_STATE, DIRECTION>, Animation>	butcherAnim;
+	std::map<std::pair<ACTION_STATE, DIRECTION>, Animation>	diabloAnim;
+
+	bool loadAnimations();
+
+	PHASE currentPhase;
+	Animation* current_animation;
+
+	SDL_Texture* barbarianImage = NULL;
+	SDL_Texture* butcherImage = NULL;
+	SDL_Texture* diabloImage = NULL;
+	SDL_Texture* p_debug = NULL;
+
+	// This must be changed when we have our sprites
+	/*
+	//Textures
+	Sprite* sprite = NULL;
+	SDL_Texture* p_debug = NULL;
+	SDL_Texture* p_sprite = NULL;
+	SDL_Texture* p_idle = NULL;
+	SDL_Texture* p_walk = NULL;
+	SDL_Texture* p_run = NULL;
+	SDL_Texture* p_attack = NULL;
+	SDL_Texture* p_casting = NULL;
+	SDL_Texture* p_death = NULL;
+
+	//Rects for each state and direction
+	//--------------------
+	Animation* current_animation;
+	//Idle
+	//NOTE : Can i make this more elegant (maybe with a list)
+	vector<Animation> idle;
+	vector<Animation> walk;
+	vector<Animation> attack;
+	vector<Animation> cast;
+	vector<Animation> run;
+	vector<Animation> death;*/
+	//--------------------
 
 };
 

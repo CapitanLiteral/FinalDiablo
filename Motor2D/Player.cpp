@@ -19,6 +19,8 @@
 #include "PlayerSkills.h"
 #include "SDL/include/SDL.h"
 #include "Audio.h"
+#include "FileSystem.h"
+#include "p2Log.h"
 
 //NOTE:Partciles in development, for now we will include this
 #include "playerParticle.h"
@@ -46,6 +48,10 @@ bool Player::awake(pugi::xml_node& conf)
 // Called the first frame
 bool Player::start()
 {
+	bool ret = true;
+	
+	ret = loadAnimations();
+
 	//Create skills:
 	basic_attack = new sklBasicAttack();
 	blood_arrow = new sklBloodArrow();
@@ -59,24 +65,29 @@ bool Player::start()
 	p_debug = app->tex->Load("maps/mini_path.png");
 	
 	//Sprites
-	p_sprite = p_idle = app->tex->Load("textures/vamp_idle.png");
+	barbarianImage = app->tex->Load("images/Barbarian.png");
+	butcherImage = app->tex->Load("");
+	diabloImage = app->tex->Load("");
+
+	/*p_sprite = p_idle = app->tex->Load("textures/vamp_idle.png");
 	p_walk = app->tex->Load("textures/vamp_walk.png");
 	p_attack = app->tex->Load("textures/vamp_attack.png");
 	p_casting = app->tex->Load("textures/vamp_cast.png");
 	p_run = app->tex->Load("textures/vamp_run.png");
 	p_death = app->tex->Load("textures/vamp_death.png");
-	SetAnimations();
+	SetAnimations();*/
 
 
 
 	//states
+	currentPhase = BARBARIAN;
 	previous_action = NOTHING;
 	input_locked = false;
 	current_action = IDLE;
 	current_direction = D_FRONT;
 	current_input = INPUT_NULL;
-	current_animation_set = idle;
-	current_animation = &current_animation_set[current_direction];
+	//current_animation_set = idle;
+	current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
 
 	current_skill = left_skill = basic_attack;
 	right_skill = blood_arrow;
@@ -103,10 +114,11 @@ bool Player::start()
 	SDL_Rect current_sprite = current_animation->getCurrentFrame();
 
 	iPoint pos(p_position.x, p_position.y);
-	sprite = new Sprite(p_sprite, pos, p_pivot, current_sprite);
+	iPoint pivot(0, 0);
+	sprite = new Sprite(barbarianImage, pos, pivot, current_sprite);
 	app->render->addSpriteToList(sprite);
 	
-	return true;
+	return ret;
 }
 
 //preUpdate
@@ -188,13 +200,16 @@ bool Player::postUpdate()
 // Called before quitting
 bool Player::cleanUp()
 {
-
-	app->tex->unLoad(p_idle);
+	app->tex->unLoad(barbarianImage);
+	app->tex->unLoad(butcherImage);
+	app->tex->unLoad(diabloImage);
+	app->tex->unLoad(p_debug);
+	/*app->tex->unLoad(p_idle);
 	app->tex->unLoad(p_walk);
 	app->tex->unLoad(p_run);
 	app->tex->unLoad(p_attack);
 	app->tex->unLoad(p_casting);
-	app->tex->unLoad(p_death);
+	app->tex->unLoad(p_death);*/
 	
 	//Skills deleted
 	if (basic_attack)
@@ -227,8 +242,8 @@ void Player::Respawn()
 	current_action = IDLE;
 	current_direction = D_FRONT;
 	current_input = INPUT_STOP_MOVE;
-	current_animation_set = idle;
-	current_animation = &current_animation_set[current_direction];
+	//current_animation_set = idle;
+	//current_animation = &current_animation_set[current_direction];
 
 
 	//Init position and booleans
@@ -242,12 +257,34 @@ void Player::Respawn()
 //NOTE: had to take out the const because of the animation
 void Player::draw() 
 {
+	if (current_action == SKILL) // TODO: guarrada temporal fins que es toqui el sistema d'atac
+	{
+		current_action = BASIC_ATTACK;
+		if (current_animation->isOver())
+			current_animation->Reset();
+	}
+
+	switch (currentPhase)
+	{
+	case BARBARIAN:
+		current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+		break;
+	case BUTCHER:
+		current_animation = &butcherAnim.find({ current_action, current_direction })->second;
+		break;
+	case DIABLO:
+		current_animation = &diabloAnim.find({ current_action, current_direction })->second;
+		break;
+	}
+
 	//NOTE: for pause mode, this will have to be on update to vary on dt
 	if (sprite)
 	{
-		SDL_Rect current_sprite = current_animation->getCurrentFrame();
+		SDL_Rect section = current_animation->getCurrentFrame();
 		iPoint pos(p_position.x, p_position.y);
-		sprite->updateSprite(p_sprite, pos, p_pivot, current_sprite);
+		iPoint pivot(current_animation->pivot.x, current_animation->pivot.y);
+		//iPoint pivot(0, 0);
+		sprite->updateSprite(pos, pivot, section);
 	}
 
 	//Debug mode
@@ -311,8 +348,8 @@ iPoint Player::getBlitPosition()const
 {
 	fPoint tmp = getPivotPosition();
 	iPoint ret(tmp.x, tmp.y);
-	ret.x -= p_pivot.x;
-	ret.y -= p_pivot.y;
+	/*ret.x -= p_pivot.x;
+	ret.y -= p_pivot.y;*/
 
 	return  ret;
 }
@@ -593,12 +630,12 @@ void Player::updateAttack()
 void Player::updateMagic()
 {
 	//NOTE: provisional
-	if (current_animation->CurrentFrame() >= 7 && !particle_is_casted)
+	/*if (current_animation->CurrentFrame() >= 7 && !particle_is_casted)
 	{
 		playerParticle* particle = new playerParticle({ p_position.x, p_position.y - 40 }, particle_destination);
 		particle_list.push_back(particle);
 		particle_is_casted = true;
-	}
+	}*/
 
 	if (current_animation->Finished())
 	{
@@ -1029,7 +1066,7 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 /*
 //-------Structural functions
 */
-
+/*
 void Player::SetAnimations()
 {
 	//Idle
@@ -1088,7 +1125,7 @@ void Player::SetAnimations()
 
 	basic_attack->setSkillAnimations();
 	blood_arrow->setSkillAnimations();
-}
+}*/
 
 void Player::SetDirection()
 {
@@ -1116,7 +1153,6 @@ void Player::SetDirection()
 	if (dir != current_direction)
 	{
 		current_direction = dir;
-		current_animation = &current_animation_set[current_direction];
 	}
 
 }
@@ -1154,7 +1190,6 @@ void Player::SetDirection(fPoint pos)
 	if (dir != current_direction)
 	{
 		current_direction = dir;
-		current_animation = &current_animation_set[current_direction];
 	}
 
 }
@@ -1168,31 +1203,129 @@ void Player::SetPosition(fPoint pos)
 
 void Player::StateMachine()
 {
+	switch (currentPhase)
+	{
+	case BARBARIAN:
+		break;
+	case BUTCHER:
+		break;
+	case DIABLO:
+		break;
+	default:
+		break;
+	}
+
 	switch (current_action)
 	{
 	case IDLE:
-		p_sprite = p_idle;
-		current_animation_set = idle;
+		//p_sprite = p_idle;
+		//current_animation_set = idle;
 		break;
 	case WALKING:
-		p_sprite = p_walk;
-		current_animation_set = walk;
+		//p_sprite = p_walk;
+		//current_animation_set = walk;
 		p_speed = PLAYER_SPEED;
 		break;
 	case RUNNING:
-		p_sprite = p_run;
-		current_animation_set = run;
+		//p_sprite = p_run;
+		//current_animation_set = run;
 		p_speed = PLAYER_RUN_SPEED;
 		break;
 	case SKILL:
-		p_sprite = current_skill->skill_tex;
-		current_animation_set = current_skill->skill_animation_set;
+		//p_sprite = current_skill->skill_tex;
+		//current_animation_set = current_skill->skill_animation_set;
 		break;
 	case DEATH:
-		p_sprite = p_death;
-		current_animation_set = death;
+		//p_sprite = p_death;
+		//current_animation_set = death;
 		respawn_timer.start();
 		break;
 	}
-	current_animation = &current_animation_set[current_direction];
+	//current_animation = &current_animation_set[current_direction];
+}
+
+
+
+// ------------------------------------
+// ------------------------------------
+
+bool Player::loadAnimations()
+{
+	bool ret = true;
+
+	pugi::xml_document	anim_file;
+	pugi::xml_node		anim;
+	char* buff;
+	int size = app->fs->Load("animations/player_animations.xml", &buff);
+	pugi::xml_parse_result result = anim_file.load_buffer(buff, size);
+	RELEASE(buff);
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation xml file. Pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+		anim = anim_file.child("animations");
+
+	if (ret == true)
+	{
+		for (pugi::xml_node ent = anim.child("BARBARIAN"); ent != NULL; ent = ent.next_sibling())
+		{
+			for (pugi::xml_node action = ent.child("IDLE"); action != NULL; action = action.next_sibling())
+			{
+				for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
+				{
+					std::pair<ACTION_STATE, DIRECTION> p;
+					int state = action.child("name").attribute("value").as_int();
+					p.first = (ACTION_STATE)state;
+
+					int di = dir.first_child().attribute("name").as_int();
+					p.second = (DIRECTION)di;
+
+					Animation anims;
+					int x = dir.first_child().attribute("x").as_int();
+					int y = dir.first_child().attribute("y").as_int();
+					int w = dir.first_child().attribute("w").as_int();
+					int h = dir.first_child().attribute("h").as_int();
+					int fN = dir.first_child().attribute("frameNumber").as_int();
+					int margin = dir.first_child().attribute("margin").as_int();
+					bool loop = action.child("loop").attribute("value").as_bool();
+					int pivotX = dir.first_child().attribute("pivot_x").as_int();
+					int pivotY = dir.first_child().attribute("pivot_y").as_int();
+					float animSpeed = action.child("speed").attribute("value").as_float();
+					anims.setAnimation(x, y, w, h, fN, margin);
+					anims.loop = loop;
+					anims.speed = animSpeed;
+					anims.pivot.x = pivotX;
+					anims.pivot.y = pivotY;
+
+					int entity = ent.child("name").attribute("value").as_int();
+					iPoint piv;
+					switch (entity)
+					{
+					case 0:
+						barbarianAnim.insert(std::pair<std::pair<ACTION_STATE, DIRECTION>, Animation >(p, anims));
+						barbarianAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+						piv = barbarianAnim.find({ p.first, p.second })->second.pivot;
+						break;
+
+					case 1:
+						butcherAnim.insert(std::pair<std::pair<ACTION_STATE, DIRECTION>, Animation >(p, anims));
+						butcherAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+						break;
+
+					case 2:
+						diabloAnim.insert(std::pair<std::pair<ACTION_STATE, DIRECTION>, Animation >(p, anims));
+						diabloAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+						break;
+					}
+
+				}
+			}
+		}
+	}
+
+
+	return ret;
 }

@@ -582,6 +582,15 @@ void Sprite::updateSprite(SDL_Texture* tex, iPoint& p, iPoint& piv, SDL_Rect& se
 	y = p.y;
 }
 
+void Sprite::updateSprite(iPoint& p, iPoint& piv, SDL_Rect& section)
+{
+	position_map = p;
+	section_texture = section;
+	pivot = piv;
+	y = p.y;
+}
+
+//void Sprite::DrawSprite()
 void Sprite::setAlpha(int alpha)
 {
 	if (alpha >= 0 && alpha <= 255)
