@@ -41,6 +41,7 @@ bool Act1::start()
 		debug = app->tex->Load("maps/mini_path.png");
 
 	//Map
+	if (app->map->Load("map_act1.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -50,6 +51,7 @@ bool Act1::start()
 		RELEASE_ARRAY(data);
 	}
 
+	app->game->player->SetPosition({ 0, 2000 });
 
 
 	return true;
