@@ -87,7 +87,6 @@ bool Player::start()
 	current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
 
 	current_skill = left_skill = basic_attack;
-	right_skill = blood_arrow;
 
 	//Positioning
 	p_position = { 0, 500 };

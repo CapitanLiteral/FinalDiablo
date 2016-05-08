@@ -55,9 +55,6 @@
     <ClCompile Include="hudBlood.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBlood</Filter>
     </ClCompile>
-    <ClCompile Include="playerParticle.cpp">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player\playerParticle</Filter>
-    </ClCompile>
     <ClCompile Include="hudSkilltree.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree</Filter>
     </ClCompile>
@@ -221,9 +218,6 @@
     </ClInclude>
     <ClInclude Include="hudBlood.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBlood</Filter>
-    </ClInclude>
-    <ClInclude Include="playerParticle.h">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player\playerParticle</Filter>
     </ClInclude>
     <ClInclude Include="hudSkilltree.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree</Filter>
@@ -400,9 +394,6 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Player">
       <UniqueIdentifier>{12bfdf1d-7942-4807-a820-b7c1246a3f49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Game Layer\Player\playerParticle">
-      <UniqueIdentifier>{de39471a-ba8a-48d0-92ff-866181ca9abb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Player\Skills">
       <UniqueIdentifier>{eac3edcf-fbcc-4853-9271-864fe5fc1dc2}</UniqueIdentifier>

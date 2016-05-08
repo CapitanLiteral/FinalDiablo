@@ -7,7 +7,6 @@
 #include "Textures.h"
 #include "Input.h"
 #include "Map.h"
-#include "playerParticle.h" 
 
 /*
 //--Basic Attack

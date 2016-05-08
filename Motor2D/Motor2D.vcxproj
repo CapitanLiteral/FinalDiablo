@@ -109,7 +109,6 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
-    <ClCompile Include="playerParticle.cpp" />
     <ClCompile Include="PlayerSkills.cpp" />
     <ClCompile Include="Skill.cpp" />
     <ClCompile Include="snIntro.cpp" />
@@ -157,7 +156,6 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="memleaks.h" />
     <ClInclude Include="ParticleManager.h" />
-    <ClInclude Include="playerParticle.h" />
     <ClInclude Include="PlayerSkills.h" />
     <ClInclude Include="Skill.h" />
     <ClInclude Include="snIntro.h" />
