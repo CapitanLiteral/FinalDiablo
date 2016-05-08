@@ -19,18 +19,4 @@ public:
 public:
 
 };
-
-class sklBloodArrow : public sklRanged
-{
-public:
-	sklBloodArrow();
-	~sklBloodArrow();
-
-	void skillEffect();
-
-	void skillInit();
-	void skillUpdate();
-	void setSkillAnimations();
-
-};
 #endif _PLAYERSKILLS_H_
