@@ -594,6 +594,13 @@ void Sprite::updateSprite(iPoint& p, iPoint& piv, SDL_Rect& section)
 }
 
 //void Sprite::DrawSprite()
+void Sprite::DrawSprite()
+{
+
+	app->render->Blit(this->texture, this->position_map.x - this->pivot.x, this->position_map.y - this->pivot.y, &(this->section_texture), this->tint);
+
+}
+
 void Sprite::setAlpha(int alpha)
 {
 	if (alpha >= 0 && alpha <= 255)
@@ -601,7 +608,6 @@ void Sprite::setAlpha(int alpha)
 		tint.a = alpha;
 	}
 }
-
 
 bool Render::drawFigure(SimpleGeoFigure figure)
 {
