@@ -1,5 +1,5 @@
 #include <stdlib.h>
-
+#include <time.h>
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "App.h"
@@ -36,6 +36,8 @@ int main(int argc, char* args[])
 	//ReportMemoryLeaks();
 
 	LOG("Engine starting ... %d");
+
+	srand(time(NULL));
 
 	MainState state = MainState::CREATE;
 	int result = EXIT_FAILURE;

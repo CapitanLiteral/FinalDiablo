@@ -136,6 +136,9 @@
     <ClCompile Include="Act1.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act1</Filter>
     </ClCompile>
+    <ClCompile Include="Attributes.cpp">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="Act1.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act1</Filter>
+    </ClInclude>
+    <ClInclude Include="Attributes.h">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
