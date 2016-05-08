@@ -3,6 +3,7 @@
 #include "App.h"
 #include "snIntro.h"
 #include "Act1.h"	
+#include "Act2.h"
 #include "snWin.h"
 #include "Render.h"
 #include "Textures.h"
@@ -12,15 +13,18 @@
 
 SceneManager::SceneManager() : Module()
 {
+	name.create("scene_manager");
 	intro = new snIntro();
 	//outdoor1 = new snOutdoor1();
 	act1 = new Act1();
+	act2 = new Act2();
 	win = new snWin();
 
 	addScene(win);
 	addScene(intro);
 	//addScene(outdoor1);
 	addScene(act1);
+	addScene(act2);
 }
 
 
@@ -32,6 +36,7 @@ SceneManager::~SceneManager()
 bool SceneManager::awake(pugi::xml_node& conf)
 {
 	current_scene = intro;
+	filePropsVillage = conf.child("propAtlas").attribute("file").as_string();
 	return true;
 }
 
@@ -179,4 +184,9 @@ bool SceneManager::fadeToBlack(Scene* new_scene, float time)
 	}
 	
 	return ret;
+}
+
+std::string SceneManager::getFilePropsVillage()
+{
+	return filePropsVillage;
 }

@@ -50,6 +50,35 @@ public:
 	list<Entity*>		entity_list;
 
 	bool win;
+	
+	void createProps();
+
+private:
+
+	Sprite* propProva;
+	Sprite* propParet;
+	Sprite* propParet1;
+	Sprite* fire;
+	Sprite* woodHouse;
+	Sprite* wood;
+	Sprite* woodUp;
+	Sprite* carriage;
+	Sprite* stuff;
+	Sprite* carriage1;
+	Sprite* treeCut;
+	Sprite* tent;
+	Sprite* wood1;
+	Sprite* wood2;
+	Sprite* wood3;
+	Sprite* woodUp1;
+	Sprite* tent1;
+	Sprite* carriage2;
+	Sprite* carriage3;
+	Sprite* carriage4;
+	Sprite* carriage5;
+	std::list<Sprite*> props;
+	SDL_Texture* propAtlas = nullptr;
+	std::string propFileName;
 };
 
 #endif _Act1_H

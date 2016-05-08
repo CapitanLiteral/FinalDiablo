@@ -13,7 +13,9 @@ class Scene;
 class snIntro;
 class snOutdoor1;
 class Act1;
+class Act2;
 class snWin;
+
 
 class SceneManager : public Module
 {
@@ -46,10 +48,13 @@ public:
 	bool ChangeScene(Scene* new_scene);
 	bool fadeToBlack(Scene* new_scene, float time = 2.0f);
 
+	std::string getFilePropsVillage();
+
 public:
 	snIntro*	intro = NULL;
 	snOutdoor1*	outdoor1 = NULL;
 	Act1*		act1 = NULL;
+	Act2*		act2 = NULL;
 	snWin*		win = NULL;
 
 private:
@@ -71,6 +76,8 @@ private:
 	Fader* image = NULL;
 
 	Timer fadeTimer;
+
+	std::string filePropsVillage;
 };
 
 #endif // __SCENEMANAGER_H__
