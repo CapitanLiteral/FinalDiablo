@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "p2Point.h"
+#include "Animation.h"
 
 #include <list>
 ;
@@ -147,6 +148,20 @@ public:
 
 	SDL_Texture* tex = NULL;
 	int alpha = 0;
+};
+
+class GuiAnimation : public GuiElement
+{
+public:
+
+	GuiAnimation(iPoint p, SDL_Rect r, GuiElement* par, Module* list = NULL, SDL_Texture* tex = NULL, Animation* anim = NULL);
+	~GuiAnimation(){};
+
+	void draw();
+	void update(GuiElement* hover, GuiElement* focus){}
+
+	SDL_Texture* tex = NULL;
+	Animation* anim = NULL;
 };
 
 class GuiInputBox : public GuiElement

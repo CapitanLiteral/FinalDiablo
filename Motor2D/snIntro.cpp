@@ -6,6 +6,8 @@
 #include "Act1.h"
 #include "Gui.h"
 #include "Audio.h"
+#include "Animation.h"
+#include "Textures.h"
 
 
 snIntro::snIntro() :Scene()
@@ -36,13 +38,22 @@ bool snIntro::start()
 	background = app->gui->addGuiImage({ -83, 0 }, {1829, 82, 800, 600}, NULL, this);
 	intro_gui.push_back(background);
 	
+	//Logo
+	logoSprite = app->tex->Load("images/LogoAnim.png");
+
+	logoAnim.SetFrames(0, 0, 400, 170, 30);
+	logoAnim.speed = 0.2f;
+
+	logo = app->gui->addGuiAnimation({ 250, 0 }, { 1829, 82, 800, 600 }, NULL, this, logoSprite, &logoAnim);
+	intro_gui.push_back(logo);
+
 	//Play button
-	play_button = app->gui->addGuiButton({ 181, 260 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "Single player", NULL, this);
+	play_button = app->gui->addGuiButton({ 315, 250 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "Single player", NULL, this);
 	intro_gui.push_back(play_button);
 
 	
 	//Exit button
-	exit_button = app->gui->addGuiButton({ 181, 400 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "ExiT Diablo II", NULL, this);
+	exit_button = app->gui->addGuiButton({ 315, 320 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "ExiT Diablo II", NULL, this);
 	intro_gui.push_back(exit_button);
 
 	//-----------

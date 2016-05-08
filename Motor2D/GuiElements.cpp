@@ -5,6 +5,7 @@
 #include "Gui.h"
 #include "Input.h"
 #include "Textures.h"
+#include "Animation.h"
 
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
@@ -529,4 +530,20 @@ void Fader::draw()
 		p.x - app->render->camera.x,
 		p.y - app->render->camera.y,
 		&tex_rect, { 255, 255, 255, alpha });
+}
+
+//GUI ANIM
+
+GuiAnimation::GuiAnimation(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex, Animation* anim)
+	: GuiElement(p, r, GUI_IMAGE, par, list), tex(tex), anim(anim)
+{}
+
+void GuiAnimation::draw()
+{
+	iPoint p = getScreenPosition();
+
+	app->render->Blit(tex,
+		p.x - app->render->camera.x,
+		p.y - app->render->camera.y,
+		&anim->getCurrentFrame());
 }

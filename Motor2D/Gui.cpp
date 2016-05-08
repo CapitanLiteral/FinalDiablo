@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "Gui.h"
 #include "Audio.h"
+#include "Animation.h"
 
 
 #include "SDL/include/SDL.h"
@@ -256,6 +257,13 @@ Fader* Gui::addFader(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Te
 	Fader* fade = new Fader(p, r, par, list, tex, alpha);
 	gui_elements.push_back(fade);
 	return fade;
+}
+
+GuiAnimation* Gui::addGuiAnimation(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex, Animation* anim)
+{
+	GuiAnimation* guiAnimation = new GuiAnimation(p, r, par, list, tex, anim);
+	gui_elements.push_back(guiAnimation);
+	return guiAnimation;
 }
 
 GuiLabel* Gui::addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par,TextColor color, Module* list)
