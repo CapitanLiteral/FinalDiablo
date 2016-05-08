@@ -55,7 +55,7 @@ bool Act1::start()
 		RELEASE_ARRAY(data);
 	}
 
-	app->game->player->SetPosition({ 0, 2000 });
+	app->game->player->SetPosition({ 450, 2400 });
 
 	createProps();
 
@@ -206,6 +206,14 @@ bool Act1::cleanUp()
 		item++;
 	}
 	entity_list.clear();
+	
+	list<Sprite*>::iterator item1 = props.begin();
+	for (; item1 != props.end(); item1++)
+	{
+	RELEASE((*item1));
+	}
+	props.clear();
+
 	return true;
 }
 
@@ -241,8 +249,8 @@ void Act1::createProps(){
 	propProva = new Sprite(propAtlas, p, piv, propRect);
 	
 	propRect = { 1236, 872, 105, 58 };
-	p.x = 490; piv.x = 105;
-	p.y = 2410; piv.y = 58;
+	p.x = 490;
+	p.y = 2410; 
 	fire = new Sprite(propAtlas, p, piv, propRect);
 	props.push_back(fire);
 	
