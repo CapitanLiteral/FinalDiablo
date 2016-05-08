@@ -22,8 +22,6 @@
 #include "FileSystem.h"
 #include "p2Log.h"
 
-//NOTE:Partciles in development, for now we will include this
-#include "playerParticle.h"
 
 #include "Collision.h"
 
@@ -54,7 +52,6 @@ bool Player::start()
 
 	//Create skills:
 	basic_attack = new sklBasicAttack();
-	blood_arrow = new sklBloodArrow();
 
 	//
 	player_attack = app->audio->LoadFx("audio/fx/PlayerAttack.ogg");
@@ -133,14 +130,7 @@ bool Player::preUpdate()
 //update
 bool Player::update(float dt)
 {
-	//NOTE: Debug - Particles
-	list<playerParticle*>::iterator item;
-
-	for (item = particle_list.begin(); item != particle_list.end(); item++)
-	{
-		(*item)->update(dt);
-	}
-
+	
 	if (current_action != DEATH)
 	{
 		if (!app->gui->mouse_hovering)

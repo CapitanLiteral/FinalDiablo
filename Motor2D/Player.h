@@ -90,7 +90,6 @@ class playerParticle;
 class Scene;
 class Skill;
 class sklBasicAttack;
-class sklBloodArrow;
 class Collider;
 
 class Player : public Module
@@ -274,7 +273,6 @@ public:
 
 	//Those skills
 	sklBasicAttack* basic_attack = NULL;
-	sklBloodArrow* blood_arrow = NULL;
 
 	//Collider
 	Collider* p_collider;
