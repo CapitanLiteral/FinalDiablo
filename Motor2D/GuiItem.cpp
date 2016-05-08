@@ -108,6 +108,6 @@ void GuiItem::Move()
 //WARNING: guarrada
 void GuiItem::Effect()
 {
-	Player* player = app->game->player;
-	player->RestoreHP(50);
+	//Player* player = app->game->player;
+	//player->RestoreHP(50);
 }

@@ -151,29 +151,29 @@ void EntEnemy::updateAttack()
 }
 void EntEnemy::CheckToAttack()
 {
-	if (enemy && !attacking)
-	{
-		if (PlayerInAttackRange())
-		{
+	//if (enemy && !attacking)
+	//{
+	//	if (PlayerInAttackRange())
+	//	{
 
-			fPoint target = enemy->getPivotPosition();
+	//		fPoint target = enemy->getPivotPosition();
 
-			fPoint dist = { target - position };
-			velocity = dist;
+	//		fPoint dist = { target - position };
+	//		velocity = dist;
 
-			SetDirection();
+	//		SetDirection();
 
-			enemy->TakeDamage(damage);
+	//		enemy->TakeDamage(damage);
 
-			movement = false;
-			current_input = ENTITY_INPUT_ATTACK;
-			attacking = true;
-			if (name == "crawler")
-				app->audio->PlayFx(app->game->em->crawler_attackfx);
-			if (name == "wolf")
-				app->audio->PlayFx(app->game->em->wolf_attackfx);
-		}
-	}
+	//		movement = false;
+	//		current_input = ENTITY_INPUT_ATTACK;
+	//		attacking = true;
+	//		if (name == "crawler")
+	//			app->audio->PlayFx(app->game->em->crawler_attackfx);
+	//		if (name == "wolf")
+	//			app->audio->PlayFx(app->game->em->wolf_attackfx);
+	//	}
+	//}
 }
 //EntEnemyWolf
 //----------------------------
@@ -671,8 +671,6 @@ void EntEnemyCrawler::StateMachine()
 		sprite_pivot = sprite_dim / 2;
 		sprite_pivot.y += 5;
 
-		app->game->player->IncreaseBlood(blood_drop);
-		app->game->player->PlayerEvent(BLOOD_UP);
 
 		//Item out
 		r = rand() % 4;

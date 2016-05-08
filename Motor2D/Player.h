@@ -41,16 +41,8 @@ enum DIRECTION
 
 enum PLAYER_EVENT
 {
-	HP_DOWN,
-	HP_UP,
-	MP_DOWN,
-	MP_UP,
-	ST_DOWN,
-	ST_UP,
+	GET_DAMAGE,
 	STATE_CHANGE,
-	get_ITEM,
-	BLOOD_UP,
-	BLOOD_DOWN,
 	TELEPORT
 };
 
@@ -144,12 +136,6 @@ public:
 	void updateAttack();
 	void CheckToAttack();
 	void TakeDamage(int damage);
-
-	//Casting
-	void updateMagic();
-
-	//Pure Blood System
-	void ReceiveBlood(int blood);
 
 	bool Alive();
 
