@@ -8,6 +8,7 @@
 #include "Timer.h"
 
 class Sprite;
+class Collider;
 
 #define PI 3.14159265
 
@@ -23,9 +24,10 @@ struct Particle
 	Uint32				life;	// Time the particle life
 	bool				fxPlayed;
 	Timer				timer;
-	Sprite*				particleSprite = NULL;
+	SDL_Texture*		texture = NULL;
 	bool				alive;
 	bool				active;
+	Collider*			col = NULL;
 
 	Particle();
 	Particle(const Particle& p);
@@ -160,11 +162,14 @@ public:
 
 	bool cleanUp();
 
+	void OnCollision(Collider* c1, Collider* c2);
+
 	bool cleanActiveParticles();
 
 	bool cleanActiveEmisors();
 
 	Sprite* getParticleAtlas()const;
+	SDL_Texture* getAtlas()const;
 
 	pugi::xml_document* getParticleDoc();
 
