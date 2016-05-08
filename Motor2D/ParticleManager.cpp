@@ -5,6 +5,10 @@
 #include "p2Log.h"
 #include "Audio.h"
 #include "FileSystem.h"
+#include "Collision.h"
+
+#include "Player.h"//tmp
+#include "Game.h"//tmp
 
 #include <math.h>
 
@@ -41,7 +45,7 @@ bool ParticleManager::start()
 
 	ret = loadParticlesFile(particleDoc);
 	particleAtlas = app->tex->Load(particleDoc.child("particles").child("texture").attribute("value").as_string());
-	spriteAtlas = new Sprite(particleAtlas);
+	spriteAtlas = new Sprite(particleAtlas, { 0, 0 }, { 0, 0, 0, 0}, UI);
 	app->render->addSpriteToList(spriteAtlas);
 
 	return ret;
@@ -55,9 +59,12 @@ bool ParticleManager::update(float dt)
 	{
 		iPoint m;
 		app->input->getMousePosition(m.x, m.y);
-		app->render->ScreenToWorld(m.x, m.y);
+		//app->render->ScreenToWorld(m.x, m.y);
+		m.Set(app->game->player->getBlitPosition().x, app->game->player->getBlitPosition().y);
 
 		createConeEmisor(m.x, m.y, { -1, 1 });
+		//createRadialEmisor(m.x, m.y);
+		//createLineEmisor(m.x, m.y, { -1, 1 });
 	}
 
 	std::list<Particle*>::iterator it = particleList.begin();
@@ -167,6 +174,11 @@ Sprite* ParticleManager::getParticleAtlas()const
 	return spriteAtlas;
 }
 
+SDL_Texture* ParticleManager::getAtlas()const
+{
+	return particleAtlas;
+}
+
 pugi::xml_document* ParticleManager::getParticleDoc()
 {
 	return &particleDoc;
@@ -180,9 +192,9 @@ Particle* ParticleManager::createParticle(const Particle& refParticle, int x, in
 	ret->position.Set(x, y);
 	ret->life = secLife;
 	if (texture)
-		ret->particleSprite->texture = texture;
+		ret->texture = texture;
 	else
-		ret->particleSprite = spriteAtlas;
+		ret->texture = particleAtlas;
 
 	ret->active = active;
 	if (active)
@@ -238,6 +250,11 @@ ConeEmisor* ParticleManager::createConeEmisor(int x, int y, fPoint direction, bo
 	return ret;
 }
 
+void ParticleManager::OnCollision(Collider* c1, Collider* c2)
+{
+
+}
+
 // --Particle-------------
 
 Particle::Particle() : fx(-1), life(0), fxPlayed(false), alive(true), active(true)
@@ -246,8 +263,10 @@ Particle::Particle() : fx(-1), life(0), fxPlayed(false), alive(true), active(tru
 	speed.SetToZero();
 }
 
-Particle::Particle(const Particle& p) : fx(p.fx), life(p.life), fxPlayed(p.fxPlayed), alive(true), active(p.active), anim(p.anim), particleSprite(p.particleSprite), position(p.position), speed(p.speed)
+Particle::Particle(const Particle& p) : fx(p.fx), life(p.life), fxPlayed(p.fxPlayed), alive(true), active(p.active), anim(p.anim), position(p.position), speed(p.speed)
 {
+	/*particleSprite = new Sprite(p.texture);
+	app->render->addSpriteToList(particleSprite);*/
 }
 
 Particle::~Particle()
@@ -287,11 +306,12 @@ bool Particle::postUpdate()
 	{
 		if (active)
 		{
-			if (particleSprite && particleSprite->texture)
+			if (texture)
 			{
 				iPoint pos(position.x, position.y);
 				iPoint piv(anim.pivot.x, anim.pivot.y);
-				particleSprite->updateSprite(pos, piv, anim.getCurrentFrame());
+				app->render->Blit(texture, position.x - anim.pivot.x, position.y - anim.pivot.y, &anim.getCurrentFrame());
+				//particleSprite->updateSprite(pos, piv, anim.getCurrentFrame());
 			}
 
 			if (fxPlayed == false)
@@ -427,7 +447,7 @@ RadialEmisor::RadialEmisor() : Emisor()
 	frequence = radialEmisorNode.child("frequence").attribute("value").as_int();
 	duration = radialEmisorNode.child("duration").attribute("value").as_float();
 
-	particleEmited.particleSprite = app->particleManager->getParticleAtlas();
+	particleEmited.texture = app->particleManager->getAtlas();
 }
 
 RadialEmisor::~RadialEmisor()
@@ -527,7 +547,7 @@ LineEmisor::LineEmisor(fPoint director) : Emisor()
 	frequence = lineEmisorNode.child("frequence").attribute("value").as_int();
 	duration = lineEmisorNode.child("duration").attribute("value").as_float();
 
-	particleEmited.particleSprite = app->particleManager->getParticleAtlas();
+	particleEmited.texture = app->particleManager->getAtlas();
 
 	direction = director;
 	direction.y = -direction.y;
@@ -631,7 +651,7 @@ ConeEmisor::ConeEmisor(fPoint director) : Emisor()
 
 	angle = coneEmisorNode.child("open_angle").attribute("value").as_float();
 
-	particleEmited.particleSprite = app->particleManager->getParticleAtlas();
+	particleEmited.texture = app->particleManager->getAtlas();
 
 	direction = director;
 	direction.y = -direction.y;
