@@ -152,7 +152,7 @@ bool Player::update(float dt)
 			break;
 		case RUNNING:
 			updateMovement(dt);
-			LowerStamina();
+			//LowerStamina();
 			break;
 		case SKILL:
 			current_skill->skillUpdate();
@@ -162,7 +162,7 @@ bool Player::update(float dt)
 
 		if (current_action != RUNNING)
 		{
-			RecoverStamina();
+			//RecoverStamina();
 		}
 	}
 	else
@@ -218,14 +218,8 @@ bool Player::cleanUp()
 
 void Player::Respawn()
 {
-	//Cosnumable attributes restablished
-	HP_current = HP_max;
-	MP_current = MP_max;
-	ST_current = ST_max;
-
-	PlayerEvent(HP_UP);
-	PlayerEvent(MP_UP);
-	PlayerEvent(ST_UP);
+	//Maybe ERROR, watch out // We need to reset Atributes
+	
 
 	//Reset state and animation
 	current_action = IDLE;
@@ -236,7 +230,8 @@ void Player::Respawn()
 
 
 	//Init position and booleans
-	p_position = { 0, 500 };
+	//Maybe ERROR, watch out // Must put a correct position
+	p_position = { 0, 2000 };
 	movement = false;
 	attacking = false;
 	enemy = NULL;
@@ -379,70 +374,20 @@ void Player::PlayerEvent(PLAYER_EVENT even)
 {
 	switch (even)
 	{
-	case HP_DOWN:
-		{
-			app->game->hud->belt->SetLife(HP_max, HP_current);
-		}
-		break;
-	case HP_UP:
-		{
-			app->game->hud->belt->SetLife(HP_max, HP_current);
-		}
-		break;
-	case MP_DOWN:
-		{
-			app->game->hud->belt->SetMana(MP_max, MP_current);
-		}
-		break;
-	case MP_UP:
-		{
-			app->game->hud->belt->SetMana(MP_max, MP_current);
-		}
-		break;
-	case ST_DOWN:
-		{
-			app->game->hud->belt->SetStamina(ST_max, ST_current);
-		}
-		break;
-	case ST_UP:
-		{
-			app->game->hud->belt->SetStamina(ST_max, ST_current);
-		}
-		break;
-	case get_ITEM:
-		{
-			//NOTE: GUARRALITY
-			if (app->game->hud->inventory->addPotion())
+		case GET_DAMAGE:
+		
+			break;
+		case TELEPORT:
 			{
-				if (objective->type = ITEM)
-					app->game->em->remove(objective->id);	
+				EntPortal* portal = (EntPortal*)objective;
 				objective = NULL;
+				teleport = true;
+				scene_to_teleport = portal->destiny;
 			}
-		}
-		break;
-	case BLOOD_UP:
-		{
-			app->game->hud->blood->SetBlood(blood_current);
-		}
-		break;
-	case BLOOD_DOWN:
-		{
-			//Code here
-		}
-		break;
-	case TELEPORT:
-		{
-			EntPortal* portal = (EntPortal*)objective;
-			objective = NULL;
-			teleport = true;
-			scene_to_teleport = portal->destiny;
-		}
-		break;
-	case STATE_CHANGE:
-		{
-			StateMachine();
-		}
-		break;
+			break;
+		case STATE_CHANGE:
+				StateMachine();
+			break;
 	}
 }
 
@@ -616,24 +561,6 @@ void Player::updateAttack()
 	
 }
 
-void Player::updateMagic()
-{
-	//NOTE: provisional
-	/*if (current_animation->CurrentFrame() >= 7 && !particle_is_casted)
-	{
-		playerParticle* particle = new playerParticle({ p_position.x, p_position.y - 40 }, particle_destination);
-		particle_list.push_back(particle);
-		particle_is_casted = true;
-	}*/
-
-	if (current_animation->Finished())
-	{
-		current_input = INPUT_STOP_MOVE;
-		input_locked = false;
-		particle_is_casted = false;
-	}
-}
-
 void Player::CheckToAttack()
 {
 	if (enemy && !attacking)
@@ -674,28 +601,13 @@ void Player::CheckToAttack()
 			movement = false;
 			current_input = INPUT_STOP_MOVE;
 			
-			if (objective->type == ITEM_HEALTH)
-				PlayerEvent(get_ITEM);
-			else if (objective->type == PORTAL)
+			if (objective->type == PORTAL)
 				PlayerEvent(TELEPORT);
 			objective = NULL;
 		}
 	}
 }
 
-void Player::TakeDamage(int damage)
-{
-
-	HP_current -= damage;
-	PlayerEvent(HP_DOWN);
-
-	if (HP_current <= 0 && Alive())
-	{
-		HP_current = 0;
-		current_input = INPUT_DEATH;
-		app->audio->PlayFx(player_death, 0);
-	}
-}
 
 bool Player::Alive()
 {
@@ -708,90 +620,7 @@ bool Player::Alive()
 
 void Player::HandleInput()
 {
-	//NOTE: provisional mana and life changers
-	if (app->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	{
-		if (HP_current <= 0)
-		{
-			HP_current = 0;
-		}
-		else
-		{
-			HP_current--;
-		}
-
-		PlayerEvent(HP_DOWN);
-	}
-	if (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	{
-		if (HP_current >= HP_max)
-		{
-			HP_current = HP_max;
-		}
-		else
-		{
-			HP_current++;
-		}
-
-		PlayerEvent(HP_UP);
-	}
-	/*
-	if (app->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		if (MP_current <= 0)
-		{
-			MP_current = 0;
-		}
-		else
-		{
-			MP_current--;
-		}
-
-		PlayerEvent(MP_DOWN);
-	}
-	if (app->input->getKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		if (MP_current >= MP_max)
-		{
-			MP_current = MP_max;
-		}
-		else
-		{
-			MP_current++;
-		}
-
-		PlayerEvent(MP_UP);
-	}
-	if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		if (ST_current <= 0)
-		{
-			ST_current = 0;
-		}
-		else
-		{
-			ST_current--;
-		}
-
-		PlayerEvent(ST_DOWN);
-	}
-	if (app->input->getKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		if (ST_current >= ST_max)
-		{
-			ST_current = ST_max;
-		}
-		else
-		{
-			ST_current++;
-		}
-
-		PlayerEvent(ST_UP);
-	}*/
-	//
-
-	//NOTE: has to be changed for the skill 
-	//Linear Movement activation
+	
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		current_skill = left_skill;
@@ -810,7 +639,7 @@ void Player::HandleInput()
 
 			if (objective && objective->type == ENEMY)
 			{
-			enemy = (EntEnemy*)app->game->em->entityOnMouse();
+				enemy = (EntEnemy*)app->game->em->entityOnMouse();
 			}
 
 			target = app->input->getMouseWorldPosition();
@@ -983,53 +812,7 @@ ACTION_STATE Player::updateAction()
 //-------Stats related
 */
 
-void Player::LowerStamina()
-{
-	if (ST_current > 0)
-	{
-		ST_current -= STAMINA_SPEED;
-		PlayerEvent(ST_DOWN);
-	}
 
-	if (ST_current <= 0)
-	{
-		running = false;
-		SetInput(INPUT_MOVE);
-	}
-}
-
-void Player::RecoverStamina()
-{
-	if (ST_current != ST_max)
-	{
-		if (ST_current > ST_max)
-		{
-			ST_current = ST_max;
-		}
-		else
-		{
-			ST_current += STAMINA_SPEED;
-			PlayerEvent(ST_UP);
-		}
-	}
-}
-
-void Player::IncreaseBlood(int blood)
-{
-	blood_current += blood;
-}
-
-void Player::RestoreHP(int health)
-{
-	
-	HP_current += health;
-	if (HP_current >= HP_max)
-	{
-		HP_max = HP_current;
-	}
-
-	PlayerEvent(HP_UP);
-}
 
 bool Player::TeleportReady()
 {
@@ -1052,69 +835,6 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 	int i = 0;
 }
 
-/*
-//-------Structural functions
-*/
-/*
-void Player::SetAnimations()
-{
-	//Idle
-	for (int i = 0; i < 8; i++)
-	{
-		Animation id;
-		id.SetFrames(0, (PLAYER_SPRITE_H + SPRITE_MARGIN) * i, PLAYER_SPRITE_W, PLAYER_SPRITE_H, 14, SPRITE_MARGIN);
-		id.speed = 0.2f;
-
-		idle.push_back(id);
-	}
-
-	//Walk
-	for (int i = 0; i < 8; i++)
-	{
-		Animation wlk;
-		wlk.SetFrames(0, (PLAYER_SPRITE_H + SPRITE_MARGIN) * i, PLAYER_SPRITE_W, PLAYER_SPRITE_H, 8, SPRITE_MARGIN);
-		wlk.speed = 0.3f;
-
-		walk.push_back(wlk);
-	}
-
-	//Run
-	for (int i = 0; i < 8; i++)
-	{
-		Animation rn;
-		rn.SetFrames(0, (PLAYER_SPRITE_H + SPRITE_MARGIN) * i, PLAYER_SPRITE_W, PLAYER_SPRITE_H, 8, SPRITE_MARGIN);
-		rn.speed = 0.3f;
-
-		run.push_back(rn);
-	}
-
-	//Attack
-	for (int i = 0; i < 8; i++)
-	{
-		Animation atk;
-		atk.SetFrames(0, (92 + SPRITE_MARGIN) * i, 119, 92, 20, SPRITE_MARGIN);
-		atk.speed = 0.4f;
-		atk.loop = false;
-
-		attack.push_back(atk);
-	}
-
-	//Death
-	for (int i = 0; i < 8; i++)
-	{
-		Animation dth;
-		dth.SetFrames(0, (PLAYER_SPRITE_H + SPRITE_MARGIN)* i, PLAYER_SPRITE_W, PLAYER_SPRITE_H, 14, SPRITE_MARGIN);
-		dth.speed = 0.2f;
-		dth.loop = false;
-
-		death.push_back(dth);
-	}
-
-	//Skills animations
-
-	basic_attack->setSkillAnimations();
-	blood_arrow->setSkillAnimations();
-}*/
 
 void Player::SetDirection()
 {
