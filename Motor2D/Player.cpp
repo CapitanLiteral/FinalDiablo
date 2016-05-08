@@ -173,7 +173,7 @@ bool Player::update(float dt)
 		}
 	}
 
-		//app->render->CenterCamera(p_position.x, p_position.y);
+		app->render->CenterCamera(p_position.x, p_position.y);
 
 		
 

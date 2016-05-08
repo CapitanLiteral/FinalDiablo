@@ -241,8 +241,8 @@ void Act1::createProps(){
 	propProva = new Sprite(propAtlas, p, piv, propRect);
 	
 	propRect = { 1236, 872, 105, 58 };
-	p.x = 490;
-	p.y = 2410;
+	p.x = 490; piv.x = 105;
+	p.y = 2410; piv.y = 58;
 	fire = new Sprite(propAtlas, p, piv, propRect);
 	props.push_back(fire);
 	
