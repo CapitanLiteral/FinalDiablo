@@ -159,18 +159,15 @@ bool Gui::preUpdate()
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		mouse_clicked = true;
-		mouse->SetTextureRect({ 222, 98, 33, 26 });
 	}
 
 	if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		mouse_clicked = true;
-		mouse->SetTextureRect({ 222, 98, 33, 26 });
 	}
 	else if (mouse_clicked == true)
 	{
 		mouse_clicked = false;
-		mouse->SetTextureRect({ 189, 98, 33, 26 });
 	}
 	
 	return true;
