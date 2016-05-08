@@ -66,8 +66,8 @@ bool Player::start()
 	
 	//Sprites
 	barbarianImage = app->tex->Load("images/Barbarian.png");
-	butcherImage = app->tex->Load("");
-	diabloImage = app->tex->Load("");
+	butcherImage = app->tex->Load("images/Butcher.png");
+	diabloImage = app->tex->Load("images/Diablo.png");
 
 	/*p_sprite = p_idle = app->tex->Load("textures/vamp_idle.png");
 	p_walk = app->tex->Load("textures/vamp_walk.png");

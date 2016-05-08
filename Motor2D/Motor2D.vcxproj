@@ -80,6 +80,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Act1.cpp" />
+    <ClCompile Include="Attributes.cpp" />
     <ClCompile Include="EntEnemy.cpp" />
     <ClCompile Include="EntItem.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -128,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="Act1.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Attributes.h" />
     <ClInclude Include="EntEnemy.h" />
     <ClInclude Include="EntItem.h" />
     <ClInclude Include="Entity.h" />
