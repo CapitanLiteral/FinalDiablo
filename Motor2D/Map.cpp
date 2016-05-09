@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "Map.h"
 #include <math.h>
+#include "Input.h"
 
 Map::Map() : Module(), map_loaded(false)
 {
@@ -27,6 +28,18 @@ bool Map::awake(pugi::xml_node& config)
 	return ret;
 }
 
+bool Map::preUpdate()
+{
+	if (app->debug)
+		if (app->input->getKey(SDL_SCANCODE_F2) == KEY_DOWN)
+			debugMap = !debugMap;
+
+	if (!app->debug)
+		debugMap = false;
+
+	return true;
+}
+
 void Map::draw()
 {
 	if(map_loaded == false)
@@ -46,9 +59,10 @@ void Map::draw()
 
 
 		//NOTE: when drawing navigation map, framerate drops to the half
-		if (!app->debug)
-			if(layer->properties.get("Nodraw") != 0)
-				continue;
+		if (!app->debug || !debugMap)
+			if (!debugMap)
+				if (layer->properties.get("Nodraw") != 0)
+					continue;
 
 		for(int y = 0; y < data.height; ++y)
 		{

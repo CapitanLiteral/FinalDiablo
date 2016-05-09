@@ -35,6 +35,12 @@ Game::~Game()
 // Called before render is available
 bool Game::awake(pugi::xml_node& conf)
 {
+	list<Module*>::iterator item = game_modules.begin();
+
+	for (; item != game_modules.end(); item++)
+	{
+		(*item)->awake(conf);
+	}
 	return true;
 }
 
