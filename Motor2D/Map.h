@@ -116,6 +116,8 @@ public:
 	bool awake(pugi::xml_node& conf);
 
 	// Called each loop iteration
+	bool preUpdate();
+
 	void draw();
 
 	// Called before quitting
@@ -151,7 +153,7 @@ private:
 public:
 
 	MapData data;
-	bool debug = false;
+	bool debugMap = false;
 private:
 
 	pugi::xml_document	map_file;
