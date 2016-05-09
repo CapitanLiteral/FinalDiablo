@@ -61,6 +61,11 @@ iPoint Player::getWorldPosition() const
 	return mapPosition;
 }
 
+Sprite* Player::getSprite() const
+{
+	return sprite;
+}
+
 void Player::setMapPosition(iPoint tile)
 {
 

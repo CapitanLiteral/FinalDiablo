@@ -63,6 +63,8 @@ public:
 	iPoint getColliderOffset() const;
 	iPoint getColliderSize() const;
 
+	Sprite* getSprite() const;
+
 //Animation things
 
 private:
