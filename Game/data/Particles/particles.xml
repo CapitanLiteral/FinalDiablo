@@ -1,4 +1,7 @@
 <!-- Particles file for the game -->
+<!-- Collider types: COLLIDER_PLAYER = 0, COLLIDER_ENEMY = 1,
+	 COLLIDER_PLAYER_PARTICLE = 2,
+	 COLLIDER_ENEMY_PARTICLE = 3, -->
 
 <particles>
 
@@ -17,6 +20,9 @@
 		<particle_life value = "1" />
 
 		<duration value = "0.5f" />
+		
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+
 
 	</radial_emisor>
 
@@ -33,6 +39,8 @@
 		<particle_life value = "2" />
 
 		<duration value = "0.5f" />
+
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
 
 	</line_emisor>
 
@@ -51,6 +59,8 @@
 		<duration value = "0.5f" />
 
 		<open_angle value = "20.0f" />
+
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
 
 	</cone_emisor>
 
