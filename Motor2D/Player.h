@@ -53,18 +53,8 @@ enum ACTION_STATE
 	BASIC_ATTACK = 2,
 	DEATH = 3,
 	RUNNING = 4,
-	SKILL,
+	SKILL, // Do the skill things
 	NOTHING,
-};
-
-enum INPUT_STATE
-{
-	INPUT_MOVE,
-	INPUT_RUN,
-	INPUT_STOP_MOVE,
-	INPUT_SKILL,
-	INPUT_DEATH,
-	INPUT_NULL,
 };
 
 enum PHASE
@@ -80,8 +70,6 @@ class Entity;
 class Sprite;
 class playerParticle;
 class Scene;
-class Skill;
-class sklBasicAttack;
 class Collider;
 
 class Player : public Module
@@ -133,9 +121,6 @@ public:
 	
 	//Attack
 	bool IsInRange(Entity* enemy);
-	void updateAttack();
-	void CheckToAttack();
-	void TakeDamage(int damage);
 
 	bool Alive();
 
@@ -156,7 +141,6 @@ public:
 	void SetPosition(fPoint pos);
 
 	//StateMachine functions
-	ACTION_STATE updateAction();
 	void StateMachine();
 
 	//Utils
@@ -164,16 +148,8 @@ public:
 
 	//Input
 	void HandleInput();
-	void SetInput(INPUT_STATE input);
 
-	//Stats realted
-	void LowerStamina();
-	void RecoverStamina();
-
-	void IncreaseBlood(int blood);
-
-	void RestoreHP(int health);
-
+	
 	Scene* getDestiny();
 	bool TeleportReady();
 	void ResetTeleport();
@@ -207,33 +183,12 @@ public:
 
 	//Attack
 	bool		attacking;
-	int			atk_damage = 50;
-
-	//Attributes
-	int HP_max;
-	int HP_current;
-
-	int MP_max;
-	int MP_current;
-
-	float ST_max;
-	float ST_current;
-
-	int blood_current;
-
 	float attack_range = 65.0f;
 
-	//Fx
-
-	int player_death;
-	int player_attack;
-	int player_gethit;
 
 	//StateMachine Attributes
 	ACTION_STATE	current_action;
-	vector<Animation> current_animation_set;
 	DIRECTION		current_direction;
-	INPUT_STATE		current_input;
 	ACTION_STATE	previous_action = NOTHING;
 	bool			input_locked = false;
 	Timer			respawn_timer;
@@ -243,22 +198,9 @@ public:
 	EntEnemy* enemy = NULL;
 	Entity*	objective = NULL;
 
-	//NOTE: this might be changed, particles in development
-	list<playerParticle*>	particle_list;
-	fPoint					particle_destination;
-	bool					particle_is_casted = false;
-
 	//NOTE: Portal attributes, may be changed;
 	bool teleport = false;
 	Scene* scene_to_teleport = NULL;
-
-	//Skills
-	Skill* left_skill = NULL;
-	Skill* right_skill = NULL;
-	Skill* current_skill = NULL;
-
-	//Those skills
-	sklBasicAttack* basic_attack = NULL;
 
 	//Collider
 	Collider* p_collider;
@@ -281,32 +223,7 @@ public:
 	SDL_Texture* diabloImage = NULL;
 	SDL_Texture* p_debug = NULL;
 
-	// This must be changed when we have our sprites
-	/*
-	//Textures
-	Sprite* sprite = NULL;
-	SDL_Texture* p_debug = NULL;
-	SDL_Texture* p_sprite = NULL;
-	SDL_Texture* p_idle = NULL;
-	SDL_Texture* p_walk = NULL;
-	SDL_Texture* p_run = NULL;
-	SDL_Texture* p_attack = NULL;
-	SDL_Texture* p_casting = NULL;
-	SDL_Texture* p_death = NULL;
-
-	//Rects for each state and direction
-	//--------------------
-	Animation* current_animation;
-	//Idle
-	//NOTE : Can i make this more elegant (maybe with a list)
-	vector<Animation> idle;
-	vector<Animation> walk;
-	vector<Animation> attack;
-	vector<Animation> cast;
-	vector<Animation> run;
-	vector<Animation> death;*/
-	//--------------------
-
+	
 };
 
 #endif // __PLAYER_H__

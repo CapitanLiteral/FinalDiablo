@@ -16,7 +16,6 @@
 #include "Entity.h"
 #include "EntEnemy.h"
 #include "EntPortal.h"
-#include "PlayerSkills.h"
 #include "SDL/include/SDL.h"
 #include "Audio.h"
 #include "FileSystem.h"
@@ -50,14 +49,6 @@ bool Player::start()
 	
 	ret = loadAnimations();
 
-	//Create skills:
-	basic_attack = new sklBasicAttack();
-
-	//
-	player_attack = app->audio->LoadFx("audio/fx/PlayerAttack.ogg");
-	player_death = app->audio->LoadFx("audio/fx/PlayerDeath.ogg");
-	player_gethit = app->audio->LoadFx("audio/fx/PlayergetHit.ogg");
-
 	//Debug tile
 	p_debug = app->tex->Load("maps/mini_path.png");
 	
@@ -66,23 +57,11 @@ bool Player::start()
 	butcherImage = app->tex->Load("images/Butcher.png");
 	diabloImage = app->tex->Load("images/Diablo.png");
 
-	/*p_sprite = p_idle = app->tex->Load("textures/vamp_idle.png");
-	p_walk = app->tex->Load("textures/vamp_walk.png");
-	p_attack = app->tex->Load("textures/vamp_attack.png");
-	p_casting = app->tex->Load("textures/vamp_cast.png");
-	p_run = app->tex->Load("textures/vamp_run.png");
-	p_death = app->tex->Load("textures/vamp_death.png");
-	SetAnimations();*/
-
-
-
 	//states
 	currentPhase = BARBARIAN;
-	previous_action = NOTHING;
 	input_locked = false;
 	current_action = IDLE;
 	current_direction = D_FRONT;
-	current_input = INPUT_NULL;
 	//current_animation_set = idle;
 	current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
 
@@ -96,13 +75,8 @@ bool Player::start()
 	running = false;
 
 	//Collider
-	p_collider = app->collision->addCollider({getPivotPosition().x-20, getBlitPosition().y + 20, 37, getPlayerRect().h - 20}, COLLIDER_PLAYER, this);
+	p_collider = app->collision->addCollider({getPivotPosition().x, getBlitPosition().y, 37, getPlayerRect().h}, COLLIDER_PLAYER, this);
 
-	//initial stats
-	HP_max = HP_current = 200.0f;
-	MP_max = MP_current = 100;
-	ST_max = ST_current = 200.0f;
-	blood_current = 0;
 
 
 
@@ -134,7 +108,6 @@ bool Player::update(float dt)
 	{
 		if (!app->gui->mouse_hovering)
 		{
-			HandleInput();
 		}
 
 		if (current_skill->skill_type == SKILL_MELEE)
@@ -224,10 +197,7 @@ void Player::Respawn()
 	//Reset state and animation
 	current_action = IDLE;
 	current_direction = D_FRONT;
-	current_input = INPUT_STOP_MOVE;
-	//current_animation_set = idle;
-	//current_animation = &current_animation_set[current_direction];
-
+	
 
 	//Init position and booleans
 	//Maybe ERROR, watch out // Must put a correct position
@@ -241,13 +211,6 @@ void Player::Respawn()
 //NOTE: had to take out the const because of the animation
 void Player::draw() 
 {
-	if (current_action == SKILL) // TODO: guarrada temporal fins que es toqui el sistema d'atac
-	{
-		current_action = BASIC_ATTACK;
-		if (current_animation->isOver())
-			current_animation->Reset();
-	}
-
 	switch (currentPhase)
 	{
 	case BARBARIAN:
@@ -358,7 +321,7 @@ bool Player::RunOn()
 	running = !running;
 	if (current_action == RUNNING || current_action == WALKING)
 	{
-		SetInput(INPUT_MOVE);
+		
 	}
 
 	return running;
@@ -440,7 +403,7 @@ bool Player::IsTargetReached()
 		{
 			if (!path_on)
 			{
-				SetInput(INPUT_STOP_MOVE);
+				//SetInput(INPUT_STOP_MOVE);
 				movement = false;
 			}
 
@@ -466,7 +429,7 @@ void Player::getNewTarget()
 		}
 		else
 		{
-			SetInput(INPUT_STOP_MOVE);
+			//SetInput(INPUT_STOP_MOVE);
 			movement = false;
 		}
 }
@@ -501,7 +464,7 @@ void Player::SetMovement(int x, int y)
 		SetTarget(target);
 		
 		//StateMachine change
-		SetInput(INPUT_MOVE);
+		//SetInput(INPUT_MOVE);
 	}
 }
 
@@ -515,7 +478,7 @@ void Player::SetNewPath(int x, int y)
 	if (steps > 0)
 	{
 		//StateMachine change
-		current_input = INPUT_MOVE;
+		//current_input = INPUT_MOVE;
 
 		movement = true;
 		p_current_node = -1;
@@ -554,7 +517,7 @@ void Player::updateAttack()
 	//NOTE: provisional attack state
 		if (current_animation->Finished())
 		{
-			current_input = INPUT_STOP_MOVE;
+			//current_input = INPUT_STOP_MOVE;
 			attacking = false;
 			input_locked = false;
 		}
@@ -575,11 +538,10 @@ void Player::CheckToAttack()
 
 			SetDirection();
 
-			enemy->TakeDamage(atk_damage);
-			app->audio->PlayFx(player_attack, 0);
+			//enemy->TakeDamage(atk_damage);
+			//app->audio->PlayFx(player_attack, 0);
 
 			movement = false;
-			current_input = INPUT_SKILL;
 			enemy = NULL;
 			objective = NULL;
 			attacking = true;
@@ -599,7 +561,6 @@ void Player::CheckToAttack()
 			SetDirection();
 
 			movement = false;
-			current_input = INPUT_STOP_MOVE;
 			
 			if (objective->type == PORTAL)
 				PlayerEvent(TELEPORT);
@@ -629,7 +590,7 @@ void Player::HandleInput()
 
 		if (current_skill->skill_type != SKILL_MELEE)
 		{ 
-			current_input = INPUT_SKILL;
+			//current_input = INPUT_SKILL;
 		}
 		else
 		{
@@ -650,169 +611,22 @@ void Player::HandleInput()
 
 	}
 
-	//NOTE: Debug purposes, must be changed! (Particle system)
-	//------------
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		current_skill = right_skill;
-
-		current_skill->skillInit();
-
 		if (current_skill->skill_type != SKILL_MELEE)
 		{
-			current_input = INPUT_SKILL;
+			//current_input = INPUT_SKILL;
 		}
-		/*if (!input_locked)
-		{
-			particle_destination.x = app->input->getMouseWorldPosition().x;
-			particle_destination.y = app->input->getMouseWorldPosition().y;
-			SetDirection(particle_destination);
-			SetInput(INPUT_CAST);
-			input_locked = true;
-		}*/
 		else
 		{
-			iPoint target;
-			//NOTE: this will be later changed
-			objective = app->game->em->entityOnMouse();
-
-			if (objective && objective->type == ENEMY)
-			{
-				enemy = (EntEnemy*)app->game->em->entityOnMouse();
-			}
-
-			target = app->input->getMouseWorldPosition();
-			target = app->map->WorldToMap(target.x, target.y);
-			SetMovement(target.x, target.y);
-		}
-	}
-	//------------
-}
-
-void Player::SetInput(INPUT_STATE input)
-{
-	if (!input_locked)
-	{
-		current_input = input;
-	}
-}
-
-//StateMachine Functions
-ACTION_STATE Player::updateAction()
-{
-	if (current_input != INPUT_NULL)
-	{
-		switch (current_action)
-		{
-		case IDLE:
-		{
-			if (current_input == INPUT_MOVE)
-			{
-				if (!running)
-					current_action = WALKING;
-				else
-					current_action = RUNNING;
-			}
-
-			else if (current_input == INPUT_SKILL)
-			{
-				current_action = SKILL;
-			}
-
-			else if (current_input == INPUT_DEATH)
-			{
-				current_action = DEATH;
-			}
-			
-		}
-		break;
-
-		case WALKING:
-		{
-			if (current_input == INPUT_STOP_MOVE)
-			{
-				current_action = IDLE;
-			}
-
-			else if (current_input == INPUT_SKILL)
-			{
-				current_action = SKILL;
-			}
-
-			else if (current_input == INPUT_MOVE && running)
-			{
-				current_action = RUNNING;
-			}
-
-			else if (current_input == INPUT_DEATH)
-			{
-				current_action = DEATH;
-			}
-		}
-		break;
-
-		case RUNNING:
-		{
-			if (current_input == INPUT_STOP_MOVE)
-			{
-				current_action = IDLE;
-			}
-			else if (current_input == INPUT_MOVE && !running)
-			{
-				current_action = WALKING;
-			}
-			
-			else if (current_input == INPUT_SKILL)
-			{
-				current_action = SKILL;
-			}
-
-			else if (current_input == INPUT_DEATH)
-			{
-				current_action = DEATH;
-			}
-		}
-		break;
-
-		case SKILL:
-		{
-			if (current_input == INPUT_STOP_MOVE)
-			{
-				current_action = IDLE;
-			}
-			else if (current_input == INPUT_DEATH)
-			{
-				current_action = DEATH;
-			}
-			
-		}
-		break;
-
-		case DEATH:
-		{
-			if (current_input == INPUT_STOP_MOVE)
-			{
-				current_action = IDLE;
-			}
-		}
-		break;
+			//SetInput(INPUT_SKILL);
 		}
 
-		if (previous_action != current_action)
-			PlayerEvent(STATE_CHANGE);
 
-		previous_action = current_action;
 	}
 
-	current_input = INPUT_NULL;
-	return current_action;
+	
 }
-
-/*
-//-------Stats related
-*/
-
-
 
 bool Player::TeleportReady()
 {
@@ -906,8 +720,8 @@ void Player::SetDirection(fPoint pos)
 void Player::SetPosition(fPoint pos)
 {
 	p_position = pos;
-	p_collider->rect.x = getPivotPosition().x - 20;
-	p_collider->rect.y = getBlitPosition().y + 20;
+	p_collider->rect.x = getPivotPosition().x - sprite->section_texture.x;
+	p_collider->rect.y = getBlitPosition().y - sprite->section_texture.y/2;
 }
 
 void Player::StateMachine()

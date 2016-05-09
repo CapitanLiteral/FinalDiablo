@@ -587,7 +587,7 @@ ENTITY_STATE EntEnemyCrawler::updateAction()
 			{
 				current_action = ENTITY_IDLE;
 			}
-			if (current_input == INPUT_DEATH)
+			if (current_input == ENTITY_INPUT_DEATH)
 			{
 				current_action = ENTITY_DEATH;
 			}
