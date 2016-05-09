@@ -48,7 +48,7 @@ bool Hud::start()
 {
 	for (int i = 0; i < Hud_elements.size(); i++)
 	{
-		Hud_elements[i]->start();
+		//Hud_elements[i]->start();
 	}
 
 	return true;

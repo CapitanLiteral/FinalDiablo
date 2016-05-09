@@ -225,8 +225,8 @@ void App::finishUpdate()
 
 	// Activating debug mode for all the Game
 
-	if (input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		debug = !debug;
+	//if (input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		//debug = !debug;
 
 	// Framerate calculations --
 	

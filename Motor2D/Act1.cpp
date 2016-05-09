@@ -263,8 +263,8 @@ void Act1::createProps(){
 	props.push_back(woodHouse);
 	
 	propRect = { 2374, 838, 202, 109 };
-	p.x = 2050;
-	p.y = 2570;
+	p.x = 2050; piv.x = 0;
+	p.y = 2570; piv.y = 0;
 	wood = new Sprite(propAtlas, p, piv, propRect);
 	wood->layer = SCENE;
 	props.push_back(wood);

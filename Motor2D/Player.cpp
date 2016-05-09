@@ -112,6 +112,7 @@ bool Player::start()
 	iPoint pos(p_position.x, p_position.y);
 	iPoint pivot(0, 0);
 	sprite = new Sprite(barbarianImage, pos, pivot, current_sprite);
+	sprite->layer = BACKGROUND;
 	app->render->addSpriteToList(sprite);
 	
 	return ret;
@@ -654,37 +655,7 @@ void Player::HandleInput()
 	//------------
 	if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		current_skill = right_skill;
-
-		current_skill->skillInit();
-
-		if (current_skill->skill_type != SKILL_MELEE)
-		{
-			current_input = INPUT_SKILL;
-		}
-		/*if (!input_locked)
-		{
-			particle_destination.x = app->input->getMouseWorldPosition().x;
-			particle_destination.y = app->input->getMouseWorldPosition().y;
-			SetDirection(particle_destination);
-			SetInput(INPUT_CAST);
-			input_locked = true;
-		}*/
-		else
-		{
-			iPoint target;
-			//NOTE: this will be later changed
-			objective = app->game->em->entityOnMouse();
-
-			if (objective && objective->type == ENEMY)
-			{
-				enemy = (EntEnemy*)app->game->em->entityOnMouse();
-			}
-
-			target = app->input->getMouseWorldPosition();
-			target = app->map->WorldToMap(target.x, target.y);
-			SetMovement(target.x, target.y);
-		}
+		
 	}
 	//------------
 }
