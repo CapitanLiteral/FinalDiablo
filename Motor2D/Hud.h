@@ -40,7 +40,9 @@ public:
 	//Called when there's a GUI event
 	void OnEvent(GuiElement* element, GUI_Event even);
 
-private:
+	// Unit damaged
+	void displayDamage(int x, int y, float damage, bool crit){}
+	void levelChanged(int level){}
 
 public:
 	//Hud main belt
