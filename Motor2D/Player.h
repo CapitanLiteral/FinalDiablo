@@ -17,8 +17,7 @@ enum DIRECTION;
 enum PHASE;
 
 
-class Player :
-	public Module
+class Player : public Module
 {
 //Constructor and destructor
 public:
@@ -36,6 +35,7 @@ public:
 	bool start();
 	bool awake(pugi::xml_node &config);
 	bool update(float dt);
+	void draw();
 
 //Player interm way of life
 private:
@@ -43,6 +43,10 @@ private:
 	iPoint colliderOffset;
 	iPoint colliderSize;
 	bool alive;
+	iPoint startingPosition;
+
+private:
+	void respawn();
 
 //This have nosense in my opinion by CapitánLiteral
 public:
@@ -55,18 +59,22 @@ public:
 public:
 	iPoint getMapPosition() const;
 	iPoint getWorldPosition() const;
+	iPoint getStartingWorldPosition() const;
 
 	void setMapPosition(iPoint tile);
 	void setWorldPosition(iPoint coords);
+	void setStartingWorldPosition(iPoint coords);
 
 	Collider* getCollider() const;
 	iPoint getColliderOffset() const;
 	iPoint getColliderSize() const;
 
 	Sprite* getSprite() const;
+private:
+	void setColliderPosition(iPoint coords);
+
 
 //Animation things
-
 private:
 	Sprite* sprite = NULL;
 
@@ -74,14 +82,17 @@ private:
 	std::map<std::pair<ACTION_STATE, DIRECTION>, Animation>	butcherAnim;
 	std::map<std::pair<ACTION_STATE, DIRECTION>, Animation>	diabloAnim;
 
-	bool loadAnimations();
-
 	PHASE currentPhase;
 	Animation* current_animation;
+	ACTION_STATE current_action;
+	DIRECTION current_direction;
 
 	SDL_Texture* barbarianImage = NULL;
 	SDL_Texture* butcherImage = NULL;
 	SDL_Texture* diabloImage = NULL;
+
+
+	bool loadAnimations();
 };
 
 enum DIRECTION
