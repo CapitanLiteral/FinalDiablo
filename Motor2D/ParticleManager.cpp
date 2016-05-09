@@ -57,6 +57,7 @@ bool ParticleManager::update(float dt)
 	{
 		if ((*it)->update(dt) == false)
 		{
+			(*it)->col->to_delete = true;
 			RELEASE(*it);
 			it = particleList.erase(it);
 		}
@@ -169,7 +170,7 @@ pugi::xml_document* ParticleManager::getParticleDoc()
 	return &particleDoc;
 }
 
-Particle* ParticleManager::createParticle(const Particle& refParticle, int x, int y, Uint32 secLife, bool active, SDL_Texture* texture)
+Particle* ParticleManager::createParticle(const Particle& refParticle, int x, int y, Uint32 secLife, iPoint colliderOffset, iPoint colliderSize, COLLIDER_TYPE colliderType, Module* listener, bool active, SDL_Texture* texture)
 {
 	Particle* ret = NULL;
 
@@ -181,6 +182,11 @@ Particle* ParticleManager::createParticle(const Particle& refParticle, int x, in
 	else
 		ret->texture = particleAtlas;
 
+	if (colliderType != COLLIDER_NONE)
+	{
+		ret->col = app->collision->addCollider({ x - colliderOffset.x, y - colliderOffset.y, colliderSize.x, colliderSize.y }, colliderType, listener);
+	}
+
 	ret->active = active;
 	if (active)
 		ret->timer.start();
@@ -190,13 +196,17 @@ Particle* ParticleManager::createParticle(const Particle& refParticle, int x, in
 	return ret;
 }
 
-RadialEmisor* ParticleManager::createRadialEmisor(int x, int y, bool active)
+RadialEmisor* ParticleManager::createRadialEmisor(int x, int y, Module* listener, bool active)
 {
 	RadialEmisor* ret = NULL;
 
 	ret = new RadialEmisor();
 	ret->position.Set(x, y);
 	ret->active = active;
+
+	if (listener)
+		ret->listener = listener;
+
 	if (active)
 		ret->timer.start();
 
@@ -205,13 +215,17 @@ RadialEmisor* ParticleManager::createRadialEmisor(int x, int y, bool active)
 	return ret;
 }
 
-LineEmisor* ParticleManager::createLineEmisor(int  x, int y, fPoint direction, bool active)
+LineEmisor* ParticleManager::createLineEmisor(int  x, int y, fPoint direction, Module* listener, bool active)
 {
 	LineEmisor* ret = NULL;
 
 	ret = new LineEmisor(direction);
 	ret->position.Set(x, y);
 	ret->active = active;
+
+	if (listener)
+		ret->listener = listener;
+
 	if (active)
 		ret->timer.start();
 
@@ -220,13 +234,17 @@ LineEmisor* ParticleManager::createLineEmisor(int  x, int y, fPoint direction, b
 	return ret;
 }
 
-ConeEmisor* ParticleManager::createConeEmisor(int x, int y, fPoint direction, bool active)
+ConeEmisor* ParticleManager::createConeEmisor(int x, int y, fPoint direction, Module* listener, bool active)
 {
 	ConeEmisor* ret = NULL;
 
 	ret = new ConeEmisor(direction);
 	ret->position.Set(x, y);
 	ret->active = active;
+
+	if (listener)
+		ret->listener = listener;
+
 	if (active)
 		ret->timer.start();
 
@@ -278,6 +296,12 @@ bool Particle::update(float dt)
 	{
 		position.x += speed.x * dt;
 		position.y += speed.y * dt;
+
+		if (col)
+		{
+			col->rect.x += speed.x * dt;
+			col->rect.y += speed.y * dt;
+		}
 	}
 
 	return ret;
@@ -432,6 +456,12 @@ RadialEmisor::RadialEmisor() : Emisor()
 	frequence = radialEmisorNode.child("frequence").attribute("value").as_int();
 	duration = radialEmisorNode.child("duration").attribute("value").as_float();
 
+	colliderOffset.x = radialEmisorNode.child("collider").attribute("offsetX").as_int();
+	colliderOffset.y = radialEmisorNode.child("collider").attribute("offsetY").as_int();
+	colliderSize.x = radialEmisorNode.child("collider").attribute("sizeW").as_int();
+	colliderSize.y = radialEmisorNode.child("collider").attribute("sizeH").as_int();
+	colliderType = (COLLIDER_TYPE)radialEmisorNode.child("collider").attribute("type").as_int();
+
 	particleEmited.texture = app->particleManager->getAtlas();
 }
 
@@ -454,7 +484,7 @@ bool RadialEmisor::update(float dt)
 	{
 		if (acumulator <= 1.0f && particlesEmited < frequence)
 		{
-			Particle* p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life);
+			Particle* p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
 			p->setRandomSpeed(velocity);
 			acumulator += dt;
 			++particlesEmited;
@@ -532,6 +562,12 @@ LineEmisor::LineEmisor(fPoint director) : Emisor()
 	frequence = lineEmisorNode.child("frequence").attribute("value").as_int();
 	duration = lineEmisorNode.child("duration").attribute("value").as_float();
 
+	colliderOffset.x = lineEmisorNode.child("collider").attribute("offsetX").as_int();
+	colliderOffset.y = lineEmisorNode.child("collider").attribute("offsetY").as_int();
+	colliderSize.x = lineEmisorNode.child("collider").attribute("sizeW").as_int();
+	colliderSize.y = lineEmisorNode.child("collider").attribute("sizeH").as_int();
+	colliderType = (COLLIDER_TYPE)lineEmisorNode.child("collider").attribute("type").as_int();
+
 	particleEmited.texture = app->particleManager->getAtlas();
 
 	direction = director;
@@ -557,7 +593,7 @@ bool LineEmisor::update(float dt)
 	{
 		if (acumulator <= 1.0f && particlesEmited < frequence)
 		{
-			Particle* p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life);
+			Particle* p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
 			p->setLinearSpeed(velocity, direction);
 			acumulator += dt;
 			++particlesEmited;
@@ -636,6 +672,12 @@ ConeEmisor::ConeEmisor(fPoint director) : Emisor()
 
 	angle = coneEmisorNode.child("open_angle").attribute("value").as_float();
 
+	colliderOffset.x = coneEmisorNode.child("collider").attribute("offsetX").as_int();
+	colliderOffset.y = coneEmisorNode.child("collider").attribute("offsetY").as_int();
+	colliderSize.x = coneEmisorNode.child("collider").attribute("sizeW").as_int();
+	colliderSize.y = coneEmisorNode.child("collider").attribute("sizeH").as_int();
+	colliderType = (COLLIDER_TYPE)coneEmisorNode.child("collider").attribute("type").as_int();
+
 	particleEmited.texture = app->particleManager->getAtlas();
 
 	direction = director;
@@ -661,7 +703,7 @@ bool ConeEmisor::update(float dt)
 	{
 		if (acumulator <= 1.0f && particlesEmited < frequence)
 		{
-			Particle* p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life);
+			Particle* p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
 			float angleDir = calcAngle(direction);
 			p->setRandomSpeed(velocity, angleDir - angle, angleDir + angle);
 			acumulator += dt;

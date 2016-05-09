@@ -85,6 +85,18 @@ public:
 			frames.push_back({ x + (w + margin) * i, y, w, h });
 		}
 	}
+
+	void setAnimations(int x, int y, int w, int h, int framesPerRow, int framesPerCol, int frameNum)
+	{
+		for (int i = 0; i < framesPerRow; ++i)
+		{
+			for (int j = 0; j < framesPerCol; ++j)
+			{
+				frames.push_back({ x + (w * i), y + (h * j), w, h });
+			}
+		}
+		current_frame = 0.0f;
+	}
 };
 
 #endif _ANIMATION_H_

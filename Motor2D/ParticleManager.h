@@ -9,6 +9,7 @@
 
 class Sprite;
 class Collider;
+enum COLLIDER_TYPE;
 
 #define PI 3.14159265
 
@@ -57,6 +58,12 @@ public:
 	bool		alive;
 	uint	    fx;
 	bool		fxPlayed;
+
+	//Particles Emited Collider
+	iPoint colliderOffset;
+	iPoint colliderSize;
+	COLLIDER_TYPE colliderType = (COLLIDER_TYPE )- 1;
+	Module* listener = NULL;
 
 public:
 	Emisor();
@@ -185,13 +192,13 @@ private:
 	bool loadParticlesFile(pugi::xml_document& file);
 
 public:
-	Particle* createParticle(const Particle& refParticle, int x, int y, Uint32 secLife, bool active = true, SDL_Texture* texture = NULL);
+	Particle* createParticle(const Particle& refParticle, int x, int y, Uint32 secLife, iPoint colliderOffset = { 0, 0 }, iPoint colliderSize = { 0, 0 }, COLLIDER_TYPE colliderType = (COLLIDER_TYPE)-1, Module* listener = NULL, bool active = true, SDL_Texture* texture = NULL);
 
-	RadialEmisor* createRadialEmisor(int x, int y, bool active = true);
+	RadialEmisor* createRadialEmisor(int x, int y, Module* listener = NULL, bool active = true);
 
-	LineEmisor* createLineEmisor(int  x, int y, fPoint direction, bool active = true);
+	LineEmisor* createLineEmisor(int  x, int y, fPoint direction, Module* listener = NULL, bool active = true);
 
-	ConeEmisor* createConeEmisor(int x, int y, fPoint direction, bool active = true);
+	ConeEmisor* createConeEmisor(int x, int y, fPoint direction, Module* listener = NULL, bool active = true);
 };
 
 

@@ -1,0 +1,67 @@
+<!-- Particles file for the game -->
+<!-- Collider types: COLLIDER_PLAYER = 0, COLLIDER_ENEMY = 1,
+	 COLLIDER_PLAYER_PARTICLE = 2,
+	 COLLIDER_ENEMY_PARTICLE = 3, -->
+
+<particles>
+
+	<texture value = "Particles/fire.png" />
+	
+	<radial_emisor>
+
+		<anim x = "0" y = "0" w = "78" h = "156" frame_number = "9" speed = "0.1" loop = "true" margin = "0" pivot_x = "36" pivot_y = "104" />
+
+		<emisor_speed x = "0" y = "0" />
+
+		<particle_velocity value = "50" />
+
+		<frequence value = "50" />
+
+		<particle_life value = "1" />
+
+		<duration value = "0.5f" />
+		
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+
+
+	</radial_emisor>
+
+	<line_emisor>
+
+		<anim x = "0" y = "0" w = "78" h = "156" frame_number = "9" speed = "0.1" loop = "true" margin = "0" pivot_x = "36" pivot_y = "104" />
+
+		<emisor_speed x = "0" y = "0" />
+
+		<particle_velocity value = "200" />
+
+		<frequence value = "50" />
+
+		<particle_life value = "2" />
+
+		<duration value = "0.5f" />
+
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+
+	</line_emisor>
+
+	<cone_emisor>
+
+		<anim x = "0" y = "0" w = "78" h = "156" frame_number = "9" speed = "0.1" loop = "true" margin = "0" pivot_x = "36" pivot_y = "104" />
+
+		<emisor_speed x = "0" y = "0" />
+
+		<particle_velocity value = "200" />
+
+		<frequence value = "50" />
+
+		<particle_life value = "2" />
+
+		<duration value = "0.5f" />
+
+		<open_angle value = "20.0f" />
+
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+
+	</cone_emisor>
+
+</particles>

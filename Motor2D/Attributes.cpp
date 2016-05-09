@@ -3,8 +3,6 @@
 
 Attributes::Attributes(AttributeBuilder builder) :
 base_life(builder.base_life),
-base_rage(builder.base_rage),
-base_stamina(builder.base_stamina),
 base_strength(builder.base_strength),
 base_intelligence(builder.base_intelligence),
 base_dexterity(builder.base_dexterity),
@@ -19,8 +17,6 @@ base_evasionRating(builder.base_evasionRating),
 base_lifeRegen(builder.base_lifeRegen),
 base_blockChance(builder.base_blockChance),
 base_movementSpeed(builder.base_movementSpeed),
-base_item_rarity(builder.base_item_rarity),
-base_staminaRegen(builder.base_staminaRegen),
 base_maxEnduranceCharges(builder.base_maxEnduranceCharges),
 base_maxFrenzyCharges(builder.base_maxFrenzyCharges),
 base_maxPowerCharges(builder.base_maxPowerCharges),
@@ -30,14 +26,14 @@ base_frenzyChargeCastSpeedIncrease(builder.base_frenzyChargeCastSpeedIncrease),
 base_frenzyChargeDamageIncrease(builder.base_frenzyChargeDamageIncrease),
 base_powerChargeCritChanceIncrease(builder.base_powerChargeCritChanceIncrease),
 current_level(builder.current_level),
-current_life(builder.current_life),
-current_rage(builder.current_rage),
-current_stamina(builder.current_stamina)
+current_life(builder.current_life)
 {
 	for (int i = 0; i < modifiers.max_size(); i++)
 	{
 		modifiers[i].clear();
 	}
+
+	lifeRegenTimer.start();
 }
 
 Attributes::~Attributes()
@@ -84,39 +80,89 @@ bool Attributes::addMod(Modifier* mod)
 
 bool Attributes::update()
 {
-	std::vector<Modifier*>::const_iterator it;
+	bool ret;
 
-	for (int i = 0; i <= int(POWER_CHARGE_CRIT_CHANCE_INCREASE); i++)
+	if (ret = (current_life > 0))
 	{
-		for (it = modifiers[i].begin(); it != modifiers[i].end(); it++)
+		std::vector<Modifier*>::const_iterator it;
+		for (int i = 0; i <= int(POWER_CHARGE_CRIT_CHANCE_INCREASE); i++)
 		{
-			if (!((*it)->update())) // on false: clear & remove mod
+			for (it = modifiers[i].begin(); it != modifiers[i].end(); it++)
 			{
-				(*it)->clear();
-				modifiers[i].erase(it);
-				it--;
+				if (!((*it)->update())) // on false: clear & remove mod
+				{
+					(*it)->clear();
+					modifiers[i].erase(it);
+					it--;
+				}
 			}
 		}
+
+		// life regen
+		addLife(lifeRegenTimer.ReadSec() * getLifeRegen());
+		lifeRegenTimer.start();
 	}
 
-	return true;
+	return ret;
 }
+
+void Attributes::reset()
+{
+	// reset life
+	current_life = getMaxLife();
+
+	// clear mods
+	for (int i = 0; i < modifiers.max_size(); i++)
+	{
+		modifiers[i].clear();
+	}
+}
+
+// Adders / setters
+
+bool Attributes::addLife(float val)
+{
+	bool ret;
+
+	if (ret = (current_life + val > 0.0f))
+	{
+		float maxLife = getMaxLife();
+
+		if (current_life + val < maxLife)
+		{
+			current_life += val;
+		}
+		else
+		{
+			current_life = maxLife;
+		}
+	}
+	else
+	{
+		current_life = 0.0f;
+	}
+
+	return ret;
+}
+
+bool Attributes::setLevel(int val)
+{
+	bool ret;
+
+	if (ret = (val > 0))
+	{
+		current_level = val;
+	}
+
+	return ret;
+}
+
 
 // Getters
 
 float Attributes::getMaxLife()const // strength adds +1 life for each 2 strength
 {
 	return ((base_life + getMod(FLAT_LIFE) + ((getStrength() / 2.0f)) * getMod(NONFLAT_LIFE)));
-}
-
-float Attributes::getMaxRage()const
-{
-	return ((base_rage + getMod(FLAT_RAGE)) * getMod(NONFLAT_RAGE));
-}
-
-float Attributes::getMaxStamina()const
-{
-	return ((base_stamina + getMod(FLAT_STAMINA)) * getMod(NONFLAT_STAMINA));
 }
 
 float Attributes::getStrength()const
@@ -189,19 +235,9 @@ float Attributes::getMovementSpeed()const
 	return ((base_movementSpeed + getMod(FLAT_MOVEMENT_SPEED)) * getMod(NONFLAT_MOVEMENT_SPEED));
 }
 
-float Attributes::getStaminaRegen()const
-{
-	return (base_staminaRegen + getMod(STAMINA_REGEN));
-}
-
 float Attributes::getLifeLeach()const
 {
 	return ((getMod(FLAT_LIFE_LEACH)) * getMod(NONFLAT_LIFE_LEACH));
-}
-
-float Attributes::getItemRarity()const
-{
-	return ((base_item_rarity + getMod(FLAT_ITEM_RARITY)) * getMod(NONFLAT_ITEM_RARITY));
 }
 
 float Attributes::getEnduranceCharges()const
@@ -267,9 +303,9 @@ float Attributes::getPowerChargeCritChanceIncrease()const
 
 bool Attributes::damage(Attributes* attacker, int attackType)
 {
-	bool ret;
+	bool ret = true;
 
-	if (!(ret = (attacker != NULL)))
+	if (attacker == NULL)
 		return ret;
 
 	// Steps:
@@ -282,27 +318,43 @@ bool Attributes::damage(Attributes* attacker, int attackType)
 	int chanceToEvade = int((1.0f - (attackerAcuracy / (attackerAcuracy + (0.12 * getEvasionRating())))) * 100);
 	int randValue = rand() % 100 + 1;     // range 1 to 100
 
-	if (ret = (chanceToEvade > randValue && ((getBlockChance() * 100) > randValue))) //hit
+	if (!(chanceToEvade > randValue && ((getBlockChance() * 100) > randValue))) //hit
 	{
 		float damage = attacker->getDamage();
-
-		if ((attacker->getCritChance() * 100) > randValue) // apply crit multiplier if crit
+		bool crit;
+		if (crit = ((attacker->getCritChance() * 100) > randValue)) // apply crit multiplier if crit
 		{
 			damage *= attacker->getCritMult();
 		}
 
 		float armor = getArmor();
-		float damageMitigation = ((100 * armor) / (300 * armor)); // calculate armor damage reduction
+		float damageMitigation = ((100 * armor) / (300 * armor)); // calculate armor damage reduction: 0-1
 
-		float powerCharges;
-		if ((powerCharges = getPowerCharges()) > 0.0f) // apply endurance charge damage reduction if there are endurance charges
+		float enduranceCharges;
+		if ((enduranceCharges = getEnduranceCharges()) > 0.0f) // apply endurance charge damage reduction if there are endurance charges
 		{
-			damageMitigation += (powerCharges * getEnduranceChargeDamageReduction());
+			damageMitigation += (enduranceCharges * getEnduranceChargeDamageReduction());
 		}
 
-		damage *= damageMitigation;
-		current_life -= int(damage);
-		ret = (current_life > 0);
+		damage *= damageMitigation; // reduce damage to take
+
+		if (ret = (damage < current_life))
+		{
+			current_life -= damage;
+		}
+		else
+		{
+			current_life = 0.0f;
+		}
+
+		float leach = attacker->getLifeLeach();
+		if (leach > 0.0)
+		{
+			attacker->addLife(leach * damage);
+		}
+
+		// trigger hit with/out bool crit
+		if (hud && x && y) hud->displayDamage((*x), (*y), damage, crit);
 	}
 
 	return ret;
@@ -321,6 +373,10 @@ float Attributes::getMod(modifierType type)const
 	}
 	else if (type > MAX_POWER_CHARGE)
 	{
+		if (type > POWER_CHARGE_CRIT_CHANCE_INCREASE)
+		{
+			return ret;
+		}
 		ret += 1.0f; // add base planar value for charge effects
 	}
 	
@@ -333,6 +389,183 @@ float Attributes::getMod(modifierType type)const
 		}
 	}
 
+	return ret;
+}
+
+PlayerAttributes::PlayerAttributes(AttributeBuilder builder) : Attributes(builder),
+base_rage(builder.base_rage),
+base_stamina(builder.base_stamina),
+base_item_rarity(builder.base_item_rarity),
+current_rage(builder.current_rage),
+current_stamina(builder.current_stamina),
+rageRegen(builder.rageRegen),
+staminaRegen(builder.staminaRegen),
+maxRage(builder.maxRage),
+maxStamina(builder.maxStamina)
+{
+	rageDegenTimer.start();
+	staminaRegenTimer.start();
+}
+
+bool PlayerAttributes::update()
+{
+	bool ret;
+
+	if (ret = (current_life > 0))
+	{
+		std::vector<Modifier*>::const_iterator it;
+		for (int i = 0; i <= int(NONFLAT_STAMINA); i++)
+		{
+			for (it = modifiers[i].begin(); it != modifiers[i].end(); it++)
+			{
+				if (!((*it)->update())) // on false: clear & remove mod
+				{
+					(*it)->clear();
+					modifiers[i].erase(it);
+					it--;
+				}
+			}
+		}
+
+		// life regen
+		addLife(lifeRegenTimer.ReadSec() * getLifeRegen());
+		lifeRegenTimer.start();
+
+		// degenerate rage : -2 rage / s
+		current_rage += (rageDegenTimer.ReadSec() * rageRegen);
+		rageDegenTimer.start();
+
+		// regen stamina: +1 stamina/s
+		current_stamina += (staminaRegenTimer.ReadSec() * staminaRegen);
+		staminaRegenTimer.start();
+	}
+
+	return ret;
+}
+
+void PlayerAttributes::reset()
+{
+	// reset life
+	current_life = getMaxLife();
+	current_rage = getMaxRage();
+	current_stamina = getMaxStamina();
+
+	// clear mods
+	for (int i = 0; i < modifiers.max_size(); i++)
+	{
+		modifiers[i].clear();
+	}
+}
+
+bool PlayerAttributes::addStamina(float val)
+{
+	bool ret;
+
+	if (ret = (current_stamina + val > 0.0f))
+	{
+		if (current_stamina + val < maxStamina)
+		{
+			current_stamina += val;
+		}
+		else
+		{
+			current_stamina = maxStamina;
+		}
+	}
+	else
+	{
+		current_stamina = 0.0f;
+	}
+
+	return ret;
+}
+
+bool PlayerAttributes::addRage(float val)
+{
+	bool ret;
+
+	if (ret = (current_rage + val > 0.0f))
+	{
+		if (current_rage + val < maxRage)
+		{
+			current_rage += val;
+		}
+		else
+		{
+			current_rage = maxRage;
+		}
+	}
+	else
+	{
+		current_rage = 0.0f;
+	}
+
+	return ret;
+}
+
+bool PlayerAttributes::setLevel(int val)
+{
+	bool ret;
+
+	if (ret = (val > 0 && val < 10))
+	{
+		current_level = val;
+	}
+
+	return ret;
+}
+
+float PlayerAttributes::getMaxRage()const
+{
+	return ((base_rage + getMod(FLAT_RAGE)) * getMod(NONFLAT_RAGE));
+}
+
+float PlayerAttributes::getMaxStamina()const
+{
+	return ((base_stamina + getMod(FLAT_STAMINA)) * getMod(NONFLAT_STAMINA));
+}
+
+float PlayerAttributes::getItemRarity()const
+{
+	return ((base_item_rarity + getMod(FLAT_ITEM_RARITY)) * getMod(NONFLAT_ITEM_RARITY));
+}
+
+float PlayerAttributes::getMod(modifierType type)const
+{
+	float ret = 0.0f;
+
+	if (type < ENDURANCE_CHARGE)
+	{
+		if ((int(type) % 2) == 1)
+		{
+			ret += 1.0f; // add base planar value for nonflats
+		}
+	}
+	else if (type > MAX_POWER_CHARGE)
+	{
+		if (type < FLAT_RAGE)
+		{
+			ret += 1.0f; // add base planar value for charge effects
+		}
+		else
+		{
+			if ((int(type) % 2) == 1)
+			{
+				ret += 1.0f; // add base planar value for nonflats
+			}
+		}
+	}
+
+	if (!modifiers[int(type)].empty())
+	{
+		std::vector<Modifier*>::const_iterator it;
+		for (it = modifiers[int(type)].begin(); it != modifiers[int(type)].end(); it++)
+		{
+			ret += (*it)->value;
+		}
+	}
+
+	
 	/*------------------------------------------------------------------
 	--------------------------------------------------------------------
 	-----------------ADD INVENTORY DEPENDANCIES-------------------------

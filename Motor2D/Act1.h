@@ -12,6 +12,7 @@ struct SDL_Texture;
 struct SDL_Rect;
 class GuiElement;
 class Entity;
+class Map;
 
 
 class Act1 : public Scene
@@ -75,10 +76,9 @@ private:
 	Sprite* carriage2;
 	Sprite* carriage3;
 	Sprite* carriage4;
-	Sprite* carriage5;
-	std::list<Sprite*> props;
 	SDL_Texture* propAtlas = nullptr;
 	std::string propFileName;
+
 };
 
 #endif _Act1_H
