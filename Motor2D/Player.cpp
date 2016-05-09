@@ -6,7 +6,7 @@
 Player::Player()
 {
 	AttributeBuilder builder;
-	attributes = new Attributes(builder);
+	attributes = new PlayerAttributes(builder);
 	
 	worldPosition.x = 0;
 	worldPosition.y = 0;
