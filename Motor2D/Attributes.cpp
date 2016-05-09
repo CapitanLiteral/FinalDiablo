@@ -347,7 +347,7 @@ bool Attributes::damage(Attributes* attacker, int attackType)
 			current_life = 0.0f;
 		}
 
-		float leach = attacker->getLifeLeach();
+		float leach = attacker->getLifeLeach(); // apply life leach
 		if (leach > 0.0)
 		{
 			attacker->addLife(leach * damage);
@@ -432,11 +432,11 @@ bool PlayerAttributes::update()
 		lifeRegenTimer.start();
 
 		// degenerate rage : -2 rage / s
-		current_rage += (rageDegenTimer.ReadSec() * rageRegen);
+		addRage(rageDegenTimer.ReadSec() * getRageRegen());
 		rageDegenTimer.start();
 
 		// regen stamina: +1 stamina/s
-		current_stamina += (staminaRegenTimer.ReadSec() * staminaRegen);
+		addStamina(staminaRegenTimer.ReadSec() * getStaminaRegen());
 		staminaRegenTimer.start();
 	}
 
@@ -523,6 +523,16 @@ float PlayerAttributes::getMaxRage()const
 float PlayerAttributes::getMaxStamina()const
 {
 	return ((base_stamina + getMod(FLAT_STAMINA)) * getMod(NONFLAT_STAMINA));
+}
+
+float PlayerAttributes::getRageRegen()const
+{
+	return rageRegen;
+}
+
+float PlayerAttributes::getStaminaRegen()const
+{
+	return staminaRegen;
 }
 
 float PlayerAttributes::getItemRarity()const

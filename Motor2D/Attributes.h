@@ -303,13 +303,14 @@ public:
 	float getStamina()const	{ return current_stamina; }
 
 	// Adders / setters
-	bool addStamina(float val);
 	bool addRage(float val);
+	bool addStamina(float val);
 	bool setLevel(int val);
 
 	// Getters
 	float getMaxRage()const;
 	float getMaxStamina()const;
+	float getRageRegen()const;
 	float getStaminaRegen()const;
 	float getItemRarity()const;
 
