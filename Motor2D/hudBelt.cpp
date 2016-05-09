@@ -614,7 +614,7 @@ void hudBelt::SetStamina(int max_ST, int ST)
 
 void hudBelt::RunningOn()
 {
-	bool run = player->RunOn();
+	bool run = true;//player->RunOn();
 
 	if (run)
 	{

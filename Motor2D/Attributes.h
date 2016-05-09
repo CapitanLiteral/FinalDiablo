@@ -147,6 +147,7 @@ struct AttributeBuilder
 
 class Attributes
 {
+public:
 	Attributes(AttributeBuilder builder);
 	~Attributes();
 

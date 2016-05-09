@@ -7,9 +7,6 @@
 #include "FileSystem.h"
 #include "Collision.h"
 
-#include "Player.h"//tmp
-#include "Game.h"//tmp
-
 #include <math.h>
 
 #include "Input.h"
@@ -54,19 +51,7 @@ bool ParticleManager::start()
 bool ParticleManager::update(float dt)
 {
 	bool ret = true;
-
-	if (app->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
-	{
-		iPoint m;
-		app->input->getMousePosition(m.x, m.y);
-		//app->render->ScreenToWorld(m.x, m.y);
-		m.Set(app->game->player->getBlitPosition().x, app->game->player->getBlitPosition().y);
-
-		createConeEmisor(m.x, m.y, { -1, 1 });
-		//createRadialEmisor(m.x, m.y);
-		//createLineEmisor(m.x, m.y, { -1, 1 });
-	}
-
+	
 	std::list<Particle*>::iterator it = particleList.begin();
 	while (it != particleList.end())
 	{

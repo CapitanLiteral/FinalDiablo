@@ -106,9 +106,6 @@
     <ClCompile Include="Window.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
-    </ClCompile>
     <ClCompile Include="PerfTimer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
@@ -132,6 +129,9 @@
     </ClCompile>
     <ClCompile Include="Attributes.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,9 +270,6 @@
     <ClInclude Include="Window.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes</Filter>
     </ClInclude>
@@ -299,6 +296,9 @@
     </ClInclude>
     <ClInclude Include="Attributes.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -55,7 +55,7 @@ bool Act1::start()
 		RELEASE_ARRAY(data);
 	}
 
-	app->game->player->SetPosition({ 0, 2000 });
+	app->game->player->setWorldPosition({ 0, 2000 });
 
 	createProps();
 
@@ -178,17 +178,17 @@ bool Act1::update(float dt)
 bool Act1::postUpdate()
 {
 	//NOTE: In progress
-	if (app->game->player->TeleportReady())
-	{
-		Scene* destiny = app->game->player->getDestiny();
-		app->game->player->ResetTeleport();
-		app->sm->ChangeScene(destiny);
-	}
+	//if (app->game->player->TeleportReady())
+	//{
+	//	Scene* destiny = app->game->player->getDestiny();
+	//	app->game->player->ResetTeleport();
+	//	app->sm->ChangeScene(destiny);
+	//}
 
-	if (win)
-	{
-		app->sm->ChangeScene(app->sm->win);
-	}
+	//if (win)
+	//{
+	//	app->sm->ChangeScene(app->sm->win);
+	//}
 	return true;
 }
 
