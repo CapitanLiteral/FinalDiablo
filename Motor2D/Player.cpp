@@ -112,6 +112,7 @@ bool Player::start()
 	iPoint pos(p_position.x, p_position.y);
 	iPoint pivot(0, 0);
 	sprite = new Sprite(barbarianImage, pos, pivot, current_sprite);
+	sprite->layer = SCENE;
 	app->render->addSpriteToList(sprite);
 	
 	return ret;

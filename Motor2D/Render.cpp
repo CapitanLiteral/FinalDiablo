@@ -81,23 +81,24 @@ bool Render::preUpdate()
 // NOTE: Function of C, compare Sprites to prepare sort
 bool compare_sprites(const Sprite* first, const Sprite* second)
 {
-	/*if ((first->y > second->y) /*&& (first->position_map.y > second->position_map.y / 2))
-	{
-		return (first->position_map.y > second->position_map.y);
-	}
-	/*else if ((first->y < second->y) /*&& (first->position_map.y / 2  > second->position_map.y))
+	//if ((first->y > second->y))// && (first->position_map.y > second->position_map.y / 2))
+	//{
+	//	return (first->position_map.y > second->position_map.y);
+	//}
+	//else 
+	if ((first->y < second->y))// && (first->position_map.y / 2  > second->position_map.y))
 	{
 		return (first->position_map.y < second->position_map.y);
-	}*/
+	}
 	
-	if (first->y < second->y)
+	/*if (first->y < second->y)
 	{
 		return true;
 	}
 	else if (first->y > second->y)
 	{
 		return false;
-	}
+	}*/
 }
 bool Render::update(float dt)
 {
@@ -120,7 +121,7 @@ bool Render::update(float dt)
 bool Render::postUpdate()
 {
 	bool ret = true;
-	/*
+	
 	// draw each layer
 	std::map<spriteLayer, std::multimap<int, Sprite*>>::iterator layer;
 	for (layer = spriteMap.begin(); layer != spriteMap.end(); layer++)
@@ -136,7 +137,7 @@ bool Render::postUpdate()
 	}
 
 	//sprites.clear();
-
+/*
 	// blit deebug figures
 	std::multimap<int, SimpleGeoFigure*>::iterator figure;
 	for (figure = debugFigures.begin(); figure != debugFigures.end(); figure++)
@@ -500,7 +501,7 @@ bool Render::addSpriteToList(Sprite* sprite)
 	{
 		sprites.push_back(sprite);
 	}
-	/*
+	
 	if (ret = (sprite != NULL))
 	{
 		if (ret = (sprite->texture != NULL))
@@ -527,7 +528,7 @@ bool Render::addSpriteToList(Sprite* sprite)
 	else
 	{
 		LOG("Render: Error, invalid sprite to blit.");
-	}*/
+	}
 
 	return ret;
 }

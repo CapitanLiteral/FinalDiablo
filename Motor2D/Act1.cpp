@@ -45,6 +45,7 @@ bool Act1::start()
 		debug = app->tex->Load("maps/mini_path.png");
 
 	//Map
+	app->map->Load("map_act1.tmx");
 	if (app->map->Load("map_act1.tmx") == true)
 	{
 		int w, h;
@@ -134,13 +135,13 @@ bool Act1::update(float dt)
 		}
 	}
 
-	std::list<Sprite*>::iterator item;
+/*	std::list<Sprite*>::iterator item;
 
 	for (item = props.begin(); item != props.end(); item++)
 	{
 		item._Ptr->_Myval->DrawSprite();
 	}
-
+	*/
 	if (app->input->getKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
 		app->sm->fadeToBlack(app->sm->act2);
@@ -254,13 +255,15 @@ void Act1::createProps(){
 	fire = new Sprite(propAtlas, p, piv, propRect);
 	fire->layer = SCENE;
 	props.push_back(fire);
+	app->render->addSpriteToList(fire);
 	
 	propRect = { 1805, 793, 356, 256 };
 	p.x = 2146; piv.x = 356;
 	p.y = 2478; piv.y = 128;
 	woodHouse = new Sprite(propAtlas, p, piv, propRect);
-	woodHouse->layer = SCENE;
+	woodHouse->layer = FRONT;
 	props.push_back(woodHouse);
+	app->render->addSpriteToList(woodHouse);
 	
 	propRect = { 2374, 838, 202, 109 };
 	p.x = 2050;
