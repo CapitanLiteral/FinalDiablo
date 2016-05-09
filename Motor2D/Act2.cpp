@@ -53,7 +53,7 @@ bool Act2::start()
 		RELEASE_ARRAY(data);
 	}
 
-	app->game->player->SetPosition({ 0, 2000 });
+	app->game->player->SetPosition({ 0, 800 });
 
 	return true;
 }
