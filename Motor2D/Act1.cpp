@@ -251,7 +251,7 @@ void Act1::createProps(){
 	
 	propRect = { 1236, 872, 105, 58 };
 	p.x = 595; piv.x = 105;
-	p.y = 2439; piv.y = 29;
+	p.y = 2468; piv.y = 58;
 	fire = new Sprite(propAtlas, p, piv, propRect);
 	fire->layer = SCENE;
 	props.push_back(fire);
@@ -259,29 +259,31 @@ void Act1::createProps(){
 	
 	propRect = { 1805, 793, 356, 256 };
 	p.x = 2146; piv.x = 356;
-	p.y = 2478; piv.y = 128;
+	p.y = 2506; piv.y = 156;
 	woodHouse = new Sprite(propAtlas, p, piv, propRect);
-	woodHouse->layer = FRONT;
+	woodHouse->layer = SCENE;
 	props.push_back(woodHouse);
 	app->render->addSpriteToList(woodHouse);
 	
 	propRect = { 2374, 838, 202, 109 };
-	p.x = 2050;
-	p.y = 2570;
+	p.x = 2050; piv.x = 0;
+	p.y = 2570; piv.y = 0;
 	wood = new Sprite(propAtlas, p, piv, propRect);
 	wood->layer = SCENE;
+	app->render->addSpriteToList(wood);
 	props.push_back(wood);
 	
 	propRect = { 4644, 87, 140, 212 };
-	p.x = 1780;
-	p.y = 2620;
+	p.x = 1920; piv.x = 140;
+	p.y = 2832; piv.y = 212;
 	woodUp = new Sprite(propAtlas, p, piv, propRect);
 	woodUp->layer = SCENE;
 	props.push_back(woodUp);
+	app->render->addSpriteToList(woodUp);
 
 	propRect = { 1140, 391, 522, 315 };
-	p.x = -400;
-	p.y = 1300;
+	p.x = -400; piv.x = 0;
+	p.y = 1300; piv.y = 0;
 	carriage = new Sprite(propAtlas, p, piv, propRect);
 	carriage->layer = SCENE;
 	props.push_back(carriage);
