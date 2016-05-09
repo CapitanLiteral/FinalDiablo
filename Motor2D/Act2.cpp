@@ -52,8 +52,9 @@ bool Act2::start()
 
 		RELEASE_ARRAY(data);
 	}
-
-	app->game->player->SetPosition({ 0, 800 });
+	app->render->sprites.clear(); //memory leak falta el RELEASE
+	app->render->sprites.push_back(app->game->player->sprite);
+	app->game->player->SetPosition({ 0, 1200 });
 
 	return true;
 }

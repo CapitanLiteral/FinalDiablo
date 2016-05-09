@@ -121,6 +121,8 @@ public:
 	list<Sprite*>	sprites;
 	list<Sprite*>::iterator iterator;
 
+	Sprite* prova;
+
 	std::map<spriteLayer, std::multimap<int, Sprite*>> spriteMap;
 	std::multimap<int, SimpleGeoFigure*> debugFigures;
 };
