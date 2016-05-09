@@ -9,6 +9,8 @@
 
 enum ENTITY_TYPE;
 enum ENEMY_TYPE;
+enum NPC_TYPE;
+
 class Entity;
 class GuiLabel;
 using namespace std;
@@ -42,7 +44,8 @@ public:
 	bool cleanUp();
 
 	Entity* add(iPoint &pos, ENTITY_TYPE type);
-	Entity* addEnemy(iPoint &pos, ENEMY_TYPE type);
+	Entity* addEnemy(iPoint & pos, ENEMY_TYPE type);
+	Entity* addNpc(iPoint& pos, NPC_TYPE type);
 	bool remove(uint id);
 	Entity* getEntity(uint id);
 

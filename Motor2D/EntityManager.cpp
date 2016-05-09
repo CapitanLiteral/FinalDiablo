@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "Input.h"
 #include "EntEnemy.h"
+#include "EntNpc.h"
 #include "Pathfinding.h"
 #include "p2Log.h"
 #include "Map.h"
@@ -242,7 +243,43 @@ Entity* EntityManager::addEnemy(iPoint &pos, ENEMY_TYPE type)
 
 	return entity;
 }
+Entity* EntityManager::addNpc(iPoint& pos, NPC_TYPE type){
+	Entity* entity = NULL;
+	iPoint tile_pos = app->map->WorldToMap(pos.x, pos.y);
 
+	// Checking for another bricks already on the map_tile specified by argument pos.
+	map<uint, Entity*>::iterator item = activeEntities.begin();
+
+	for (; item != activeEntities.end(); item++)
+	{
+		if (entityOnCoords(pos) != NULL)
+			return entity; // No entity is created!
+	}
+
+	if (app->pathfinding->IsWalkable(tile_pos))	// Can we add a new entity on that tile? i.e. Is that tile walkable?
+	{
+		switch (type)
+		{
+			//NOTE: to diferentiate the kinds of enemies, put ENEMY_TYPE enum, but don't use the one from the diferent kinds of entities
+		case (NPC_COUNSELOR) :
+			entity = new EntCounselor(pos, ++nextID);
+			break;
+
+		case (NPC_HEALER) :
+			entity = new EntHealer(pos, ++nextID);
+			break;
+
+		case (NPC_GOSSIP) :
+			entity = new EntGossip(pos, ++nextID);
+			break;
+		}
+
+		// We add the new entity to the map of active entities. 
+		activeEntities.insert(pair<uint, Entity*>(nextID, entity));
+	}
+
+	return entity;
+}
 // remove an entity using its ID
 bool EntityManager::remove(uint id)
 {

@@ -86,6 +86,7 @@
     <ClCompile Include="EntItem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntMobile.cpp" />
+    <ClCompile Include="EntNpc.cpp" />
     <ClCompile Include="EntPortal.cpp" />
     <ClCompile Include="EntProp.cpp" />
     <ClCompile Include="EntStatic.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="EntItem.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntMobile.h" />
+    <ClInclude Include="EntNpc.h" />
     <ClInclude Include="EntPortal.h" />
     <ClInclude Include="EntProp.h" />
     <ClInclude Include="EntStatic.h" />

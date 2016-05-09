@@ -133,6 +133,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClCompile>
+    <ClCompile Include="EntNpc.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -300,6 +303,9 @@
     <ClInclude Include="Player.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClInclude>
+    <ClInclude Include="EntNpc.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -394,6 +400,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\Act2">
       <UniqueIdentifier>{a7e70fe4-72ad-477c-ac09-5c31be3c17f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc">
+      <UniqueIdentifier>{a4ff747b-ea30-4ad2-9857-90d964e3d9a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
