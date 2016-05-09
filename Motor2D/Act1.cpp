@@ -249,104 +249,121 @@ void Act1::createProps(){
 	propProva = new Sprite(propAtlas, p, piv, propRect);
 	
 	propRect = { 1236, 872, 105, 58 };
-	p.x = 490;
-	p.y = 2410; 
+	p.x = 595; piv.x = 105;
+	p.y = 2439; piv.y = 29;
 	fire = new Sprite(propAtlas, p, piv, propRect);
+	fire->layer = SCENE;
 	props.push_back(fire);
 	
 	propRect = { 1805, 793, 356, 256 };
-	p.x = 1790;
-	p.y = 2350;
+	p.x = 2146; piv.x = 356;
+	p.y = 2478; piv.y = 128;
 	woodHouse = new Sprite(propAtlas, p, piv, propRect);
+	woodHouse->layer = SCENE;
 	props.push_back(woodHouse);
 	
 	propRect = { 2374, 838, 202, 109 };
 	p.x = 2050;
 	p.y = 2570;
 	wood = new Sprite(propAtlas, p, piv, propRect);
+	wood->layer = SCENE;
 	props.push_back(wood);
 	
 	propRect = { 4644, 87, 140, 212 };
 	p.x = 1780;
 	p.y = 2620;
 	woodUp = new Sprite(propAtlas, p, piv, propRect);
+	woodUp->layer = SCENE;
 	props.push_back(woodUp);
 
 	propRect = { 1140, 391, 522, 315 };
 	p.x = -400;
 	p.y = 1300;
 	carriage = new Sprite(propAtlas, p, piv, propRect);
+	carriage->layer = SCENE;
 	props.push_back(carriage);
 
 	propRect = { 4569, 855, 106, 82 };
 	p.x = -20;
 	p.y = 1450;
 	stuff = new Sprite(propAtlas, p, piv, propRect);
+	stuff->layer = SCENE;
 	props.push_back(stuff);
 
 	propRect = { 33, 459, 288, 214 };
 	p.x = -800;
 	p.y = 1750;
 	carriage1 = new Sprite(propAtlas, p, piv, propRect);
+	carriage1->layer = SCENE;
 	props.push_back(carriage1);
 
 	propRect = { 656, 864, 112, 77 };
 	p.x = -500;
 	p.y = 1950;
 	treeCut = new Sprite(propAtlas, p, piv, propRect);
+	treeCut->layer = SCENE;
 	props.push_back(treeCut);
 
 	propRect = { 56, 691, 425, 289 };
 	p.x = -1600;
 	p.y = 2030;
 	tent = new Sprite(propAtlas, p, piv, propRect);
+	tent->layer = SCENE;
 	props.push_back(tent);
 
 	propRect = { 2374, 838, 202, 109 };
 	p.x = -1580;
 	p.y = 2370;
 	wood1 = new Sprite(propAtlas, p, piv, propRect);
+	wood1->layer = SCENE;
 	props.push_back(wood1);
 
 	propRect = { 2374, 838, 202, 109 };
 	p.x = -1500;
 	p.y = 2400;
 	wood2 = new Sprite(propAtlas, p, piv, propRect);
+	wood2->layer = SCENE;
 	props.push_back(wood2);
 
 	propRect = { 2374, 838, 202, 109 };
 	p.x = -1500;
 	p.y = 2470;
 	wood3 = new Sprite(propAtlas, p, piv, propRect);
+	wood3->layer = SCENE;
 	props.push_back(wood3);
 
 	propRect = { 4644, 87, 140, 212 };
 	p.x = -1100;
 	p.y = 2400;
 	woodUp1 = new Sprite(propAtlas, p, piv, propRect);
+	woodUp1->layer = SCENE;
 	props.push_back(woodUp1);
 
 	propRect = { 4724, 770, 264, 168 };
 	p.x = 1480;
 	p.y = 2000;
 	tent1 = new Sprite(propAtlas, p, piv, propRect);
+	tent1->layer = SCENE;
 	props.push_back(tent1);
 
 	propRect = { 2339, 417, 490, 248 };
 	p.x = 800;
 	p.y = 1760;
 	carriage2 = new Sprite(propAtlas, p, piv, propRect);
+	carriage2->layer = SCENE;
 	props.push_back(carriage2);
 
 	propRect = { 598, 458, 360, 238 };
 	p.x = 470;
 	p.y = 3250;
 	carriage3 = new Sprite(propAtlas, p, piv, propRect);
+	carriage3->layer = SCENE;
 	props.push_back(carriage3);
 
 	propRect = { 1762, 585, 151, 124 };
 	p.x = -320;
 	p.y = 2810;
 	carriage4 = new Sprite(propAtlas, p, piv, propRect);
+	carriage4->layer = SCENE;
 	props.push_back(carriage4);
 }
