@@ -306,21 +306,21 @@ void Act1::createProps(){
 	app->render->addSpriteToList(wood1);
 
 	propRect = { 2374, 838, 202, 109 };
-	p.x = -1378; piv.x = 202;
+	p.x = -1318; piv.x = 202;
 	p.y = 2509; piv.y = 109;
 	wood2 = new Sprite(propAtlas, p, piv, propRect);
 	wood2->layer = SCENE;
 	app->render->addSpriteToList(wood2);
 
 	propRect = { 2374, 838, 202, 109 };
-	p.x = -1378; piv.x = 202;
+	p.x = -1348; piv.x = 202;
 	p.y = 2579; piv.y = 109;
 	wood3 = new Sprite(propAtlas, p, piv, propRect);
 	wood3->layer = SCENE;
 	app->render->addSpriteToList(wood3);
 
 	propRect = { 4644, 87, 140, 212 };
-	p.x = -960; piv.x = 140;
+	p.x = -1000; piv.x = 140;
 	p.y = 2612; piv.y = 212;
 	woodUp1 = new Sprite(propAtlas, p, piv, propRect);
 	woodUp1->layer = SCENE;
