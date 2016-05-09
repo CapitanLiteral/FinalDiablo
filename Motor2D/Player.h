@@ -6,7 +6,7 @@
 #include <map>
 
 
-class Attributes;
+class PlayerAttributes;
 
 class Collider;
 
@@ -27,7 +27,7 @@ public:
 
 //Player things
 public:
-	Attributes* attributes = NULL;
+	PlayerAttributes* attributes = NULL;
 	iPoint worldPosition;	// position in pixels of player // This is the point of the pivot in the world //The feet of the player
 	iPoint mapPosition;		// position of the tile where player is
 
