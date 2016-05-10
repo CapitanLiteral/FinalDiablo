@@ -104,21 +104,25 @@ iPoint EntNpc::getColliderSize() const{
 //Constructor
 EntCounselor::EntCounselor(const iPoint &p, uint ID) : EntNpc(p, ID)
 {
+	npcType = NPC_COUNSELOR;
 	tex = idle_tex = app->tex->Load("textures/wolf.png");
 
-	SetAnimations();
-	current_animation_set = idle;
+	//SetAnimations();
+	//current_animation_set = idle;
 	setWorldPosition(p);
-	npcType = NPC_COUNSELOR;
+	
+	sprite_rect = collider_rect = {};//Add sprite rect
+	sprite_pivot = pivot = {};//Add sprite pivot
 
 	playerRange = 50.0f;
 
-	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_NPC, app->game->em);
+	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
 
 	//Sprite creation
 	fPoint po = getPivotPosition();
 	iPoint pos(po.x, po.y);
-	SDL_Rect current_sprite = current_animation->getCurrentFrame();
+	//SDL_Rect current_sprite = current_animation->getCurrentFrame();
+	SDL_Rect current_sprite = sprite_rect;
 	sprite = new Sprite(tex, pos, sprite_pivot, current_sprite);
 	app->render->addSpriteToList(sprite);
 
@@ -183,13 +187,14 @@ EntHealer::EntHealer(const iPoint &p, uint ID) : EntNpc(p, ID)
 
 	playerRange = 50.0f;
 
-	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_NPC, app->game->em);
+	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
 
 	//Sprite creation
 
 	fPoint po = getPivotPosition();
 	iPoint pos(po.x, po.y);
-	SDL_Rect current_sprite = current_animation->getCurrentFrame();
+	//SDL_Rect current_sprite = current_animation->getCurrentFrame();
+	SDL_Rect current_sprite = sprite_rect;
 	sprite = new Sprite(tex, pos, sprite_pivot, current_sprite);
 	app->render->addSpriteToList(sprite);
 
@@ -257,13 +262,14 @@ EntGossip::EntGossip(const iPoint &p, uint ID) : EntNpc(p, ID)
 	
 	playerRange = 50.0f;
 
-	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_NPC, app->game->em);
+	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
 
 	//Sprite creation
 
 	fPoint po = getPivotPosition();
 	iPoint pos(po.x, po.y);
-	SDL_Rect current_sprite = current_animation->getCurrentFrame();
+	//SDL_Rect current_sprite = current_animation->getCurrentFrame();
+	SDL_Rect current_sprite = sprite_rect;
 	sprite = new Sprite(tex, pos, sprite_pivot, current_sprite);
 	app->render->addSpriteToList(sprite);
 
