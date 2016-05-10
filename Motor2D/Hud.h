@@ -14,6 +14,7 @@ class hudPause;
 class hudInventory;
 class hudBlood;
 class hudSkilltree;
+class PlayerAttributes;
 
 
 class Hud : public Module
@@ -40,16 +41,21 @@ public:
 	//Called when there's a GUI event
 	void OnEvent(GuiElement* element, GUI_Event even);
 
-private:
+	// Unit damaged
+	void displayDamage(int x, int y, float damage, bool crit){}
+
+	// Level Change in player hud handler
+	void levelChanged(int level, int prev){}
 
 public:
-	//Hud main belt
+	
+	PlayerAttributes* character = NULL;
+
 	hudBelt* belt = NULL;
 	hudPause* pause_menu = NULL;
 	hudInventory* inventory = NULL;
 	hudBlood* blood = NULL;
 	hudSkilltree* skilltree = NULL;
-
 	vector<hudElement*> Hud_elements;
 };
 

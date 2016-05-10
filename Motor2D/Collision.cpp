@@ -9,16 +9,24 @@ Collision::Collision() : Module()
 	name.create("collision");
 
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_PARTICLE] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_PARTICLE] = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_PARTICLE] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 
 	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_ENEMY][COLLIDER_PARTICLE] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_PARTICLE] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY_PARTICLE] = false;
 
-	matrix[COLLIDER_PARTICLE][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PARTICLE][COLLIDER_ENEMY] = false;
-	matrix[COLLIDER_PARTICLE][COLLIDER_PARTICLE] = false;
+	matrix[COLLIDER_PLAYER_PARTICLE][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_PLAYER_PARTICLE][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_PLAYER_PARTICLE][COLLIDER_PLAYER_PARTICLE] = false;
+	matrix[COLLIDER_PLAYER_PARTICLE][COLLIDER_ENEMY_PARTICLE] = false;
+
+	matrix[COLLIDER_ENEMY_PARTICLE][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_ENEMY_PARTICLE][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_ENEMY_PARTICLE][COLLIDER_PLAYER_PARTICLE] = false;
+	matrix[COLLIDER_ENEMY_PARTICLE][COLLIDER_ENEMY_PARTICLE] = false;
 }
 
 Collision::~Collision()
@@ -109,8 +117,11 @@ void Collision::drawDebug(Collider *col)
 	case COLLIDER_ENEMY:
 		app->render->DrawQuad(col->rect, 255, 0, 255, alpha, false);
 		break;
-	case COLLIDER_PARTICLE:
-		app->render->DrawQuad(col->rect, 0, 0, 255, alpha, false);
+	case COLLIDER_PLAYER_PARTICLE:
+		app->render->DrawQuad(col->rect, 0, 255, 255, alpha, false);
+		break;
+	case COLLIDER_ENEMY_PARTICLE:
+		app->render->DrawQuad(col->rect, 255, 0, 255, alpha, false);
 		break;
 	}
 }

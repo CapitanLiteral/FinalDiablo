@@ -6,16 +6,13 @@
 #include <vector>
 #include <array>
 #include "Timer.h"
+#include "Hud.h"
 
 enum modifierType
 {
 	// Base
 	FLAT_LIFE = 0,
 	NONFLAT_LIFE,
-	FLAT_RAGE,
-	NONFLAT_RAGE,
-	FLAT_STAMINA,
-	NONFLAT_STAMINA,
 	FLAT_STRENGTH,
 	NONFLAT_STRENGTH,
 	FLAT_INTELLIGENCE,
@@ -50,11 +47,8 @@ enum modifierType
 	// Utility
 	FLAT_LIFE_REGEN,
 	NONFLAT_LIFE_REGEN,
-	FLAT_ITEM_RARITY,
-	NONFLAT_ITEM_RARITY,
 	FLAT_MOVEMENT_SPEED,
 	NONFLAT_MOVEMENT_SPEED,
-	STAMINA_REGEN,
 
 	// Charges
 	ENDURANCE_CHARGE,
@@ -69,7 +63,19 @@ enum modifierType
 	FRENZY_CHARGE_ATTACK_SPEED_INCREASE,
 	FRENZY_CHARGE_CAST_SPEED_INCREASE,
 	FRENZY_CHARGE_DAMAGE_INCREASE,
-	POWER_CHARGE_CRIT_CHANCE_INCREASE
+	POWER_CHARGE_CRIT_CHANCE_INCREASE,
+
+	// Player-only
+	FLAT_RAGE,
+	NONFLAT_RAGE,
+	FLAT_STAMINA,
+	NONFLAT_STAMINA,
+	FLAT_RAGE_REGEN,
+	NONFLAT_RAGE_REGEN,
+	FLAT_STAMINA_REGEN,
+	NONFLAT_STAMINA_REGEN,
+	FLAT_ITEM_RARITY,
+	NONFLAT_ITEM_RARITY
 };
 
 
@@ -78,12 +84,13 @@ enum modifierType
 class Modifier
 {
 public:
-	Modifier(float value, modifierType type) : value(value), type(type){}
+	Modifier(float value, modifierType type) : value(value), type(type), remove(false){}
 	~Modifier(){}
-	virtual bool update(){ return true; }
+	virtual bool update(){ return remove; }
 	virtual void clear(){}
 	modifierType type;
 	float value;
+	bool remove;
 };
 
 
@@ -93,7 +100,7 @@ public:
 
 	TempMod(float time, float value, modifierType type) : time(time), Modifier(value, type){ timer.start(); }
 	~TempMod(){}
-	bool update(){ return (timer.ReadSec() < time); }
+	bool update(){ return (remove ? remove : (timer.ReadSec() < time)); }
 	Timer timer;
 	float time;
 };
@@ -102,53 +109,64 @@ public:
 struct AttributeBuilder
 {
 	// Base General Attributes
-	float	base_life;
-	float	base_rage;
-	float	base_stamina;
-	float	base_strength;
-	float	base_intelligence;
-	float	base_dexterity;
+	float	base_life = 2000.0f;
+	float	base_rage = 100.f;
+	float	base_stamina = 100.0f;
+	float	base_strength = 100.0f;
+	float	base_intelligence = 100.0f;
+	float	base_dexterity = 100.0f;
 
 	// Base Offensive Attributes
-	float	base_attackSpeed;
-	float	base_castSpeed;
-	float	base_damage;
-	float	base_accuracy;
+	float	base_attackSpeed = 2.0f;
+	float	base_castSpeed = 2.0f;
+	float	base_damage = 500.0f;
+	float	base_accuracy = 200.0f;
 	float	base_critChance = 5.0f;
 	float	base_critMultiplier = 200.0f;
 
 	// Base Deffensive Attributes
-	float	base_armor;
-	int		base_evasionRating;
-	float	base_lifeRegen;
-	float	base_blockChance;
-	float	base_movementSpeed;
+	float	base_armor = 0.0f;
+	float	base_evasionRating = 100.0f;
+	float	base_lifeRegen = 300.0f;
+	float	base_blockChance = 0.05;
+	float	base_movementSpeed = 300.0f;
 
 	// Base Utility Attributes
 	float	base_item_rarity = 0.1f;
-	float	base_staminaRegen;
 
 	// Base Charges Attributes
-	int		base_maxEnduranceCharges = 3;
-	int		base_maxFrenzyCharges = 3;
-	int		base_maxPowerCharges = 3;
+	float	base_maxEnduranceCharges = 3;
+	float	base_maxFrenzyCharges = 3;
+	float	base_maxPowerCharges = 3;
 	float	base_endranceChargeDamageReduction = 0.04f;
 	float	base_frenzyChargeAttackSpeedIncrease = 0.04f;
 	float	base_frenzyChargeCastSpeedIncrease = 0.04f;
 	float	base_frenzyChargeDamageIncrease = 0.04f;
 	float	base_powerChargeCritChanceIncrease = 0.5f;
 
+	// Player Attributes
+	float	base_rageRegen = 20.0f;
+	float	base_staminaRegen = 1.0f;
+	float	base_maxRage = 100.0f;
+	float	base_maxStamina = 30.0f;
+
 	// Starting values
-	int		current_level;
-	int		current_life;
-	int		current_rage;
-	int		current_stamina;
+	int		current_level = 1;
+	float	current_life = base_life;
+	float	current_rage = base_rage;
+	float	current_stamina = base_stamina;
+	int		experience = 200;
 };
 
 class Attributes
 {
+public:
 	Attributes(AttributeBuilder builder);
 	~Attributes();
+
+	// set References for Hud
+	bool setReferences(int* x = NULL, int* y = NULL);
+	bool setHud(Hud* hud = NULL);
 
 	// Add a modifier to the attributes
 	bool addMod(Modifier* mod);
@@ -156,22 +174,25 @@ class Attributes
 	// Updates the attributes that change over time
 	// and checks for any changes in its mods
 	// Returns true if still alive
-	bool update();
+	virtual bool update();
+
+	virtual void reset();
 
 	// When damaging, call this methos with the attacker's attributs and attack
 	// Returns true if still alive
 	bool damage(Attributes* attacker, int attackType);
 
 	// Immediate Getters
-	int getLevel()const		{ return current_level; }
-	int getLife()const		{ return current_life; }
-	int getRage()const		{ return current_rage; }
-	int getStamina()const	{ return current_stamina; }
+	float getLevel()const	{ return current_level; }
+	float getLife()const	{ return current_life; }
+
+	// Adders / setters
+	bool addLife(float val);
+	virtual void addExp(int exp);
+	virtual bool setLevel(int val);
 
 	// Getters
 	float getMaxLife()const;
-	float getMaxRage()const;
-	float getMaxStamina()const;
 	float getStrength()const;
 	float getIntelligence()const;
 	float getDexterity()const;
@@ -188,10 +209,7 @@ class Attributes
 	float getLifeRegen()const;
 	float getBlockChance()const;
 	float getMovementSpeed()const;
-	float getStaminaRegen()const;
-
 	float getLifeLeach()const;
-	float getItemRarity()const;
 
 	float getEnduranceCharges()const;
 	float getFrenzyCharges()const;
@@ -207,24 +225,28 @@ class Attributes
 	float getFrenzyChargeDamageIncrease()const;
 	float getPowerChargeCritChanceIncrease()const;
 
-private:
+protected:
 
 	// Mod Getter - gets flat and nonflat modifier values
-	float getMod(modifierType type)const;
+	virtual float getMod(modifierType type)const;
 
-private:
+public:
 
-	// Nombre del personaje; en este caso: Barbarian, Butcher o Diablo
+	// Nombre: para usar en la interfaz
 	std::string characterName;
 
 	// array with modifiers
+	std::array<std::vector<Modifier*>, int(NONFLAT_ITEM_RARITY) + 1> modifiers;
 
-	std::array<std::vector<Modifier*>, int(POWER_CHARGE_CRIT_CHANCE_INCREASE) + 1> modifiers;
+protected:
+
+	bool player;
+	int* x = NULL;
+	int* y = NULL;
+	Hud* hud = NULL;
 
 	// Base General Attributes
 	float	base_life;
-	float	base_rage;
-	float	base_stamina;
 	float	base_strength;
 	float	base_intelligence;
 	float	base_dexterity;
@@ -234,8 +256,8 @@ private:
 	float	base_castSpeed;
 	float	base_damage;
 	float	base_accuracy;
-	float	base_critChance = 5.0f;
-	float	base_critMultiplier = 200.0f;
+	float	base_critChance;
+	float	base_critMultiplier;
 
 	// Base Deffensive Attributes
 	float	base_armor;
@@ -244,28 +266,24 @@ private:
 	float	base_blockChance;
 	float	base_movementSpeed;
 
-	// Base Utility Attributes
-	float	base_item_rarity = 0.1f;
-	float	base_staminaRegen;
-
-	// Base Charges Attributes
-	int		base_maxEnduranceCharges = 3;
-	int		base_maxFrenzyCharges = 3;
-	int		base_maxPowerCharges = 3;
-	float	base_endranceChargeDamageReduction = 0.04f;
-	float	base_frenzyChargeAttackSpeedIncrease = 0.04f;
-	float	base_frenzyChargeCastSpeedIncrease = 0.04f;
-	float	base_frenzyChargeDamageIncrease = 0.04f;
-	float	base_powerChargeCritChanceIncrease = 0.5f;
+	// Base Charge Attributes
+	int		base_maxEnduranceCharges;
+	int		base_maxFrenzyCharges;
+	int		base_maxPowerCharges;
+	float	base_endranceChargeDamageReduction;
+	float	base_frenzyChargeAttackSpeedIncrease;
+	float	base_frenzyChargeCastSpeedIncrease;
+	float	base_frenzyChargeDamageIncrease;
+	float	base_powerChargeCritChanceIncrease;
 
 	// Immediate values
 	int		current_level;
-	int		current_life;
-	int		current_rage;
-	int		current_stamina;
+	int 	experience;
+	float	current_life;
+
+	// Life Regen timer
+	Timer lifeRegenTimer;
 };
-
-
 
 /*
 Strength: +1  increased life for each 2 strenght
@@ -281,7 +299,62 @@ Dexterity: +2 increased accuracy for each 1 dexterity
 		   +1% increased attack speed for 2 dexterity
 */
 
+class PlayerAttributes : public Attributes
+{
 
+public:
+
+	PlayerAttributes(AttributeBuilder builder);
+
+	bool update();
+
+	void reset();
+
+	// Immediate Getters
+	float getRage()const	{ return current_rage; }
+	float getStamina()const	{ return current_stamina; }
+
+	// Adders / setters
+	bool addRage(float val);
+	bool addStamina(float val);
+	void addExp(int exp);
+	bool setLevel(int val);
+
+	// Getters
+	float getMaxRage()const;
+	float getMaxStamina()const;
+	float getRageRegen()const;
+	float getStaminaRegen()const;
+	float getItemRarity()const;
+
+protected:
+
+	// Mod Getter - gets flat and nonflat modifier values
+	float getMod(modifierType type)const;
+
+private:
+
+	// Base General Attributes
+	float	base_exp;
+	float	base_rage;
+	float	base_stamina;
+
+	// Base Utility Attributes
+	float	base_item_rarity;
+
+	// Immediate values
+	float	current_rage;
+	float	current_stamina;
+
+	float	base_rageRegen;
+	float	base_staminaRegen;
+	float	base_maxRage;
+	float	base_maxStamina;
+
+	// Timers
+	Timer	rageDegenTimer;
+	Timer	staminaRegenTimer;
+};
 
 
 

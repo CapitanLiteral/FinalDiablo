@@ -34,6 +34,8 @@ public:
 	SDL_Texture* const	LoadSurface(SDL_Surface* surface);
 	void				getSize(const SDL_Texture* texture, uint& width, uint& height) const;
 
+
+
 public:
 
 	list<SDL_Texture*>textures;

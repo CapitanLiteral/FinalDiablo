@@ -57,7 +57,7 @@ iPoint Entity::getBlitPosition() const
 fPoint Entity::getPivotPosition() const
 {
 	//NOTE : put a tile pivot?, more accesible
-	return position;
+	return (position);
 }
 
 SDL_Rect Entity::getPlayerRect() const

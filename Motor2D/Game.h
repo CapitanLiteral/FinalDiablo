@@ -7,6 +7,7 @@
 using namespace std;
 
 class Player;
+class PlayerAttributes;
 class Hud;
 class EntityManager;
 
@@ -42,6 +43,9 @@ public:
 	void addModule(Module* module);
 
 public:
+
+	PlayerAttributes* character = NULL;
+
 	//Modules
 
 	Player*			player = NULL;

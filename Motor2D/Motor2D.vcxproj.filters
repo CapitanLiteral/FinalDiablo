@@ -61,12 +61,6 @@
     <ClCompile Include="EntPortal.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntPortal</Filter>
     </ClCompile>
-    <ClCompile Include="Skill.cpp">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player\Skills</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerSkills.cpp">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player\Skills\Player skills</Filter>
-    </ClCompile>
     <ClCompile Include="EntityManager.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
     </ClCompile>
@@ -112,9 +106,6 @@
     <ClCompile Include="Window.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
-    </ClCompile>
     <ClCompile Include="PerfTimer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
@@ -133,8 +124,17 @@
     <ClCompile Include="Act1.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act1</Filter>
     </ClCompile>
+    <ClCompile Include="Act2.cpp">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act2</Filter>
+    </ClCompile>
     <ClCompile Include="Attributes.cpp">
+      <Filter>Desenvolupament  ========\Modules\Game Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EntNpc.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,12 +225,6 @@
     <ClInclude Include="EntPortal.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntPortal</Filter>
     </ClInclude>
-    <ClInclude Include="Skill.h">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player\Skills</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerSkills.h">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player\Skills\Player skills</Filter>
-    </ClInclude>
     <ClInclude Include="EntItem.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntItem</Filter>
     </ClInclude>
@@ -279,9 +273,6 @@
     <ClInclude Include="Window.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes</Filter>
     </ClInclude>
@@ -303,8 +294,17 @@
     <ClInclude Include="Act1.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act1</Filter>
     </ClInclude>
+    <ClInclude Include="Act2.h">
+      <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\Act2</Filter>
+    </ClInclude>
     <ClInclude Include="Attributes.h">
+      <Filter>Desenvolupament  ========\Modules\Game Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EntNpc.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,14 +395,14 @@
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Player">
       <UniqueIdentifier>{12bfdf1d-7942-4807-a820-b7c1246a3f49}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Game Layer\Player\Skills">
-      <UniqueIdentifier>{eac3edcf-fbcc-4853-9271-864fe5fc1dc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Game Layer\Player\Skills\Player skills">
-      <UniqueIdentifier>{a9f15b31-d592-4c86-a031-e9582e38013a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\Act1">
       <UniqueIdentifier>{16e3b917-2201-45ad-90b0-b06cc87bcac0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\Act2">
+      <UniqueIdentifier>{a7e70fe4-72ad-477c-ac09-5c31be3c17f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc">
+      <UniqueIdentifier>{a4ff747b-ea30-4ad2-9857-90d964e3d9a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

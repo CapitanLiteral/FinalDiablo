@@ -20,17 +20,16 @@
 Hud::Hud() : Module()
 {
 	belt = new hudBelt();
-	pause_menu = new hudPause();
-	inventory = new hudInventory();
-	blood = new hudBlood();
-	skilltree = new hudSkilltree();
+	//pause_menu = new hudPause();
+	//inventory = new hudInventory();
+	//blood = new hudBlood();
+	//skilltree = new hudSkilltree();
 
-	Hud_elements.push_back(skilltree);
-	Hud_elements.push_back(inventory);
+	//Hud_elements.push_back(skilltree);
+	//Hud_elements.push_back(inventory);
 	Hud_elements.push_back(belt);
-	Hud_elements.push_back(pause_menu);
-	Hud_elements.push_back(blood);
-	
+	//Hud_elements.push_back(pause_menu);
+	//Hud_elements.push_back(blood);
 	
 }
 
@@ -46,6 +45,8 @@ Hud::~Hud()
 
 bool Hud::start()
 {
+	belt->character = character;
+
 	for (int i = 0; i < Hud_elements.size(); i++)
 	{
 		Hud_elements[i]->start();
@@ -57,7 +58,7 @@ bool Hud::start()
 //Called before each loop iteration
 bool Hud::preUpdate()
 {
-
+	/*
 	if (app->input->getKey(SDL_SCANCODE_I) == KEY_DOWN || belt->inventorybutton_pressed == true)
 	{
 		belt->inventorybutton_pressed = false;
@@ -70,7 +71,7 @@ bool Hud::preUpdate()
 		belt->skilltreebutton_pressed = false;
 		skilltree->Activate();
 	}
-
+	*/
 	for (int i = 0; i < Hud_elements.size(); i++)
 	{
 		if (Hud_elements[i]->active)
@@ -83,12 +84,12 @@ bool Hud::preUpdate()
 //Called each frame
 bool Hud::update(float dt)
 {	
+	
 	for (int i = 0; i < Hud_elements.size(); i++)
 	{
 		if (Hud_elements[i]->active)
 			Hud_elements[i]->update(dt);
 	}
-
 
 	return true;
 }

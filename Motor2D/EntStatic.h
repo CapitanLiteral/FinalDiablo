@@ -9,7 +9,10 @@ public:
 	EntStatic(const iPoint &p, uint ID);
 
 public:
-
+	Animation*	current_animation;
+	SDL_Texture*		idle_tex;
+	vector<Animation>	idle;
+	vector<Animation>	current_animation_set;
 };
 
 #endif

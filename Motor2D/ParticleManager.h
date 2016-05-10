@@ -8,6 +8,8 @@
 #include "Timer.h"
 
 class Sprite;
+class Collider;
+enum COLLIDER_TYPE;
 
 #define PI 3.14159265
 
@@ -23,9 +25,10 @@ struct Particle
 	Uint32				life;	// Time the particle life
 	bool				fxPlayed;
 	Timer				timer;
-	Sprite*				particleSprite = NULL;
+	SDL_Texture*		texture = NULL;
 	bool				alive;
 	bool				active;
+	Collider*			col = NULL;
 
 	Particle();
 	Particle(const Particle& p);
@@ -55,6 +58,12 @@ public:
 	bool		alive;
 	uint	    fx;
 	bool		fxPlayed;
+
+	//Particles Emited Collider
+	iPoint colliderOffset;
+	iPoint colliderSize;
+	COLLIDER_TYPE colliderType = (COLLIDER_TYPE )- 1;
+	Module* listener = NULL;
 
 public:
 	Emisor();
@@ -160,11 +169,14 @@ public:
 
 	bool cleanUp();
 
+	void OnCollision(Collider* c1, Collider* c2);
+
 	bool cleanActiveParticles();
 
 	bool cleanActiveEmisors();
 
 	Sprite* getParticleAtlas()const;
+	SDL_Texture* getAtlas()const;
 
 	pugi::xml_document* getParticleDoc();
 
@@ -180,13 +192,13 @@ private:
 	bool loadParticlesFile(pugi::xml_document& file);
 
 public:
-	Particle* createParticle(const Particle& refParticle, int x, int y, Uint32 secLife, bool active = true, SDL_Texture* texture = NULL);
+	Particle* createParticle(const Particle& refParticle, int x, int y, Uint32 secLife, iPoint colliderOffset = { 0, 0 }, iPoint colliderSize = { 0, 0 }, COLLIDER_TYPE colliderType = (COLLIDER_TYPE)-1, Module* listener = NULL, bool active = true, SDL_Texture* texture = NULL);
 
-	RadialEmisor* createRadialEmisor(int x, int y, bool active = true);
+	RadialEmisor* createRadialEmisor(int x, int y, Module* listener = NULL, bool active = true);
 
-	LineEmisor* createLineEmisor(int  x, int y, fPoint direction, bool active = true);
+	LineEmisor* createLineEmisor(int  x, int y, fPoint direction, Module* listener = NULL, bool active = true);
 
-	ConeEmisor* createConeEmisor(int x, int y, fPoint direction, bool active = true);
+	ConeEmisor* createConeEmisor(int x, int y, fPoint direction, Module* listener = NULL, bool active = true);
 };
 
 

@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Hud.h"
 #include "EntityManager.h"
+#include "Attributes.h"
+#include "hudBelt.h"
 
 
 Game::Game() : Module()
@@ -11,6 +13,11 @@ Game::Game() : Module()
 	player	= new Player();
 	em		= new EntityManager();
 	hud		= new Hud();
+
+
+	character = new PlayerAttributes(AttributeBuilder());
+	hud->character = character;
+	hud->belt->character = character;
 
 	//add modules to the list
 	addModule(player);
@@ -35,6 +42,12 @@ Game::~Game()
 // Called before render is available
 bool Game::awake(pugi::xml_node& conf)
 {
+	list<Module*>::iterator item = game_modules.begin();
+
+	for (; item != game_modules.end(); item++)
+	{
+		(*item)->awake(conf);
+	}
 	return true;
 }
 

@@ -29,6 +29,4 @@ itmPotionHP::itmPotionHP(const iPoint &p, uint ID) : EntItem(p, ID)
 //NOTE: this is totally, absolutely provisional
 void itmPotionHP::Effect()
 {
-	Player* player = app->game->player;
-	player->RestoreHP(HP_points);
 }

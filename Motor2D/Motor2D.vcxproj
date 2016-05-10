@@ -80,11 +80,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Act1.cpp" />
+    <ClCompile Include="Act2.cpp" />
     <ClCompile Include="Attributes.cpp" />
     <ClCompile Include="EntEnemy.cpp" />
     <ClCompile Include="EntItem.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntMobile.cpp" />
+    <ClCompile Include="EntNpc.cpp" />
     <ClCompile Include="EntPortal.cpp" />
     <ClCompile Include="EntProp.cpp" />
     <ClCompile Include="EntStatic.cpp" />
@@ -109,12 +111,10 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
-    <ClCompile Include="PlayerSkills.cpp" />
-    <ClCompile Include="Skill.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="snIntro.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="PerfTimer.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="p2Log.cpp" />
@@ -127,12 +127,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Act1.h" />
+    <ClInclude Include="Act2.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Attributes.h" />
     <ClInclude Include="EntEnemy.h" />
     <ClInclude Include="EntItem.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntMobile.h" />
+    <ClInclude Include="EntNpc.h" />
     <ClInclude Include="EntPortal.h" />
     <ClInclude Include="EntProp.h" />
     <ClInclude Include="EntStatic.h" />
@@ -156,12 +158,10 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="memleaks.h" />
     <ClInclude Include="ParticleManager.h" />
-    <ClInclude Include="PlayerSkills.h" />
-    <ClInclude Include="Skill.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="snIntro.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="PerfTimer.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Timer.h" />

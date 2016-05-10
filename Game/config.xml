@@ -27,6 +27,10 @@
     <fullscreen_window value="false"/>
   </window>
 
+  <scene_manager>
+    <propAtlas file="textures/town_objects.png"/>
+  </scene_manager>
+  
   <file_system>
     <path>data.zip</path>
   </file_system>

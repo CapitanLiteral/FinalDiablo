@@ -1,19 +1,25 @@
 #include "hudBelt.h"
 #include "App.h"
 #include "Gui.h"
-//NOPE
 #include "Game.h"
 #include "Hud.h"
 #include "Player.h"
 #include "Input.h"
-
-//NOTE: PROVISIONAL 
 #include "Fonts.h"
+#include "Attributes.h"
+#include "p2Log.h"
 
 //Constructor
 hudBelt::hudBelt():hudElement()
 {
 	active = true;
+
+	lifePos = { -136, -44 };
+	ragePos = {  366, -44 };
+
+	lifeRect    = { 371, 118, 79, 78 };
+	rageRect    = { 451, 118, 78, 78 };
+	staminaRect = { 530, 118, 102, 18 };
 }
 
 //Destructor
@@ -23,12 +29,6 @@ hudBelt::~hudBelt()
 //Called before fist frame
 bool hudBelt::start()
 {
-	//Player
-	player = app->game->player;
-
-	//
-	life_current_h = mana_current_h = 78;
-
 	Hud = app->gui->addGuiImage({ 166, 430 }, { 166, 386, 408, 47 }, NULL, this);
 	Hud_gui_elements.push_back(Hud);
 
@@ -40,6 +40,8 @@ bool hudBelt::start()
 	Hud_gui_elements.push_back(inventory3);
 	inventory4 = app->gui->addGuiInventory({ 269, 9 }, { 435, 395, 30, 30 }, 1, 1, 30, 30, Hud, this);
 	Hud_gui_elements.push_back(inventory4);
+
+
 	//Hud elements definition
 	//NOTE: these position are very inaccurate
 
@@ -55,8 +57,8 @@ bool hudBelt::start()
 	life = app->gui->addGuiImage({ -136, -44 }, { 371, 118, 79, 78 }, Hud, this);
 	Hud_gui_elements.push_back(life);
 
-	mana = app->gui->addGuiImage({ 366, -44 }, { 451, 118, 78, 78 }, Hud, this);
-	Hud_gui_elements.push_back(mana);
+	rage = app->gui->addGuiImage({ 366, -44 }, { 451, 118, 78, 78 }, Hud, this);
+	Hud_gui_elements.push_back(rage);
 
 	stamina = app->gui->addGuiImage({ 27, 20 }, { 530, 118, 102, 18 }, Hud, this);
 	Hud_gui_elements.push_back(stamina);
@@ -64,11 +66,11 @@ bool hudBelt::start()
 	life_holder = app->gui->addGuiImage({ -166, -55 }, { 0, 331, 116, 103 }, Hud, this);
 	Hud_gui_elements.push_back(life_holder);
 
-	mana_holder = app->gui->addGuiImage({ 358, -55 }, { 524, 331, 116, 102 }, Hud, this);
-	Hud_gui_elements.push_back(mana_holder);
+	rage_holder = app->gui->addGuiImage({ 358, -55 }, { 524, 331, 116, 102 }, Hud, this);
+	Hud_gui_elements.push_back(rage_holder);
 
 	runbutton = app->gui->addGuiImage({ 9, 19 }, { 153, 280, 18, 22 }, Hud, this);
-	runbutton->interactable = true;
+	//runbutton->interactable = true;
 	Hud_gui_elements.push_back(runbutton);
 
 	minipanelbutton = app->gui->addGuiImage({ 145, 8 }, { 296, 253, 16, 27 }, Hud, this);
@@ -123,8 +125,8 @@ bool hudBelt::start()
 
 	/*stats = app->gui->addGuiImage({ 3, 3 }, { 170, 279, 20, 19 }, minipanel, this);
 	stats->interactable = true;
-	Hud_gui_elements.push_back(stats);*/
-
+	Hud_gui_elements.push_back(stats);
+	
 	stats = app->gui->addGuiImageWithLabel({ 3, 3 }, { 170, 279, 20, 19 }, "player", app->font->description, { -20, 0 }, minipanel, this);
 	stats->interactable = true;
 	Hud_gui_elements.push_back(stats);
@@ -144,8 +146,7 @@ bool hudBelt::start()
 	game_menu = app->gui->addGuiImageWithLabel({ 87, 3 }, { 254, 279, 20, 19 }, "game menu", app->font->description, {-20, 0}, minipanel, this);
 	game_menu->interactable = true;
 	Hud_gui_elements.push_back(game_menu);
-	
-
+	*/
 
 	minipanel->Desactivate();
 
@@ -155,72 +156,132 @@ bool hudBelt::start()
 //Called before each loop iteration
 bool hudBelt::preUpdate()
 {
-	if (app->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
+	if ((app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)
+		|| (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT))
 	{
-		RunningOn();
+		runbutton->SetTextureRect({ 153, 301, 18, 22 });
+	}
+	else
+	{
+		runbutton->SetTextureRect({ 153, 280, 18, 22 });
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		list<GuiItem*>::iterator it = inventory1->items.begin();
-		if (it != inventory1->items.end())
-		{
-			GuiItem* i = (*it);
-			i->Effect();
-			i->FreeSlots();
-			inventory1->items.remove(i);
-			RELEASE(i);
-		}
+	if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN) useBeltInvItem(inventory1);
 
+	if (app->input->getKey(SDL_SCANCODE_2) == KEY_DOWN) useBeltInvItem(inventory2);
+
+	if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN) useBeltInvItem(inventory3);
+
+	if (app->input->getKey(SDL_SCANCODE_4) == KEY_DOWN) useBeltInvItem(inventory1);
+
+	if (character != NULL)
+	{
+		if (app->input->getKey(SDL_SCANCODE_5) == KEY_REPEAT) character->addLife(-20.0f);
+		if (app->input->getKey(SDL_SCANCODE_6) == KEY_REPEAT) character->addRage(-5.0f);
+		if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT) character->addStamina(-5.0f);
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		list<GuiItem*>::iterator it = inventory2->items.begin();
-		if (it != inventory2->items.end())
-		{
-			GuiItem* i = (*it);
-			i->Effect();
-			i->FreeSlots();
-			inventory2->items.remove(i);
-			RELEASE(i);
-		}
-
-	}
-
-	if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		list<GuiItem*>::iterator it = inventory3->items.begin();
-		if (it != inventory3->items.end())
-		{
-			GuiItem* i = (*it);
-			i->Effect();
-			i->FreeSlots();
-			inventory3->items.remove(i);
-			RELEASE(i);
-		}
-
-	}
-
-	if (app->input->getKey(SDL_SCANCODE_4) == KEY_DOWN)
-	{
-		list<GuiItem*>::iterator it = inventory4->items.begin();
-		if (it != inventory4->items.end())
-		{
-			GuiItem* i = (*it);
-			i->Effect();
-			i->FreeSlots();
-			inventory4->items.remove(i);
-			RELEASE(i);
-		}
-
-	}
 	return true;
 }
 
 //Called each frame
 bool hudBelt::update(float dt)
 {
+	// exit if no character assigned
+	if (character == NULL) return true;
+
+	character->update();
+
+	LOG("Rage: %f, Stamina %f;", character->getRage(), character->getStamina());
+
+	SDL_Rect rect;
+	iPoint pos;
+	float dif;
+	int inc;
+
+	// update life image
+	float maxLife = character->getMaxLife();
+	if (character->getLife() >= maxLife)
+	{
+		life->SetLocalPosition(lifePos);
+		life->SetTextureRect(lifeRect);
+	}
+	else if (character->getLife() > 0.0f)
+	{
+		rect = lifeRect;
+		pos = lifePos;
+
+		dif = maxLife - character->getLife();
+		dif *= rect.h;
+		dif /= maxLife;
+
+		inc = int(dif);
+		rect.y += inc;
+		rect.h -= inc;
+		pos.y += inc;
+
+		life->SetLocalPosition(pos);
+		life->SetTextureRect(rect);
+	}
+	else
+	{
+		life->SetLocalPosition(lifePos);
+		life->SetTextureRect({ 0, 0, 0, 0 });
+	}
+
+	// update rage image
+	float maxRage = character->getMaxRage();
+	if (character->getRage() >= maxRage)
+	{
+		rage->SetLocalPosition(ragePos);
+		rage->SetTextureRect(rageRect);
+	}
+	else if (character->getRage() > 0.0f)
+	{
+		rect = rageRect;
+		pos = ragePos;
+
+		dif = maxRage - character->getRage();
+		dif *= rect.h;
+		dif /= maxRage;
+
+		inc = int(dif);
+		rect.y += inc;
+		rect.h -= inc;
+		pos.y += inc;
+
+		rage->SetLocalPosition(pos);
+		rage->SetTextureRect(rect);
+	}
+	else
+	{
+		rage->SetLocalPosition(ragePos);
+		rage->SetTextureRect({ 0, 0, 0, 0 });
+	}
+
+	// update stamina image
+	float maxStamina = character->getMaxStamina();
+	if (character->getStamina() >= maxStamina)
+	{
+		stamina->SetTextureRect(staminaRect);
+	}
+	else if (character->getStamina() > 0.0f)
+	{
+		rect = staminaRect;
+
+		dif = maxStamina - character->getStamina();
+		dif *= rect.w;
+		dif /= maxStamina;
+
+		rect.w -= int(dif);
+
+		stamina->SetTextureRect(rect);
+	}
+	else
+	{
+		stamina->SetTextureRect({ 0, 0, 1, 0 });
+	}
+
 	return true;
 }
 
@@ -233,8 +294,6 @@ bool hudBelt::postUpdate()
 //Called before quitting
 bool hudBelt::cleanUp()
 {
-
-	//NOTE: the problems between lists and vectors begin to grow, but i think this is a good way to approach this
 	for (int i = 0; i < Hud_gui_elements.size(); i++)
 	{
 		for (list<GuiElement*>::iterator item2 = app->gui->gui_elements.begin(); item2 != app->gui->gui_elements.end(); item2++)
@@ -256,46 +315,27 @@ bool hudBelt::cleanUp()
 //Called when there's a gui event
 void hudBelt::OnEvent(GuiElement* element, GUI_Event even)
 {
-	//Hud -------------------------------------
-	//Run button
-	if (runbutton == element)
+	if (element == minipanelbutton)
 	{
-		switch (even)
+		if (even == EVENT_MOUSE_LEFTCLICK_DOWN)
 		{
-			case EVENT_MOUSE_LEFTCLICK_DOWN:
+			if (minipanel_pressed == false)
 			{
-				RunningOn();
+				minipanel_pressed = true;
+				minipanelbutton->SetTextureRect({ 281, 253, 16, 27 });
+				minipanel->Activate();
 			}
-			break;
+			else
+			{
+				minipanel_pressed = false;
+				minipanelbutton->SetTextureRect({ 296, 253, 16, 27 });
+				minipanel->Desactivate();
+			}
 		}
 	}
 
-	//Mini panel button
-	if (minipanelbutton == element)
-	{
-		switch (even)
-		{
-			case EVENT_MOUSE_LEFTCLICK_DOWN:
-			{
-				if (minipanel_pressed == false)
-				{
-					minipanel_pressed = true;
-					minipanelbutton->SetTextureRect({ 281, 253, 16, 27 });
-					minipanel->Activate();
-				}
-				else
-				{
-					minipanel_pressed = false;
-					minipanelbutton->SetTextureRect({ 296, 253, 16, 27 });
-					minipanel->Desactivate();
-				}
-			}
-			break;
-		}
-	}
-	
-	//Inventory button
-	if (inventorybutton == element)
+	/*
+	if (element == inventorybutton)
 	{
 		switch (even)
 		{
@@ -305,18 +345,18 @@ void hudBelt::OnEvent(GuiElement* element, GUI_Event even)
 				inventorybutton_pressed = true;
 			else
 				inventorybutton_pressed = false;
+			break;
 		}
-		break;
 		case EVENT_MOUSE_ENTER:
 		{
-			inventorybutton->descriptionlabel->Activate();
+			//inventorybutton->descriptionlabel->Activate();
+			break;
 		}
-		break;
 		case EVENT_MOUSE_EXIT:
 		{
-			inventorybutton->descriptionlabel->Desactivate();
+			//inventorybutton->descriptionlabel->Desactivate();
+			break;
 		}
-		break;
 		}
 	}
 
@@ -398,7 +438,7 @@ void hudBelt::OnEvent(GuiElement* element, GUI_Event even)
 		}
 		break;
 		}
-	}
+	}*/
 
 	//Attack1
 	if (attack1 == element)
@@ -541,87 +581,18 @@ void hudBelt::OnEvent(GuiElement* element, GUI_Event even)
 	//Hud end ---------------------------------
 }
 
-//Sets the life stat at the Hud
-void hudBelt::SetLife(int max_HP, int HP)
+bool hudBelt::useBeltInvItem(GuiInventory* inv)
 {
-	if (HP != max_HP && HP != 0)
+	bool ret;
+
+	if (ret = ((inv != NULL) && (!inv->items.empty())))
 	{
-		life_current_h = STAT_MAX_H / max_HP;
-		life_current_h *= HP;
-	}
-	else if (max_HP == HP)
-	{
-		life_current_h = STAT_MAX_H;
-	}
-	else if (HP == 0)
-	{
-		life_current_h = 0;
+		GuiItem* i = *(inv->items.begin());
+		i->Effect();
+		i->FreeSlots();
+		inventory1->items.remove(i);
+		RELEASE(i);
 	}
 
-	/*if (app->debug)
-	{
-	life_debug->SetText(("%d / %d", HP, max_HP));
-	}*/
-
-	life->SetTextureRect({ 371, STAT_TEX_Y - int(life_current_h), 79, int(life_current_h) });
-	life->SetLocalPosition({ -136, STAT_LOCAL_Y - int(life_current_h) });
-}
-
-//Sets the mana stat at the Hud
-void hudBelt::SetMana(int max_MP, int MP)
-{
-	if (MP != max_MP && MP != 0)
-	{
-		mana_current_h = STAT_MAX_H / max_MP;
-		mana_current_h *= MP;
-	}
-	else if (max_MP == MP)
-	{
-		mana_current_h = STAT_MAX_H;
-	}
-	else if (MP == 0)
-	{
-		mana_current_h = 0;
-	}
-
-	/*if (app->debug)
-	{
-	mana_debug->SetText("FUCK YOU");
-	}*/
-
-	mana->SetTextureRect({ 451, STAT_TEX_Y - int(mana_current_h), 78, int(mana_current_h) });
-	mana->SetLocalPosition({ 366, STAT_LOCAL_Y - int(mana_current_h) });
-}
-
-void hudBelt::SetStamina(int max_ST, int ST)
-{
-	if (ST != max_ST && ST != 0)
-	{
-		stamina_current_w = STAT_MAX_W / max_ST;
-		stamina_current_w *= ST;
-	}
-	else if (max_ST == ST)
-	{
-		stamina_current_w = STAT_MAX_W;
-	}
-	else if (ST == 0)
-	{
-		stamina_current_w = 0;
-	}
-
-	stamina->SetTextureRect({ 530, 118, int(stamina_current_w), 18 });
-}
-
-void hudBelt::RunningOn()
-{
-	bool run = player->RunOn();
-
-	if (run)
-	{
-		runbutton->SetTextureRect({ 153, 301, 18, 22 });
-	}
-	else
-	{
-		runbutton->SetTextureRect({ 153, 280, 18, 22 });
-	}
+	return ret;
 }

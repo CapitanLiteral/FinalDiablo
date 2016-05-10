@@ -81,23 +81,24 @@ bool Render::preUpdate()
 // NOTE: Function of C, compare Sprites to prepare sort
 bool compare_sprites(const Sprite* first, const Sprite* second)
 {
-	/*if ((first->y > second->y) /*&& (first->position_map.y > second->position_map.y / 2))
+	if ((first->y > second->y))// && (first->position_map.y > second->position_map.y / 2))
 	{
 		return (first->position_map.y > second->position_map.y);
 	}
-	/*else if ((first->y < second->y) /*&& (first->position_map.y / 2  > second->position_map.y))
+	else 
+	if ((first->y < second->y))// && (first->position_map.y / 2  > second->position_map.y))
 	{
 		return (first->position_map.y < second->position_map.y);
-	}*/
+	}
 	
-	if (first->y < second->y)
+	/*if (first->y < second->y)
 	{
 		return true;
 	}
 	else if (first->y > second->y)
 	{
 		return false;
-	}
+	}*/
 }
 bool Render::update(float dt)
 {
@@ -120,7 +121,7 @@ bool Render::update(float dt)
 bool Render::postUpdate()
 {
 	bool ret = true;
-	/*
+	
 	// draw each layer
 	std::map<spriteLayer, std::multimap<int, Sprite*>>::iterator layer;
 	for (layer = spriteMap.begin(); layer != spriteMap.end(); layer++)
@@ -129,14 +130,14 @@ bool Render::postUpdate()
 		std::multimap<int, Sprite* > ::iterator sprite;
 		for (sprite = layer->second.begin(); sprite != layer->second.end(); sprite++)
 		{
-			DrawSprite(sprite->second);
+			//DrawSprite(sprite->second);
 		}
 
 		layer->second.clear();
 	}
 
 	//sprites.clear();
-
+/*
 	// blit deebug figures
 	std::multimap<int, SimpleGeoFigure*>::iterator figure;
 	for (figure = debugFigures.begin(); figure != debugFigures.end(); figure++)
@@ -500,7 +501,7 @@ bool Render::addSpriteToList(Sprite* sprite)
 	{
 		sprites.push_back(sprite);
 	}
-	/*
+	
 	if (ret = (sprite != NULL))
 	{
 		if (ret = (sprite->texture != NULL))
@@ -527,7 +528,7 @@ bool Render::addSpriteToList(Sprite* sprite)
 	else
 	{
 		LOG("Render: Error, invalid sprite to blit.");
-	}*/
+	}
 
 	return ret;
 }
@@ -594,6 +595,13 @@ void Sprite::updateSprite(iPoint& p, iPoint& piv, SDL_Rect& section)
 }
 
 //void Sprite::DrawSprite()
+void Sprite::DrawSprite()
+{
+
+	app->render->Blit(this->texture, this->position_map.x - this->pivot.x, this->position_map.y - this->pivot.y, &(this->section_texture), this->tint);
+
+}
+
 void Sprite::setAlpha(int alpha)
 {
 	if (alpha >= 0 && alpha <= 255)
@@ -601,7 +609,6 @@ void Sprite::setAlpha(int alpha)
 		tint.a = alpha;
 	}
 }
-
 
 bool Render::drawFigure(SimpleGeoFigure figure)
 {

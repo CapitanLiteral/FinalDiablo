@@ -152,29 +152,28 @@ void EntEnemy::updateAttack()
 }
 void EntEnemy::CheckToAttack()
 {
-	if (enemy && !attacking)
-	{
-		if (PlayerInAttackRange())
-		{
+	//if (enemy && !attacking)
+	//{
+	//	if (PlayerInAttackRange())
+	//	{
 
-			fPoint target = enemy->getPivotPosition();
+	//		fPoint target = enemy->getPivotPosition();
 
-			fPoint dist = { target - position };
-			velocity = dist;
+	//		fPoint dist = { target - position };
+	//		velocity = dist;
 
-			SetDirection();
+	//		SetDirection();
 
-			enemy->TakeDamage(damage);
-
-			movement = false;
-			current_input = ENTITY_INPUT_ATTACK;
-			attacking = true;
-			if (name == "paladin")
-				//app->audio->PlayFx(app->game->em->crawler_attackfx);
-			if (name == "wolf")
-				app->audio->PlayFx(app->game->em->wolf_attackfx);
-		}
-	}
+	//		enemy->TakeDamage(damage);
+	//		movement = false;
+	//		current_input = ENTITY_INPUT_ATTACK;
+	//		attacking = true;
+	//		if (name == "crawler")
+	//			app->audio->PlayFx(app->game->em->crawler_attackfx);
+	//		if (name == "wolf")
+	//			app->audio->PlayFx(app->game->em->wolf_attackfx);
+	//	}
+	//}
 }
 
 //############################
@@ -314,7 +313,7 @@ ENTITY_STATE EnemyPaladin::updateAction()
 			{
 				current_action = ENTITY_IDLE;
 			}
-			if (current_input == INPUT_DEATH)
+			if (current_input == ENTITY_DEATH)
 			{
 				current_action = ENTITY_DEATH;
 			}
@@ -528,7 +527,7 @@ ENTITY_STATE EnemyWolf::updateAction()
 			{
 				current_action = ENTITY_IDLE;
 			}
-			if (current_input == INPUT_DEATH)
+			if (current_input == ENTITY_INPUT_DEATH)
 			{
 				current_action = ENTITY_DEATH;
 			}
@@ -589,6 +588,13 @@ void EnemyWolf::StateMachine()
 		break;
 
 	case ENTITY_DEATH:
+
+		current_animation_set = death;
+
+		sprite_rect.w = sprite_dim.x = 90;
+		sprite_rect.h = sprite_dim.y = 56;
+		sprite_pivot = sprite_dim / 2;
+		sprite_pivot.y += 5;
 
 		//Item out
 		r = rand() % 4;
@@ -742,7 +748,7 @@ ENTITY_STATE EnemyGriswold::updateAction()
 			{
 				current_action = ENTITY_IDLE;
 			}
-			if (current_input == INPUT_DEATH)
+			if (current_input == ENTITY_DEATH)
 			{
 				current_action = ENTITY_DEATH;
 			}
