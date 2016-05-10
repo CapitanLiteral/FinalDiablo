@@ -7,6 +7,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Map.h"
+#include "Input.h"
 
 Player::Player()
 {
@@ -60,6 +61,10 @@ bool Player::start()
 
 	return ret;
 }
+bool Player::preUpdate()
+{
+	handleInput();
+}
 
 bool Player::update(float dt)
 {
@@ -67,18 +72,30 @@ bool Player::update(float dt)
 
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
+
+
 	if (current_action != DEATH)
 	{
+		switch (current_action)
+		{
+		case IDLE:
+			break;
+		case WALKING:
+			//updateMovement(dt);
+			break;
+		case RUNNING:
+			//updateMovement(dt);
+			//LowerStamina();
+			break;
+		case SKILL:
+			break;
 
+		}
 	}
 	else
 	{
 		respawn();
 	}
-
-
-
-
 
 	return ret;
 }
@@ -100,7 +117,34 @@ Player::~Player()
 	RELEASE(attributes);
 }
 
-
+void Player::handleInput()
+{
+	if (!inputBlocked)
+	{
+		if (current_action != DEATH)
+		{
+			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+			{
+				//Do skill
+			}
+			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+			{
+				//Do things
+				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
+				{
+					//Sprint
+					current_input_event = I_RUN;
+				}
+				else
+				{
+					//Move
+					//Attack
+				}
+				
+			}
+		}
+	}
+}
 
 bool Player::Alive()
 {

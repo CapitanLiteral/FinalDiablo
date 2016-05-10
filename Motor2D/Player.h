@@ -15,7 +15,8 @@ class SDL_Texture;
 enum ACTION_STATE;
 enum DIRECTION;
 enum PHASE;
-
+enum INPUT_EVENTS;
+enum SKILLS;
 
 class Player : public Module
 {
@@ -34,6 +35,7 @@ public:
 public:
 	bool start();
 	bool awake(pugi::xml_node &config);
+	bool preUpdate();
 	bool update(float dt);
 	void draw();
 
@@ -44,9 +46,12 @@ private:
 	iPoint colliderSize;
 	bool alive;
 	iPoint startingPosition;
+	bool inputBlocked; // to do PAUSE // need getter and setter
+	INPUT_EVENTS current_input_event;
 
 private:
 	void respawn();
+	void handleInput();
 
 //This have nosense in my opinion by CapitánLiteral
 public:
@@ -126,3 +131,17 @@ enum PHASE
 	DIABLO
 };
 
+enum INPUT_EVENTS
+{
+	I_NULL = 0,
+	I_WALK,
+	I_RUN,
+	I_SKILL,
+	I_ATTACK	
+};
+
+enum SKILLS
+{
+	SKILL1,
+	SKILL2
+};
