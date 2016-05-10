@@ -68,7 +68,7 @@ private: //Do all getters and setters
 	void updateMovement(float dt);
 	bool isTargetReached();
 	void move(float dt);
-
+	void setMovement(int x, int y);
 private:
 	void respawn();
 	void handleInput();

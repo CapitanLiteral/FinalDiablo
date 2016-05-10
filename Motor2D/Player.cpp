@@ -129,8 +129,8 @@ vector<iPoint> Player::getNewPath(iPoint target)
 	iPoint start = app->map->WorldToMap(worldPosition.x, worldPosition.y);
 	iPoint goal = target;
 	vector<iPoint> _path;
-	int steps = app->pathfinding->getNewPath(start, goal, _path);
-
+	int steps = app->pathfinding->getNewPath(start, goal, path);
+	_path = path;
 	if (steps > 0)
 	{
 		//StateMachine change
@@ -199,8 +199,12 @@ void Player::move(float dt)
 
 	//NOTE: Collider movement, may be changed
 	collider->SetPos(worldPosition.x, worldPosition.y); //Maybe ERROR, watch out
+	if (targetReached)
+	{
+		path.clear();
+	}
 }
-bool Player::isTargetReached()
+bool Player::isTargetReached() //Maybe ERROR, watch out //This does not work
 {
 	fPoint vel;
 
@@ -264,7 +268,9 @@ void Player::handleInput()
 				//Maybe ERROR, watch out //Only to test pathfinding
 				target = app->input->getMouseWorldPosition();
 				target = app->map->WorldToMap(target.x, target.y);
-				path = getNewPath(target);
+				//path.clear();
+				//path = 
+				getNewPath(target);
 
 				//Do things
 				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
@@ -282,7 +288,21 @@ void Player::handleInput()
 		}
 	}
 }
+/*void Player::setMovement(int x, int y)
+{
+	if (path_on)
+	{
+		SetNewPath(x, y);
+	}
+	else
+	{
+		iPoint target = App->map->GetTileCenter(x, y);
+		SetTarget(target);
 
+		//StateMachine change
+		SetInput(INPUT_MOVE);
+	}
+}*/
 ACTION_STATE Player::updateAction()
 {
 	if (current_input_event != I_NULL)
