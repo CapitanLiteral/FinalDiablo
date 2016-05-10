@@ -48,6 +48,8 @@ private:
 	iPoint startingPosition;
 	bool inputBlocked; // to do PAUSE // need getter and setter
 	INPUT_EVENTS current_input_event;
+
+	void drawDebug() const;
 //Player movement
 private: //Do all getters and setters
 	std::vector<iPoint> path;

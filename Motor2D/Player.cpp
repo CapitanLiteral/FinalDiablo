@@ -44,7 +44,7 @@ bool Player::start()
 	if (loadAnimations())
 	{
 		//Sprites
-		pDebug = app->tex->Load("mini_path.png");
+		pDebug = app->tex->Load("maps/mini_path.png");
 
 		barbarianImage = app->tex->Load("images/Barbarian.png");
 		butcherImage = app->tex->Load("images/Butcher.png");
@@ -102,6 +102,11 @@ bool Player::update(float dt)
 	else
 	{
 		respawn();
+	}
+
+	if (app->debug)
+	{
+		drawDebug();
 	}
 
 	return ret;
@@ -208,6 +213,35 @@ bool Player::isTargetReached()
 	}
 
 	return false;
+}
+
+void Player::drawDebug() const
+{
+	iPoint t_pos = getMapPosition();
+	//fPoint p_pos = GetPivotPosition();
+
+	app->render->Blit(pDebug, t_pos.x, t_pos.y);
+	//App->render->DrawQuad(GetPlayerRect(), 255, 0, 0, 1000, false);
+	//App->render->DrawCircle(p_pos.x, p_pos.y, 5, 255, 0, 0, 1000);
+	//app->render->DrawQuad({ p_pos.x, p_pos.y, 3, 3 }, 255, 0, 0, 255, false);
+
+
+	//App->render->DrawCircle(p_pos.x, p_pos.y, attack_range, 255, 0, 0);
+
+	if (movement)
+	{
+		app->render->DrawLine(worldPosition.x, worldPosition.y, target.x, target.y, 0, 0, 255);
+		app->render->DrawLine(worldPosition.x, worldPosition.y, velocity.x + worldPosition.x, velocity.y + worldPosition.y, 0, 255, 255);
+
+		//Path
+		for (int i = 0; i < path.size(); i++)
+		{
+			iPoint tmp = path[i];
+			tmp = app->map->getTileBlit(tmp.x, tmp.y);
+			app->render->Blit(pDebug, tmp.x, tmp.y);
+		}
+	}
+
 }
 
 Player::~Player()
