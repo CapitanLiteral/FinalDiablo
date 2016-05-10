@@ -58,10 +58,13 @@ bool Act1::start()
 	}
 
 	app->game->em->addEnemy(iPoint{ 0, 2050 }, ENEMY_PALADIN);
+	app->game->em->addEnemy(iPoint{ 0, 2160 }, ENEMY_PALADIN);
+	app->game->em->addEnemy(iPoint{ 0, 1900 }, ENEMY_PALADIN);
+	app->game->em->addEnemy(iPoint{ 100, 2050 }, ENEMY_PALADIN);
 
-	app->game->em->addEnemy(iPoint{ 0, 2100 }, ENEMY_WOLF);
+	//app->game->em->addEnemy(iPoint{ 0, 2100 }, ENEMY_WOLF);
 
-	app->game->em->addEnemy(iPoint{ 0, 2150 }, ENEMY_GRISWOLD);
+	//app->game->em->addEnemy(iPoint{ 0, 2150 }, ENEMY_GRISWOLD);
 
 	iPoint a = { 450, 2450 };
 	app->game->player->setWorldPosition({ 450, 2400 });

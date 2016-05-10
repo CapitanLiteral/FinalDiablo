@@ -41,7 +41,8 @@ bool snIntro::start()
 	//Logo
 	logoSprite = app->tex->Load("images/LogoAnim.png");
 
-	logoAnim.SetFrames(0, 0, 400, 170, 30);
+	//logoAnim.SetFrames(0, 0, 400, 170, 30);
+	logoAnim.setAnimations(0, 0, 400, 170, 15, 2, 30);
 	logoAnim.speed = 0.2f;
 
 	logo = app->gui->addGuiAnimation({ 250, 0 }, { 1829, 82, 800, 600 }, NULL, this, logoSprite, &logoAnim);

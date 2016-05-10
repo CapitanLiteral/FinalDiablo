@@ -247,7 +247,7 @@ void App::finishUpdate()
 
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
 			avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
-		app->win->SetTitle(title);
+		//app->win->SetTitle(title);
 	
 
 	if(capped_ms > 0 && last_frame_ms < capped_ms)

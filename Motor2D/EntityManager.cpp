@@ -127,7 +127,7 @@ bool EntityManager::update(float dt)
 
 	}
 
-	if (Entity* ent = entityOnMouse())
+	/*if (Entity* ent = entityOnMouse())
 	{
 		if (ent->type == ENEMY)
 		{
@@ -138,7 +138,7 @@ bool EntityManager::update(float dt)
 		}
 	}
 	else
-		enemy_name->Desactivate();
+		enemy_name->Desactivate();*/
 
 	return true;
 }

@@ -88,11 +88,11 @@ public:
 
 	void setAnimations(int x, int y, int w, int h, int framesPerRow, int framesPerCol, int frameNum)
 	{
-		for (int i = 0; i < framesPerRow; ++i)
+		for (int i = 0; i < framesPerCol; ++i)
 		{
-			for (int j = 0; j < framesPerCol; ++j)
+			for (int j = 0; j < framesPerRow; ++j)
 			{
-				frames.push_back({ x + (w * i), y + (h * j), w, h });
+				frames.push_back({ x + (w * j), y + (h * i), w, h });
 			}
 		}
 		current_frame = 0.0f;
