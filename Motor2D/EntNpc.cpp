@@ -109,18 +109,19 @@ iPoint EntNpc::getColliderSize() const{
 	return colliderSize;
 }
 
+
 //Constructor
 EntCounselor::EntCounselor(const iPoint &p, uint ID) : EntNpc(p, ID)
 {
 	npcType = NPC_COUNSELOR;
 	tex = idle_tex = app->tex->Load("images/aidanIdle.png");
-
+	loadGui();
 	//SetAnimations();
 	//current_animation_set = idle;
 	setWorldPosition(p);
 	sprite_rect = collider_rect = {39,32,34,74};
 	sprite_pivot = {17,74};
-
+	colliderOffset = { 17, 74 };
 	playerRange = 70.0f;
 
 	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
@@ -147,6 +148,7 @@ bool EntCounselor::update(float dt)
 			if (Entity* ent = app->game->em->entityOnMouse())
 			{
 				//Able GUI NPC
+				PlayerInRange();
 			}
 		}
 	}
@@ -180,6 +182,13 @@ void EntCounselor::SetAnimations()
 	}
 }
 
+void EntCounselor::loadGui(){
+	counselorAtlas = app->tex->Load("gui/AidanAtlas.png");
+	iPoint p = getWorldPosition();
+	p.x -= 10;
+	p.y -= 10;
+	startingImage = app->gui->addGuiImage(p, {}, NULL, NULL);
+}
 //-----------------------------
 
 //EntEnemyCrawler
@@ -188,19 +197,22 @@ void EntCounselor::SetAnimations()
 //Constructor
 EntHealer::EntHealer(const iPoint &p, uint ID) : EntNpc(p, ID)
 {
-	//tex = idle_tex = app->game->em->crawler_idle;
+	tex = idle_tex = app->tex->Load("images/atmaIdle.png");
 
-	SetAnimations();
-	current_animation_set = idle;
+	//SetAnimations();
+	//current_animation_set = idle;
 	setWorldPosition(p);
 	npcType = NPC_HEALER;
-
+	sprite_rect = collider_rect = { 27, 35, 28, 66 };
+	sprite_pivot = { 15, 66 };
+	colliderOffset = { 15, 66 };
 	playerRange = 70.0f;
-
+	loadGui();
 	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
 
 	//Sprite creation
 
+	//Sprite creation
 	fPoint po = getPivotPosition();
 	iPoint pos(po.x, po.y);
 	//SDL_Rect current_sprite = current_animation->getCurrentFrame();
@@ -219,15 +231,15 @@ bool EntHealer::update(float dt)
 {
 	if (PlayerInRange())
 	{
-		if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN){
+		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN){
 			if (Entity* ent = app->game->em->entityOnMouse())
 			{
-				//GUI NPC
+				startingImage->Activate();
 			}
 		}
 	}
 	else{
-		//Disable NPC GUI
+		startingImage->Desactivate();
 	}
 
 	return true;
@@ -259,6 +271,12 @@ void EntHealer::SetAnimations()
 
 }
 
+void EntHealer::loadGui(){
+	
+	iPoint p = { 0, 0 };
+	startingImage = app->gui->addGuiImage(p, {1457,697,409,156}, NULL, NULL);
+	startingImage->Desactivate();
+}
 //-----------------------------
 
 //EntEnemyBoss
@@ -267,19 +285,22 @@ void EntHealer::SetAnimations()
 //Constructor
 EntGossip::EntGossip(const iPoint &p, uint ID) : EntNpc(p, ID)
 {
-	tex = idle_tex = app->game->em->boss_idle;
+	tex = idle_tex = app->tex->Load("images/alkorIdle.png");
 
-	SetAnimations();
-	current_animation_set = idle;
+	//SetAnimations();
+	//current_animation_set = idle;
 	setWorldPosition(p);
-	npcType = NPC_GOSSIP;
-	
+	npcType = NPC_HEALER;
+	sprite_rect = collider_rect = { 20, 35, 25, 68 };
+	sprite_pivot = { 12, 68 };
+	colliderOffset = { 15, 68 };
 	playerRange = 70.0f;
 
 	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
 
 	//Sprite creation
 
+	//Sprite creation
 	fPoint po = getPivotPosition();
 	iPoint pos(po.x, po.y);
 	//SDL_Rect current_sprite = current_animation->getCurrentFrame();
@@ -298,7 +319,7 @@ bool EntGossip::update(float dt)
 {
 	if (PlayerInRange())
 	{
-		if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN){
+		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN){
 			if (Entity* ent = app->game->em->entityOnMouse())
 			{
 				//GUI NPC
