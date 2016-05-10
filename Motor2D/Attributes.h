@@ -66,7 +66,7 @@ enum modifierType
 	POWER_CHARGE_CRIT_CHANCE_INCREASE,
 
 	// Player-only
-	FLAT_RAGE,
+	FLAT_RAGE, //43
 	NONFLAT_RAGE,
 	FLAT_STAMINA,
 	NONFLAT_STAMINA,
@@ -110,8 +110,6 @@ struct AttributeBuilder
 {
 	// Base General Attributes
 	float	base_life = 2000.0f;
-	float	base_rage = 100.f;
-	float	base_stamina = 100.0f;
 	float	base_strength = 100.0f;
 	float	base_intelligence = 100.0f;
 	float	base_dexterity = 100.0f;
@@ -127,7 +125,7 @@ struct AttributeBuilder
 	// Base Deffensive Attributes
 	float	base_armor = 0.0f;
 	float	base_evasionRating = 100.0f;
-	float	base_lifeRegen = 300.0f;
+	float	base_lifeRegen = 30.0f;
 	float	base_blockChance = 0.05;
 	float	base_movementSpeed = 300.0f;
 
@@ -145,7 +143,7 @@ struct AttributeBuilder
 	float	base_powerChargeCritChanceIncrease = 0.5f;
 
 	// Player Attributes
-	float	base_rageRegen = 20.0f;
+	float	base_rageRegen = -2.0f;
 	float	base_staminaRegen = 1.0f;
 	float	base_maxRage = 100.0f;
 	float	base_maxStamina = 30.0f;
@@ -153,8 +151,8 @@ struct AttributeBuilder
 	// Starting values
 	int		current_level = 1;
 	float	current_life = base_life;
-	float	current_rage = base_rage;
-	float	current_stamina = base_stamina;
+	float	current_rage = base_maxRage;
+	float	current_stamina = base_maxStamina;
 	int		experience = 200;
 };
 
@@ -336,8 +334,8 @@ private:
 
 	// Base General Attributes
 	float	base_exp;
-	float	base_rage;
-	float	base_stamina;
+	float	base_maxRage;
+	float	base_maxStamina;
 
 	// Base Utility Attributes
 	float	base_item_rarity;
@@ -348,8 +346,6 @@ private:
 
 	float	base_rageRegen;
 	float	base_staminaRegen;
-	float	base_maxRage;
-	float	base_maxStamina;
 
 	// Timers
 	Timer	rageDegenTimer;

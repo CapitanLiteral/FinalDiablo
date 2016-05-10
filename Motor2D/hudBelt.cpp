@@ -123,7 +123,7 @@ bool hudBelt::start()
 	minipanel = app->gui->addGuiImage({ 98, -25 }, { 170, 253, 110, 25 }, Hud, this);
 	Hud_gui_elements.push_back(minipanel);
 
-	/*stats = app->gui->addGuiImage({ 3, 3 }, { 170, 279, 20, 19 }, minipanel, this);
+	stats = app->gui->addGuiImage({ 3, 3 }, { 170, 279, 20, 19 }, minipanel, this);
 	stats->interactable = true;
 	Hud_gui_elements.push_back(stats);
 	
@@ -146,7 +146,7 @@ bool hudBelt::start()
 	game_menu = app->gui->addGuiImageWithLabel({ 87, 3 }, { 254, 279, 20, 19 }, "game menu", app->font->description, {-20, 0}, minipanel, this);
 	game_menu->interactable = true;
 	Hud_gui_elements.push_back(game_menu);
-	*/
+	
 
 	minipanel->Desactivate();
 
@@ -172,14 +172,15 @@ bool hudBelt::preUpdate()
 
 	if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN) useBeltInvItem(inventory3);
 
-	if (app->input->getKey(SDL_SCANCODE_4) == KEY_DOWN) useBeltInvItem(inventory1);
+	if (app->input->getKey(SDL_SCANCODE_4) == KEY_DOWN) useBeltInvItem(inventory4);
 
+	/* life & rage & stamina debug utility:
 	if (character != NULL)
 	{
 		if (app->input->getKey(SDL_SCANCODE_5) == KEY_REPEAT) character->addLife(-20.0f);
-		if (app->input->getKey(SDL_SCANCODE_6) == KEY_REPEAT) character->addRage(-5.0f);
-		if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT) character->addStamina(-5.0f);
-	}
+		if (app->input->getKey(SDL_SCANCODE_6) == KEY_REPEAT) character->addRage(2.0f);
+		if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT) character->addStamina(-0.1f);
+	}*/
 
 	return true;
 }
@@ -191,8 +192,6 @@ bool hudBelt::update(float dt)
 	if (character == NULL) return true;
 
 	character->update();
-
-	LOG("Rage: %f, Stamina %f;", character->getRage(), character->getStamina());
 
 	SDL_Rect rect;
 	iPoint pos;
@@ -229,6 +228,7 @@ bool hudBelt::update(float dt)
 		life->SetTextureRect({ 0, 0, 0, 0 });
 	}
 
+
 	// update rage image
 	float maxRage = character->getMaxRage();
 	if (character->getRage() >= maxRage)
@@ -236,7 +236,7 @@ bool hudBelt::update(float dt)
 		rage->SetLocalPosition(ragePos);
 		rage->SetTextureRect(rageRect);
 	}
-	else if (character->getRage() > 0.0f)
+	else if (character->getRage() >= 0.0f)
 	{
 		rect = rageRect;
 		pos = ragePos;
@@ -255,8 +255,8 @@ bool hudBelt::update(float dt)
 	}
 	else
 	{
-		rage->SetLocalPosition(ragePos);
-		rage->SetTextureRect({ 0, 0, 0, 0 });
+		rage->SetLocalPosition({ 0, 0 });
+		rage->SetTextureRect({ 0, 0, 1, 1 });
 	}
 
 	// update stamina image
@@ -279,7 +279,7 @@ bool hudBelt::update(float dt)
 	}
 	else
 	{
-		stamina->SetTextureRect({ 0, 0, 1, 0 });
+		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
 
 	return true;

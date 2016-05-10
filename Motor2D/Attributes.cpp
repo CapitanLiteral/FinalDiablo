@@ -415,11 +415,17 @@ float Attributes::getMod(modifierType type)const
 	}
 	else if (type > MAX_POWER_CHARGE)
 	{
-		if (type > POWER_CHARGE_CRIT_CHANCE_INCREASE)
+		if (type < FLAT_RAGE)
 		{
-			return ret;
+			ret += 1.0f; // add base planar value for charge effects
 		}
-		ret += 1.0f; // add base planar value for charge effects
+		else
+		{
+			if ((int(type) % 2) == 0)
+			{
+				ret += 1.0f; // add base planar value for nonflats
+			}
+		}
 	}
 	
 	if (!modifiers[int(type)].empty())
@@ -435,8 +441,6 @@ float Attributes::getMod(modifierType type)const
 }
 
 PlayerAttributes::PlayerAttributes(AttributeBuilder builder) : Attributes(builder),
-base_rage(builder.base_rage),
-base_stamina(builder.base_stamina),
 base_item_rarity(builder.base_item_rarity),
 current_rage(builder.current_rage),
 current_stamina(builder.current_stamina),
@@ -534,7 +538,7 @@ bool PlayerAttributes::addRage(float val)
 
 	if (ret = (current_rage + val > 0.0f))
 	{
-		float maxRage = getMaxStamina();
+		float maxRage = getMaxRage();
 
 		if (current_rage + val < maxRage)
 		{
@@ -584,12 +588,12 @@ bool PlayerAttributes::setLevel(int val)
 
 float PlayerAttributes::getMaxRage()const
 {
-	return ((base_rage + getMod(FLAT_RAGE)) * getMod(NONFLAT_RAGE));
+	return ((base_maxRage + getMod(FLAT_RAGE)) * getMod(NONFLAT_RAGE));
 }
 
 float PlayerAttributes::getMaxStamina()const
 {
-	return ((base_stamina + getMod(FLAT_STAMINA)) * getMod(NONFLAT_STAMINA));
+	return ((base_maxStamina + getMod(FLAT_STAMINA)) * getMod(NONFLAT_STAMINA));
 }
 
 float PlayerAttributes::getRageRegen()const
@@ -626,7 +630,7 @@ float PlayerAttributes::getMod(modifierType type)const
 		}
 		else
 		{
-			if ((int(type) % 2) == 1)
+			if ((int(type) % 2) == 0)
 			{
 				ret += 1.0f; // add base planar value for nonflats
 			}

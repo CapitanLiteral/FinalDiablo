@@ -86,11 +86,11 @@ public:
 	GuiImage* runbutton = NULL; // man in black
 	GuiImage* minipanelbutton = NULL; // pointing up
 
-	//GuiImage* stats = NULL;
-	//GuiImage* inventorybutton = NULL;
-	//GuiImage* skilltree = NULL;
-	//GuiImage* map = NULL;
-	//GuiImage* game_menu = NULL;
+	GuiImage* stats = NULL;
+	GuiImage* inventorybutton = NULL;
+	GuiImage* skilltree = NULL;
+	GuiImage* map = NULL;
+	GuiImage* game_menu = NULL;
 
 	GuiImage* attack1 = NULL;
 	GuiImage* attack2 = NULL;
