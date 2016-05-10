@@ -9,6 +9,9 @@
 #include "Map.h"
 #include "Input.h"
 #include "Pathfinding.h"
+#include "Game.h"
+#include "EntityManager.h"
+#include "Entity.h"
 
 Player::Player()
 {
@@ -80,7 +83,12 @@ bool Player::update(float dt)
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
 	updateMovement(dt);
-
+	if (isInDestiny())
+	{
+		current_input_event = I_STOP;
+	}
+	//setDirection();
+	//current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
 	if (current_action != DEATH)
 	{
 		switch (current_action)
@@ -119,9 +127,27 @@ void Player::respawn()
 
 void Player::draw()
 {
+	//Not elegant, but works
+	setDirection();
+	switch (currentPhase)
+	{
+	case BARBARIAN:
+		current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+		break;
+	case BUTCHER:
+		current_animation = &butcherAnim.find({ current_action, current_direction })->second;
+		break;
+	case DIABLO:
+		current_animation = &diabloAnim.find({ current_action, current_direction })->second;
+		break;
+	default:
+		break;
+	}
+
 	sprite->updateSprite(worldPosition,
 						current_animation->pivot,
 						current_animation->getCurrentFrame());
+
 }
 
 vector<iPoint> Player::getNewPath(iPoint target)
@@ -218,6 +244,17 @@ bool Player::isTargetReached() //Maybe ERROR, watch out //This does not work
 
 	return false;
 }
+bool Player::isInDestiny() //Maybe ERROR, watch out //This does not work
+{
+	if (app->map->WorldToMap(clickCoords.x, clickCoords.y) == app->map->WorldToMap(worldPosition.x, worldPosition.y))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
 
 void Player::drawDebug() const
 {
@@ -226,7 +263,7 @@ void Player::drawDebug() const
 
 	app->render->Blit(pDebug, t_pos.x, t_pos.y);
 	//App->render->DrawQuad(GetPlayerRect(), 255, 0, 0, 1000, false);
-	//App->render->DrawCircle(p_pos.x, p_pos.y, 5, 255, 0, 0, 1000);
+	app->render->DrawCircle(worldPosition.x, worldPosition.y, targetRadius, 255, 0, 0, 1000);
 	//app->render->DrawQuad({ p_pos.x, p_pos.y, 3, 3 }, 255, 0, 0, 255, false);
 
 
@@ -265,13 +302,7 @@ void Player::handleInput()
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
-				//Maybe ERROR, watch out //Only to test pathfinding
-				target = app->input->getMouseWorldPosition();
-				target = app->map->WorldToMap(target.x, target.y);
-				//path.clear();
-				//path = 
-				getNewPath(target);
-
+				
 				//Do things
 				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 				{
@@ -280,6 +311,33 @@ void Player::handleInput()
 				}
 				else
 				{
+					//Maybe ERROR, watch out //Only to test pathfinding
+					clickCoords = app->input->getMouseWorldPosition();
+					target = app->map->WorldToMap(clickCoords.x, clickCoords.y);
+
+					enemyFocus = app->game->em->entityOnMouse();
+					if (enemyFocus == NULL)
+					{
+						//Comprobar si es terra
+						getNewPath(target);
+						current_input_event = I_WALK;
+					}//si no es terra					
+					else
+					{
+						//comprobar si estas a rang d'atac
+						if (worldPosition.DistanceNoSqrt(enemyFocus->getBlitPosition()) < targetRadius*targetRadius)
+						{
+							current_input_event = I_ATTACK;
+						}
+						else
+						{
+							getNewPath(target);
+							current_input_event = I_WALK;
+						}
+					}			
+					
+					
+					
 					//Move
 					//Attack
 				}
@@ -418,21 +476,7 @@ ACTION_STATE Player::updateAction()
 
 		if (previous_action != current_action)
 		{
-			//SetDirection();
-			switch (currentPhase)
-			{
-			case BARBARIAN:
-				current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
-				break;
-			case BUTCHER:
-				current_animation = &butcherAnim.find({ current_action, current_direction })->second;
-				break;
-			case DIABLO:
-				current_animation = &diabloAnim.find({ current_action, current_direction })->second;
-				break;
-			default:
-				break;
-			}
+			
 		}
 
 		previous_action = current_action;
@@ -499,9 +543,9 @@ fPoint Player::getPivotPosition()
 	return ret;
 }
 
-/*void Player::SetDirection()
+void Player::setDirection()
 {
-	float angle = p_velocity.getAngle();
+	float angle = velocity.getAngle();
 
 	DIRECTION dir;
 
@@ -527,9 +571,9 @@ fPoint Player::getPivotPosition()
 		current_direction = dir;
 	}
 
-}*/
+}
 
-void Player::SetDirection(fPoint pos)
+void Player::setDirection(fPoint pos)
 {
 	//NOTE: This has been created to change the direction without moving the player
 	fPoint direction;

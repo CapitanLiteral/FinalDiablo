@@ -12,11 +12,15 @@ class Collider;
 
 class Sprite;
 class SDL_Texture;
+class Entity;
+
 enum ACTION_STATE;
 enum DIRECTION;
 enum PHASE;
 enum INPUT_EVENTS;
 enum SKILLS;
+
+
 
 class Player : public Module
 {
@@ -48,6 +52,8 @@ private:
 	iPoint startingPosition;
 	bool inputBlocked; // to do PAUSE // need getter and setter
 	INPUT_EVENTS current_input_event;
+	ACTION_STATE updateAction();
+	void handleInput();
 
 	void drawDebug() const;
 
@@ -55,9 +61,10 @@ private:
 private: //Do all getters and setters
 	std::vector<iPoint> path;
 	iPoint target;
+	iPoint clickCoords;
 	fPoint velocity;
 	int currentNode;
-	float targetRadius = 3.0f; //Maybe ERROR, watch out
+	float targetRadius = 30.0f; //Maybe ERROR, watch out
 
 	bool movement;
 	bool targetReached;
@@ -70,12 +77,15 @@ private: //Do all getters and setters
 	bool isTargetReached();
 	void move(float dt);
 	void setMovement(int x, int y);
+	bool isInDestiny();
 private:
 	void respawn();
-	void handleInput();
-	ACTION_STATE updateAction();
-	//void SetDirection();
-	void SetDirection(fPoint pos);
+	void setDirection();
+	void setDirection(fPoint pos);
+
+//Attack
+private:
+	Entity* enemyFocus = NULL;
 
 	//This have nosense in my opinion by CapitánLiteral
 public:
