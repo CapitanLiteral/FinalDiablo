@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "Animation.h"
 #include <map>
+#include "p2SString.h"
 
 enum ENTITY_STATE;
 
@@ -45,6 +46,7 @@ public:
 	void updateAttack();
 	void CheckToAttack();
 
+	bool mouseHover();
 	
 public:
 
@@ -67,6 +69,7 @@ public:
 	int		damage;
 
 	const char*  name;
+	p2SString nameString;
 
 };
 

@@ -44,6 +44,7 @@ public:
 	iPoint		getBlitPosition() const;
 	fPoint		getPivotPosition() const;
 	SDL_Rect	getPlayerRect() const;
+	SDL_Rect	getPlayerCollider()const;
 
 	
 public:
@@ -54,6 +55,7 @@ public:
 	iPoint			sprite_dim;
 	ENTITY_TYPE		type;
 	iPoint			colliderOffset;
+	iPoint			colliderSize;
 	iPoint			sprite_pivot;
 	fPoint			position;
 	uint			id;

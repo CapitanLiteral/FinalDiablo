@@ -13,6 +13,9 @@ EntMobile::EntMobile(const iPoint &p, uint ID) : Entity(p, ID)
 	last_action = current_action = ENTITY_IDLE;
 	current_input = ENTITY_INPUT_NULL;
 	last_direction = current_direction = ENTITY_D_FRONT;
+
+	colliderOffset.SetToZero();
+	colliderSize.SetToZero();
 }
 
 //Destructor
@@ -49,6 +52,43 @@ void EntMobile::SetDirection()
 	}
 }
 
+void EntMobile::SetStaticDirection(fPoint pos)
+{
+	//NOTE: This has been created to change the direction without moving the player
+	fPoint direction;
+	direction.x = pos.x - position.x;
+	direction.y = pos.y - position.y;
+
+	direction.SetModule(1);
+
+	float angle = direction.getAngle();
+
+	ENTITY_DIRECTION dir;
+
+	if (angle < 22.5 && angle > -22.5)
+		dir = ENTITY_D_RIGHT;
+	else if (angle >= 22.5 && angle <= 67.5)
+		dir = ENTITY_D_FRONT_RIGHT;
+	else if (angle > 67.5 && angle < 112.5)
+		dir = ENTITY_D_FRONT;
+	else if (angle >= 112.5 && angle <= 157.5)
+		dir = ENTITY_D_FRONT_LEFT;
+	else if (angle > 157.5 || angle < -157.5)
+		dir = ENTITY_D_LEFT;
+	else if (angle >= -157.5 && angle <= -112.5)
+		dir = ENTITY_D_BACK_LEFT;
+	else if (angle > -112.5 && angle < -67.5)
+		dir = ENTITY_D_BACK;
+	else if (angle >= -67.5 && angle <= -22.5)
+		dir = ENTITY_D_BACK_RIGHT;
+
+	if (dir != current_direction)
+	{
+		current_direction = dir;
+	}
+
+}
+
 //Movement
 //---------------------------
 void EntMobile::SetInitVelocity()
@@ -71,8 +111,8 @@ void EntMobile::Move(float dt)
 	position.x += int(vel.x);
 	position.y += int(vel.y);
 
-	collider->rect.x += int(vel.x);
-	collider->rect.y += int(vel.y);
+	/*collider->rect.x += int(vel.x);
+	collider->rect.y += int(vel.y);*/
 }
 
 void EntMobile::updateVelocity(float dt)

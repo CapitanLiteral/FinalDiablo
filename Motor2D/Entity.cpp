@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Map.h"
 #include "Render.h"
+#include "Collision.h"
 
 //Constructor
 Entity::Entity(const iPoint &p, uint ID)
@@ -13,7 +14,7 @@ Entity::Entity(const iPoint &p, uint ID)
 	position.x = tmp.x - (app->map->data.tile_width / 2);
 	position.y = tmp.y;
 	id = ID;
-
+	collider_rect = {0, 0, 0, 0};
 	collider = NULL;
 
 }
@@ -69,4 +70,14 @@ SDL_Rect Entity::getPlayerRect() const
 	blit.y -= colliderOffset.y;
 
 	return{ blit.x, blit.y, collider_rect.w, collider_rect.h };
+}
+
+SDL_Rect Entity::getPlayerCollider()const
+{
+	if (collider)
+	{
+		return collider->rect;
+	}
+	else
+		return{ 0, 0, 0, 0 };
 }

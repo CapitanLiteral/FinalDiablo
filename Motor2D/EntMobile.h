@@ -52,6 +52,7 @@ public:
 	//Setters
 	virtual void SetAnimations() {}
 	void SetDirection();
+	void SetStaticDirection(fPoint pos);
 
 	//Events and states
 	virtual void EntityEvent(ENTITY_EVENT even) {}

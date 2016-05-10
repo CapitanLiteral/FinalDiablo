@@ -14,6 +14,7 @@
 #include "EntMobile.h"
 //Provisional?
 #include "Audio.h"
+#include "Input.h"
 
 
 //EntEnemy
@@ -58,7 +59,9 @@ void EntEnemy::drawDebug()
 
 bool EntEnemy::PlayerInRange()
 {
-	fPoint target_enemy = app->game->player->getPivotPosition();
+	fPoint target_enemy;
+	target_enemy.x = app->game->player->getWorldPosition().x;
+	target_enemy.y = app->game->player->getWorldPosition().y;
 
 	fPoint dist;
 
@@ -119,7 +122,9 @@ void EntEnemy::DrawHPbar()
 
 bool EntEnemy::PlayerInAttackRange()
 {
-	fPoint target_enemy = app->game->player->getPivotPosition();
+	fPoint target_enemy;
+	target_enemy.x = app->game->player->getWorldPosition().x;
+	target_enemy.y = app->game->player->getWorldPosition().y;
 
 	fPoint dist;
 
@@ -152,29 +157,47 @@ void EntEnemy::updateAttack()
 }
 void EntEnemy::CheckToAttack()
 {
-	//if (enemy && !attacking)
-	//{
-	//	if (PlayerInAttackRange())
-	//	{
+	if (enemy && !attacking)
+	{
+		if (PlayerInAttackRange())
+		{
 
-	//		fPoint target = enemy->getPivotPosition();
+			fPoint target = enemy->getPivotPosition();
 
-	//		fPoint dist = { target - position };
-	//		velocity = dist;
+			fPoint dist = { target - position };
+			velocity = dist;
 
-	//		SetDirection();
+			SetDirection();
 
-	//		enemy->TakeDamage(damage);
-	//		movement = false;
-	//		current_input = ENTITY_INPUT_ATTACK;
-	//		attacking = true;
-	//		if (name == "crawler")
-	//			app->audio->PlayFx(app->game->em->crawler_attackfx);
-	//		if (name == "wolf")
-	//			app->audio->PlayFx(app->game->em->wolf_attackfx);
-	//	}
-	//}
+			//enemy->TakeDamage(damage); // TODO: Here goes dealing dmg
+			movement = false;
+			current_input = ENTITY_INPUT_ATTACK;
+			attacking = true;
+			if (name == "crawler")
+				app->audio->PlayFx(app->game->em->crawler_attackfx);
+			if (name == "wolf")
+				app->audio->PlayFx(app->game->em->wolf_attackfx);
+		}
+	}
 }
+
+bool EntEnemy::mouseHover()
+{
+	bool ret = false;
+	iPoint pos = app->input->getMouseWorldPosition();
+
+	if (collider)
+	{
+		if (pos.x >= collider->rect.x && pos.x <= collider->rect.x + collider->rect.w &&
+			pos.y >= collider->rect.y && pos.y <= collider->rect.y + collider->rect.h)
+		{
+			ret = true;
+		}
+	}
+
+	return ret;
+}
+
 
 //############################
 //###     EnemyPaladin     ###
@@ -184,6 +207,7 @@ void EntEnemy::CheckToAttack()
 EnemyPaladin::EnemyPaladin(const iPoint &p, uint ID) : EntEnemy(p, ID)
 {
 	name = "paladin";
+	nameString.create(name);
 
 	tex = app->game->em->paladinTex;
 
@@ -205,13 +229,12 @@ EnemyPaladin::EnemyPaladin(const iPoint &p, uint ID) : EntEnemy(p, ID)
 
 	last_update = PATHFINDING_FRAMES;
 
-	collider_rect.w = 50;
-	collider_rect.h = 80;
+	colliderOffset.Set(25, 65);
+	colliderSize.Set(35, 75);
 
-	colliderOffset.x = collider_rect.w / 1.5;
-	colliderOffset.y = collider_rect.h / 1.5;
-
-	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_ENEMY, app->game->em);
+	//collider = app->collision->addCollider(getPlayerRect(), COLLIDER_ENEMY, app->game->em);
+	//collider = app->collision->addCollider({getBlitPosition().x, getBlitPosition().y, collider_rect.x, collider_rect.y}, COLLIDER_ENEMY, app->game->em);
+	collider = app->collision->addCollider({ position.x - colliderOffset.x, position.y - colliderOffset.y, colliderSize.x, colliderSize.y }, COLLIDER_ENEMY, app->game->em);
 
 	//Sprite creation
 
@@ -230,7 +253,9 @@ bool EnemyPaladin::update(float dt)
 	{
 		updateAction();
 
-		fPoint player_pos = app->game->player->getPivotPosition();
+		fPoint player_pos;
+		player_pos.x = app->game->player->getWorldPosition().x;
+		player_pos.y = app->game->player->getWorldPosition().y;
 
 		//NOTE: The enemy is for following the player one it has been founded, but for now, better not, because of the low framerate
 		if ((PlayerInRange()) && !attacking && last_update >= PATHFINDING_FRAMES)
@@ -273,6 +298,14 @@ bool EnemyPaladin::update(float dt)
 
 		last_update++;
 	}
+	
+	if (enemy != NULL && current_action == BASIC_ATTACK)
+	{
+		fPoint pos;
+		pos.x = enemy->getWorldPosition().x;
+		pos.y = enemy->getWorldPosition().y;
+		SetStaticDirection(pos);
+	}
 
 	if (current_action != last_action || current_direction != last_direction)
 	{
@@ -280,6 +313,20 @@ bool EnemyPaladin::update(float dt)
 		last_direction = current_direction;
 		current_animation = paladinAnim->find({ current_action, current_direction })->second;
 	}
+
+	collider->rect.x = position.x - colliderOffset.x;
+	collider->rect.y = position.y - colliderOffset.y;
+
+	if (mouseHover())
+	{
+		DrawHPbar();
+		app->game->em->enemy_name->Activate();
+		app->game->em->enemy_name->SetText(nameString); // TODO: may be remove name
+		app->game->em->enemy_name->Center(true, false);
+	}
+	else
+		app->game->em->enemy_name->Desactivate();
+
 	
 	return true;
 }
