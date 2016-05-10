@@ -31,7 +31,6 @@ Hud::Hud() : Module()
 	//Hud_elements.push_back(pause_menu);
 	//Hud_elements.push_back(blood);
 	
-	
 }
 
 Hud::~Hud()

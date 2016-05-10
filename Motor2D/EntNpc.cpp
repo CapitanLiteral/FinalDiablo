@@ -160,20 +160,20 @@ bool EntCounselor::update(float dt)
 void EntCounselor::SetAnimations()
 {
 	//NOTE: this should not go here
-	collider_rect.w = sprite_rect.w = sprite_dim.x = 69;
-	collider_rect.h = sprite_rect.h = sprite_dim.y = 54;
+	collider_rect.w = sprite_rect.w = sprite_dim.x = 34;
+	collider_rect.h = sprite_rect.h = sprite_dim.y = 74;
 
-	sprite_pivot = pivot = { collider_rect.w / 2, collider_rect.h - 20 };
-	sprite_pivot.y += 5;
+	sprite_pivot = pivot = { collider_rect.w / 2, collider_rect.h};
+	//sprite_pivot.y += 5;
 
 
 
 	//NOTE: Do it like a player, no number, variables
 	//Idle
-	for (int i = 0; i < 8; i++)
+	for (int i = 1; i < 8; i++)
 	{
 		Animation tmp;
-		tmp.SetFrames(0, (54 + 1) * i, 69, 54, 12, 1);
+		tmp.SetFrames((39) * i, 32, 34, 74, 16, 4);
 		tmp.speed = 0.2f;
 
 		idle.push_back(tmp);

@@ -15,6 +15,7 @@ enum NPC_TYPE
 
 class Collider;
 class Sprite;
+class GuiLabel;
 
 class EntNpc : public EntStatic
 {

@@ -64,6 +64,7 @@ bool Player::start()
 bool Player::preUpdate()
 {
 	handleInput();
+	return true;
 }
 
 bool Player::update(float dt)
