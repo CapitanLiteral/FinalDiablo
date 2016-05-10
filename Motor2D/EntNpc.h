@@ -16,6 +16,7 @@ enum NPC_TYPE
 class Collider;
 class Sprite;
 class GuiLabel;
+class GuiImage;
 
 class EntNpc : public EntStatic
 {
@@ -43,11 +44,12 @@ public:
 	iPoint getColliderSize() const;
 
 	Sprite* getSprite() const;
+
 public:
 
 	//Attributes
 	Collider* collider = NULL;
-	iPoint colliderOffset;
+	//iPoint colliderOffset;
 	iPoint colliderSize;
 
 	Sprite* sprite = NULL;
@@ -58,6 +60,8 @@ public:
 	NPC_TYPE npcType;
 
 	float	playerRange;
+
+	
 };
 
 class EntCounselor : public EntNpc
@@ -72,8 +76,11 @@ public:
 
 	void SetAnimations();
 
-public:
+	void loadGui();
 
+public:
+	SDL_Texture* counselorAtlas = NULL;
+	GuiImage* startingImage = NULL;
 };
 
 
@@ -89,8 +96,10 @@ public:
 
 	void SetAnimations();
 
-public:
+	void loadGui();
 
+public:
+	GuiImage* startingImage = NULL;
 };
 
 class EntGossip : public EntNpc

@@ -83,12 +83,12 @@ bool compare_sprites(const Sprite* first, const Sprite* second)
 {
 	if ((first->y > second->y))// && (first->position_map.y > second->position_map.y / 2))
 	{
-		return (first->position_map.y > second->position_map.y);
+		return (first->position_map.y < second->position_map.y);
 	}
 	else 
 	if ((first->y < second->y))// && (first->position_map.y / 2  > second->position_map.y))
 	{
-		return (first->position_map.y < second->position_map.y);
+		return (first->position_map.y > second->position_map.y);
 	}
 	
 	/*if (first->y < second->y)

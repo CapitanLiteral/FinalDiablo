@@ -65,7 +65,11 @@ bool Act1::start()
 
 	iPoint a = { 450, 2450 };
 	app->game->player->setWorldPosition({ 450, 2400 });
-	app->game->em->addNpc(a, NPC_COUNSELOR);
+	//app->game->em->addNpc(a, NPC_COUNSELOR);
+	//a.x -= 40;
+	//a.y -= 40;
+	app->game->em->addNpc(a, NPC_HEALER);
+	//app->game->em->addNpc(a, NPC_GOSSIP);
 	createProps();
 
 	return true;
