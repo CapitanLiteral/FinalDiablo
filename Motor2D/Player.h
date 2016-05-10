@@ -70,6 +70,9 @@ private: //Do all getters and setters
 private:
 	void respawn();
 	void handleInput();
+	ACTION_STATE updateAction();
+	//void SetDirection();
+	void SetDirection(fPoint pos);
 
 //This have nosense in my opinion by CapitánLiteral
 public:
@@ -115,6 +118,7 @@ private:
 	PHASE currentPhase;
 	Animation* current_animation;
 	ACTION_STATE current_action;
+	ACTION_STATE previous_action;
 	DIRECTION current_direction;
 
 	SDL_Texture* barbarianImage = NULL;
@@ -162,7 +166,9 @@ enum INPUT_EVENTS
 	I_WALK,
 	I_RUN,
 	I_SKILL,
-	I_ATTACK	
+	I_ATTACK,
+	I_STOP,
+	I_DIE
 };
 
 enum SKILLS

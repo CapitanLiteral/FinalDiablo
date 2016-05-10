@@ -51,7 +51,6 @@ public:
 	hudInventory* inventory = NULL;
 	hudBlood* blood = NULL;
 	hudSkilltree* skilltree = NULL;
-
 	vector<hudElement*> Hud_elements;
 };
 

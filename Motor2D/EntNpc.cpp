@@ -65,7 +65,7 @@ void EntNpc::drawDebug()
 
 bool EntNpc::PlayerInRange()
 {
-	fPoint target_player = app->game->player->getPivotPosition();
+	iPoint target_player = app->game->player->getWorldPosition();
 
 	fPoint dist;
 
@@ -113,16 +113,15 @@ iPoint EntNpc::getColliderSize() const{
 EntCounselor::EntCounselor(const iPoint &p, uint ID) : EntNpc(p, ID)
 {
 	npcType = NPC_COUNSELOR;
-	tex = idle_tex = app->tex->Load("textures/wolf.png");
+	tex = idle_tex = app->tex->Load("images/aidanIdle.png");
 
 	//SetAnimations();
 	//current_animation_set = idle;
 	setWorldPosition(p);
-	
-	sprite_rect = collider_rect = {};//Add sprite rect
-	sprite_pivot = pivot = {};//Add sprite pivot
+	sprite_rect = collider_rect = {39,32,34,74};
+	sprite_pivot = pivot = {17,74};
 
-	playerRange = 50.0f;
+	playerRange = 70.0f;
 
 	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
 
@@ -144,10 +143,10 @@ bool EntCounselor::update(float dt)
 {
 	if (PlayerInRange())
 	{
-		if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN){
+		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN){
 			if (Entity* ent = app->game->em->entityOnMouse())
 			{
-				//GUI NPC
+				//Able GUI NPC
 			}
 		}
 	}
@@ -161,20 +160,20 @@ bool EntCounselor::update(float dt)
 void EntCounselor::SetAnimations()
 {
 	//NOTE: this should not go here
-	collider_rect.w = sprite_rect.w = sprite_dim.x = 69;
-	collider_rect.h = sprite_rect.h = sprite_dim.y = 54;
+	collider_rect.w = sprite_rect.w = sprite_dim.x = 34;
+	collider_rect.h = sprite_rect.h = sprite_dim.y = 74;
 
-	sprite_pivot = pivot = { collider_rect.w / 2, collider_rect.h - 20 };
-	sprite_pivot.y += 5;
+	sprite_pivot = pivot = { collider_rect.w / 2, collider_rect.h};
+	//sprite_pivot.y += 5;
 
 
 
 	//NOTE: Do it like a player, no number, variables
 	//Idle
-	for (int i = 0; i < 8; i++)
+	for (int i = 1; i < 8; i++)
 	{
 		Animation tmp;
-		tmp.SetFrames(0, (54 + 1) * i, 69, 54, 12, 1);
+		tmp.SetFrames((39) * i, 32, 34, 74, 16, 4);
 		tmp.speed = 0.2f;
 
 		idle.push_back(tmp);
@@ -196,7 +195,7 @@ EntHealer::EntHealer(const iPoint &p, uint ID) : EntNpc(p, ID)
 	setWorldPosition(p);
 	npcType = NPC_HEALER;
 
-	playerRange = 50.0f;
+	playerRange = 70.0f;
 
 	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
 
@@ -275,7 +274,7 @@ EntGossip::EntGossip(const iPoint &p, uint ID) : EntNpc(p, ID)
 	setWorldPosition(p);
 	npcType = NPC_GOSSIP;
 	
-	playerRange = 50.0f;
+	playerRange = 70.0f;
 
 	collider = app->collision->addCollider(getPlayerRect(), COLLIDER_PLAYER, app->game->em);
 
