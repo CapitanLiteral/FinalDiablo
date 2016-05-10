@@ -16,6 +16,7 @@
 #include "EntPortal.h"
 #include "EntEnemy.h"
 #include "Map.h"
+#include "EntNpc.h"
 
 Act1::Act1()
 {
@@ -55,9 +56,9 @@ bool Act1::start()
 
 		RELEASE_ARRAY(data);
 	}
-
+	iPoint a = { 450, 2450 };
 	app->game->player->setWorldPosition({ 450, 2400 });
-
+	app->game->em->addNpc(a, NPC_COUNSELOR);
 	createProps();
 
 	return true;
