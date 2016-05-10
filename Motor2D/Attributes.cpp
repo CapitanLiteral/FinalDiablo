@@ -47,6 +47,31 @@ Attributes::~Attributes()
 	}
 }
 
+bool Attributes::setReferences(int* _x, int* _y)
+{
+	bool ret;
+
+	if (ret = (_x != NULL && _y != NULL))
+	{
+		x = _x;
+		y = _y;
+	}
+
+	return ret;
+}
+
+bool Attributes::setHud(Hud* _hud)
+{
+	bool ret;
+
+	if (ret = (_hud != NULL))
+	{
+		hud = _hud;
+	}
+
+	return ret;
+}
+
 bool Attributes::addMod(Modifier* mod)
 {
 	bool ret;
