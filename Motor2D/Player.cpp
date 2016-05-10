@@ -8,6 +8,7 @@
 #include "Textures.h"
 #include "Map.h"
 #include "Input.h"
+#include "Pathfinding.h"
 
 Player::Player()
 {
@@ -43,6 +44,8 @@ bool Player::start()
 	if (loadAnimations())
 	{
 		//Sprites
+		pDebug = app->tex->Load("mini_path.png");
+
 		barbarianImage = app->tex->Load("images/Barbarian.png");
 		butcherImage = app->tex->Load("images/Butcher.png");
 		diabloImage = app->tex->Load("images/Diablo.png");
@@ -64,6 +67,8 @@ bool Player::start()
 bool Player::preUpdate()
 {
 	handleInput();
+
+	return true;
 }
 
 bool Player::update(float dt)
@@ -72,7 +77,7 @@ bool Player::update(float dt)
 
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
-
+	updateMovement(dt);
 
 	if (current_action != DEATH)
 	{
@@ -112,6 +117,97 @@ void Player::draw()
 						current_animation->getCurrentFrame());
 }
 
+vector<iPoint> Player::getNewPath(iPoint target)
+{
+	iPoint start = app->map->WorldToMap(worldPosition.x, worldPosition.y);
+	iPoint goal = target;
+	vector<iPoint> _path;
+	int steps = app->pathfinding->getNewPath(start, goal, _path);
+
+	if (steps > 0)
+	{
+		//StateMachine change
+		current_input_event = I_WALK;
+
+		movement = true;
+		currentNode = -1;
+		getNewTarget();
+	}
+	return _path;
+}
+
+void Player::getNewTarget()
+{
+	if ((uint)currentNode + 1 < path.size())
+	{
+		currentNode++;
+		setTarget(app->map->getTileCenter(path[currentNode].x, path[currentNode].y));
+	}
+	else
+	{
+		//Maybe ERROR, watch out //setInput(INPUT_STOP_MOVE);
+		movement = false;
+	}
+}
+
+void Player::setTarget(iPoint _target)
+{
+	target = _target;
+	movement = true;
+	targetReached = false;
+}
+
+void Player::updateVelocity(float dt)
+{
+	velocity.x = target.x - worldPosition.x;
+	velocity.y = target.y - worldPosition.y;
+
+	velocity.SetModule(attributes->getMovementSpeed());
+
+	//Maybe ERROR, watch out //SetDirection();
+}
+
+void Player::updateMovement(float dt)
+{
+	if (movement)
+	{
+		if (!targetReached)
+		{
+			updateVelocity(dt);
+			move(dt);
+			targetReached = isTargetReached();
+		}
+		else
+		{
+			getNewTarget();
+		}
+	}
+}
+void Player::move(float dt)
+{
+	fPoint vel = velocity * dt;
+
+	worldPosition.x += int(vel.x);
+	worldPosition.y += int(vel.y);
+
+	//NOTE: Collider movement, may be changed
+	collider->SetPos(worldPosition.x, worldPosition.y); //Maybe ERROR, watch out
+}
+bool Player::isTargetReached()
+{
+	fPoint vel;
+
+	vel.x = target.x - worldPosition.x;
+	vel.y = target.y - worldPosition.y;
+	
+	if (vel.getModule() <= targetRadius)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 Player::~Player()
 {
 	RELEASE(attributes);
@@ -129,6 +225,11 @@ void Player::handleInput()
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
+				//Maybe ERROR, watch out //Only to test pathfinding
+				target = app->input->getMouseWorldPosition();
+				target = app->map->WorldToMap(target.x, target.y);
+				path = getNewPath(target);
+
 				//Do things
 				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 				{
@@ -154,12 +255,12 @@ bool Player::Alive()
 // Getters & Setters
 iPoint Player::getMapPosition() const
 {
-	return worldPosition;
+	return mapPosition;
 }
 
 iPoint Player::getWorldPosition() const
 {
-	return mapPosition;
+	return worldPosition;
 }
 
 Sprite* Player::getSprite() const

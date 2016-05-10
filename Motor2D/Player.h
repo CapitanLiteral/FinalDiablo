@@ -48,6 +48,24 @@ private:
 	iPoint startingPosition;
 	bool inputBlocked; // to do PAUSE // need getter and setter
 	INPUT_EVENTS current_input_event;
+//Player movement
+private: //Do all getters and setters
+	std::vector<iPoint> path;
+	iPoint target;
+	fPoint velocity;
+	int currentNode;
+	float targetRadius = 3.0f; //Maybe ERROR, watch out
+	
+	bool movement;
+	bool targetReached;
+
+	vector<iPoint> getNewPath(iPoint target);
+	void getNewTarget();
+	void setTarget(iPoint target);
+	void updateVelocity(float dt);
+	void updateMovement(float dt);
+	bool isTargetReached();
+	void move(float dt);
 
 private:
 	void respawn();
@@ -75,6 +93,13 @@ public:
 	iPoint getColliderSize() const;
 
 	Sprite* getSprite() const;
+
+	//Getters and setters of this shit
+	//iPoint target;
+	//fPoint velocity;
+
+	//bool movement;
+	//bool targetReached;
 private:
 	void setColliderPosition(iPoint coords);
 
@@ -95,7 +120,7 @@ private:
 	SDL_Texture* barbarianImage = NULL;
 	SDL_Texture* butcherImage = NULL;
 	SDL_Texture* diabloImage = NULL;
-
+	SDL_Texture* pDebug = NULL;
 
 	bool loadAnimations();
 };
