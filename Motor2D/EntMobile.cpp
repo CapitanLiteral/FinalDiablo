@@ -10,16 +10,14 @@
 //Constructor
 EntMobile::EntMobile(const iPoint &p, uint ID) : Entity(p, ID)
 {
-	current_action = ENTITY_IDLE;
+	last_action = current_action = ENTITY_IDLE;
 	current_input = ENTITY_INPUT_NULL;
-	current_direction = ENTITY_D_FRONT;
+	last_direction = current_direction = ENTITY_D_FRONT;
 }
 
 //Destructor
 EntMobile::~EntMobile()
 {
-	SDL_DestroyTexture(idle_tex);
-	SDL_DestroyTexture(walk_tex);
 }
 
 void EntMobile::SetDirection()
@@ -48,7 +46,6 @@ void EntMobile::SetDirection()
 	if (dir != current_direction)
 	{
 		current_direction = dir;
-		current_animation = &current_animation_set[current_direction];
 	}
 }
 

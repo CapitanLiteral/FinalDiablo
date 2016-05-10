@@ -3,12 +3,19 @@
 
 #include "EntMobile.h"
 #include "Timer.h"
+#include "Animation.h"
+#include <map>
+
+enum ENTITY_STATE;
+
+enum ENTITY_DIRECTION;
 
 enum ENEMY_TYPE
 {
 	ENEMY_WOLF,
-	ENEMY_CRAWLER,
-	ENEMY_COUNCIL,
+	ENEMY_PALADIN,
+	ENEMY_GRISWOLD/*,
+	ENEMY_COUNCIL,*/
 };
 
 class Player;
@@ -54,25 +61,21 @@ public:
 	Player* enemy;
 
 	//Detection
-	float	agro_range;
+	float	vision;
 
 	ENEMY_TYPE enemy_type;
 	int		damage;
-
-	//Pure Blood System;
-	int		blood_drop;
 
 	const char*  name;
 
 };
 
-
-class EntEnemyWolf : public EntEnemy
+class EnemyPaladin : public EntEnemy
 {
 public:
 
 	//Constructor
-	EntEnemyWolf(const iPoint &p, uint ID);
+	EnemyPaladin(const iPoint &p, uint ID);
 
 	bool update(float dt);
 
@@ -80,34 +83,51 @@ public:
 	void EntityEvent(ENTITY_EVENT even);
 	void StateMachine();
 
-	void SetAnimations();
-
 public:
 	uint last_update;
-
-};
-
-
-class EntEnemyCrawler : public EntEnemy
-{
-public:
-
-	//Constructor
-	EntEnemyCrawler(const iPoint &p, uint ID);
-
-	bool update(float dt);
-
-	ENTITY_STATE updateAction();
-	void EntityEvent(ENTITY_EVENT even);
-	void StateMachine();
-
-	void SetAnimations();
-
-public:
-	uint last_update;
+	std::map<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation>	*paladinAnim;
 	
 };
 
+class EnemyWolf : public EntEnemy
+{
+public:
+
+	//Constructor
+	EnemyWolf(const iPoint &p, uint ID);
+
+	bool update(float dt);
+
+	ENTITY_STATE updateAction();
+	void EntityEvent(ENTITY_EVENT even);
+	void StateMachine();
+
+public:
+	uint last_update;
+	std::map<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation>	*wolfAnim;
+
+};
+
+class EnemyGriswold : public EntEnemy
+{
+public:
+
+	//Constructor
+	EnemyGriswold(const iPoint &p, uint ID);
+
+	bool update(float dt);
+
+	ENTITY_STATE updateAction();
+	void EntityEvent(ENTITY_EVENT even);
+	void StateMachine();
+
+public:
+	uint last_update;
+	std::map<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation>	*griswoldAnim;
+
+};
+
+/*
 
 class EntEnemyCouncil : public EntEnemy
 {
@@ -128,5 +148,5 @@ public:
 	uint last_update;
 	Timer win;
 	
-};
+};*/
 #endif

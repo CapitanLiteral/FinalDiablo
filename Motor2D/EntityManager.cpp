@@ -4,6 +4,7 @@
 #include "EntEnemy.h"
 #include "Pathfinding.h"
 #include "p2Log.h"
+#include "FileSystem.h"
 #include "Map.h"
 
 #include "Render.h"
@@ -43,10 +44,14 @@ bool EntityManager::awake(pugi::xml_node &node)
 bool EntityManager::start()
 {
 	//Crawler
-	crawler_idle = app->tex->Load("textures/crawler_idle.png");
+	/*crawler_idle = app->tex->Load("textures/crawler_idle.png");
 	crawler_walk = app->tex->Load("textures/crawler_walk.png");
 	crawler_death = app->tex->Load("textures/crawler_death.png");
-	crawler_attack = app->tex->Load("textures/crawler_attack.png");
+	crawler_attack = app->tex->Load("textures/crawler_attack.png");*/
+
+	paladinTex = app->tex->Load("images/Paladin.png");
+	wolfTex = app->tex->Load("images/Wolf.png");
+	griswoldTex = app->tex->Load("images/Griswold.png");
 
 	//Boss
 	boss_idle = app->tex->Load("textures/boss_idle.png");
@@ -68,6 +73,8 @@ bool EntityManager::start()
 	wolf_attackfx = app->audio->LoadFx("audio/fx/WolfAttack.ogg");
 	wolf_gethitfx = app->audio->LoadFx("audio/fx/WolfgetHit.ogg");
 	wolf_deathfx = app->audio->LoadFx("audio/fx/WolfDeath.ogg");
+
+	loadEnemiesAnimations();
 
 	return true;
 }
@@ -188,7 +195,7 @@ Entity* EntityManager::add(iPoint &pos, ENTITY_TYPE type)
 		{
 		//NOTE: to diferentiate the kinds of enemies, put ENEMY_TYPE enum, but don't use the one from the diferent kinds of entities
 		case (ENEMY) :
-			entity = new EntEnemyWolf(pos, ++nextID);
+			//entity = new EntEnemyWolf(pos, ++nextID);
 			break;
 		case (ITEM_HEALTH) :
 			entity = new itmPotionHP(pos, ++nextID);
@@ -224,16 +231,21 @@ Entity* EntityManager::addEnemy(iPoint &pos, ENEMY_TYPE type)
 		{
 			//NOTE: to diferentiate the kinds of enemies, put ENEMY_TYPE enum, but don't use the one from the diferent kinds of entities
 		case (ENEMY_WOLF) :
-			entity = new EntEnemyWolf(pos, ++nextID);
+			entity = new EnemyWolf(pos, ++nextID);
 			break;
-
-		case (ENEMY_CRAWLER) :
+		case (ENEMY_PALADIN) :
+			entity = new EnemyPaladin(pos, ++nextID);
+			break;
+		case (ENEMY_GRISWOLD) :
+			entity = new EnemyGriswold(pos, ++nextID);
+			break;
+		/*case (ENEMY_CRAWLER) :
 			entity = new EntEnemyCrawler(pos, ++nextID);
 			break;
 
 		case (ENEMY_COUNCIL) :
 			entity = new EntEnemyCouncil(pos, ++nextID);
-			break;
+			break;*/
 		}
 
 		// We add the new entity to the map of active entities. 
@@ -307,4 +319,177 @@ Entity* EntityManager::entityOnCoords(iPoint &pos)
 	return NULL;
 }
 
+bool EntityManager::loadEnemiesAnimations()
+{
+	bool ret = true;
 
+	//############################
+	//###     EnemyPaladin     ###
+	//############################
+
+	pugi::xml_document	anim_file;
+	pugi::xml_node		anim;
+	char* buff;
+	int size = app->fs->Load("animations/paladin_animations.xml", &buff);
+	pugi::xml_parse_result result = anim_file.load_buffer(buff, size);
+	RELEASE(buff);
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation xml file. Pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+		anim = anim_file.child("animations").child("PALADIN");
+
+	if (ret == true)
+	{
+		for (pugi::xml_node action = anim.child("IDLE"); action != NULL; action = action.next_sibling())
+		{
+			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
+			{
+				std::pair<ENTITY_STATE, ENTITY_DIRECTION> p;
+				int state = action.child("name").attribute("value").as_int();
+				p.first = (ENTITY_STATE)state;
+
+				int di = dir.first_child().attribute("name").as_int();
+				p.second = (ENTITY_DIRECTION)di;
+
+				Animation anims;
+				int x = dir.first_child().attribute("x").as_int();
+				int y = dir.first_child().attribute("y").as_int();
+				int w = dir.first_child().attribute("w").as_int();
+				int h = dir.first_child().attribute("h").as_int();
+				int fN = dir.first_child().attribute("frameNumber").as_int();
+				int margin = dir.first_child().attribute("margin").as_int();
+				bool loop = action.child("loop").attribute("value").as_bool();
+				int pivotX = dir.first_child().attribute("pivot_x").as_int();
+				int pivotY = dir.first_child().attribute("pivot_y").as_int();
+				float animSpeed = action.child("speed").attribute("value").as_float();
+				anims.setAnimation(x, y, w, h, fN, margin);
+				anims.loop = loop;
+				anims.speed = animSpeed;
+				anims.pivot.x = pivotX;
+				anims.pivot.y = pivotY;
+
+				iPoint piv;
+				paladinAnim.insert(std::pair<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation >(p, anims));
+				paladinAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+				piv = paladinAnim.find({ p.first, p.second })->second.pivot;
+
+			}
+		}
+	}
+
+	//############################
+	//###      EnemyWolf       ###
+	//############################
+
+	size = app->fs->Load("animations/wolf_animations.xml", &buff);
+	result = anim_file.load_buffer(buff, size);
+	RELEASE(buff);
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation xml file. Pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+		anim = anim_file.child("animations").child("WOLF");
+
+	if (ret == true)
+	{
+		for (pugi::xml_node action = anim.child("IDLE"); action != NULL; action = action.next_sibling())
+		{
+			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
+			{
+				std::pair<ENTITY_STATE, ENTITY_DIRECTION> p;
+				int state = action.child("name").attribute("value").as_int();
+				p.first = (ENTITY_STATE)state;
+
+				int di = dir.first_child().attribute("name").as_int();
+				p.second = (ENTITY_DIRECTION)di;
+
+				Animation anims;
+				int x = dir.first_child().attribute("x").as_int();
+				int y = dir.first_child().attribute("y").as_int();
+				int w = dir.first_child().attribute("w").as_int();
+				int h = dir.first_child().attribute("h").as_int();
+				int fN = dir.first_child().attribute("frameNumber").as_int();
+				int margin = dir.first_child().attribute("margin").as_int();
+				bool loop = action.child("loop").attribute("value").as_bool();
+				int pivotX = dir.first_child().attribute("pivot_x").as_int();
+				int pivotY = dir.first_child().attribute("pivot_y").as_int();
+				float animSpeed = action.child("speed").attribute("value").as_float();
+				anims.setAnimation(x, y, w, h, fN, margin);
+				anims.loop = loop;
+				anims.speed = animSpeed;
+				anims.pivot.x = pivotX;
+				anims.pivot.y = pivotY;
+
+				iPoint piv;
+				wolfAnim.insert(std::pair<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation >(p, anims));
+				wolfAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+				piv = wolfAnim.find({ p.first, p.second })->second.pivot;
+
+			}
+		}
+	}
+
+	//############################
+	//###    EnemyGriswold     ###
+	//############################
+
+	size = app->fs->Load("animations/griswold_animations.xml", &buff);
+	result = anim_file.load_buffer(buff, size);
+	RELEASE(buff);
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation xml file. Pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+		anim = anim_file.child("animations").child("GRISWOLD");
+
+	if (ret == true)
+	{
+		for (pugi::xml_node action = anim.child("IDLE"); action != NULL; action = action.next_sibling())
+		{
+			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
+			{
+				std::pair<ENTITY_STATE, ENTITY_DIRECTION> p;
+				int state = action.child("name").attribute("value").as_int();
+				p.first = (ENTITY_STATE)state;
+
+				int di = dir.first_child().attribute("name").as_int();
+				p.second = (ENTITY_DIRECTION)di;
+
+				Animation anims;
+				int x = dir.first_child().attribute("x").as_int();
+				int y = dir.first_child().attribute("y").as_int();
+				int w = dir.first_child().attribute("w").as_int();
+				int h = dir.first_child().attribute("h").as_int();
+				int fN = dir.first_child().attribute("frameNumber").as_int();
+				int margin = dir.first_child().attribute("margin").as_int();
+				bool loop = action.child("loop").attribute("value").as_bool();
+				int pivotX = dir.first_child().attribute("pivot_x").as_int();
+				int pivotY = dir.first_child().attribute("pivot_y").as_int();
+				float animSpeed = action.child("speed").attribute("value").as_float();
+				anims.setAnimation(x, y, w, h, fN, margin);
+				anims.loop = loop;
+				anims.speed = animSpeed;
+				anims.pivot.x = pivotX;
+				anims.pivot.y = pivotY;
+
+				iPoint piv;
+				griswoldAnim.insert(std::pair<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation >(p, anims));
+				griswoldAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+				piv = griswoldAnim.find({ p.first, p.second })->second.pivot;
+
+			}
+		}
+	}
+
+	return ret;
+}

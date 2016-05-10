@@ -53,7 +53,7 @@ public:
 	SDL_Rect		sprite_rect;
 	iPoint			sprite_dim;
 	ENTITY_TYPE		type;
-	iPoint			pivot;
+	iPoint			colliderOffset;
 	iPoint			sprite_pivot;
 	fPoint			position;
 	uint			id;

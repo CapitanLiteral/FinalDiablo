@@ -14,7 +14,7 @@ Collision::Collision() : Module()
 
 	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_PARTICLE] = true;
-	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = false;
 
 	matrix[COLLIDER_PARTICLE][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PARTICLE][COLLIDER_ENEMY] = false;
