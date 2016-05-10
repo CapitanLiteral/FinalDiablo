@@ -65,8 +65,8 @@ SDL_Rect Entity::getPlayerRect() const
 	//NOTE: this may be adapted when we use colliders
 	fPoint blit = getPivotPosition();
 
-	blit.x -= pivot.x;
-	blit.y -= pivot.y;
+	blit.x -= colliderOffset.x;
+	blit.y -= colliderOffset.y;
 
 	return{ blit.x, blit.y, collider_rect.w, collider_rect.h };
 }

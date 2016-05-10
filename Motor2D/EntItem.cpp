@@ -17,7 +17,7 @@ itmPotionHP::itmPotionHP(const iPoint &p, uint ID) : EntItem(p, ID)
 	//NOTE:
 	tex = app->gui->getAtlas();
 	sprite_rect = collider_rect = { 0, 0, 29, 29 };
-	sprite_pivot = pivot = { sprite_rect.w, sprite_rect.h };
+	sprite_pivot = { sprite_rect.w, sprite_rect.h };
 
 	fPoint po = getPivotPosition();
 	iPoint pos(po.x, po.y);

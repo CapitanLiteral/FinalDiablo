@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "p2Point.h"
 #include "SDL/include/SDL.h"
+#include "Animation.h"
 #include <map>
 #include <vector>
 
@@ -14,6 +15,19 @@ enum NPC_TYPE;
 class Entity;
 class GuiLabel;
 using namespace std;
+
+//NOTE: estos enums ya estan en player hay que unificarlos
+enum DIRECTION;
+
+enum PLAYER_EVENT;
+
+enum ACTION_STATE;
+
+enum INPUT_STATE;
+
+enum ENTITY_STATE;
+
+enum ENTITY_DIRECTION;
 
 class EntityManager : public Module
 {
@@ -74,10 +88,24 @@ public:
 	//Maybe ERROR, watch out // Aixo no ho toco que s'ha d'acabar canviant.
 
 	//Crawler textures
-	SDL_Texture* crawler_idle;
+	/*SDL_Texture* crawler_idle;
 	SDL_Texture* crawler_walk;
 	SDL_Texture* crawler_attack;
-	SDL_Texture* crawler_death;
+	SDL_Texture* crawler_death;*/
+
+	bool loadEnemiesAnimations();
+
+	//Paladin texture
+	SDL_Texture* paladinTex;
+	std::map<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation>	paladinAnim;
+
+	//Wolf texture
+	SDL_Texture* wolfTex;
+	std::map<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation>	wolfAnim;
+
+	//Wolf texture
+	SDL_Texture* griswoldTex;
+	std::map<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation>	griswoldAnim;
 
 	//Boss textures
 	SDL_Texture* boss_idle;

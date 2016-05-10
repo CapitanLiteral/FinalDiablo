@@ -119,7 +119,7 @@ EntCounselor::EntCounselor(const iPoint &p, uint ID) : EntNpc(p, ID)
 	//current_animation_set = idle;
 	setWorldPosition(p);
 	sprite_rect = collider_rect = {39,32,34,74};
-	sprite_pivot = pivot = {17,74};
+	sprite_pivot = {17,74};
 
 	playerRange = 70.0f;
 
@@ -163,7 +163,7 @@ void EntCounselor::SetAnimations()
 	collider_rect.w = sprite_rect.w = sprite_dim.x = 34;
 	collider_rect.h = sprite_rect.h = sprite_dim.y = 74;
 
-	sprite_pivot = pivot = { collider_rect.w / 2, collider_rect.h};
+	sprite_pivot = { collider_rect.w / 2, collider_rect.h};
 	//sprite_pivot.y += 5;
 
 
@@ -188,7 +188,7 @@ void EntCounselor::SetAnimations()
 //Constructor
 EntHealer::EntHealer(const iPoint &p, uint ID) : EntNpc(p, ID)
 {
-	tex = idle_tex = app->game->em->crawler_idle;
+	//tex = idle_tex = app->game->em->crawler_idle;
 
 	SetAnimations();
 	current_animation_set = idle;
@@ -241,7 +241,7 @@ void EntHealer::SetAnimations()
 	collider_rect.w = sprite_rect.w = sprite_dim.x = 78;
 	collider_rect.h = sprite_rect.h = sprite_dim.y = 51;
 
-	sprite_pivot = pivot = { collider_rect.w / 2, collider_rect.h - 20 };
+	sprite_pivot = { collider_rect.w / 2, collider_rect.h - 20 };
 	sprite_pivot.y += 5;
 
 
@@ -318,7 +318,7 @@ void EntGossip::SetAnimations()
 	collider_rect.w = sprite_rect.w = sprite_dim.x = 77;
 	collider_rect.h = sprite_rect.h = sprite_dim.y = 97;
 
-	sprite_pivot = pivot = { collider_rect.w / 2, collider_rect.h - 20 };
+	sprite_pivot = { collider_rect.w / 2, collider_rect.h - 20 };
 	sprite_pivot.y += 5;
 
 

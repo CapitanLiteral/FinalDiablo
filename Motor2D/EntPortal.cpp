@@ -35,7 +35,7 @@ void EntPortal::SetAnimation()
 {
 	sprite_rect = collider_rect = { 0, 0, 78, 130 };
 
-	sprite_pivot = pivot = { collider_rect.w / 2, collider_rect.h - 20};
+	sprite_pivot = { collider_rect.w / 2, collider_rect.h - 20};
 
 	//NOTE: Set Particle Animation Here
 

@@ -20,18 +20,18 @@ enum SKILLS;
 
 class Player : public Module
 {
-//Constructor and destructor
+	//Constructor and destructor
 public:
 	Player();
 	~Player();
 
-//Player things
+	//Player things
 public:
 	PlayerAttributes* attributes = NULL;
 	iPoint worldPosition;	// position in pixels of player // This is the point of the pivot in the world //The feet of the player
 	iPoint mapPosition;		// position of the tile where player is
 
-//
+	//
 public:
 	bool start();
 	bool awake(pugi::xml_node &config);
@@ -39,7 +39,7 @@ public:
 	bool update(float dt);
 	void draw();
 
-//Player interm way of life
+	//Player interm way of life
 private:
 	Collider* collider = NULL; // This must be updated every time player position changes
 	iPoint colliderOffset;
@@ -50,6 +50,7 @@ private:
 	INPUT_EVENTS current_input_event;
 
 	void drawDebug() const;
+
 //Player movement
 private: //Do all getters and setters
 	std::vector<iPoint> path;
@@ -57,7 +58,7 @@ private: //Do all getters and setters
 	fPoint velocity;
 	int currentNode;
 	float targetRadius = 3.0f; //Maybe ERROR, watch out
-	
+
 	bool movement;
 	bool targetReached;
 
@@ -76,14 +77,14 @@ private:
 	//void SetDirection();
 	void SetDirection(fPoint pos);
 
-//This have nosense in my opinion by CapitánLiteral
+	//This have nosense in my opinion by CapitánLiteral
 public:
 	fPoint getPivotPosition();
 
 public:
 	bool Alive();
-	
-//getters and setters
+
+	//getters and setters
 public:
 	iPoint getMapPosition() const;
 	iPoint getWorldPosition() const;
@@ -109,7 +110,7 @@ private:
 	void setColliderPosition(iPoint coords);
 
 
-//Animation things
+	//Animation things
 private:
 	Sprite* sprite = NULL;
 

@@ -56,6 +56,13 @@ bool Act1::start()
 
 		RELEASE_ARRAY(data);
 	}
+
+	app->game->em->addEnemy(iPoint{ 0, 2050 }, ENEMY_PALADIN);
+
+	app->game->em->addEnemy(iPoint{ 0, 2100 }, ENEMY_WOLF);
+
+	app->game->em->addEnemy(iPoint{ 0, 2150 }, ENEMY_GRISWOLD);
+
 	iPoint a = { 450, 2450 };
 	app->game->player->setWorldPosition({ 450, 2400 });
 	app->game->em->addNpc(a, NPC_COUNSELOR);
@@ -110,7 +117,7 @@ bool Act1::update(float dt)
 			//if (a == 0)
 			//app->game->em->add(p, ENEMY);
 			//app->game->em->add(p, ENEMY_CRAWLER);
-			app->game->em->addEnemy(p, ENEMY_CRAWLER);
+			//app->game->em->addEnemy(p, ENEMY_CRAWLER);
 			p = app->map->WorldToMap(p.x, p.y);
 			int i = 0;
 		}

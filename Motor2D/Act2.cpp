@@ -107,7 +107,7 @@ bool Act2::update(float dt)
 			//if (a == 0)
 			//app->game->em->add(p, ENEMY);
 			//app->game->em->add(p, ENEMY_CRAWLER);
-			app->game->em->addEnemy(p, ENEMY_CRAWLER);
+			//app->game->em->addEnemy(p, ENEMY_CRAWLER);
 			p = app->map->WorldToMap(p.x, p.y);
 			int i = 0;
 		}
