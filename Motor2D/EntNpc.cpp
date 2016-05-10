@@ -26,17 +26,25 @@ EntNpc::EntNpc(const iPoint &p, uint ID) : EntStatic(p, ID)
 	type = NPC;
 }
 
+EntNpc::~EntNpc(){
+
+}
 //Drawing methods
 void EntNpc::draw()
 {
 	//iPoint pos = getBlitPosition();
 
 	if (sprite)
-	{
-		SDL_Rect current_sprite = current_animation->getCurrentFrame();
+	{	//Uncomment for draw animations
+		/*SDL_Rect current_sprite = current_animation->getCurrentFrame();
 		fPoint p = getPivotPosition();
 		iPoint pos(p.x, p.y);
-		sprite->updateSprite(tex, pos, sprite_pivot, current_sprite);
+		sprite->updateSprite(tex, pos, sprite_pivot, current_sprite);*/
+
+		fPoint p = getPivotPosition();
+		iPoint pos(p.x, p.y);
+		sprite->updateSprite(tex, pos, sprite_pivot, sprite_rect);
+
 	}
 
 }
@@ -127,6 +135,9 @@ EntCounselor::EntCounselor(const iPoint &p, uint ID) : EntNpc(p, ID)
 	app->render->addSpriteToList(sprite);
 
 }
+EntCounselor::~EntCounselor(){
+
+}
 
 //update
 bool EntCounselor::update(float dt)
@@ -197,6 +208,10 @@ EntHealer::EntHealer(const iPoint &p, uint ID) : EntNpc(p, ID)
 	SDL_Rect current_sprite = sprite_rect;
 	sprite = new Sprite(tex, pos, sprite_pivot, current_sprite);
 	app->render->addSpriteToList(sprite);
+
+}
+
+EntHealer::~EntHealer(){
 
 }
 
@@ -272,6 +287,10 @@ EntGossip::EntGossip(const iPoint &p, uint ID) : EntNpc(p, ID)
 	SDL_Rect current_sprite = sprite_rect;
 	sprite = new Sprite(tex, pos, sprite_pivot, current_sprite);
 	app->render->addSpriteToList(sprite);
+
+}
+
+EntGossip::~EntGossip(){
 
 }
 

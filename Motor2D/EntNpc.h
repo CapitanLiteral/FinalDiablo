@@ -22,6 +22,7 @@ public:
 
 	//Constructor
 	EntNpc(const iPoint &p, uint ID);
+	EntNpc::~EntNpc();
 
 	//Drawing methods
 	void draw();
@@ -64,6 +65,7 @@ public:
 
 	//Constructor
 	EntCounselor(const iPoint &p, uint ID);
+	~EntCounselor();
 
 	bool update(float dt);
 
@@ -80,6 +82,7 @@ public:
 
 	//Constructor
 	EntHealer(const iPoint &p, uint ID);
+	~EntHealer();
 
 	bool update(float dt);
 
@@ -95,6 +98,7 @@ public:
 
 	//Constructor
 	EntGossip(const iPoint &p, uint ID);
+	~EntGossip();
 
 	bool update(float dt);
 
