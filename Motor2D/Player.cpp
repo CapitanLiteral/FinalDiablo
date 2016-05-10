@@ -64,6 +64,10 @@ bool Player::start()
 bool Player::preUpdate()
 {
 	handleInput();
+
+	updateAction();
+
+	return true;
 }
 
 bool Player::update(float dt)
@@ -146,6 +150,146 @@ void Player::handleInput()
 	}
 }
 
+ACTION_STATE Player::updateAction()
+{
+	if (current_input_event != I_NULL)
+	{
+		switch (current_action)
+		{
+		case IDLE:
+		{
+			if (current_input_event == I_WALK)
+			{
+				current_action = WALKING;
+			}
+			else if (current_input_event == I_RUN)
+			{
+				current_action = RUNNING;
+			}
+			else if (current_input_event == I_DIE)
+			{
+				current_action = DEATH;
+			}
+		}
+			break;
+
+		case WALKING:
+		{
+			if (current_input_event == I_STOP)
+			{
+				current_action = IDLE;
+			}
+			else if (current_input_event == I_RUN)
+			{
+				current_action = RUNNING;
+			}
+			else if (current_input_event == I_DIE)
+			{
+				current_action = DEATH;
+			}
+			else if (current_input_event == I_ATTACK)
+			{
+				current_action = BASIC_ATTACK;
+			}
+			else if (current_input_event == I_SKILL)
+			{
+				//Maybe check here which hability is
+				current_action = SKILL;
+			}
+		}
+			break;
+
+		case BASIC_ATTACK:
+		{
+			if (current_input_event == I_STOP)
+			{
+				current_action = IDLE;
+			}
+			else if (current_input_event == I_DIE)
+			{
+				current_action = DEATH;
+			}
+		}
+
+			break;
+
+		case DEATH:
+		{
+			if (current_input_event == I_STOP)
+			{
+				current_action = IDLE;
+			}
+		}
+
+			break;
+
+		case RUNNING:
+		{
+			if (current_input_event == I_STOP)
+			{
+				current_action = IDLE;
+			}
+			else if (current_input_event == I_WALK)
+			{
+				current_action = WALKING;
+			}
+			else if (current_input_event == I_DIE)
+			{
+				current_action = DEATH;
+			}
+			else if (current_input_event == I_ATTACK)
+			{
+				current_action = BASIC_ATTACK;
+			}
+			else if (current_input_event == I_SKILL)
+			{
+				//Maybe check here which hability is
+				current_action = SKILL;
+			}
+		}
+			break;
+
+		case SKILL:
+		{
+			if (current_input_event == I_STOP)
+			{
+				current_action = IDLE;
+			}
+			else if (current_input_event == I_DIE)
+			{
+				current_action = DEATH;
+			}
+		}
+			break;
+		}
+
+		if (previous_action != current_action)
+		{
+			//SetDirection();
+			switch (currentPhase)
+			{
+			case BARBARIAN:
+				current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+				break;
+			case BUTCHER:
+				current_animation = &butcherAnim.find({ current_action, current_direction })->second;
+				break;
+			case DIABLO:
+				current_animation = &diabloAnim.find({ current_action, current_direction })->second;
+				break;
+			default:
+				break;
+			}
+		}
+
+		previous_action = current_action;
+
+	}
+	current_input_event = I_NULL;
+
+	return current_action;
+}
+
 bool Player::Alive()
 {
 	return alive;
@@ -200,6 +344,73 @@ fPoint Player::getPivotPosition()
 	fPoint ret{0, 0};
 
 	return ret;
+}
+
+/*void Player::SetDirection()
+{
+	float angle = p_velocity.getAngle();
+
+	DIRECTION dir;
+
+	if (angle < 22.5 && angle > -22.5)
+		dir = D_RIGHT;
+	else if (angle >= 22.5 && angle <= 67.5)
+		dir = D_FRONT_RIGHT;
+	else if (angle > 67.5 && angle < 112.5)
+		dir = D_FRONT;
+	else if (angle >= 112.5 && angle <= 157.5)
+		dir = D_FRONT_LEFT;
+	else if (angle > 157.5 || angle < -157.5)
+		dir = D_LEFT;
+	else if (angle >= -157.5 && angle <= -112.5)
+		dir = D_BACK_LEFT;
+	else if (angle > -112.5 && angle < -67.5)
+		dir = D_BACK;
+	else if (angle >= -67.5 && angle <= -22.5)
+		dir = D_BACK_RIGHT;
+
+	if (dir != current_direction)
+	{
+		current_direction = dir;
+	}
+
+}*/
+
+void Player::SetDirection(fPoint pos)
+{
+	//NOTE: This has been created to change the direction without moving the player
+	fPoint direction;
+	direction.x = pos.x - worldPosition.x;
+	direction.y = pos.y - worldPosition.y;
+
+	direction.SetModule(1);
+
+	float angle = direction.getAngle();
+
+	DIRECTION dir;
+
+	if (angle < 22.5 && angle > -22.5)
+		dir = D_RIGHT;
+	else if (angle >= 22.5 && angle <= 67.5)
+		dir = D_FRONT_RIGHT;
+	else if (angle > 67.5 && angle < 112.5)
+		dir = D_FRONT;
+	else if (angle >= 112.5 && angle <= 157.5)
+		dir = D_FRONT_LEFT;
+	else if (angle > 157.5 || angle < -157.5)
+		dir = D_LEFT;
+	else if (angle >= -157.5 && angle <= -112.5)
+		dir = D_BACK_LEFT;
+	else if (angle > -112.5 && angle < -67.5)
+		dir = D_BACK;
+	else if (angle >= -67.5 && angle <= -22.5)
+		dir = D_BACK_RIGHT;
+
+	if (dir != current_direction)
+	{
+		current_direction = dir;
+	}
+
 }
 
 
