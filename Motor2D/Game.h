@@ -43,9 +43,6 @@ public:
 	void addModule(Module* module);
 
 public:
-
-	PlayerAttributes* character = NULL;
-
 	//Modules
 
 	Player*			player = NULL;

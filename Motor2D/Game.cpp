@@ -14,10 +14,10 @@ Game::Game() : Module()
 	em		= new EntityManager();
 	hud		= new Hud();
 
-
-	character = new PlayerAttributes(AttributeBuilder());
-	hud->character = character;
-	hud->belt->character = character;
+	player->attributes->setHud(hud);
+	player->attributes->setReferences(&player->worldPosition.x, &player->worldPosition.y);
+	hud->character = player->attributes;
+	hud->belt->character = player->attributes;
 
 	//add modules to the list
 	addModule(player);
