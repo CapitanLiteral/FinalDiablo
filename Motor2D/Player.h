@@ -50,7 +50,8 @@ private:
 	INPUT_EVENTS current_input_event;
 
 	void drawDebug() const;
-	//Player movement
+
+//Player movement
 private: //Do all getters and setters
 	std::vector<iPoint> path;
 	iPoint target;
