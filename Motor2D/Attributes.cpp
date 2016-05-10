@@ -26,8 +26,11 @@ base_frenzyChargeCastSpeedIncrease(builder.base_frenzyChargeCastSpeedIncrease),
 base_frenzyChargeDamageIncrease(builder.base_frenzyChargeDamageIncrease),
 base_powerChargeCritChanceIncrease(builder.base_powerChargeCritChanceIncrease),
 current_level(builder.current_level),
-current_life(builder.current_life)
+current_life(builder.current_life),
+experience(builder.experience)
 {
+	player = false;
+
 	for (int i = 0; i < modifiers.max_size(); i++)
 	{
 		modifiers[i].clear();
@@ -143,6 +146,11 @@ bool Attributes::addLife(float val)
 	}
 
 	return ret;
+}
+
+void Attributes::addExp(int exp)
+{
+	experience += exp;
 }
 
 bool Attributes::setLevel(int val)
@@ -328,7 +336,7 @@ bool Attributes::damage(Attributes* attacker, int attackType)
 		}
 
 		float armor = getArmor();
-		float damageMitigation = ((100 * armor) / (300 * armor)); // calculate armor damage reduction: 0-1
+		float damageMitigation = (armor / (armor + (10 * damage))); // calculate armor damage reduction: 0.0 - 1.0
 
 		float enduranceCharges;
 		if ((enduranceCharges = getEnduranceCharges()) > 0.0f) // apply endurance charge damage reduction if there are endurance charges
@@ -336,7 +344,11 @@ bool Attributes::damage(Attributes* attacker, int attackType)
 			damageMitigation += (enduranceCharges * getEnduranceChargeDamageReduction());
 		}
 
-		damage *= damageMitigation; // reduce damage to take
+		// reduce damage to take
+		if (damageMitigation > 0.0f)
+		{
+			damage -= damage * damageMitigation;
+		}
 
 		if (ret = (damage < current_life))
 		{
@@ -355,6 +367,11 @@ bool Attributes::damage(Attributes* attacker, int attackType)
 
 		// trigger hit with/out bool crit
 		if (hud && x && y) hud->displayDamage((*x), (*y), damage, crit);
+
+		if (attacker->player && !ret) // on player kill
+		{
+			attacker->addExp(experience);
+		}
 	}
 
 	return ret;
@@ -398,11 +415,15 @@ base_stamina(builder.base_stamina),
 base_item_rarity(builder.base_item_rarity),
 current_rage(builder.current_rage),
 current_stamina(builder.current_stamina),
-rageRegen(builder.rageRegen),
-staminaRegen(builder.staminaRegen),
-maxRage(builder.maxRage),
-maxStamina(builder.maxStamina)
+base_rageRegen(builder.base_rageRegen),
+base_staminaRegen(builder.base_staminaRegen),
+base_maxRage(builder.base_maxRage),
+base_maxStamina(builder.base_maxStamina)
 {
+	player = true;
+
+	base_exp = 1000 * current_level;
+
 	rageDegenTimer.start();
 	staminaRegenTimer.start();
 }
@@ -414,7 +435,7 @@ bool PlayerAttributes::update()
 	if (ret = (current_life > 0))
 	{
 		std::vector<Modifier*>::const_iterator it;
-		for (int i = 0; i <= int(NONFLAT_STAMINA); i++)
+		for (int i = 0; i <= int(NONFLAT_ITEM_RARITY); i++)
 		{
 			for (it = modifiers[i].begin(); it != modifiers[i].end(); it++)
 			{
@@ -463,6 +484,8 @@ bool PlayerAttributes::addStamina(float val)
 
 	if (ret = (current_stamina + val > 0.0f))
 	{
+		float maxStamina = getMaxStamina();
+
 		if (current_stamina + val < maxStamina)
 		{
 			current_stamina += val;
@@ -486,6 +509,8 @@ bool PlayerAttributes::addRage(float val)
 
 	if (ret = (current_rage + val > 0.0f))
 	{
+		float maxRage = getMaxStamina();
+
 		if (current_rage + val < maxRage)
 		{
 			current_rage += val;
@@ -503,12 +528,29 @@ bool PlayerAttributes::addRage(float val)
 	return ret;
 }
 
+void PlayerAttributes::addExp(int exp)
+{
+	if (exp > 0.0f && current_level < 10)
+	{
+		if (exp + experience >= base_exp)
+		{
+			experience += exp - base_exp;
+			setLevel(current_level + 1);
+		}
+		else
+		{
+			experience += exp;
+		}
+	}
+}
+
 bool PlayerAttributes::setLevel(int val)
 {
 	bool ret;
 
-	if (ret = (val > 0 && val < 10))
+	if (ret = (val > 0 && val <= 10  && val != current_level))
 	{
+		if (hud != NULL) hud->levelChanged(val, current_level);
 		current_level = val;
 	}
 
@@ -527,12 +569,12 @@ float PlayerAttributes::getMaxStamina()const
 
 float PlayerAttributes::getRageRegen()const
 {
-	return rageRegen;
+	return ((base_rageRegen + getMod(FLAT_RAGE_REGEN)) * getMod(NONFLAT_RAGE_REGEN));;
 }
 
 float PlayerAttributes::getStaminaRegen()const
 {
-	return staminaRegen;
+	return ((base_staminaRegen + getMod(FLAT_STAMINA_REGEN)) * getMod(NONFLAT_STAMINA_REGEN));;
 }
 
 float PlayerAttributes::getItemRarity()const
