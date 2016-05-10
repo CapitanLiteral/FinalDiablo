@@ -70,6 +70,10 @@ enum modifierType
 	NONFLAT_RAGE,
 	FLAT_STAMINA,
 	NONFLAT_STAMINA,
+	FLAT_RAGE_REGEN,
+	NONFLAT_RAGE_REGEN,
+	FLAT_STAMINA_REGEN,
+	NONFLAT_STAMINA_REGEN,
 	FLAT_ITEM_RARITY,
 	NONFLAT_ITEM_RARITY
 };
@@ -105,31 +109,30 @@ public:
 struct AttributeBuilder
 {
 	// Base General Attributes
-	float	base_life;
-	float	base_rage;
-	float	base_stamina;
-	float	base_strength;
-	float	base_intelligence;
-	float	base_dexterity;
+	float	base_life = 2000.0f;
+	float	base_rage = 100.f;
+	float	base_stamina = 100.0f;
+	float	base_strength = 100.0f;
+	float	base_intelligence = 100.0f;
+	float	base_dexterity = 100.0f;
 
 	// Base Offensive Attributes
-	float	base_attackSpeed;
-	float	base_castSpeed;
-	float	base_damage;
-	float	base_accuracy;
+	float	base_attackSpeed = 2.0f;
+	float	base_castSpeed = 2.0f;
+	float	base_damage = 500.0f;
+	float	base_accuracy = 200.0f;
 	float	base_critChance = 5.0f;
 	float	base_critMultiplier = 200.0f;
 
 	// Base Deffensive Attributes
-	float	base_armor;
-	float	base_evasionRating;
-	float	base_lifeRegen;
-	float	base_blockChance;
-	float	base_movementSpeed;
+	float	base_armor = 0.0f;
+	float	base_evasionRating = 100.0f;
+	float	base_lifeRegen = 300.0f;
+	float	base_blockChance = 0.05;
+	float	base_movementSpeed = 300.0f;
 
 	// Base Utility Attributes
 	float	base_item_rarity = 0.1f;
-	float	base_staminaRegen;
 
 	// Base Charges Attributes
 	float	base_maxEnduranceCharges = 3;
@@ -141,16 +144,18 @@ struct AttributeBuilder
 	float	base_frenzyChargeDamageIncrease = 0.04f;
 	float	base_powerChargeCritChanceIncrease = 0.5f;
 
-	// Starting values
-	int		current_level;
-	float	current_life;
-	float	current_rage;
-	float	current_stamina;
+	// Player Attributes
+	float	base_rageRegen = 20.0f;
+	float	base_staminaRegen = 1.0f;
+	float	base_maxRage = 100.0f;
+	float	base_maxStamina = 30.0f;
 
-	float	rageRegen = -2.0f;
-	float	staminaRegen = 1.0f;
-	float	maxRage = 100.0f;
-	float	maxStamina = 30.0f;
+	// Starting values
+	int		current_level = 1;
+	float	current_life = base_life;
+	float	current_rage = base_rage;
+	float	current_stamina = base_stamina;
+	int		experience = 200;
 };
 
 class Attributes
@@ -158,6 +163,10 @@ class Attributes
 public:
 	Attributes(AttributeBuilder builder);
 	~Attributes();
+
+	// set References for Hud
+	bool setReferences(int* x = NULL, int* y = NULL);
+	bool setHud(Hud* hud = NULL);
 
 	// Add a modifier to the attributes
 	bool addMod(Modifier* mod);
@@ -179,6 +188,7 @@ public:
 
 	// Adders / setters
 	bool addLife(float val);
+	virtual void addExp(int exp);
 	virtual bool setLevel(int val);
 
 	// Getters
@@ -230,6 +240,7 @@ public:
 
 protected:
 
+	bool player;
 	int* x = NULL;
 	int* y = NULL;
 	Hud* hud = NULL;
@@ -245,8 +256,8 @@ protected:
 	float	base_castSpeed;
 	float	base_damage;
 	float	base_accuracy;
-	float	base_critChance = 5.0f;
-	float	base_critMultiplier = 200.0f;
+	float	base_critChance;
+	float	base_critMultiplier;
 
 	// Base Deffensive Attributes
 	float	base_armor;
@@ -255,18 +266,19 @@ protected:
 	float	base_blockChance;
 	float	base_movementSpeed;
 
-	// Base Charges Attributes
-	int		base_maxEnduranceCharges = 3;
-	int		base_maxFrenzyCharges = 3;
-	int		base_maxPowerCharges = 3;
-	float	base_endranceChargeDamageReduction = 0.04f;
-	float	base_frenzyChargeAttackSpeedIncrease = 0.04f;
-	float	base_frenzyChargeCastSpeedIncrease = 0.04f;
-	float	base_frenzyChargeDamageIncrease = 0.04f;
-	float	base_powerChargeCritChanceIncrease = 0.5f;
+	// Base Charge Attributes
+	int		base_maxEnduranceCharges;
+	int		base_maxFrenzyCharges;
+	int		base_maxPowerCharges;
+	float	base_endranceChargeDamageReduction;
+	float	base_frenzyChargeAttackSpeedIncrease;
+	float	base_frenzyChargeCastSpeedIncrease;
+	float	base_frenzyChargeDamageIncrease;
+	float	base_powerChargeCritChanceIncrease;
 
 	// Immediate values
 	int		current_level;
+	int 	experience;
 	float	current_life;
 
 	// Life Regen timer
@@ -305,6 +317,7 @@ public:
 	// Adders / setters
 	bool addRage(float val);
 	bool addStamina(float val);
+	void addExp(int exp);
 	bool setLevel(int val);
 
 	// Getters
@@ -322,20 +335,21 @@ protected:
 private:
 
 	// Base General Attributes
+	float	base_exp;
 	float	base_rage;
 	float	base_stamina;
 
 	// Base Utility Attributes
-	float	base_item_rarity = 0.1f;
+	float	base_item_rarity;
 
 	// Immediate values
 	float	current_rage;
 	float	current_stamina;
 
-	float	rageRegen = -2.0f;
-	float	staminaRegen = 1.0f;
-	float	maxRage;
-	float	maxStamina;
+	float	base_rageRegen;
+	float	base_staminaRegen;
+	float	base_maxRage;
+	float	base_maxStamina;
 
 	// Timers
 	Timer	rageDegenTimer;

@@ -45,6 +45,8 @@ Hud::~Hud()
 
 bool Hud::start()
 {
+	belt->character = character;
+
 	for (int i = 0; i < Hud_elements.size(); i++)
 	{
 		Hud_elements[i]->start();

@@ -14,6 +14,7 @@ class hudPause;
 class hudInventory;
 class hudBlood;
 class hudSkilltree;
+class PlayerAttributes;
 
 
 class Hud : public Module
@@ -42,10 +43,14 @@ public:
 
 	// Unit damaged
 	void displayDamage(int x, int y, float damage, bool crit){}
-	void levelChanged(int level){}
+
+	// Level Change in player hud handler
+	void levelChanged(int level, int prev){}
 
 public:
-	//Hud main belt
+	
+	PlayerAttributes* character = NULL;
+
 	hudBelt* belt = NULL;
 	hudPause* pause_menu = NULL;
 	hudInventory* inventory = NULL;

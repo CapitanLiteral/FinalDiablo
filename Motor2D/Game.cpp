@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Hud.h"
 #include "EntityManager.h"
+#include "Attributes.h"
+#include "hudBelt.h"
 
 
 Game::Game() : Module()
@@ -11,6 +13,11 @@ Game::Game() : Module()
 	player	= new Player();
 	em		= new EntityManager();
 	hud		= new Hud();
+
+
+	character = new PlayerAttributes(AttributeBuilder());
+	hud->character = character;
+	hud->belt->character = character;
 
 	//add modules to the list
 	addModule(player);
