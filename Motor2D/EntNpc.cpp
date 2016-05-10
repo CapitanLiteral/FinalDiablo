@@ -65,7 +65,7 @@ void EntNpc::drawDebug()
 
 bool EntNpc::PlayerInRange()
 {
-	iPoint target_player = app->game->player->getMapPosition(); //Cuidao que ha de ser getWorldPosition();
+	iPoint target_player = app->game->player->getWorldPosition();
 
 	fPoint dist;
 
