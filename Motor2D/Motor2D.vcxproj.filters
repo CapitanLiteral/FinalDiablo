@@ -19,6 +19,9 @@
     <ClCompile Include="hudPause.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudPause</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClCompile>
     <ClCompile Include="GuiInventory.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Gui\GuiElements\GuiInventory</Filter>
     </ClCompile>
@@ -39,6 +42,9 @@
     </ClCompile>
     <ClCompile Include="hudSkilltree.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer</Filter>
@@ -109,12 +115,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Paladin.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClCompile>
@@ -168,6 +168,9 @@
     <ClInclude Include="hudPause.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudPause</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClInclude>
     <ClInclude Include="GuiInventory.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Gui\GuiElements\GuiInventory</Filter>
     </ClInclude>
@@ -188,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="hudSkilltree.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer</Filter>
@@ -261,13 +267,7 @@
     <ClInclude Include="Player.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
-    </ClInclude>
     <ClInclude Include="Paladin.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
   </ItemGroup>
@@ -301,6 +301,12 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\snWin">
       <UniqueIdentifier>{d25bc987-7973-438c-a1c7-a4360353fdb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager">
+      <UniqueIdentifier>{e207d71e-6e6c-4e68-aac4-1b52eae69768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities">
+      <UniqueIdentifier>{69b7d4e8-dc9d-491e-99a5-7ed1492c2ac3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Engine Layer\Gui">
       <UniqueIdentifier>{8230f9dd-22bb-451a-a5ba-40a38be40461}</UniqueIdentifier>
@@ -340,12 +346,6 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\Act2">
       <UniqueIdentifier>{a7e70fe4-72ad-477c-ac09-5c31be3c17f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager">
-      <UniqueIdentifier>{be1aa72e-7914-493a-bd92-644df8e37a00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities">
-      <UniqueIdentifier>{a0241eac-67e7-4982-a305-6c6cc40d6192}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

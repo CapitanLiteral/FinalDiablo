@@ -82,13 +82,14 @@ bool Player::update(float dt)
 
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
-	updateMovement(dt);
-	if (isInDestiny())
-	{
-		current_input_event = I_STOP;
-	}
+	
+	//if (isInDestiny())
+	//{
+	//	current_input_event = I_STOP;
+	//}
 	//setDirection();
 	//current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+
 	if (current_action != DEATH)
 	{
 		switch (current_action)
@@ -96,15 +97,20 @@ bool Player::update(float dt)
 		case IDLE:
 			break;
 		case WALKING:
-			//updateMovement(dt);
+			updateMovement(dt);
 			break;
 		case RUNNING:
-			//updateMovement(dt);
+			updateMovement(dt);
 			//LowerStamina();
 			break;
 		case SKILL:
 			break;
-
+		case BASIC_ATTACK:
+			if (current_animation->Finished() && enemyFocus != NULL)
+			{
+				enemyFocus->attributes->damage(attributes, UNKNOWN);
+			}
+			break;
 		}
 	}
 	else
@@ -127,7 +133,7 @@ void Player::respawn()
 
 void Player::draw()
 {
-	//Not elegant, but works
+	//Not elegant, but works // May be the vibration of player comes from here ERROR
 	setDirection();
 	switch (currentPhase)
 	{
@@ -215,6 +221,11 @@ void Player::updateMovement(float dt)
 			getNewTarget();
 		}
 	}
+	if (isInDestiny() || (enemyFocus != NULL && enemyFocus->getMapPos().DistanceTo(worldPosition) <= targetRadius && current_action == WALKING))
+	{
+		current_input_event = I_STOP;
+	}
+
 }
 void Player::move(float dt)
 {
@@ -225,7 +236,7 @@ void Player::move(float dt)
 
 	//NOTE: Collider movement, may be changed
 	collider->SetPos(worldPosition.x, worldPosition.y); //Maybe ERROR, watch out
-	if (targetReached)
+	if (isInDestiny() || (enemyFocus != NULL && enemyFocus->getMapPos().DistanceTo(worldPosition) <= targetRadius && current_action == WALKING))
 	{
 		path.clear();
 	}
@@ -296,6 +307,10 @@ void Player::handleInput()
 	{
 		if (current_action != DEATH)
 		{
+			if (attributes->getLife() <= 0)
+			{
+				current_input_event = I_DIE;
+			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 			{
 				//Do skill

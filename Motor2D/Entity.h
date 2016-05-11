@@ -70,7 +70,7 @@ private:
 	uint id;
 	iPoint worldPosition;
 	iPoint mapPosition;
-	Attributes* attributes = NULL;
+	
 
 	bool alive;
 
@@ -80,6 +80,7 @@ private:
 	Collider* collider = NULL;
 
 public:
+	Attributes* attributes = NULL;
 	entityType type = UNKNOWN;
 
 //Generic methods----------------------------
