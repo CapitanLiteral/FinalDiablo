@@ -133,6 +133,7 @@ private:
 	ACTION_STATE current_action;
 	ACTION_STATE previous_action;
 	DIRECTION current_direction;
+	DIRECTION previous_direction;
 
 	SDL_Texture* barbarianImage = NULL;
 	SDL_Texture* butcherImage = NULL;

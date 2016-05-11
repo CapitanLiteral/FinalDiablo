@@ -1,7 +1,6 @@
 #include "Paladin.h"
 
 #include "App.h"
-#include "Textures.h"
 #include "Render.h"
 #include "p2Log.h"
 #include "EntityManager.h"
@@ -9,6 +8,7 @@
 #include "Player.h"
 #include "Game.h"
 #include "Collision.h"
+#include "Attributes.h"
 
 
 Paladin::Paladin() : Entity()
@@ -28,6 +28,11 @@ Paladin::Paladin() : Entity()
 	colliderSize.Set(50, 100);
 
 	collider = app->collision->addCollider({worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y, colliderSize.x, colliderSize.y}, COLLIDER_ENEMY, app->game->em);
+
+	alive = true;
+
+	AttributeBuilder builder;
+	attributes = new Attributes(builder);
 }
 
 Paladin::~Paladin()

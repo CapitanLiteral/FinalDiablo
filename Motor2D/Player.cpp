@@ -82,6 +82,10 @@ bool Player::update(float dt)
 
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
+	if (enemyFocus != NULL)
+	{
+		LOG("Enemy taget");
+	}
 	
 	//if (isInDestiny())
 	//{
@@ -135,20 +139,27 @@ void Player::draw()
 {
 	//Not elegant, but works // May be the vibration of player comes from here ERROR
 	setDirection();
-	switch (currentPhase)
-	{
-	case BARBARIAN:
-		current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
-		break;
-	case BUTCHER:
-		current_animation = &butcherAnim.find({ current_action, current_direction })->second;
-		break;
-	case DIABLO:
-		current_animation = &diabloAnim.find({ current_action, current_direction })->second;
-		break;
-	default:
-		break;
-	}
+	//if (previous_direction != current_direction || 
+	//	previous_action != current_action)
+	//{
+		switch (currentPhase)
+		{
+		case BARBARIAN:
+			current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+			break;
+		case BUTCHER:
+			current_animation = &butcherAnim.find({ current_action, current_direction })->second;
+			break;
+		case DIABLO:
+			current_animation = &diabloAnim.find({ current_action, current_direction })->second;
+			break;
+		default:
+			break;
+		}
+	//	previous_action = current_action;
+	//	previous_direction = current_direction;
+	//}
+	
 
 	sprite->updateSprite(worldPosition,
 						current_animation->pivot,
