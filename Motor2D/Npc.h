@@ -12,32 +12,7 @@ class GuiLabel;
 class GuiImage;
 enum entityType;
 
-class Npc : public Entity
-{
-public:
-
-	//Constructor
-	Npc(const iPoint &p, uint ID);
-	Npc::~Npc();
-
-	//Drawing methods
-	void draw();
-	void drawDebug();
-
-	bool playerInRange();
-
-	Sprite* getSprite() const;
-
-public:
-
-	float	playerRange;
-
-	SDL_Texture* texture;
-
-
-};
-
-class NpcCounselor : public Npc
+class NpcCounselor : public Entity
 {
 public:
 
@@ -45,17 +20,20 @@ public:
 	NpcCounselor(const iPoint &p, uint ID);
 	~NpcCounselor();
 
-	bool update(float dt);
+	bool entityUpdate(float dt);
 
+	bool playerInRange();
+
+	void drawDebug();
 	void loadGui();
 
 public:
-	SDL_Texture* counselorAtlas = NULL;
 	GuiImage* startingImage = NULL;
+	float	playerRange;
 };
 
 
-class NpcHealer : public Npc
+class NpcHealer : public Entity
 {
 public:
 
@@ -63,15 +41,19 @@ public:
 	NpcHealer(const iPoint &p, uint ID);
 	~NpcHealer();
 
-	bool update(float dt);
+	bool entityUpdate(float dt);
 
+	bool playerInRange();
+	void draw();
+	void drawDebug();
 	void loadGui();
 
 public:
 	GuiImage* startingImage = NULL;
+	float	playerRange;
 };
 
-class NpcGossip : public Npc
+class NpcGossip : public Entity
 {
 public:
 
@@ -79,10 +61,15 @@ public:
 	NpcGossip(const iPoint &p, uint ID);
 	~NpcGossip();
 
-	bool update(float dt);
+	bool entityUpdate(float dt);
+	bool playerInRange();
+
+	void drawDebug();
+	void loadGui();
 
 public:
-
+	GuiImage* startingImage = NULL;
+	float	playerRange;
 };
 
 

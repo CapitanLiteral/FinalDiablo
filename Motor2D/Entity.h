@@ -17,7 +17,7 @@ enum entityType
 	PALADIN,
 	WOLF,
 	GRISWOLD,
-	NPC_COUNCELOUR,
+	NPC_COUNSELOUR,
 	NPC_HEALER,
 	NPC_GOSSIP,
 	DUMMY
@@ -154,13 +154,13 @@ private:
 //Visual----------------------------------------------
 protected:
 	Sprite* imageSprite = NULL;
-	iPoint spritePivot;
-	SDL_Rect spriteRect;
+	Animation* currentAnimation = NULL;
+	std::map<std::pair<entityState, entityDirection>, Animation>*	entityAnim = NULL;
 private:
 	
-	std::map<std::pair<entityState, entityDirection>, Animation>*	entityAnim = NULL;
+	
 
-	Animation* currentAnimation = NULL;
+	
 
 //Enum instances
 	entityInputState current_input = EI_NULL;

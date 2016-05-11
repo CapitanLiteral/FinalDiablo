@@ -14,6 +14,7 @@
 #include "Audio.h"
 #include "Player.h"
 #include "Map.h"
+#include "Npc.h"
 
 Act1::Act1()
 {
@@ -68,7 +69,7 @@ bool Act1::start()
 	//app->game->em->addNpc(a, NPC_COUNSELOR);
 	//a.x -= 40;
 	//a.y -= 40;
-	//app->game->em->addNpc(a, NPC_HEALER);
+	app->game->em->createNpc(a, NPC_HEALER);
 	//app->game->em->addNpc(a, NPC_GOSSIP);
 	createProps();
 

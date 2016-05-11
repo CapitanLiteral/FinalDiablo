@@ -25,7 +25,12 @@ bool Entity::entityUpdate(float internDT)
 bool Entity::entityPostUpdate()
 {
 	bool ret = true;
+	draw();
 
+	if (app->debug)
+	{
+		drawDebug();
+	}
 	return ret;
 }
 

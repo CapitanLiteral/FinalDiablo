@@ -1,6 +1,7 @@
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Player.h"
+#include "Npc.h"
 #include "Paladin.h"
 #include "FileSystem.h"
 
@@ -43,10 +44,14 @@ bool EntityManager::start()
 	acummulatedTime = 0.0f;
 
 	ret = loadEnemiesAnimations();
+	ret = loadNpcAnimations();
 
 	paladinTexture = app->tex->Load("images/Paladin.png");
 	wolfTexture = app->tex->Load("images/Wolf.png");
 	griswoldTexture = app->tex->Load("images/Griswold.png");
+	counselorTexture = app->tex->Load("images/aidanIdle.png");
+	healerTexture = app->tex->Load("images/atmaIdle.png");
+	gossipTexture = app->tex->Load("images/alkorIdle.png");
 
 
 	return ret;
@@ -302,6 +307,178 @@ bool EntityManager::loadEnemiesAnimations()
 	return ret;
 }
 
+bool EntityManager::loadNpcAnimations()
+{
+	bool ret = true;
+	//############################
+	//###     NpcCounselor     ###
+	//############################
+
+	pugi::xml_document	anim_file;
+	pugi::xml_node		anim;
+	char* buff;
+	int size = app->fs->Load("animations/counselor_animations.xml", &buff);
+	pugi::xml_parse_result result = anim_file.load_buffer(buff, size);
+	RELEASE(buff);
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation xml file. Pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+		anim = anim_file.child("animations").first_child();
+
+	if (ret == true)
+	{
+		for (pugi::xml_node action = anim.child("IDLE"); action != NULL; action = action.next_sibling())
+		{
+			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
+			{
+				std::pair<entityState, entityDirection> p;
+				int state = action.child("name").attribute("value").as_int();
+				p.first = (entityState)state;
+
+				int di = dir.first_child().attribute("name").as_int();
+				p.second = (entityDirection)di;
+
+				Animation anims;
+				int x = dir.first_child().attribute("x").as_int();
+				int y = dir.first_child().attribute("y").as_int();
+				int w = dir.first_child().attribute("w").as_int();
+				int h = dir.first_child().attribute("h").as_int();
+				int fN = dir.first_child().attribute("frameNumber").as_int();
+				int margin = dir.first_child().attribute("margin").as_int();
+				bool loop = action.child("loop").attribute("value").as_bool();
+				int pivotX = dir.first_child().attribute("pivot_x").as_int();
+				int pivotY = dir.first_child().attribute("pivot_y").as_int();
+				float animSpeed = action.child("speed").attribute("value").as_float();
+				anims.setAnimation(x, y, w, h, fN, margin);
+				anims.loop = loop;
+				anims.speed = animSpeed;
+				anims.pivot.x = pivotX;
+				anims.pivot.y = pivotY;
+
+				iPoint piv;
+				counselorAnim.insert(std::pair<std::pair<entityState, entityDirection>, Animation >(p, anims));
+				counselorAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+				piv = counselorAnim.find({ p.first, p.second })->second.pivot;
+
+			}
+		}
+	}
+
+	//############################
+	//###     NpcHealer        ###
+	//############################
+
+	size = app->fs->Load("animations/healer_animations.xml", &buff);
+	result = anim_file.load_buffer(buff, size);
+	RELEASE(buff);
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation xml file. Pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+		anim = anim_file.child("animations").first_child();
+
+	if (ret == true)
+	{
+		for (pugi::xml_node action = anim.child("IDLE"); action != NULL; action = action.next_sibling())
+		{
+			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
+			{
+				std::pair<entityState, entityDirection> p;
+				int state = action.child("name").attribute("value").as_int();
+				p.first = (entityState)state;
+
+				int di = dir.first_child().attribute("name").as_int();
+				p.second = (entityDirection)di;
+
+				Animation anims;
+				int x = dir.first_child().attribute("x").as_int();
+				int y = dir.first_child().attribute("y").as_int();
+				int w = dir.first_child().attribute("w").as_int();
+				int h = dir.first_child().attribute("h").as_int();
+				int fN = dir.first_child().attribute("frameNumber").as_int();
+				int margin = dir.first_child().attribute("margin").as_int();
+				bool loop = action.child("loop").attribute("value").as_bool();
+				int pivotX = dir.first_child().attribute("pivot_x").as_int();
+				int pivotY = dir.first_child().attribute("pivot_y").as_int();
+				float animSpeed = action.child("speed").attribute("value").as_float();
+				anims.setAnimation(x, y, w, h, fN, margin);
+				anims.loop = loop;
+				anims.speed = animSpeed;
+				anims.pivot.x = pivotX;
+				anims.pivot.y = pivotY;
+
+				iPoint piv;
+				healerAnim.insert(std::pair<std::pair<entityState, entityDirection>, Animation >(p, anims));
+				healerAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+				piv = healerAnim.find({ p.first, p.second })->second.pivot;
+
+			}
+		}
+	}
+
+	//############################
+	//###     NpcGossip        ###
+	//############################
+
+	size = app->fs->Load("animations/gossip_animations.xml", &buff);
+	result = anim_file.load_buffer(buff, size);
+	RELEASE(buff);
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation xml file. Pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+		anim = anim_file.child("animations").first_child();
+
+	if (ret == true)
+	{
+		for (pugi::xml_node action = anim.child("IDLE"); action != NULL; action = action.next_sibling())
+		{
+			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
+			{
+				std::pair<entityState, entityDirection> p;
+				int state = action.child("name").attribute("value").as_int();
+				p.first = (entityState)state;
+
+				int di = dir.first_child().attribute("name").as_int();
+				p.second = (entityDirection)di;
+
+				Animation anims;
+				int x = dir.first_child().attribute("x").as_int();
+				int y = dir.first_child().attribute("y").as_int();
+				int w = dir.first_child().attribute("w").as_int();
+				int h = dir.first_child().attribute("h").as_int();
+				int fN = dir.first_child().attribute("frameNumber").as_int();
+				int margin = dir.first_child().attribute("margin").as_int();
+				bool loop = action.child("loop").attribute("value").as_bool();
+				int pivotX = dir.first_child().attribute("pivot_x").as_int();
+				int pivotY = dir.first_child().attribute("pivot_y").as_int();
+				float animSpeed = action.child("speed").attribute("value").as_float();
+				anims.setAnimation(x, y, w, h, fN, margin);
+				anims.loop = loop;
+				anims.speed = animSpeed;
+				anims.pivot.x = pivotX;
+				anims.pivot.y = pivotY;
+
+				iPoint piv;
+				gossipAnim.insert(std::pair<std::pair<entityState, entityDirection>, Animation >(p, anims));
+				gossipAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+				piv = gossipAnim.find({ p.first, p.second })->second.pivot;
+
+			}
+		}
+	}
+	return ret;
+}
 bool EntityManager::remove(uint id)
 {
 	bool ret = true;
@@ -396,6 +573,35 @@ Paladin* EntityManager::createPaladin(iPoint pos)
 	return ret;
 }
 
+Entity* EntityManager::createNpc(iPoint position, entityType type){
+	switch (type)
+	{
+	case (NPC_COUNSELOUR):
+		{
+			 NpcCounselor* ret = new NpcCounselor(position, nextId);
+			 activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+			 return ret;
+			break;
+		}
+	case (NPC_HEALER) :
+	{
+		NpcHealer* ret = new NpcHealer(position, nextId);
+		activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+		return ret;
+		break;
+	}
+	case (NPC_GOSSIP) :
+	{
+		NpcGossip* ret = new NpcGossip(position, nextId);
+		activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+		return ret;
+		break;
+	}
+	}
+	nextId++;
+	return NULL;
+}
+
 SDL_Texture* EntityManager::getPaladinTexture()
 {
 	return paladinTexture;
@@ -426,7 +632,35 @@ std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::get
 	return &griswoldAnim;
 }
 
+SDL_Texture* EntityManager::getCounselorTexture()
+{
+	return counselorTexture;
+}
 
+std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getCounselorAnimation()
+{
+	return &counselorAnim;
+}
+
+SDL_Texture* EntityManager::getHealerTexture()
+{
+	return healerTexture;
+}
+
+std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getHealerAnimation()
+{
+	return &healerAnim;
+}
+
+SDL_Texture* EntityManager::getGossipTexture()
+{
+	return gossipTexture;
+}
+
+std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getGossipAnimation()
+{
+	return &gossipAnim;
+}
 uint EntityManager::getEntityAtPosition(iPoint position)
 {
 	uint ret = NULL;

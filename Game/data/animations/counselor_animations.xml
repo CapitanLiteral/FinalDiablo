@@ -1,0 +1,44 @@
+<!-- Animations -->
+<animations>
+<IDLE>
+	<name value="0"/>
+	<UP> <!-- Up 0-->
+		<values name = "0" x ="0" y = "512" w = "64" h = "128" frameNumber = "16" margin = "" pivot_x = "40" pivot_y = "94"/>
+	</UP>
+
+	<UP_RIGHT> <!-- UP_RIGHT 1-->
+		<values name = "1" x ="0" y = "640" w = "64" h = "128" frameNumber = "16" margin = "" pivot_x = "40" pivot_y = "94"/>
+	</UP_RIGHT>
+
+	<RIGHT> <!-- RIGHT 2-->
+		<values name = "2" x ="0" y = "768" w = "64" h = "128" frameNumber = "16" margin = "" pivot_x = "40" pivot_y = "94"/>
+	</RIGHT>
+
+	<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
+		<values name = "3" x ="0" y = "896" w = "64" h = "128" frameNumber = "16" margin = "" pivot_x = "25" pivot_y = "94"/>
+	</DOWN_RIGHT>
+
+	<DOWN> <!-- DOWN 4-->
+		<values name = "4" x ="0" y = "0" w = "64" h = "128" frameNumber = "16" margin = "" pivot_x = "25" pivot_y = "94"/>
+	</DOWN>
+
+	<DOWN_LEFT> <!-- DOWN_LEFT 5-->
+		<values name = "5" x ="0" y = "128" w = "64" h = "128" frameNumber = "16" margin = "" pivot_x = "25" pivot_y = "94"/>
+	</DOWN_LEFT>
+
+	<LEFT> <!-- LEFT 6-->
+		<values name = "6" x ="0" y = "256" w = "64" h = "128" frameNumber = "16" margin = "" pivot_x = "25" pivot_y = "94"/>
+	</LEFT>
+
+	<UP_LEFT> <!-- UP_LEFT 7-->
+		<values name = "7" x ="0" y = "384" w = "64" h = "128" frameNumber = "16" margin = "" pivot_x = "35" pivot_y = "94"/>
+	</UP_LEFT>
+			
+	<loop value = "1" />
+
+	<speed value = "0.15" />
+</IDLE>
+
+</animations>
+
+

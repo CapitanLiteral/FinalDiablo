@@ -123,6 +123,9 @@ void Collision::drawDebug(Collider *col)
 	case COLLIDER_ENEMY_PARTICLE:
 		app->render->DrawQuad(col->rect, 255, 0, 255, alpha, false);
 		break;
+	case COLLIDER_NPC:
+		app->render->DrawQuad(col->rect, 255, 255, 0, alpha, false);
+		break;
 	}
 }
 

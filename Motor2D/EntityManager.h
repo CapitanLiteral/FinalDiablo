@@ -10,7 +10,9 @@
 
 class Player;
 class Paladin;
+class Npc;
 class Entity;
+enum entityType;
 enum entityState;
 enum entityDirection;
 
@@ -42,6 +44,8 @@ public:
 
 	Paladin* createPaladin(iPoint pos);
 
+	Entity* createNpc(iPoint position, entityType type);
+
 	SDL_Texture* getPaladinTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation>* getPaladinAnimation();
 
@@ -50,6 +54,15 @@ public:
 
 	SDL_Texture* getGriswoldTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation>* getGriswoldAnimation();
+
+	SDL_Texture* getCounselorTexture();
+	std::map<std::pair<entityState, entityDirection>, Animation>* getCounselorAnimation();
+
+	SDL_Texture* getHealerTexture();
+	std::map<std::pair<entityState, entityDirection>, Animation>* getHealerAnimation();
+
+	SDL_Texture* getGossipTexture();
+	std::map<std::pair<entityState, entityDirection>, Animation>* getGossipAnimation();
 
 	uint getEntityAtPosition(iPoint position);
 
@@ -74,6 +87,7 @@ private:
 	void sortEntities();
 
 	bool loadEnemiesAnimations();
+	bool loadNpcAnimations();
 
 	//Paladin
 	SDL_Texture* paladinTexture = NULL;
@@ -87,6 +101,17 @@ private:
 	SDL_Texture* griswoldTexture;
 	std::map<std::pair<entityState, entityDirection>, Animation>	griswoldAnim;
 
+	//Counselor texture
+	SDL_Texture* counselorTexture;
+	std::map<std::pair<entityState, entityDirection>, Animation>	counselorAnim;
+
+	//Healer texture
+	SDL_Texture* healerTexture;
+	std::map<std::pair<entityState, entityDirection>, Animation>	healerAnim;
+	
+	//Gossip texture
+	SDL_Texture* gossipTexture;
+	std::map<std::pair<entityState, entityDirection>, Animation>	gossipAnim;
 };
 
 #endif
