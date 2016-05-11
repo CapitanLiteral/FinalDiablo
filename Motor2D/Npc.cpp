@@ -60,8 +60,8 @@ NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
 	collider = app->collision->addCollider(rect, COLLIDER_NPC, app->game->em);
 
 	entityAnim = app->game->em->getCounselorAnimation();
-	//currentAnimation = entityAnim->find({ IDLE, E_DOWN })->second;
-	imageSprite = new Sprite(app->game->em->getCounselorTexture(), worldPosition, /*currentAnimation->pivot*/iPoint{ 0, 0 }, SDL_Rect{ 0, 0, 0, 0 });
+	currentAnimation = &entityAnim->find({ E_IDLE, E_DOWN })->second;
+	imageSprite = new Sprite(app->game->em->getCounselorTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
 }
@@ -96,13 +96,16 @@ void NpcCounselor::loadGui(){
 //Constructor
 NpcHealer::NpcHealer(const iPoint &p, uint ID)
 {
-	type = entityType::NPC_COUNSELOUR;
+	type = entityType::NPC_HEALER;
 	loadGui();
 	setWorldPosition(p);
 	playerRange = 70.0f;
 	
 	colliderOffset.Set(41, 94);
 	colliderSize.Set(64, 128);
+
+	currentState = E_IDLE;
+	direction = E_DOWN;
 
 	SDL_Rect rect = { worldPosition.x - colliderOffset.x,
 		worldPosition.y - colliderOffset.y,	// Position
@@ -111,7 +114,8 @@ NpcHealer::NpcHealer(const iPoint &p, uint ID)
 	collider = app->collision->addCollider(rect, COLLIDER_NPC, app->game->em);
 
 	entityAnim = app->game->em->getHealerAnimation();
-	imageSprite = new Sprite(app->game->em->getHealerTexture(), worldPosition,/* currentAnimation->pivot*/ iPoint{ 41, 94 }, SDL_Rect{ 0, 0, 0, 0 });
+	currentAnimation = &entityAnim->find({ currentState, direction })->second;
+	imageSprite = new Sprite(app->game->em->getHealerTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
 }
@@ -122,7 +126,7 @@ NpcHealer::~NpcHealer(){
 
 void NpcHealer::draw()
 {
-	imageSprite->updateSprite(worldPosition, iPoint{ 41, 94 }, SDL_Rect{0,0,64,128});
+	imageSprite->updateSprite(worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->getCurrentFrame());
 }
 
 void NpcHealer::drawDebug()
@@ -181,7 +185,7 @@ void NpcHealer::loadGui(){
 //Constructor
 NpcGossip::NpcGossip(const iPoint &p, uint ID)
 {
-	type = entityType::NPC_COUNSELOUR;
+	type = entityType::NPC_GOSSIP;
 	setWorldPosition(p);
 	playerRange = 70.0f;
 
@@ -191,7 +195,8 @@ NpcGossip::NpcGossip(const iPoint &p, uint ID)
 	collider = app->collision->addCollider(rect, COLLIDER_NPC, app->game->em);
 
 	entityAnim = app->game->em->getGossipAnimation();
-	imageSprite = new Sprite(app->game->em->getGossipTexture(), worldPosition,/* currentAnimation->pivot*/ iPoint{ 0, 0 }, SDL_Rect{ 0, 0, 0, 0 });
+	currentAnimation = &entityAnim->find({ E_IDLE, E_DOWN })->second;
+	imageSprite = new Sprite(app->game->em->getGossipTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
 }

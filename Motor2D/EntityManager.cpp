@@ -327,7 +327,7 @@ bool EntityManager::loadNpcAnimations()
 		ret = false;
 	}
 	else
-		anim = anim_file.child("animations").first_child();
+		anim = anim_file.child("animations");
 
 	if (ret == true)
 	{
@@ -382,7 +382,7 @@ bool EntityManager::loadNpcAnimations()
 		ret = false;
 	}
 	else
-		anim = anim_file.child("animations").first_child();
+		anim = anim_file.child("animations");
 
 	if (ret == true)
 	{
@@ -437,7 +437,7 @@ bool EntityManager::loadNpcAnimations()
 		ret = false;
 	}
 	else
-		anim = anim_file.child("animations").first_child();
+		anim = anim_file.child("animations");
 
 	if (ret == true)
 	{
@@ -573,7 +573,8 @@ Paladin* EntityManager::createPaladin(iPoint pos)
 	return ret;
 }
 
-Entity* EntityManager::createNpc(iPoint position, entityType type){
+Entity* EntityManager::createNpc(iPoint position, entityType type)
+{
 	switch (type)
 	{
 	case (NPC_COUNSELOUR):

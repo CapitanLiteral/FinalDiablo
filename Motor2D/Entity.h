@@ -158,10 +158,6 @@ protected:
 	Sprite* imageSprite = NULL;
 	Animation* currentAnimation = NULL;
 	std::map<std::pair<entityState, entityDirection>, Animation>*	entityAnim = NULL;
-private:
-	
-	
-
 	
 
 //Enum instances
