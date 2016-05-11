@@ -10,6 +10,8 @@
 
 class Player;
 class Paladin;
+class Wolf;
+class Griswold;
 class Npc;
 class Entity;
 enum entityType;
@@ -43,6 +45,10 @@ public:
 	//Entity* createEntity(iPoint pos, const char* textureName, SDL_Rect& section, SDL_Rect& collider, entityType _type);
 
 	Paladin* createPaladin(iPoint pos);
+
+	Wolf* createWolf(iPoint pos);
+
+	Griswold* createGriswold(iPoint pos);
 
 	Entity* createNpc(iPoint position, entityType type);
 

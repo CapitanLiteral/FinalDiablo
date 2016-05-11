@@ -1,5 +1,5 @@
-#ifndef __WOLF_H__
-#define __WOLF_H__
+#ifndef __GRISWOLD_H__
+#define __GRISWOLD_H__
 
 #include "Entity.h"
 

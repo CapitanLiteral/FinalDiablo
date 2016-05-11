@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Npc.h"
 #include "Paladin.h"
+#include "Wolf.h"
+#include "Griswold.h"
 #include "FileSystem.h"
 
 #include "App.h"
@@ -561,6 +563,38 @@ Paladin* EntityManager::createPaladin(iPoint pos)
 	Paladin* ret = NULL;
 
 	ret = new Paladin();
+
+	ret->setWorldPosition(pos);
+	ret->setId(nextId);
+
+	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+
+	++nextId;
+
+	return ret;
+}
+
+Wolf* EntityManager::createWolf(iPoint pos)
+{
+	Wolf* ret = NULL;
+
+	ret = new Wolf();
+
+	ret->setWorldPosition(pos);
+	ret->setId(nextId);
+
+	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+
+	++nextId;
+
+	return ret;
+}
+
+Griswold* EntityManager::createGriswold(iPoint pos)
+{
+	Griswold* ret = NULL;
+
+	ret = new Griswold();
 
 	ret->setWorldPosition(pos);
 	ret->setId(nextId);
