@@ -52,16 +52,16 @@ bool NpcCounselor::entityUpdate(float dt)
 		{
 			if (app->game->player->attributes->getLevel() == 1  || readed)
 			{
-				introductionImage->Activate();
+			//	introductionImage->Activate();
 				readed = false;
 			}
 			else if (app->game->player->attributes->getLevel() < 5)
-			{
+			{//
 				secondImage->Activate();
 			}
 			else if (app->game->player->attributes->getLevel() == 5)
 			{
-				readyToGoImage->Activate();
+			//	readyToGoImage->Activate();
 				readyForSecondZone = true;
 			}
 			else if (readyForSecondZone)
@@ -70,26 +70,26 @@ bool NpcCounselor::entityUpdate(float dt)
 			}
 			else if (app->game->player->attributes->getLevel() == 5 && readyForSecondZone)
 			{
-				secondIntroductionImage->Activate();
+				//secondIntroductionImage->Activate();
 			}
 			else if (app->game->player->attributes->getLevel() < 10)
 			{
-				secondSecondaryImage->Activate();
+				//secondSecondaryImage->Activate();
 			}
 			else if (app->game->player->attributes->getLevel() == 10)
 			{
-				finalFightImage->Activate();
+			//	finalFightImage->Activate();
 				//set position al centre on hi han ordas fe penya forta
 			}
 		}
 	}
 	else{
-		introductionImage->Desactivate();
+		/*introductionImage->Desactivate();
 		secondImage->Desactivate();
 		readyToGoImage->Desactivate();
 		secondIntroductionImage->Desactivate();
 		secondSecondaryImage->Desactivate();
-		finalFightImage->Desactivate();
+		finalFightImage->Desactivate();*/
 	}
 
 	return true;
@@ -173,18 +173,18 @@ bool NpcHealer::entityUpdate(float dt)
 		{
 			if (readed < 3)
 			{
-				introductionImage->Activate();
+				//introductionImage->Activate();
 				readed++;
 			}
 			else if (readed >= 3)
 			{
-				randImage->Activate();
+				//randImage->Activate();
 			}
 		}
 	}
 	else{
-		introductionImage->Desactivate();
-		randImage->Desactivate();
+		/*introductionImage->Desactivate();
+		randImage->Desactivate();*/
 	}
 
 	return true;
@@ -260,18 +260,18 @@ bool NpcGossip::entityUpdate(float dt)
 		{
 			if (readed < 3)
 			{
-				introductionImage->Activate();
+				//introductionImage->Activate();
 				readed++;
 			}
 			else if (readed >= 3)
 			{
-				randImage->Activate();
+			//	randImage->Activate();
 			}
 		}
 	}
 	else{
-		introductionImage->Desactivate();
-		randImage->Desactivate();
+	/*	introductionImage->Desactivate();
+		randImage->Desactivate();*/
 	}
 
 	return true;
