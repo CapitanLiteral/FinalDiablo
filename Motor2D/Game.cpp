@@ -4,7 +4,6 @@
 #include "Hud.h"
 #include "EntityManager.h"
 #include "Attributes.h"
-#include "hudBelt.h"
 
 
 Game::Game() : Module()
@@ -16,8 +15,7 @@ Game::Game() : Module()
 
 	player->attributes->setHud(hud);
 	player->attributes->setReferences(&player->worldPosition.x, &player->worldPosition.y);
-	hud->character = player->attributes;
-	hud->belt->character = player->attributes;
+	hud->playerAtt = player->attributes;
 
 	//add modules to the list
 	addModule(player);

@@ -93,20 +93,6 @@ bool hudSkilltree::postUpdate()
 //Called before quitting
 bool hudSkilltree::cleanUp()
 {
-	for (int i = 0; i < Hud_gui_elements.size(); i++)
-	{
-		for (list<GuiElement*>::iterator item2 = app->gui->gui_elements.begin(); item2 != app->gui->gui_elements.end(); item2++)
-		{
-			if ((*item2) == Hud_gui_elements[i])
-			{
-				RELEASE(*item2);
-				app->gui->gui_elements.erase(item2);
-				break;
-			}
-		}
-	}
-
-	Hud_gui_elements.clear();
 	return true;
 }
 

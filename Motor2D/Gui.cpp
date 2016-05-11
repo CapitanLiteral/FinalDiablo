@@ -42,7 +42,7 @@ bool Gui::awake(pugi::xml_node& conf)
 bool Gui::start()
 {
 	mouse_clicked == false;
-	atlas = app->tex->Load(atlas_file_name.getString());
+	atlas = app->tex->Load(atlas_file_name.c_str());
 	//Disables the cursor
 	SDL_ShowCursor(SDL_DISABLE);
 	//Mouse--------
@@ -52,15 +52,11 @@ bool Gui::start()
 	return true;
 }
 
-//NOTE: puted the active boolean in action,not only a function because when activated again it needs to have the same stats as before
-// update all guis
 bool Gui::preUpdate()
 {
-	//Interaction with mouse reseted every beginning of iteration
 	mouse_hovering = false;
-
-	//Updating the mouse cursor image
 	mouse->update();
+
 	//---------------
 	if (app->input->getKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
@@ -84,65 +80,9 @@ bool Gui::preUpdate()
 	
 	list<GuiElement*>::iterator item;
 
-	//NOTE: for now, we don't need the focus
-	/*if (app->input->getKey(SDL_SCANCODE_TAB) == KEY_DOWN)
-	{
-		//int index = gui_elements.find(focus);
-		//substitute for focus
-		item = gui_elements.begin();
-		int index = 0;
-		while (item != gui_elements.end())
-		{
-			if ((*item) == focus)
-				break;
-
-			index++;
-			item++;
-		}
-		if (item == gui_elements.end())
-			index = -1;
-		//
-		if (focus)
-		{
-			focus = NULL;
-			index++;
-			item = gui_elements.begin();
-			//substitute for "at"
-			for (int pos = 0; item != gui_elements.end(); item++)
-			{
-				if (pos == index)
-					break;
-
-				pos++;
-			}
-
-			for (; item != gui_elements.end(); item++)
-			{
-				if ((*item)->focusable)
-				{
-					focus = *item;
-					break;
-				}
-			}
-		}
-
-		if (!focus)
-			for (item = gui_elements.begin(); item != gui_elements.end(); item++)
-			{
-				if ((*item)->focusable)
-				{
-					focus = *item;
-					break;
-				}
-			}
-	}*/
-
-	//NOTE, if we use the changeScene at OnEvent, it crashes here , even if there are no items, it says that there's an item without content (NULL)
-	//Ask ric with more questions about UI
 	for (item = gui_elements.begin(); item != gui_elements.end(); item++)
 	{
-		//Checks the interactable items and the hover one, to check if there's any mouse interaction (because the player doen't move when interacting with GUI)
-		if (((*item)->interactable || (*item) == hover_element) && (*item)->active)
+		if (((*item)->interactable || &(*item._Ptr->_Myval) == hover_element) && (*item)->active)
 		{
 			(*item)->CheckEvent(hover_element, focus, mouse_hovering);
 			
@@ -176,37 +116,22 @@ bool Gui::preUpdate()
 // Called after all updates
 bool Gui::postUpdate()
 {
-	//Mouse----------
-	
-
 	list<GuiElement*>::iterator item = gui_elements.begin();
 	for (; item != gui_elements.end(); item++)
 	{
 		if ((*item)->active)
 		{
-			if ((*item)->debug == false)
-			{
-				(*item)->draw();
-				if (app->debug)
-					(*item)->drawDebug();
-			}
-			else
-			{
-				if (app->debug)
-					(*item)->draw();
-			}
+			(*item)->draw();
+
+			if(app->debug) (*item)->drawDebug();
 		}
 	}
 
 	if (dragged_item)
 	{
 		dragged_item->draw();
-		if (app->debug)
-		{
-			dragged_item->drawDebug();
-		}
+		if (app->debug) dragged_item->drawDebug();
 	}
-	//
 	else
 	{
 		mouse->draw();
@@ -218,17 +143,7 @@ bool Gui::postUpdate()
 // Called before quitting
 bool Gui::cleanUp()
 {
-	LOG("Freeing GUI");
-
-	/*
-	NOTE: Commenting this because crash
-
-	list<GuiElement*>::iterator item = gui_elements.begin();
-	for (; item != gui_elements.end(); item++)
-		RELEASE(*item);
-
 	gui_elements.clear();
-	*/
 
 	return true;
 }
@@ -263,7 +178,7 @@ GuiAnimation* Gui::addGuiAnimation(iPoint p, SDL_Rect r, GuiElement* par, Module
 	return guiAnimation;
 }
 
-GuiLabel* Gui::addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par,TextColor color, Module* list)
+GuiLabel* Gui::addGuiLabel(std::string t, _TTF_Font* f, iPoint p, GuiElement* par,TextColor color, Module* list)
 {
 	GuiLabel* label;
 	
@@ -276,7 +191,7 @@ GuiLabel* Gui::addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par,
 	if (label->parent != NULL)label->parent->addChild(label);
 	return label;
 }
-GuiLabel* Gui::addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par, Module* list)
+GuiLabel* Gui::addGuiLabel(std::string t, _TTF_Font* f, iPoint p, GuiElement* par, Module* list)
 {
 	GuiLabel* label;
 	TextColor color = FONT_BLACK;
@@ -289,7 +204,7 @@ GuiLabel* Gui::addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par,
 	if (label->parent != NULL)label->parent->addChild(label);
 	return label;
 }
-GuiImage* Gui::addGuiImageWithLabel(iPoint p, SDL_Rect r, p2SString t, _TTF_Font* f, iPoint i, GuiElement* par, Module* list)
+GuiImage* Gui::addGuiImageWithLabel(iPoint p, SDL_Rect r, std::string t, _TTF_Font* f, iPoint i, GuiElement* par, Module* list)
 {
 	GuiImage* image = new GuiImage(p, r, par, list);
 	if (image->parent != NULL)image->parent->addChild(image);
@@ -303,7 +218,7 @@ GuiImage* Gui::addGuiImageWithLabel(iPoint p, SDL_Rect r, p2SString t, _TTF_Font
 	return image;
 }
 
-GuiInputBox* Gui::addGuiInputBox(p2SString t, _TTF_Font* f, iPoint p, int width, SDL_Rect r, iPoint offset, GuiElement* par, Module* list)
+GuiInputBox* Gui::addGuiInputBox(std::string t, _TTF_Font* f, iPoint p, int width, SDL_Rect r, iPoint offset, GuiElement* par, Module* list)
 {
 	GuiInputBox* input = new GuiInputBox(t, f, p, width, r, offset, par, list);
 	gui_elements.push_back(input);
@@ -311,7 +226,7 @@ GuiInputBox* Gui::addGuiInputBox(p2SString t, _TTF_Font* f, iPoint p, int width,
 	return input;
 }
 
-GuiButton* Gui::addGuiButton(iPoint p, SDL_Rect idle_r1, SDL_Rect hover_r1, SDL_Rect click_r1, p2SString t, _TTF_Font* f , Module* list, GuiElement* parent)
+GuiButton* Gui::addGuiButton(iPoint p, SDL_Rect idle_r1, SDL_Rect hover_r1, SDL_Rect click_r1, std::string t, _TTF_Font* f, Module* list, GuiElement* parent)
 {
 	GuiButton* button = new GuiButton(p, idle_r1, hover_r1, click_r1, t, f, list, parent);
 	gui_elements.push_back(button);
@@ -328,7 +243,7 @@ GuiElement* Gui::FindSelectedElement()
 	{
 		if ((*item)->CheckCollision(app->input->getMousePosition()) && (*item)->active)
 		{
-			return *item;
+			return (*item);
 		}
 	}
 	return NULL;
@@ -350,4 +265,3 @@ GuiInventory* Gui::addGuiInventory(iPoint p, SDL_Rect r, int col, int rows, int 
 	gui_elements.push_back(inventory);
 	return inventory;
 }
-// class Gui ---------------------------------------------------*/

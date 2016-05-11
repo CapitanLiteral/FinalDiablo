@@ -36,14 +36,14 @@ GuiElement::GuiElement(iPoint p, SDL_Rect r, GUI_Type t, GuiElement* par, Module
 	mask = false;
 }
 
-GuiLabel::GuiLabel(p2SString t, _TTF_Font* f, iPoint p, TextColor color, GuiElement* par, Module* list = NULL)
+GuiLabel::GuiLabel(std::string t, _TTF_Font* f, iPoint p, TextColor color, GuiElement* par, Module* list = NULL)
 	: GuiElement(p, GUI_LABEL, par, list), text(t), font(f)
 {
 	// NOTE :Have to polish the texture sistem in the label
-	tex = app->font->Print(text.getString(),color,f);
+	tex = app->font->Print(text.c_str(),color,f);
 	this->color = color;
 	tex_rect = { 0, 0, 0, 0 };
-	app->font->CalcSize(text.getString(), tex_rect.w, tex_rect.h);
+	app->font->CalcSize(text.c_str(), tex_rect.w, tex_rect.h);
 	SetLocalRect({ p.x, p.y, tex_rect.w, tex_rect.h});
 }
 
@@ -53,7 +53,7 @@ GuiImage::GuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list)
 {}
 
 //NOTE :I'm doing an especific constructor, have to change this
-GuiInputBox::GuiInputBox(p2SString t, _TTF_Font* f, iPoint p, int width, SDL_Rect r, iPoint offset, GuiElement* par, Module* list)
+GuiInputBox::GuiInputBox(std::string t, _TTF_Font* f, iPoint p, int width, SDL_Rect r, iPoint offset, GuiElement* par, Module* list)
 	: GuiElement(p, r, GUI_INPUTBOX, par, list), text(t, f, { 0, 0 },FONT_WHITE, this), image({ offset.x, offset.y }, r, this)
 {
 	SetLocalRect({ p.x, p.y, width, text.getLocalRect().h});
@@ -68,7 +68,7 @@ GuiInputBox::GuiInputBox(p2SString t, _TTF_Font* f, iPoint p, int width, SDL_Rec
 	cursor.x = 0;
 }
 
-GuiButton::GuiButton(iPoint p, SDL_Rect idle_r1, SDL_Rect hover_r1, SDL_Rect click_r1, p2SString t, _TTF_Font* f, Module* list, GuiElement* parent)
+GuiButton::GuiButton(iPoint p, SDL_Rect idle_r1, SDL_Rect hover_r1, SDL_Rect click_r1, std::string t, _TTF_Font* f, Module* list, GuiElement* parent)
 	: GuiElement(p, idle_r1, GUI_BUTTON, parent, list),
 	  button_image(p, idle_r1, this, NULL),
 	  button_label(t, f, p,FONT_BLACK, this, NULL)
@@ -142,16 +142,6 @@ void GuiMouseImage::update()
 	
 	this->SetLocalPosition({ mouse_x, mouse_y });
 }
-//----------------------
-void GuiImage::update(GuiElement* hover, GuiElement* focus)
-{
-	//Nothing
-}
-
-void GuiLabel::update(GuiElement* hover, GuiElement* focus)
-{
-	//Nothing
-}
 
 void GuiInputBox::update(GuiElement* hover, GuiElement* focus)
 {
@@ -177,7 +167,7 @@ void GuiInputBox::update(GuiElement* hover, GuiElement* focus)
 	if (inputOn)
 	{
 		int changed_cursor;
-		p2SString added_text = app->input->getInput(changed_cursor);
+		std::string added_text = app->input->getInput(changed_cursor);
 		
 		if (added_text != text.text || changed_cursor != cursor_pos)
 		{
@@ -193,12 +183,12 @@ void GuiInputBox::update(GuiElement* hover, GuiElement* focus)
 			if (cursor_pos > 0)
 			{
 				
-				p2SString selection(100);
-				selection.Reserve(added_text.Length() * 2);
+				std::string selection;
+				selection.resize(added_text.size() * 2);
 			
-				added_text.SubString(0, cursor_pos, selection);
+				selection = added_text.substr(0, cursor_pos);
 				
-				app->font->CalcSize(selection.getString(), cursor.x, cursor.y);
+				app->font->CalcSize(selection.c_str(), cursor.x, cursor.y);
 			}
 			else
 			{
@@ -209,19 +199,14 @@ void GuiInputBox::update(GuiElement* hover, GuiElement* focus)
 
 }
 
-void GuiButton::update(GuiElement* hover, GuiElement* focus)
-{
-	//Nothing
-}
-
 //GuiLabel Functions
-void GuiLabel::SetText(p2SString t)
+void GuiLabel::SetText(std::string t)
 {
 	if (tex)
 		SDL_DestroyTexture(tex);
 
-	text = t.getString();
-	tex = app->font->Print(text.getString(),color);
+	text = t.c_str();
+	tex = app->font->Print(text.c_str(), color);
 	
 	uint w, h;
 	app->tex->getSize(tex, w, h);
