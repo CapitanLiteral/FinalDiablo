@@ -4,6 +4,7 @@
 #include "Hud.h"
 #include "EntityManager.h"
 #include "Attributes.h"
+#include "Gui.h"
 
 
 Game::Game() : Module()
@@ -52,6 +53,8 @@ bool Game::awake(pugi::xml_node& conf)
 // Called before the first frame
 bool Game::start()
 {
+	app->gui->clearUI();
+
 	list<Module*>::iterator item = game_modules.begin();
 
 	for (; item != game_modules.end(); item++)
@@ -108,6 +111,8 @@ bool Game::postUpdate()
 // Called before quitting
 bool Game::cleanUp()
 {
+	app->gui->clearUI();
+
 	list<Module*>::iterator item = game_modules.begin();
 
 	for (; item != game_modules.end(); item++)

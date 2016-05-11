@@ -265,3 +265,16 @@ GuiInventory* Gui::addGuiInventory(iPoint p, SDL_Rect r, int col, int rows, int 
 	gui_elements.push_back(inventory);
 	return inventory;
 }
+
+bool Gui::clearUI()
+{
+	list<GuiElement*>::reverse_iterator item = gui_elements.rbegin();
+
+	for (; item != gui_elements.rend(); item++)
+	{
+		GuiElement* tmp = *item;
+		RELEASE(tmp);
+	}
+
+	return true;
+}

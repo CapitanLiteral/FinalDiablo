@@ -60,6 +60,8 @@ public:
 
 	SDL_Texture* getAtlas() const;
 
+	bool clearUI();
+
 public:
 
 	list<GuiElement*> gui_elements;
