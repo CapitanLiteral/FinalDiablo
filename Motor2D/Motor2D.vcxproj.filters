@@ -118,6 +118,9 @@
     <ClCompile Include="Paladin.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -268,6 +271,9 @@
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClInclude>
     <ClInclude Include="Paladin.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
   </ItemGroup>

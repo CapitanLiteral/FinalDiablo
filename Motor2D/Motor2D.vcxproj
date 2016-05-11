@@ -103,6 +103,7 @@
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Npc.cpp" />
     <ClCompile Include="Paladin.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Hud.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="memleaks.h" />
+    <ClInclude Include="Npc.h" />
     <ClInclude Include="Paladin.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Player.h" />

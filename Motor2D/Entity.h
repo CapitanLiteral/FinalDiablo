@@ -65,7 +65,7 @@ public:
 
 	virtual bool entityPostUpdate();
 
-private:
+protected:
 	//Entity dades
 	uint id;
 	iPoint worldPosition;
@@ -152,8 +152,12 @@ private:
 //---------------------------------
 
 //Visual----------------------------------------------
-private:
+protected:
 	Sprite* imageSprite = NULL;
+	iPoint spritePivot;
+	SDL_Rect spriteRect;
+private:
+	
 	std::map<std::pair<entityState, entityDirection>, Animation>*	entityAnim = NULL;
 
 	Animation* currentAnimation = NULL;
