@@ -17,9 +17,9 @@ Paladin::Paladin() : Entity()
 	entityAnim = app->game->em->getPaladinAnimation();
 
 	currentState = E_IDLE;
-	direction = E_DOWN;
+	currentDirection = E_DOWN;
 
-	currentAnimation = &entityAnim->find({ currentState, direction })->second;
+	currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
 
 	imageSprite = new Sprite(app->game->em->getPaladinTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);

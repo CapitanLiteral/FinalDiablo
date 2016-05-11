@@ -1,14 +1,16 @@
-#include "Textures.h"
 #include "Render.h"
 #include "App.h"
 #include "Entity.h"
 #include "Input.h"
 #include "Map.h"
-
+#include "Game.h"
+#include "EntityManager.h"
+#include "Player.h"
+#include "Attributes.h"
 
 Entity::Entity()
 {
-	
+	player = app->game->player;
 }
 
 Entity::~Entity()
@@ -18,6 +20,26 @@ Entity::~Entity()
 bool Entity::entityUpdate(float internDT)
 {
 	bool ret = true;
+
+	if (currentState != E_DEATH)
+	{
+		switch (currentState)
+		{
+		case E_IDLE:
+			break;
+		case E_WALK:
+			updateMovement(internDT);
+			break;
+		case E_SKILL:
+			break;
+		case E_BASIC_ATTACK:
+			if (currentAnimation->Finished() && player != NULL)
+			{
+				player->attributes->damage(attributes,0);
+			}
+			break;
+		}
+	}
 
 	return ret;
 }
@@ -106,7 +128,16 @@ void Entity::setId(int id)
 
 void Entity::draw()
 {
+	//Not elegant, but works // May be the vibration of player comes from here ERROR
+	setDirection();
+	if (previousDirection != currentDirection || previousState != currentState)
+	{
+		currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
+		previousState = currentState;
+		previousDirection = currentDirection;
+	}
 
+	imageSprite->updateSprite(worldPosition, currentAnimation->pivot, currentAnimation->getCurrentFrame());
 }
 
 void Entity::drawDebug()
@@ -140,7 +171,7 @@ void Entity::updateVelocity(float dt)
 
 void Entity::updateMovement(float dt)
 {
-
+	
 }
 
 bool Entity::isTargetReached()
