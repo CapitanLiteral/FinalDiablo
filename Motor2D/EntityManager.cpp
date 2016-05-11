@@ -698,8 +698,6 @@ Entity* EntityManager::getEntityAtPosition(iPoint position)
 {
 	Entity* ret = NULL;
 
-	iPoint pos = app->render->ScreenToWorld(position.x, position.y);
-
 	for (std::map<uint, Entity*>::iterator iterator = activeEntities.begin();
 		iterator != activeEntities.end();
 		iterator++)
@@ -707,8 +705,8 @@ Entity* EntityManager::getEntityAtPosition(iPoint position)
 		if (iterator->second->getCollider())
 		{
 			SDL_Rect rect = iterator->second->getCollider()->rect;
-			if (rect.x <= pos.x	&& rect.x + rect.w >= pos.x
-				&& rect.y <= pos.y && 	rect.y + rect.h >= pos.y)
+			if (rect.x <= position.x	&& rect.x + rect.w >= position.x
+				&& rect.y <= position.y && 	rect.y + rect.h >= position.y)
 			{
 				ret = (*iterator).second;
 			}
