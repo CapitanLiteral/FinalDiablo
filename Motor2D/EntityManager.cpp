@@ -661,7 +661,8 @@ std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::get
 {
 	return &gossipAnim;
 }
-uint EntityManager::getEntityAtPosition(iPoint position)
+
+uint EntityManager::getEntityAtPositionId(iPoint position)
 {
 	uint ret = NULL;
 
@@ -685,7 +686,38 @@ uint EntityManager::getEntityAtPosition(iPoint position)
 	return ret;
 }
 
-uint EntityManager::getEntityOnMouse()
+uint EntityManager::getEntityOnMouseId()
+{
+	iPoint pos = app->input->getMouseWorldPosition();
+
+	return getEntityAtPositionId(pos);
+}
+
+Entity* EntityManager::getEntityAtPosition(iPoint position)
+{
+	Entity* ret = NULL;
+
+	iPoint pos = app->render->ScreenToWorld(position.x, position.y);
+
+	for (std::map<uint, Entity*>::iterator iterator = activeEntities.begin();
+		iterator != activeEntities.end();
+		iterator++)
+	{
+		if (iterator->second->getCollider())
+		{
+			SDL_Rect rect = iterator->second->getCollider()->rect;
+			if (rect.x <= pos.x	&& rect.x + rect.w >= pos.x
+				&& rect.y <= pos.y && 	rect.y + rect.h >= pos.y)
+			{
+				ret = (*iterator).second;
+			}
+		}
+	}
+
+	return ret;
+}
+
+Entity* EntityManager::getEntityOnMouse()
 {
 	iPoint pos = app->input->getMouseWorldPosition();
 

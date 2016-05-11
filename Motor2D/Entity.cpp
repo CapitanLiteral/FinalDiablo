@@ -186,3 +186,21 @@ void Entity::handleInput()
 {
 
 }
+
+
+bool Entity::mouseHover()
+{
+	bool ret = false;
+	iPoint pos = app->input->getMouseWorldPosition();
+
+	if (collider)
+	{
+		if (pos.x >= collider->rect.x && pos.x <= collider->rect.x + collider->rect.w &&
+			pos.y >= collider->rect.y && pos.y <= collider->rect.y + collider->rect.h)
+		{
+			ret = true;
+		}
+	}
+
+	return ret;
+}

@@ -64,9 +64,13 @@ public:
 	SDL_Texture* getGossipTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation>* getGossipAnimation();
 
-	uint getEntityAtPosition(iPoint position);
+	uint getEntityAtPositionId(iPoint position);
 
-	uint getEntityOnMouse();
+	uint getEntityOnMouseId();
+
+	Entity* getEntityAtPosition(iPoint position);
+
+	Entity* getEntityOnMouse();
 
 
 	std::map<uint, Entity*>		activeEntities;
