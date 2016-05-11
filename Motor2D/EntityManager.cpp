@@ -450,3 +450,10 @@ uint EntityManager::getEntityAtPosition(iPoint position)
 
 	return ret;
 }
+
+uint EntityManager::getEntityOnMouse()
+{
+	iPoint pos = app->input->getMouseWorldPosition();
+
+	return getEntityAtPosition(pos);
+}

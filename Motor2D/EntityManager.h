@@ -53,6 +53,8 @@ public:
 
 	uint getEntityAtPosition(iPoint position);
 
+	uint getEntityOnMouse();
+
 
 	std::map<uint, Entity*>		activeEntities;
 	std::map<uint, Entity*>		inactiveEntities;
