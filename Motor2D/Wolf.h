@@ -6,7 +6,7 @@
 class Wolf : public Entity
 {
 public:
-	Wolf();
+	Wolf(iPoint pos);
 	~Wolf();
 
 private:

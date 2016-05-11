@@ -68,11 +68,7 @@ bool EntityManager::preUpdate()
 	{
 		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
 		{
-			iPoint point = app->input->getMousePosition();
-			point = app->render->ScreenToWorld(point.x, point.y);
-			point.x = point.x - 22;
-			point.y = point.y - (93 / 2);
-			//point = app->map->worldToMap(point.x, point.y);
+			iPoint point = app->input->getMouseWorldPosition();
 
 			createPaladin(point);
 		}
@@ -94,7 +90,7 @@ bool EntityManager::update(float dt)
 
 	for (; tmp != activeEntities.end(); ++tmp)
 	{
-		if (doLogic && app->render->isInsideCameraZone(tmp->second->getCollider()->rect))
+		if (doLogic /*&& app->render->isInsideCameraZone(tmp->second->getCollider()->rect)*/)
 		{
 			tmp->second->entityUpdate(dt);
 			acummulatedTime = 0.0f;
@@ -517,9 +513,8 @@ Paladin* EntityManager::createPaladin(iPoint pos)
 {
 	Paladin* ret = NULL;
 
-	ret = new Paladin();
+	ret = new Paladin(pos);
 
-	ret->setWorldPosition(pos);
 	ret->setId(nextId);
 
 	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
@@ -533,7 +528,7 @@ Wolf* EntityManager::createWolf(iPoint pos)
 {
 	Wolf* ret = NULL;
 
-	ret = new Wolf();
+	ret = new Wolf(pos);
 
 	ret->setWorldPosition(pos);
 	ret->setId(nextId);
@@ -549,7 +544,7 @@ Griswold* EntityManager::createGriswold(iPoint pos)
 {
 	Griswold* ret = NULL;
 
-	ret = new Griswold();
+	ret = new Griswold(pos);
 
 	ret->setWorldPosition(pos);
 	ret->setId(nextId);

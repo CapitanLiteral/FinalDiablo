@@ -6,7 +6,7 @@
 class Griswold : public Entity
 {
 public:
-	Griswold();
+	Griswold(iPoint pos);
 	~Griswold();
 
 private:

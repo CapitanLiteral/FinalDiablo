@@ -10,15 +10,17 @@
 #include "Collision.h"
 #include "Attributes.h"
 
-Wolf::Wolf() : Entity()
+Wolf::Wolf(iPoint pos) : Entity()
 {
+	setWorldPosition(pos);
+
 	type = WOLF;
 	entityAnim = app->game->em->getWolfAnimation();
 
 	currentState = E_IDLE;
-	direction = E_DOWN;
+	currentDirection = E_DOWN;
 
-	currentAnimation = &entityAnim->find({ currentState, direction })->second;
+	currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
 
 	imageSprite = new Sprite(app->game->em->getWolfTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);

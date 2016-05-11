@@ -16,19 +16,27 @@ class NpcCounselor : public Entity
 {
 public:
 
-	//Constructor
 	NpcCounselor(const iPoint &p, uint ID);
 	~NpcCounselor();
 
 	bool entityUpdate(float dt);
-
+	
+	void draw();
+	void drawDebug();
+	
 	bool playerInRange();
 
-	void drawDebug();
 	void loadGui();
 
 public:
-	GuiImage* startingImage = NULL;
+	GuiImage* introductionImage = NULL;
+	GuiImage* secondImage = NULL;
+	GuiImage* readyToGoImage = NULL;
+	GuiImage* secondIntroductionImage = NULL;
+	GuiImage* secondSecondaryImage = NULL;
+	GuiImage* finalFightImage = NULL;
+	bool readed;
+	bool readyForSecondZone;
 	float	playerRange;
 };
 
@@ -49,8 +57,10 @@ public:
 	void loadGui();
 
 public:
-	GuiImage* startingImage = NULL;
+	GuiImage* introductionImage = NULL;
+	GuiImage* randImage = NULL;
 	float	playerRange;
+	uint readed;
 };
 
 class NpcGossip : public Entity
@@ -63,13 +73,15 @@ public:
 
 	bool entityUpdate(float dt);
 	bool playerInRange();
-
+	void draw();
 	void drawDebug();
 	void loadGui();
 
 public:
-	GuiImage* startingImage = NULL;
+	GuiImage* introductionImage = NULL;
+	GuiImage* randImage = NULL;
 	float	playerRange;
+	uint readed;
 };
 
 

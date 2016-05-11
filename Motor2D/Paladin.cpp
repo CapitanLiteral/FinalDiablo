@@ -11,21 +11,23 @@
 #include "Attributes.h"
 
 
-Paladin::Paladin() : Entity()
+Paladin::Paladin(iPoint pos) : Entity()
 {
+	setWorldPosition(pos);
+
 	type = PALADIN;
 	entityAnim = app->game->em->getPaladinAnimation();
 
 	currentState = E_IDLE;
-	direction = E_DOWN;
+	currentDirection = E_DOWN;
 
-	currentAnimation = &entityAnim->find({ currentState, direction })->second;
+	currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
 
 	imageSprite = new Sprite(app->game->em->getPaladinTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
-	colliderOffset.Set(25, 100);
-	colliderSize.Set(50, 100);
+	colliderOffset.Set(25, 70);
+	colliderSize.Set(50, 75);
 
 	collider = app->collision->addCollider({worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y, colliderSize.x, colliderSize.y}, COLLIDER_ENEMY, app->game->em);
 

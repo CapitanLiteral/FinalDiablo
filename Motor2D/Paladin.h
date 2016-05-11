@@ -6,7 +6,7 @@
 class Paladin : public Entity
 {
 public: 
-	Paladin();
+	Paladin(iPoint pos);
 	~Paladin();
 
 private:
