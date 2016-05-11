@@ -91,7 +91,7 @@ bool EntityManager::update(float dt)
 
 	for (; tmp != activeEntities.end(); ++tmp)
 	{
-		if (doLogic && app->render->isInsideCameraZone(tmp->second->getCollider()->rect))
+		if (doLogic /*&& app->render->isInsideCameraZone(tmp->second->getCollider()->rect)*/)
 		{
 			tmp->second->entityUpdate(dt);
 			acummulatedTime = 0.0f;

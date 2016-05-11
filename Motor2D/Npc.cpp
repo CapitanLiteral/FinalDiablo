@@ -12,39 +12,10 @@
 #include "snWin.h"
 #include "Act1.h"
 #include "Collision.h"
+#include "Attributes.h"
 //Provisional?
 #include "Audio.h"
 #include "Animation.h"
-
-void NpcCounselor::drawDebug()
-{
-	iPoint position = getWorldPosition();
-
-	app->render->DrawCircle(position.x, position.y, playerRange, 0, 0, 255);
-}
-
-
-bool NpcCounselor::playerInRange()
-{
-	iPoint target_player = app->game->player->getWorldPosition();
-
-	iPoint dist;
-
-	dist.x = target_player.x - getWorldPosition().x;
-	dist.y = target_player.y - getWorldPosition().y;
-
-	float ret = dist.getModule();
-	ret = ret;
-	float range = sqrt(dist.x*dist.x + dist.y*dist.y);
-
-	if (playerRange > ret)
-	{
-		return true;
-	}
-
-	return false;
-}
-
 
 //Constructor
 NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
@@ -53,6 +24,9 @@ NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
 	loadGui();
 	setWorldPosition(p);
 	playerRange = 70.0f;
+
+	readed = true;
+	readyForSecondZone = false;
 
 	SDL_Rect rect = { worldPosition.x - colliderOffset.x,
 			worldPosition.y - colliderOffset.y,	// Position
@@ -74,19 +48,84 @@ bool NpcCounselor::entityUpdate(float dt)
 {
 	if (playerInRange())
 	{
-		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN){
-			//if (Entity* ent = app->game->em->getEntityOnMouse())
-			//{
-			//	//Able GUI NPC
-			//	playerInRange();
-			//}
+		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && mouseHover())
+		{
+			if (app->game->player->attributes->getLevel() == 1  || readed)
+			{
+				introductionImage->Activate();
+				readed = false;
+			}
+			else if (app->game->player->attributes->getLevel() < 5)
+			{
+				secondImage->Activate();
+			}
+			else if (app->game->player->attributes->getLevel() == 5)
+			{
+				readyToGoImage->Activate();
+				readyForSecondZone = true;
+			}
+			else if (readyForSecondZone)
+			{
+				//Pasar a la siguiente escena
+			}
+			else if (app->game->player->attributes->getLevel() == 5 && readyForSecondZone)
+			{
+				secondIntroductionImage->Activate();
+			}
+			else if (app->game->player->attributes->getLevel() < 10)
+			{
+				secondSecondaryImage->Activate();
+			}
+			else if (app->game->player->attributes->getLevel() == 10)
+			{
+				finalFightImage->Activate();
+				//set position al centre on hi han ordas fe penya forta
+			}
 		}
 	}
 	else{
-		//Disable NPC GUI
+		introductionImage->Desactivate();
+		secondImage->Desactivate();
+		readyToGoImage->Desactivate();
+		secondIntroductionImage->Desactivate();
+		secondSecondaryImage->Desactivate();
+		finalFightImage->Desactivate();
 	}
 
 	return true;
+}
+
+void NpcCounselor::draw()
+{
+	imageSprite->updateSprite(worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->getCurrentFrame());
+}
+
+void NpcCounselor::drawDebug()
+{
+	iPoint position = getWorldPosition();
+
+	app->render->DrawCircle(position.x, position.y, playerRange, 0, 0, 255);
+}
+
+bool NpcCounselor::playerInRange()
+{
+	iPoint target_player = app->game->player->getWorldPosition();
+
+	iPoint dist;
+
+	dist.x = target_player.x - getWorldPosition().x;
+	dist.y = target_player.y - getWorldPosition().y;
+
+	float ret = dist.getModule();
+	ret = ret;
+	float range = sqrt(dist.x*dist.x + dist.y*dist.y);
+
+	if (playerRange > ret)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void NpcCounselor::loadGui(){
@@ -118,10 +157,37 @@ NpcHealer::NpcHealer(const iPoint &p, uint ID)
 	imageSprite = new Sprite(app->game->em->getHealerTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
+	readed = 0;
 }
 
 NpcHealer::~NpcHealer(){
 
+}
+
+//update
+bool NpcHealer::entityUpdate(float dt)
+{
+	if (playerInRange())
+	{
+		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && mouseHover())
+		{
+			if (readed < 3)
+			{
+				introductionImage->Activate();
+				readed++;
+			}
+			else if (readed >= 3)
+			{
+				randImage->Activate();
+			}
+		}
+	}
+	else{
+		introductionImage->Desactivate();
+		randImage->Desactivate();
+	}
+
+	return true;
 }
 
 void NpcHealer::draw()
@@ -155,34 +221,14 @@ bool NpcHealer::playerInRange()
 
 	return false;
 }
-//update
-bool NpcHealer::entityUpdate(float dt)
-{
-	if (playerInRange())
-	{
-		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN){
-		//	if (Entity* ent = app->game->em->getEntityOnMouse())
-			//{
-		//		startingImage->Activate();
-		//	}
-		}
-	}
-	else{
-		startingImage->Desactivate();
-	}
-
-	return true;
-}
-
 
 void NpcHealer::loadGui(){
 
 	iPoint p = { 0, 0 };
-	startingImage = app->gui->addGuiImage(p, { 1457, 697, 409, 156 }, NULL, NULL);
-	startingImage->Desactivate();
+	introductionImage = app->gui->addGuiImage(p, { 1457, 697, 409, 156 }, NULL, NULL);
+	introductionImage->Desactivate();
 }
 
-//Constructor
 NpcGossip::NpcGossip(const iPoint &p, uint ID)
 {
 	type = entityType::NPC_GOSSIP;
@@ -199,10 +245,41 @@ NpcGossip::NpcGossip(const iPoint &p, uint ID)
 	imageSprite = new Sprite(app->game->em->getGossipTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
+	readed = 0;
 }
 
 NpcGossip::~NpcGossip(){
 
+}
+
+bool NpcGossip::entityUpdate(float dt)
+{
+	if (playerInRange())
+	{
+		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && mouseHover())
+		{
+			if (readed < 3)
+			{
+				introductionImage->Activate();
+				readed++;
+			}
+			else if (readed >= 3)
+			{
+				randImage->Activate();
+			}
+		}
+	}
+	else{
+		introductionImage->Desactivate();
+		randImage->Desactivate();
+	}
+
+	return true;
+}
+
+void NpcGossip::draw()
+{
+	imageSprite->updateSprite(worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->getCurrentFrame());
 }
 
 void NpcGossip::drawDebug()
@@ -231,28 +308,10 @@ bool NpcGossip::playerInRange()
 
 	return false;
 }
-//update
-bool NpcGossip::entityUpdate(float dt)
-{
-	if (playerInRange())
-	{
-		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN){
-			//if (Entity* ent = app->game->em->getEntityOnMouse())
-			//{
-			//	//GUI NPC
-			//}
-		}
-	}
-	else{
-		//Disable NPC GUI
-	}
-
-	return true;
-}
 
 void NpcGossip::loadGui(){
 
 	iPoint p = { 0, 0 };
-	startingImage = app->gui->addGuiImage(p, { 1457, 697, 409, 156 }, NULL, NULL);
-	startingImage->Desactivate();
+	introductionImage = app->gui->addGuiImage(p, { 1457, 697, 409, 156 }, NULL, NULL);
+	introductionImage->Desactivate();
 }
