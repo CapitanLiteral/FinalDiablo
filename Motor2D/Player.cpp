@@ -315,7 +315,7 @@ void Player::handleInput()
 					clickCoords = app->input->getMouseWorldPosition();
 					target = app->map->WorldToMap(clickCoords.x, clickCoords.y);
 
-					enemyFocus = app->game->em->entityOnMouse();
+					//enemyFocus = app->game->em->entityOnMouse();
 					if (enemyFocus == NULL)
 					{
 						//Comprobar si es terra
@@ -325,7 +325,7 @@ void Player::handleInput()
 					else
 					{
 						//comprobar si estas a rang d'atac
-						if (worldPosition.DistanceNoSqrt(enemyFocus->getBlitPosition()) < targetRadius*targetRadius)
+						if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
 						{
 							current_input_event = I_ATTACK;
 						}

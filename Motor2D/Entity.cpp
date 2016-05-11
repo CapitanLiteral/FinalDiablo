@@ -1,83 +1,183 @@
-#include "Entity.h"
-#include "App.h"
-#include "Map.h"
+#include "Textures.h"
 #include "Render.h"
-#include "Collision.h"
+#include "App.h"
+#include "Entity.h"
+#include "Input.h"
+#include "Map.h"
 
-//Constructor
-Entity::Entity(const iPoint &p, uint ID)
+
+Entity::Entity()
 {
-	iPoint tmp = app->map->WorldToMap(p.x, p.y);
-	//position.x = tmp.x;
-	//position.y = tmp.y;
-	tmp = app->map->MapToWorld(tmp.x, tmp.y);
-	position.x = tmp.x - (app->map->data.tile_width / 2);
-	position.y = tmp.y;
-	id = ID;
-	collider_rect = {0, 0, 0, 0};
-	collider = NULL;
-
+	
 }
 
-//Destructor
 Entity::~Entity()
 {
-	SDL_DestroyTexture(tex);
-	//Take an eye on this
-	if (sprite)
-	{
-		app->render->sprites.remove(sprite);
-		RELEASE(sprite);
-	}
 }
 
-//getters
-iPoint Entity::getMapPosition() const
+bool Entity::entityUpdate(float internDT)
 {
-	return app->map->WorldToMap(position.x, position.y);
-}
-
-iPoint Entity::getTilePosition() const
-{
-	iPoint ret = getMapPosition();
-	ret = app->map->MapToWorld(ret.x, ret.y);
-	ret.x -= app->map->data.tile_width / 2;
-	return ret;
-}
-
-iPoint Entity::getBlitPosition() const
-{
-	fPoint tmp = getPivotPosition();
-	iPoint ret(tmp.x, tmp.y);
-	ret.x -= sprite_pivot.x;
-	ret.y -= sprite_pivot.y;
+	bool ret = true;
 
 	return ret;
 }
 
-fPoint Entity::getPivotPosition() const
+bool Entity::entityPostUpdate()
 {
-	//NOTE : put a tile pivot?, more accesible
-	return (position);
+	bool ret = true;
+
+	return ret;
 }
 
-SDL_Rect Entity::getPlayerRect() const
+//Generic methods----------------------------
+
+Collider* Entity::getCollider()const
 {
-	//NOTE: this may be adapted when we use colliders
-	fPoint blit = getPivotPosition();
-
-	blit.x -= colliderOffset.x;
-	blit.y -= colliderOffset.y;
-
-	return{ blit.x, blit.y, collider_rect.w, collider_rect.h };
+	return collider;
+}
+uint Entity::getId()const
+{
+	return id;
 }
 
-SDL_Rect Entity::getPlayerCollider()const
+iPoint Entity::getWorldPosition()const
 {
-	if (collider)
-	{
-		return collider->rect;
-	}
-	else
-		return{ 0, 0, 0, 0 };
+	return worldPosition;
+}
+
+iPoint Entity::getMapPos()const
+{
+	return mapPosition;
+}
+
+iPoint Entity::getStartingWorldPosition() const//This might be useless
+{
+	return worldPosition;
+}
+
+iPoint Entity::getColliderOffset() const
+{
+	return colliderOffset;
+}
+
+iPoint Entity::getColliderSize() const
+{
+	return colliderSize;
+}
+
+Sprite* Entity::getSprite() const
+{
+	return imageSprite;
+}
+
+//Setters
+void Entity::setMapPosition(iPoint tile)
+{
+	mapPosition = tile;
+	worldPosition = app->map->MapToWorld(tile.x, tile.y);
+}
+
+void Entity::setWorldPosition(iPoint coords)
+{
+	worldPosition = coords;
+	mapPosition = app->map->WorldToMap(coords.x, coords.y);
+}
+
+void Entity::setStartingWorldPosition(iPoint coords)//This might be useless
+{
+	worldPosition = coords;
+}
+
+void Entity::setColliderPosition(iPoint coords)
+{
+
+}
+void Entity::setId(int id)
+{
+	this->id = id;
+}
+
+//Draw------------------------------------
+
+void Entity::draw()
+{
+
+}
+
+void Entity::drawDebug()
+{
+
+}
+
+
+//Movement methods
+vector<iPoint> Entity::getNewPath(iPoint target)
+{
+	vector<iPoint> ret;
+
+	return ret;
+}
+
+void Entity::getNewTarget()
+{
+
+}
+
+void Entity::setTarget(iPoint target)
+{
+
+}
+
+void Entity::updateVelocity(float dt)
+{
+
+}
+
+void Entity::updateMovement(float dt)
+{
+
+}
+
+bool Entity::isTargetReached()
+{
+	bool ret = true;
+
+	return ret;
+}
+
+void Entity::move(float dt)
+{
+
+}
+
+void Entity::setMovement(int x, int y)
+{
+
+}
+
+bool Entity::isInDestiny()
+{
+	bool ret = false;
+
+	return ret;
+}
+
+void Entity::setDirection()
+{
+
+}
+
+void Entity::setDirection(fPoint pos)
+{
+
+}
+
+entityState Entity::updateAction()
+{
+	return currentState;
+}
+
+void Entity::handleInput()
+{
+
 }

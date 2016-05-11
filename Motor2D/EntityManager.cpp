@@ -1,359 +1,130 @@
-#include "app.h"
 #include "EntityManager.h"
-#include "Input.h"
-#include "EntEnemy.h"
-#include "EntNpc.h"
-#include "Pathfinding.h"
-#include "p2Log.h"
+#include "Entity.h"
+#include "Player.h"
+#include "Paladin.h"
 #include "FileSystem.h"
-#include "Map.h"
 
+#include "App.h"
 #include "Render.h"
-#include "EntItem.h"
-#include "EntPortal.h"
-#include "EntEnemy.h"
-
+//#include "PathFinding.h"
+#include "p2Log.h"
 #include "Textures.h"
+#include "Input.h"
 #include "Collision.h"
-
-#include "Gui.h"
-//Provisional
-#include "Fonts.h"
-#include "Audio.h"
-
-#include <algorithm>
-
 
 EntityManager::EntityManager() : Module()
 {
+	LOG("EntityManager: Creating.");
 	name.create("EntityManager");
 }
 
-// Destructor
 EntityManager::~EntityManager()
 {
-	nextID = 0;
+	LOG("EntityManager: Destroying.");
+	activeEntities.clear();
+	inactiveEntities.clear();
 }
 
-// Called before render is available
-bool EntityManager::awake(pugi::xml_node &node)
+bool EntityManager::awake(pugi::xml_node& config)
 {
-	return true;
+	LOG("EntityManager: Awake.");
+	bool ret = true;
+
+	return ret;
 }
 
-// Called before the first frame
 bool EntityManager::start()
 {
-	//Crawler
-	/*crawler_idle = app->tex->Load("textures/crawler_idle.png");
-	crawler_walk = app->tex->Load("textures/crawler_walk.png");
-	crawler_death = app->tex->Load("textures/crawler_death.png");
-	crawler_attack = app->tex->Load("textures/crawler_attack.png");*/
+	LOG("EntityManager: Start.");
+	bool ret = true;
 
-	paladinTex = app->tex->Load("images/Paladin.png");
-	wolfTex = app->tex->Load("images/Wolf.png");
-	griswoldTex = app->tex->Load("images/Griswold.png");
+	doLogic = false;
+	updateMsCycle = 1 / 50;
+	acummulatedTime = 0.0f;
 
-	//Boss
-	boss_idle = app->tex->Load("textures/boss_idle.png");
-	boss_walk = app->tex->Load("textures/boss_walk.png");
-	boss_death = app->tex->Load("textures/boss_death.png");
-	boss_attack = app->tex->Load("textures/boss_attack.png");
+	ret = loadEnemiesAnimations();
 
-	//Portal
-	portal_tex = app->tex->Load("textures/portal.png");
-	
-	enemy_name = app->gui->addGuiLabel(" ", NULL, { 260, 0 }, NULL, FONT_WHITE, this);
-	enemy_name->Desactivate();
+	paladinTexture = app->tex->Load("images/Paladin.png");
+	wolfTexture = app->tex->Load("images/Wolf.png");
+	griswoldTexture = app->tex->Load("images/Griswold.png");
 
-	//Sounds
-	crawler_attackfx = app->audio->LoadFx("audio/fx/VileChildAttack.ogg");
-	crawler_gethitfx = app->audio->LoadFx("audio/fx/VileChildgetHit.ogg");
-	crawler_deathfx = app->audio->LoadFx("audio/fx/VileChildDeath.ogg");
 
-	wolf_attackfx = app->audio->LoadFx("audio/fx/WolfAttack.ogg");
-	wolf_gethitfx = app->audio->LoadFx("audio/fx/WolfgetHit.ogg");
-	wolf_deathfx = app->audio->LoadFx("audio/fx/WolfDeath.ogg");
-
-	loadEnemiesAnimations();
-
-	return true;
+	return ret;
 }
 
-// Called each loop iteration
 bool EntityManager::preUpdate()
 {
-	// Clicking middle button, eliminates an entity
-	if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
-	{
-		iPoint pos; 
-		pos = app->input->getMouseWorldPosition();
-		const Entity* entity = entityOnMouse();
+	bool ret = true;
 
-		if (entity != NULL)
+	if (app->debug)
+	{
+		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
 		{
-			remove(entity->id);
+			iPoint point = app->input->getMousePosition();
+			point = app->render->ScreenToWorld(point.x, point.y);
+			point.x = point.x - 22;
+			point.y = point.y - (93 / 2);
+			//point = app->map->worldToMap(point.x, point.y);
+
+			createPaladin(point);
 		}
 	}
 
-
-	return true;
+	return ret;
 }
 
-//update
 bool EntityManager::update(float dt)
 {
-	map<uint, Entity*>::iterator item = activeEntities.begin();
-	for (; item != activeEntities.end(); ++item)
+	bool ret = true;
+
+	//TODO: limitador de fps logics
+	acummulatedTime += dt;
+	if (acummulatedTime >= updateMsCycle)
+		doLogic = true;
+
+	std::map<uint, Entity*>::iterator tmp = activeEntities.begin();
+
+	for (; tmp != activeEntities.end(); ++tmp)
 	{
-		SDL_Rect cam = app->render->camera;
-		fPoint pos = item->second->position;
-		if (pos.x + 100 > -cam.x && pos.x - 100 < -cam.x + cam.w &&
-			pos.y + 100 > -cam.y && pos.y - 100 < -cam.y + cam.h)
+		if (doLogic && app->render->isInsideCameraZone(tmp->second->getCollider()->rect))
 		{
-			item->second->update(dt);
+			tmp->second->entityUpdate(dt);
+			acummulatedTime = 0.0f;
 		}
 	}
 
-	// Entities drawing
-	item = activeEntities.begin();
-	for (; item != activeEntities.end(); ++item)
-	{
-		item->second->draw();
-		if (app->debug)
-		{
-			item->second->drawDebug();
-		}
-
-	}
-
-	/*if (Entity* ent = entityOnMouse())
-	{
-		if (ent->type == ENEMY)
-		{
-			((EntEnemy*)ent)->DrawHPbar();
-			enemy_name->Activate();
-			enemy_name->SetText(((EntEnemy*)ent)->name);
-			enemy_name->Center(true, false);
-		}
-	}
-	else
-		enemy_name->Desactivate();*/
-
-	return true;
+	return ret;
 }
 
-// Called each loop iteration
 bool EntityManager::postUpdate()
 {
+	bool ret = true;
 
-	//Checking if there's an entity under the mouse to do it's stuff
-	// NOTE: put it as gui
+	std::map<uint, Entity*>::iterator tmp = activeEntities.begin();
 
+	for (; tmp != activeEntities.end(); ++tmp)
+		tmp->second->entityPostUpdate();
 
-	return true;
+	return ret;
 }
 
-// Called before quitting
 bool EntityManager::cleanUp()
 {
-	map<uint, Entity*>::iterator item = activeEntities.begin();
-	for (; item != activeEntities.end(); item++)
-		delete item->second;
+	LOG("EntityManager: CleanUp.");
+	bool ret = true;
 
-	item = inactiveEntities.begin();
-	for (; item != inactiveEntities.end(); item++)
-		delete item->second;
+	std::map<uint, Entity*>::iterator tmp = activeEntities.begin();
+
+	for (; tmp != activeEntities.end(); ++tmp)
+		RELEASE(tmp->second);
+
+	for (tmp = inactiveEntities.begin(); tmp != inactiveEntities.end(); ++tmp)
+		RELEASE(tmp->second);
 
 	activeEntities.clear();
 	inactiveEntities.clear();
 
-	if (enemy_name)
-		enemy_name->Desactivate();
-
-	return true;
-}
-
-// add method
-
-Entity* EntityManager::add(iPoint &pos, ENTITY_TYPE type)
-{
-	Entity* entity = NULL;
-	iPoint tile_pos = app->map->WorldToMap(pos.x, pos.y);
-
-	// Checking for another bricks already on the map_tile specified by argument pos.
-	map<uint, Entity*>::iterator item = activeEntities.begin();
-
-	for (; item != activeEntities.end(); item++)
-	{
-		if (entityOnCoords(pos) != NULL)
-			return entity; // No entity is created!
-	}
-
-	if (app->pathfinding->IsWalkable(tile_pos))	// Can we add a new entity on that tile? i.e. Is that tile walkable?
-	{
-		switch (type)
-		{
-		//NOTE: to diferentiate the kinds of enemies, put ENEMY_TYPE enum, but don't use the one from the diferent kinds of entities
-		case (ENEMY) :
-			//entity = new EntEnemyWolf(pos, ++nextID);
-			break;
-		case (ITEM_HEALTH) :
-			entity = new itmPotionHP(pos, ++nextID);
-			break;
-		case(PORTAL) :
-			entity = new EntPortal(pos, ++nextID);
-		}
-
-		// We add the new entity to the map of active entities. 
-		activeEntities.insert(pair<uint, Entity*>(nextID, entity));
-	}
-
-	return entity;
-}
-
-Entity* EntityManager::addEnemy(iPoint &pos, ENEMY_TYPE type)
-{
-	Entity* entity = NULL;
-	iPoint tile_pos = app->map->WorldToMap(pos.x, pos.y);
-
-	// Checking for another bricks already on the map_tile specified by argument pos.
-	map<uint, Entity*>::iterator item = activeEntities.begin();
-
-	for (; item != activeEntities.end(); item++)
-	{
-		if (entityOnCoords(pos) != NULL)
-			return entity; // No entity is created!
-	}
-
-	if (app->pathfinding->IsWalkable(tile_pos))	// Can we add a new entity on that tile? i.e. Is that tile walkable?
-	{
-		switch (type)
-		{
-			//NOTE: to diferentiate the kinds of enemies, put ENEMY_TYPE enum, but don't use the one from the diferent kinds of entities
-		case (ENEMY_WOLF) :
-			entity = new EnemyWolf(pos, ++nextID);
-			break;
-		case (ENEMY_PALADIN) :
-			entity = new EnemyPaladin(pos, ++nextID);
-			break;
-		case (ENEMY_GRISWOLD) :
-			entity = new EnemyGriswold(pos, ++nextID);
-			break;
-		/*case (ENEMY_CRAWLER) :
-			entity = new EntEnemyCrawler(pos, ++nextID);
-			break;
-
-		case (ENEMY_COUNCIL) :
-			entity = new EntEnemyCouncil(pos, ++nextID);
-			break;*/
-		}
-
-		// We add the new entity to the map of active entities. 
-		activeEntities.insert(pair<uint, Entity*>(nextID, entity));
-	}
-
-	return entity;
-}
-Entity* EntityManager::addNpc(iPoint& pos, NPC_TYPE type){
-	Entity* entity = NULL;
-	iPoint tile_pos = app->map->WorldToMap(pos.x, pos.y);
-
-	// Checking for another bricks already on the map_tile specified by argument pos.
-	map<uint, Entity*>::iterator item = activeEntities.begin();
-
-	for (; item != activeEntities.end(); item++)
-	{
-		if (entityOnCoords(pos) != NULL)
-			return entity; // No entity is created!
-	}
-
-	if (app->pathfinding->IsWalkable(tile_pos))	// Can we add a new entity on that tile? i.e. Is that tile walkable?
-	{
-		switch (type)
-		{
-			//NOTE: to diferentiate the kinds of enemies, put ENEMY_TYPE enum, but don't use the one from the diferent kinds of entities
-		case (NPC_COUNSELOR) :
-			entity = new EntCounselor(pos, ++nextID);
-			break;
-
-		case (NPC_HEALER) :
-			entity = new EntHealer(pos, ++nextID);
-			break;
-
-		case (NPC_GOSSIP) :
-			entity = new EntGossip(pos, ++nextID);
-			break;
-		}
-
-		// We add the new entity to the map of active entities. 
-		activeEntities.insert(pair<uint, Entity*>(nextID, entity));
-	}
-
-	return entity;
-}
-// remove an entity using its ID
-bool EntityManager::remove(uint id)
-{
-	//NOTE: has to delete, not do this!
-	//It's not destroyed? we'll see for later weeks
-	Entity* e = getEntity(id);
-	if (e && e->collider)
-		e->collider->to_delete = true;
-
-	if (e && e->sprite)
-	{
-		//NOTE: here, is a beautiful memory leak, if i uncomment this all the game goes fucked
-
-		//RELEASE(e->sprite);
-		app->render->sprites.remove(e->sprite);
-		//RELEASE(e->sprite);
-	}
-
-	if (activeEntities.erase(id) > 0)
-	{
-		Entity* e = getEntity(id);
-		//NOTE: has to delete, not do this!
-		//It's not destroyed? we'll see for later weeks
-		inactiveEntities.insert(pair<uint, Entity*>(id, e));
-
-		return true;
-	}
-	return false;
-}
-
-// Return ID for the corresponding entity
-Entity* EntityManager::getEntity(uint id)
-{
-	map<uint, Entity*>::iterator item = activeEntities.find(id);
-	return (item != activeEntities.end() ? item->second : NULL);
-}
-
-// WhichEntityOnMouse: Returns an entity under the mouse cursor
-Entity* EntityManager::entityOnMouse()
-{
-	iPoint p = app->input->getMouseWorldPosition();
-
-	return entityOnCoords(p);
-}
-
-Entity* EntityManager::entityOnCoords(iPoint &pos)
-{
-	map<uint, Entity*>::reverse_iterator item = activeEntities.rbegin();
-	for (; item != activeEntities.rend(); ++item)
-	{
-		//NOTE: Have to be specified to just Enemy....
-		if (item->second->type == ENEMY)
-			if (((EntEnemy*)item->second)->current_action == ENTITY_DEATH)
-				continue;
-
-			SDL_Rect rect = item->second->getPlayerRect();
-
-		if (pos.x >= rect.x && pos.x <= rect.x + rect.w &&
-			pos.y >= rect.y && pos.y <= rect.y + rect.h)
-			return item->second;
-	}
-	return NULL;
+	return ret;
 }
 
 bool EntityManager::loadEnemiesAnimations()
@@ -385,12 +156,12 @@ bool EntityManager::loadEnemiesAnimations()
 		{
 			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
 			{
-				std::pair<ENTITY_STATE, ENTITY_DIRECTION> p;
+				std::pair<entityState, entityDirection> p;
 				int state = action.child("name").attribute("value").as_int();
-				p.first = (ENTITY_STATE)state;
+				p.first = (entityState)state;
 
 				int di = dir.first_child().attribute("name").as_int();
-				p.second = (ENTITY_DIRECTION)di;
+				p.second = (entityDirection)di;
 
 				Animation anims;
 				int x = dir.first_child().attribute("x").as_int();
@@ -410,7 +181,7 @@ bool EntityManager::loadEnemiesAnimations()
 				anims.pivot.y = pivotY;
 
 				iPoint piv;
-				paladinAnim.insert(std::pair<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation >(p, anims));
+				paladinAnim.insert(std::pair<std::pair<entityState, entityDirection>, Animation >(p, anims));
 				paladinAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
 				piv = paladinAnim.find({ p.first, p.second })->second.pivot;
 
@@ -440,12 +211,12 @@ bool EntityManager::loadEnemiesAnimations()
 		{
 			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
 			{
-				std::pair<ENTITY_STATE, ENTITY_DIRECTION> p;
+				std::pair<entityState, entityDirection> p;
 				int state = action.child("name").attribute("value").as_int();
-				p.first = (ENTITY_STATE)state;
+				p.first = (entityState)state;
 
 				int di = dir.first_child().attribute("name").as_int();
-				p.second = (ENTITY_DIRECTION)di;
+				p.second = (entityDirection)di;
 
 				Animation anims;
 				int x = dir.first_child().attribute("x").as_int();
@@ -465,7 +236,7 @@ bool EntityManager::loadEnemiesAnimations()
 				anims.pivot.y = pivotY;
 
 				iPoint piv;
-				wolfAnim.insert(std::pair<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation >(p, anims));
+				wolfAnim.insert(std::pair<std::pair<entityState, entityDirection>, Animation >(p, anims));
 				wolfAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
 				piv = wolfAnim.find({ p.first, p.second })->second.pivot;
 
@@ -495,12 +266,12 @@ bool EntityManager::loadEnemiesAnimations()
 		{
 			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
 			{
-				std::pair<ENTITY_STATE, ENTITY_DIRECTION> p;
+				std::pair<entityState, entityDirection> p;
 				int state = action.child("name").attribute("value").as_int();
-				p.first = (ENTITY_STATE)state;
+				p.first = (entityState)state;
 
 				int di = dir.first_child().attribute("name").as_int();
-				p.second = (ENTITY_DIRECTION)di;
+				p.second = (entityDirection)di;
 
 				Animation anims;
 				int x = dir.first_child().attribute("x").as_int();
@@ -520,10 +291,159 @@ bool EntityManager::loadEnemiesAnimations()
 				anims.pivot.y = pivotY;
 
 				iPoint piv;
-				griswoldAnim.insert(std::pair<std::pair<ENTITY_STATE, ENTITY_DIRECTION>, Animation >(p, anims));
+				griswoldAnim.insert(std::pair<std::pair<entityState, entityDirection>, Animation >(p, anims));
 				griswoldAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
 				piv = griswoldAnim.find({ p.first, p.second })->second.pivot;
 
+			}
+		}
+	}
+
+	return ret;
+}
+
+bool EntityManager::remove(uint id)
+{
+	bool ret = true;
+
+	if (activeEntities.erase(id) > 0)
+	{
+		Entity* tmp = getEntity(id);
+		inactiveEntities.insert(std::pair<uint, Entity*>(id, tmp));
+	}
+	else
+		ret = false;
+
+	return ret;
+}
+
+Entity* EntityManager::getEntity(uint id)
+{
+	Entity* ret = NULL;
+
+	std::map<uint, Entity*>::iterator tmp = activeEntities.find(id);
+
+	return (tmp != activeEntities.end() ? tmp->second : NULL);
+
+	return ret;
+}
+
+void EntityManager::sortEntities()
+{
+
+}
+
+/*Entity* EntityManager::createEntity(iPoint pos, const char* textureName, SDL_Rect& section, SDL_Rect& collider, entityType _type)
+{
+	Entity* ret = NULL;
+
+	ret = new Entity();
+
+	ret->setPosition(pos.x, pos.y);
+	ret->setSection(section);
+	ret->setCollider(collider);
+	ret->imageTexture = app->textures->load(textureName);
+	ret->type = _type;
+	ret->imageSprite.create(ret->imageTexture, ret->position.x, ret->position.y);
+	ret->imageSprite.setSection(section);
+
+	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+
+	ret->id = nextId;
+	++nextId;
+
+	return ret;
+}
+
+Player* EntityManager::createPlayer(iPoint pos, const char* textureName, SDL_Rect& section, SDL_Rect& collider)
+{
+	Player* ret = NULL;
+	if (player == NULL)
+	{
+		ret = new Player();
+		player = ret;
+
+		ret->setPosition(pos.x, pos.y);
+		ret->setSection(section);
+		ret->setCollider(collider);
+		ret->imageTexture = app->textures->load(textureName);
+		ret->type = PLAYER;
+		ret->imageSprite.create(ret->imageTexture, ret->position.x, ret->position.y);
+		ret->imageSprite.setSection(section);
+
+		ret->id = 0;
+	}
+	else
+		LOG("Player already created.");
+
+	return ret;
+}*/
+
+Paladin* EntityManager::createPaladin(iPoint pos)
+{
+	Paladin* ret = NULL;
+
+	ret = new Paladin();
+
+	ret->setWorldPosition(pos);
+	ret->type = PALADIN;
+
+	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+
+	ret->setId(nextId);
+	++nextId;
+
+	return ret;
+}
+
+SDL_Texture* EntityManager::getPaladinTexture()
+{
+	return paladinTexture;
+}
+
+std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getPaladinAnimation()
+{
+	return &paladinAnim;
+}
+
+SDL_Texture* EntityManager::getWolfTexture()
+{
+	return wolfTexture;
+}
+
+std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getWolfAnimation()
+{
+	return &wolfAnim;
+}
+
+SDL_Texture* EntityManager::getGriswoldTexture()
+{
+	return griswoldTexture;
+}
+
+std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getGriswoldAnimation()
+{
+	return &griswoldAnim;
+}
+
+
+uint EntityManager::getEntityAtPosition(iPoint position)
+{
+	uint ret = NULL;
+
+	iPoint pos = app->render->ScreenToWorld(position.x, position.y);
+
+	for (std::map<uint, Entity*>::iterator iterator = activeEntities.begin();
+		iterator != activeEntities.end(); 
+		iterator++)
+	{
+		if (iterator->second->getCollider())
+		{
+			SDL_Rect rect = iterator->second->getCollider()->rect;
+			if (rect.x <= pos.x	&& rect.x + rect.w >= pos.x
+				&& rect.y <= pos.y && 	rect.y + rect.h >= pos.y)
+			{
+				ret = (*iterator).first;
 			}
 		}
 	}

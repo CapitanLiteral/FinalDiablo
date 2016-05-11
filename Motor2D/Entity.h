@@ -1,71 +1,169 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
-#include "SDL\include\SDL.h"
+#include "Module.h"
 #include "p2Point.h"
+#include <map>
 #include "Animation.h"
+#include "Collision.h"
 
-struct Sprite;
-class Collider;
+class Sprite;
+class Attributes;
+class Player;
 
-enum ENTITY_TYPE
+enum entityType
 {
-	ENEMY,
-	NPC,
-	PROP,
-	ITEM,
-	ITEM_HEALTH,
-	PORTAL
+	UNKNOWN,
+	PALADIN,
+	WOLF,
+	GRISWOLD,
+	NPC_COUNCELOUR,
+	NPC_HEALER,
+	NPC_GOSSIP,
+	DUMMY
+};
+
+enum entityState
+{
+	E_IDLE = 0,
+	E_WALK,
+	E_BASIC_ATTACK,
+	E_DEATH,
+	E_WAIT_TO_ATTACK,
+	E_INACTIVE
+};
+
+enum entityInputState
+{
+	EI_NULL = 0,
+	EI_WALK,
+	EI_ATTACK,
+	EI_STOP,
+	EI_DIE
+};
+
+enum entityDirection
+{
+	E_UP = 0,
+	E_UP_RIGHT = 1,
+	E_RIGHT = 2,
+	E_DOWN_RIGHT = 3,
+	E_DOWN = 4,
+	E_DOWN_LEFT = 5,
+	E_LEFT = 6,
+	E_UP_LEFT = 7
 };
 
 class Entity
 {
+public:
+	Entity();
+
+	virtual ~Entity();
+
+	virtual bool entityUpdate(float internDT);
+
+	virtual bool entityPostUpdate();
+
+private:
+	//Entity dades
+	uint id;
+	iPoint worldPosition;
+	iPoint mapPosition;
+	Attributes* attributes = NULL;
+
+	bool alive;
+
+	iPoint colliderOffset;
+	iPoint colliderSize;
+
+	Collider* collider = NULL;
 
 public:
+	entityType type = UNKNOWN;
 
-	//Constructors
-	Entity(const iPoint &p, uint ID);
-
-	//Destructor
-	~Entity();
-
-	//update
-	virtual bool update(float dt) { return true; }
-
-	//draw
-	virtual void draw() {};
-
-	//Debug draw
-	virtual void drawDebug() {};
-
-	//getters
-	iPoint		getMapPosition() const;
-	iPoint		getTilePosition() const;
-	iPoint		getBlitPosition() const;
-	fPoint		getPivotPosition() const;
-	SDL_Rect	getPlayerRect() const;
-	SDL_Rect	getPlayerCollider()const;
-
-	
+//Generic methods----------------------------
+//Getters
 public:
+	Collider* getCollider()const;
+	uint getId()const;
 
-	//Attributes
-	SDL_Rect		collider_rect;
-	SDL_Rect		sprite_rect;
-	iPoint			sprite_dim;
-	ENTITY_TYPE		type;
-	iPoint			colliderOffset;
-	iPoint			colliderSize;
-	iPoint			sprite_pivot;
-	fPoint			position;
-	uint			id;
+	iPoint getWorldPosition()const;
+	iPoint getMapPos()const; 
+	iPoint getStartingWorldPosition() const;
 
-	Sprite*			sprite;
+	iPoint getColliderOffset() const;
+	iPoint getColliderSize() const;
 
-	SDL_Texture*	tex;
+	Sprite* getSprite() const;
 
-	Collider*		collider;
+//Setters
+	void setMapPosition(iPoint tile);
+	void setWorldPosition(iPoint coords);
+	void setStartingWorldPosition(iPoint coords);
+	void setColliderPosition(iPoint coords);
+	void setId(int id);
 
+//-------------------------------------------
+
+//Draw------------------------------------
+public:
+	virtual void draw();
+	virtual void drawDebug();
+//----------------------------------------
+
+
+//MOVEMENT--------------------------------
+private:
+	std::vector<iPoint> path;
+	iPoint target;
+
+	fPoint velocity;
+	int currentNode;
+	float targetRadius = 30.0f; //Maybe ERROR, watch out
+
+	bool movement;
+	bool targetReached;
+
+//Movement methods
+	vector<iPoint> getNewPath(iPoint target);
+	void getNewTarget();
+	void setTarget(iPoint target);
+	void updateVelocity(float dt);
+	void updateMovement(float dt);
+	bool isTargetReached();
+	void move(float dt);
+	void setMovement(int x, int y);
+	bool isInDestiny();
+
+	void setDirection();
+	void setDirection(fPoint pos);
+
+	entityState updateAction();
+	void handleInput();
+
+//---------------------------------------
+
+//Attack---------------------------
+	Player* player = NULL;
+
+
+//---------------------------------
+
+//Visual----------------------------------------------
+private:
+	Sprite* imageSprite = NULL;
+	std::map<std::pair<entityState, entityDirection>, Animation>*	entityAnim = NULL;
+
+	Animation* currentAnimation = NULL;
+
+//Enum instances
+	entityInputState current_input = EI_NULL;
+	entityState currentState = E_IDLE;
+	entityState previousState = E_IDLE;
+	entityDirection direction = E_DOWN;
+
+//--------------------------------------
 };
 
 #endif

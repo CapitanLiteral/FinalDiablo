@@ -5,15 +5,13 @@
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Game.h"
-#include "EntityManager.h"
-#include "Entity.h"
+//#include "EntityManager.h"
+//#include "Entity.h"
 #include "Input.h"
 #include "SceneManager.h"
 #include "snWin.h"
 #include "Audio.h"
 #include "Player.h"
-#include "EntPortal.h"
-#include "EntEnemy.h"
 
 Act2::Act2()
 {
@@ -88,7 +86,7 @@ bool Act2::update(float dt)
 			//if (a == 0)
 			//app->game->em->add(p, ENEMY);
 			//app->game->em->add(p, ENEMY_CRAWLER);
-			EntPortal* portal = (EntPortal*)app->game->em->add(p, PORTAL); //Maybe ERROR, watch out // Descomentar lo de portal per canviar d'escena amb un trigger o algo
+			//EntPortal* portal = (EntPortal*)app->game->em->add(p, PORTAL); //Maybe ERROR, watch out // Descomentar lo de portal per canviar d'escena amb un trigger o algo
 			//if (portal)
 			//	portal->destiny = app->sm->outdoor1; 
 
@@ -164,7 +162,7 @@ bool Act2::cleanUp()
 
 	while (item != entity_list.end())
 	{
-		app->game->em->remove(item._Ptr->_Myval->id);
+		//app->game->em->remove(item._Ptr->_Myval->id);
 		item++;
 	}
 	entity_list.clear();

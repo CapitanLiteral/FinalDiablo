@@ -82,14 +82,8 @@
     <ClCompile Include="Act1.cpp" />
     <ClCompile Include="Act2.cpp" />
     <ClCompile Include="Attributes.cpp" />
-    <ClCompile Include="EntEnemy.cpp" />
-    <ClCompile Include="EntItem.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntMobile.cpp" />
-    <ClCompile Include="EntNpc.cpp" />
-    <ClCompile Include="EntPortal.cpp" />
-    <ClCompile Include="EntProp.cpp" />
-    <ClCompile Include="EntStatic.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="GuiInventory.cpp" />
     <ClCompile Include="GuiItem.cpp" />
     <ClCompile Include="GuiSlot.cpp" />
@@ -98,7 +92,6 @@
     <ClCompile Include="hudInventory.cpp" />
     <ClCompile Include="hudPause.cpp" />
     <ClCompile Include="hudSkilltree.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="FileSystem.cpp" />
@@ -110,6 +103,7 @@
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Paladin.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="snIntro.cpp" />
@@ -130,14 +124,8 @@
     <ClInclude Include="Act2.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Attributes.h" />
-    <ClInclude Include="EntEnemy.h" />
-    <ClInclude Include="EntItem.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntMobile.h" />
-    <ClInclude Include="EntNpc.h" />
-    <ClInclude Include="EntPortal.h" />
-    <ClInclude Include="EntProp.h" />
-    <ClInclude Include="EntStatic.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="GuiElements.h" />
     <ClInclude Include="GuiInventory.h" />
     <ClInclude Include="GuiItem.h" />
@@ -148,7 +136,6 @@
     <ClInclude Include="hudInventory.h" />
     <ClInclude Include="hudPause.h" />
     <ClInclude Include="hudSkilltree.h" />
-    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="FileSystem.h" />
@@ -157,6 +144,7 @@
     <ClInclude Include="Hud.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="memleaks.h" />
+    <ClInclude Include="Paladin.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="snIntro.h" />

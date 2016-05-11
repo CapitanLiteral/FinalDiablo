@@ -6,17 +6,14 @@
 #include "Map.h"
 #include "Pathfinding.h"
 #include "Game.h"
-#include "EntityManager.h"
-#include "Entity.h"
+//#include "EntityManager.h"
+//#include "Entity.h"
 #include "Input.h"
 #include "SceneManager.h"
 #include "snWin.h"
 #include "Audio.h"
 #include "Player.h"
-#include "EntPortal.h"
-#include "EntEnemy.h"
 #include "Map.h"
-#include "EntNpc.h"
 
 Act1::Act1()
 {
@@ -57,21 +54,21 @@ bool Act1::start()
 		RELEASE_ARRAY(data);
 	}
 
-	app->game->em->addEnemy(iPoint{ 0, 2050 }, ENEMY_PALADIN);
+	/*app->game->em->addEnemy(iPoint{ 0, 2050 }, ENEMY_PALADIN);
 	app->game->em->addEnemy(iPoint{ 0, 2160 }, ENEMY_PALADIN);
 	app->game->em->addEnemy(iPoint{ 0, 1900 }, ENEMY_PALADIN);
 	app->game->em->addEnemy(iPoint{ 100, 2050 }, ENEMY_PALADIN);
 
 	//app->game->em->addEnemy(iPoint{ 0, 2100 }, ENEMY_WOLF);
 
-	//app->game->em->addEnemy(iPoint{ 0, 2150 }, ENEMY_GRISWOLD);
+	//app->game->em->addEnemy(iPoint{ 0, 2150 }, ENEMY_GRISWOLD);*/
 
 	iPoint a = { 450, 2450 };
 	app->game->player->setWorldPosition({ 450, 2400 });
 	//app->game->em->addNpc(a, NPC_COUNSELOR);
 	//a.x -= 40;
 	//a.y -= 40;
-	app->game->em->addNpc(a, NPC_HEALER);
+	//app->game->em->addNpc(a, NPC_HEALER);
 	//app->game->em->addNpc(a, NPC_GOSSIP);
 	createProps();
 
@@ -105,7 +102,7 @@ bool Act1::update(float dt)
 			//if (a == 0)
 			//app->game->em->add(p, ENEMY);
 			//app->game->em->add(p, ENEMY_CRAWLER);
-			EntPortal* portal = (EntPortal*)app->game->em->add(p, PORTAL); //Maybe ERROR, watch out // Descomentar lo de portal per canviar d'escena amb un trigger o algo
+			//EntPortal* portal = (EntPortal*)app->game->em->add(p, PORTAL); //Maybe ERROR, watch out // Descomentar lo de portal per canviar d'escena amb un trigger o algo
 			//if (portal)
 			//	portal->destiny = app->sm->outdoor1; 
 
@@ -210,7 +207,7 @@ bool Act1::cleanUp()
 
 	while (item != entity_list.end())
 	{
-		app->game->em->remove(item._Ptr->_Myval->id);
+		//app->game->em->remove(item._Ptr->_Myval->id);
 		item++;
 	}
 	entity_list.clear();

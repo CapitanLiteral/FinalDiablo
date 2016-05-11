@@ -19,24 +19,6 @@
     <ClCompile Include="hudPause.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudPause</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="EntMobile.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntMobile</Filter>
-    </ClCompile>
-    <ClCompile Include="EntEnemy.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntMobile\EntEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EntProp.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntProp</Filter>
-    </ClCompile>
-    <ClCompile Include="EntStatic.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic</Filter>
-    </ClCompile>
-    <ClCompile Include="EntItem.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntItem</Filter>
-    </ClCompile>
     <ClCompile Include="GuiInventory.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Gui\GuiElements\GuiInventory</Filter>
     </ClCompile>
@@ -57,12 +39,6 @@
     </ClCompile>
     <ClCompile Include="hudSkilltree.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree</Filter>
-    </ClCompile>
-    <ClCompile Include="EntPortal.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntPortal</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer</Filter>
@@ -133,8 +109,14 @@
     <ClCompile Include="Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClCompile>
-    <ClCompile Include="EntNpc.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc</Filter>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Paladin.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -186,21 +168,6 @@
     <ClInclude Include="hudPause.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudPause</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="EntEnemy.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntMobile\EntEnemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EntProp.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntProp</Filter>
-    </ClInclude>
-    <ClInclude Include="EntStatic.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic</Filter>
-    </ClInclude>
-    <ClInclude Include="EntMobile.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntMobile</Filter>
-    </ClInclude>
     <ClInclude Include="GuiInventory.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Gui\GuiElements\GuiInventory</Filter>
     </ClInclude>
@@ -221,15 +188,6 @@
     </ClInclude>
     <ClInclude Include="hudSkilltree.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree</Filter>
-    </ClInclude>
-    <ClInclude Include="EntPortal.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntPortal</Filter>
-    </ClInclude>
-    <ClInclude Include="EntItem.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntItem</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer</Filter>
@@ -303,8 +261,14 @@
     <ClInclude Include="Player.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Player</Filter>
     </ClInclude>
-    <ClInclude Include="EntNpc.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc</Filter>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Paladin.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -337,30 +301,6 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\snWin">
       <UniqueIdentifier>{d25bc987-7973-438c-a1c7-a4360353fdb8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager">
-      <UniqueIdentifier>{e207d71e-6e6c-4e68-aac4-1b52eae69768}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities">
-      <UniqueIdentifier>{69b7d4e8-dc9d-491e-99a5-7ed1492c2ac3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntMobile">
-      <UniqueIdentifier>{ac71612b-8f7b-4abe-98b7-ee2ec6b716a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntMobile\EntEnemy">
-      <UniqueIdentifier>{9cb4a80d-922c-4ead-a2a5-9e75b8e18b78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic">
-      <UniqueIdentifier>{5821480b-d82b-4b05-bc25-093f5029b1b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntProp">
-      <UniqueIdentifier>{0756e088-82e2-482a-b622-2c1ddbbfbf36}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntItem">
-      <UniqueIdentifier>{c16e2a19-23a0-49c7-b12f-2defe3f8c213}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntPortal">
-      <UniqueIdentifier>{6de5d855-2e03-410d-bc70-9b24d4287186}</UniqueIdentifier>
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Engine Layer\Gui">
       <UniqueIdentifier>{8230f9dd-22bb-451a-a5ba-40a38be40461}</UniqueIdentifier>
@@ -401,8 +341,11 @@
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\Act2">
       <UniqueIdentifier>{a7e70fe4-72ad-477c-ac09-5c31be3c17f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities\EntStatic\EntNpc">
-      <UniqueIdentifier>{a4ff747b-ea30-4ad2-9857-90d964e3d9a7}</UniqueIdentifier>
+    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager">
+      <UniqueIdentifier>{be1aa72e-7914-493a-bd92-644df8e37a00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities">
+      <UniqueIdentifier>{a0241eac-67e7-4982-a305-6c6cc40d6192}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
