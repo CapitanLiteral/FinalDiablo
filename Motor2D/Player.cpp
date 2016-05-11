@@ -330,7 +330,7 @@ void Player::handleInput()
 					clickCoords = app->input->getMouseWorldPosition();
 					target = app->map->WorldToMap(clickCoords.x, clickCoords.y);
 
-					//enemyFocus = app->game->em->entityOnMouse();
+					enemyFocus = app->game->em->getEntityOnMouse();
 					if (enemyFocus == NULL)
 					{
 						//Comprobar si es terra
