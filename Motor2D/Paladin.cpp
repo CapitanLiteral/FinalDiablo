@@ -28,6 +28,8 @@ Paladin::Paladin() : Entity()
 	colliderSize.Set(50, 100);
 
 	collider = app->collision->addCollider({worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y, colliderSize.x, colliderSize.y}, COLLIDER_ENEMY, app->game->em);
+
+	alive = true;
 }
 
 Paladin::~Paladin()

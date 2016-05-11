@@ -563,11 +563,10 @@ Paladin* EntityManager::createPaladin(iPoint pos)
 	ret = new Paladin();
 
 	ret->setWorldPosition(pos);
-	ret->type = PALADIN;
+	ret->setId(nextId);
 
 	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
 
-	ret->setId(nextId);
 	++nextId;
 
 	return ret;
