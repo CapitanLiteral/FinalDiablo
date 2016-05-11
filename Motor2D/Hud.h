@@ -2,18 +2,16 @@
 #define _HUD_H_
 
 #include "Module.h"
+#include "p2Point.h"
+#include "SDL\include\SDL.h"
 #include <vector>
 
 using namespace std;
 
 enum GUI_Event;
-
-class hudElement;
-class hudBelt;
-class hudPause;
-class hudInventory;
-class hudBlood;
-class hudSkilltree;
+class GuiImage;
+class GuiLabel;
+class GuiInventory;
 class PlayerAttributes;
 
 
@@ -21,42 +19,79 @@ class Hud : public Module
 {
 public:
 	Hud();
-
 	~Hud();
-	//Called before fist frame
+
 	bool start();
-
-	//Called before each loop iteration
 	bool preUpdate();
-
-	//Called each frame
 	bool update(float dt);
 
-	//Called after each loop iteration
-	bool postUpdate();
-	
-	//Called before quitting
-	bool cleanUp();
-
-	//Called when there's a GUI event
 	void OnEvent(GuiElement* element, GUI_Event even);
 
-	// Unit damaged
-	void displayDamage(int x, int y, float damage, bool crit){}
+public:
 
-	// Level Change in player hud handler
+	void displayDamage(int x, int y, float damage, bool crit){}
 	void levelChanged(int level, int prev){}
+	bool useSlotItem(GuiInventory* inv = NULL);
 
 public:
-	
-	PlayerAttributes* character = NULL;
 
-	hudBelt* belt = NULL;
-	hudPause* pause_menu = NULL;
-	hudInventory* inventory = NULL;
-	hudBlood* blood = NULL;
-	hudSkilltree* skilltree = NULL;
-	vector<hudElement*> Hud_elements;
+	// Player dependancies
+	PlayerAttributes* playerAtt = NULL;
+
+private:
+	
+	// Base
+	iPoint lifePos;
+	iPoint ragePos;
+
+	SDL_Rect lifeRect;
+	SDL_Rect rageRect;
+	SDL_Rect staminaRect;
+
+	GuiImage* life = NULL;
+	GuiImage* rage = NULL;
+	GuiImage* stamina = NULL;
+
+	GuiLabel* lifeLabel = NULL;
+	GuiLabel* rageLabel = NULL;
+
+	GuiImage* staminaDorn = NULL; // man in black
+	GuiImage* menuExpand = NULL; // pointing up
+
+	GuiImage* panel = NULL;
+	GuiImage* character = NULL;
+	GuiImage* inventory = NULL;
+	GuiImage* tree = NULL;
+	GuiImage* map = NULL;
+	GuiImage* pauseMenu = NULL;
+
+	GuiImage* current_skill = NULL;
+	GuiImage* basic_attack = NULL;
+	GuiImage* frenzy = NULL;
+	GuiImage* whack = NULL;
+	GuiImage* growl = NULL;
+
+	GuiInventory* slot1 = NULL;
+	GuiInventory* slot2 = NULL;
+	GuiInventory* slot3 = NULL;
+	GuiInventory* slot4 = NULL;
+	
+	// Character
+
+
+	// Inventory
+
+
+	// Tree
+
+
+	// Map
+
+
+	// Pause Menu
+	GuiImage* pause = NULL;
+	GuiImage* p_exit = NULL;
+	GuiImage* p_back = NULL;
 };
 
 #endif _HUD_H_

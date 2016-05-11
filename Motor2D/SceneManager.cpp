@@ -27,10 +27,8 @@ SceneManager::SceneManager() : Module()
 	addScene(act2);
 }
 
-
 SceneManager::~SceneManager()
-{
-}
+{}
 
 // Called before render is available
 bool SceneManager::awake(pugi::xml_node& conf)
@@ -43,25 +41,25 @@ bool SceneManager::awake(pugi::xml_node& conf)
 // Called before the first frame
 bool SceneManager::start()
 {
-	
+	bool ret;
 	
 	black = Sprite(blackTexture, {1,1});
 	black.y = INT_MAX - 1;
 	black.setAlpha(0);
 
-	current_scene->start();
+	ret = current_scene->start();
 
 	blackTexture = app->tex->Load("textures/Black.png");
 	image = app->gui->addFader({ 0, 0 }, { 0, 0, 640, 600 }, NULL, this, blackTexture, 80);
 	image->active = false;
-	return true;
+
+	return ret;
 }
 
 //preUpdate
 bool SceneManager::preUpdate()
 {
-	current_scene->preUpdate();
-	return true;
+	return current_scene->preUpdate();
 }
 
 //update
@@ -113,19 +111,18 @@ bool SceneManager::update(float dt)
 //postUpdate
 bool SceneManager::postUpdate()
 {
-	current_scene->postUpdate();
+	bool ret = current_scene->postUpdate();
 
 	if (fadeIn || fadeOut)
 		app->render->DrawSprite(&black);
 
-	return true;
+	return ret;
 }
 
 // Called before quitting
 bool SceneManager::cleanUp()
 {
-	current_scene->cleanUp();
-
+	bool ret = current_scene->cleanUp();
 
 	list<Scene*>::reverse_iterator item = scenes.rbegin();
 
@@ -137,7 +134,7 @@ bool SceneManager::cleanUp()
 
 	scenes.clear();
 
-	return true;
+	return ret;
 }
 
 void SceneManager::addScene(Scene* scene)
@@ -148,34 +145,33 @@ void SceneManager::addScene(Scene* scene)
 // Changes the current scene
 bool SceneManager::ChangeScene(Scene* new_scene)
 {
-	current_scene->unLoad();
+	bool ret;
+	
+	// unload current scene
+	if (!(ret = (current_scene->unLoad()))) return ret;
 
-	//WARNING: this is purely provisional for the 0.2 version, HAS TO BE CHANGED, the in-game system and all the modules that are activcated there
-	if (current_scene == intro)
+	// start game if scene was intro
+	if (current_scene == intro && new_scene != win)
 	{
-		//NOTE: may have to be changed in the future
-		app->game->Init();
-		app->game->start();
+		if (!(ret = (app->game->start()))) return ret;
 	}
 
 	if ((new_scene == intro && current_scene != win) || new_scene == win)
 	{
-		app->game->active = false;
-		app->game->cleanUp();
+		if (!(ret = (app->game->cleanUp()))) return ret;
 	}
-	//
+	
 	current_scene = new_scene;
+	ret = current_scene->Load();
 
-	current_scene->Load();
-
-	return true;
+	return ret;
 }
 
 bool SceneManager::fadeToBlack(Scene* new_scene, float time)
 {
 	bool ret = true;
 
-	if (!fadeIn || !fadeOut)
+	if (!(fadeIn || fadeOut))
 	{
 		next_scene = new_scene;
 		fadeTime = time;

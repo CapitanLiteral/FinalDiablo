@@ -43,11 +43,11 @@ public:
 	GuiImage* addGuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list);
 	Fader* addFader(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex = NULL, int alpha = 0);
 	GuiAnimation* addGuiAnimation(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex = NULL, Animation* anim = NULL);
-	GuiImage* addGuiImageWithLabel(iPoint p, SDL_Rect r, p2SString t, _TTF_Font* f, iPoint i, GuiElement* par, Module* list);
-	GuiLabel* addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par, TextColor color, Module* list);
-	GuiLabel* addGuiLabel(p2SString t, _TTF_Font* f, iPoint p, GuiElement* par, Module* list);
-	GuiInputBox* addGuiInputBox(p2SString t, _TTF_Font* f, iPoint p, int width, SDL_Rect r, iPoint offset, GuiElement* par, Module* list);
-	GuiButton* addGuiButton(iPoint p, SDL_Rect idle_r1, SDL_Rect hover_r1, SDL_Rect click_r1, p2SString t = "", _TTF_Font* f = NULL, Module* list = NULL, GuiElement* parent = NULL);
+	GuiImage* addGuiImageWithLabel(iPoint p, SDL_Rect r, std::string t, _TTF_Font* f, iPoint i, GuiElement* par, Module* list);
+	GuiLabel* addGuiLabel(std::string t, _TTF_Font* f, iPoint p, GuiElement* par, TextColor color, Module* list);
+	GuiLabel* addGuiLabel(std::string t, _TTF_Font* f, iPoint p, GuiElement* par, Module* list);
+	GuiInputBox* addGuiInputBox(std::string t, _TTF_Font* f, iPoint p, int width, SDL_Rect r, iPoint offset, GuiElement* par, Module* list);
+	GuiButton* addGuiButton(iPoint p, SDL_Rect idle_r1, SDL_Rect hover_r1, SDL_Rect click_r1, std::string t = "", _TTF_Font* f = NULL, Module* list = NULL, GuiElement* parent = NULL);
 	GuiSlider* addGuiSlider(iPoint p, SDL_Rect tex_1, SDL_Rect tex_2, int width, int thumb_h, iPoint offset, float value, GuiElement* par, Module* list);
 	GuiLabel* SetLabel();
 	GuiMouseImage* addGuiMouseImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list);
@@ -70,7 +70,7 @@ private:
 	bool			debug;
 	bool            mouse_clicked;
 	SDL_Texture*	atlas;
-	p2SString		atlas_file_name;
+	std::string		atlas_file_name;
 	int             mouse_x, mouse_y;
 
 	GuiElement*		focus;

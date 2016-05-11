@@ -6,9 +6,9 @@
 #include "Animation.h"
 
 #include <list>
+#include <string>
 ;
 using namespace std;
-// WARNING: I'm doing trap here...
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
@@ -80,13 +80,11 @@ public:
 	void removeChild(GuiElement* child);
 
 public:
-	//not used
 	GUI_Type	 type;
-	//int		 id;
 	GuiElement*  parent;
 	GuiElement* descriptionlabel;
 	list<GuiElement*> childs;
-	//not defined
+
 	bool         debug = false;
 	bool		 active = true;
 	bool         visible = true;
@@ -101,25 +99,20 @@ public:
 	TextColor color;
 private:
 	SDL_Rect     local_rect;
-	//For now we'll just use one listener
-	//p2List<Module*> listeners;
 };
 
 class GuiLabel : public GuiElement
 {
 public:
-	//TODO: Manage the font size
-	GuiLabel(p2SString t, _TTF_Font* f, iPoint p, TextColor color, GuiElement* par, Module* list);
+	GuiLabel(std::string t, _TTF_Font* f, iPoint p, TextColor color, GuiElement* par, Module* list);
 	~GuiLabel(){}
 
 	void draw();
-	void update(GuiElement* hover, GuiElement* focus);
-
-	//Utils
-	void SetText(p2SString t);
+	void update(GuiElement* hover, GuiElement* focus){}
+	void SetText(std::string t);
 
 public:
-	p2SString text;
+	std::string text;
 	_TTF_Font* font;
 	SDL_Texture* tex;
 	
@@ -132,7 +125,7 @@ public:
 	~GuiImage(){};
 
 	void draw();
-	void update(GuiElement* hover, GuiElement* focus);
+	void update(GuiElement* hover, GuiElement* focus){}
 };
 
 class Fader : public GuiElement
@@ -143,7 +136,6 @@ public:
 	~Fader(){};
 
 	void draw();
-	void update(GuiElement* hover, GuiElement* focus){}
 	void setAlpha(int alpha = 0);
 
 	SDL_Texture* tex = NULL;
@@ -168,7 +160,7 @@ class GuiInputBox : public GuiElement
 {
 public:
 
-	GuiInputBox(p2SString t, _TTF_Font* f, iPoint p, int width, SDL_Rect r, iPoint offset, GuiElement* par, Module* list);
+	GuiInputBox(std::string t, _TTF_Font* f, iPoint p, int width, SDL_Rect r, iPoint offset, GuiElement* par, Module* list);
 	~GuiInputBox(){};
 
 
@@ -191,11 +183,11 @@ public:
 class GuiButton : public GuiElement
 {
 public:
-	GuiButton(iPoint p, SDL_Rect idle_r1, SDL_Rect hover_r1, SDL_Rect click_r1, p2SString t, _TTF_Font* f, Module* list = NULL, GuiElement* parent = NULL);
+	GuiButton(iPoint p, SDL_Rect idle_r1, SDL_Rect hover_r1, SDL_Rect click_r1, std::string t, _TTF_Font* f, Module* list = NULL, GuiElement* parent = NULL);
 	~GuiButton(){}
 
 	void draw();
-	void update(GuiElement* hover, GuiElement* focus);
+	void update(GuiElement* hover, GuiElement* focus){}
 
 public:
 	GuiImage button_image;
@@ -214,9 +206,8 @@ public:
 
 	void draw();
 	void update(GuiElement* hover, GuiElement* focus);
-	
-	//EXERCISE 5
 	float getValue()const;
+
 public:
 	GuiImage image;
 	GuiImage thumb;
@@ -226,7 +217,8 @@ public:
 	int     thumb_pos;
 	bool	clicking = false;
 };
-//MOUSE
+
+
 class GuiMouseImage : public GuiElement
 {
 public:
@@ -239,7 +231,6 @@ public:
 public:
 	GuiImage mouse_image;
 	int mouse_y, mouse_x;
-
 };
 //----
 #endif _GUIELEMENTS_H_
