@@ -121,6 +121,12 @@
     <ClCompile Include="Npc.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Wolf.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Griswold.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -274,6 +280,12 @@
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Npc.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Wolf.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Griswold.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
   </ItemGroup>

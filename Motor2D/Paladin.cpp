@@ -31,8 +31,7 @@ Paladin::Paladin() : Entity()
 
 	alive = true;
 
-	AttributeBuilder builder;
-	attributes = new Attributes(builder);
+	attributes = new Attributes(*app->game->em->getPaladinAttributBuilder());
 }
 
 Paladin::~Paladin()
