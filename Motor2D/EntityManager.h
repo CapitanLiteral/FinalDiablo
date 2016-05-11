@@ -51,9 +51,13 @@ public:
 	SDL_Texture* getGriswoldTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation>* getGriswoldAnimation();
 
-	uint getEntityAtPosition(iPoint position);
+	uint getEntityAtPositionId(iPoint position);
 
-	uint getEntityOnMouse();
+	uint getEntityOnMouseId();
+
+	Entity* getEntityAtPosition(iPoint position);
+
+	Entity* getEntityOnMouse();
 
 
 	std::map<uint, Entity*>		activeEntities;
