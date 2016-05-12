@@ -195,15 +195,15 @@ bool NpcHealer::entityUpdate(float dt)
 			else
 			{
 				uint num = 1 + rand()&(101 - 1);
-				if (num = <25)
+				if (num <=25)
 				{
 					goodDayImage->Activate();
 				}
-				else if (25<num = <50)
+				else if (25<num <=50)
 				{
 					helloImage->Activate();
 				}
-				else if (50<num = <75)
+				else if (50<num <=75)
 				{
 					changeImage->Activate();
 				}
@@ -312,15 +312,15 @@ bool NpcGossip::entityUpdate(float dt)
 			else
 			{
 				uint num = 1 + rand()&(101 - 1);
-				if (num=<25)
+				if (num<=25)
 				{
 					goodDayImage->Activate();
 				}
-				else if (25<num=<50)
+				else if (25<num<=50)
 				{
 					helloImage->Activate();
 				}
-				else if (50<num=<75)
+				else if (50<num<=75)
 				{
 					changeImage->Activate();
 				}
