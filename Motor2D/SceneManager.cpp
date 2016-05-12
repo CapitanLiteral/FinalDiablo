@@ -89,7 +89,7 @@ bool SceneManager::update(float dt)
 			fadeTimer.start();
 		}
 	}
-	else
+	else if (fadeOut)
 	{
 		if (fadeTimer.ReadSec() <= fadeTime)
 		{
@@ -157,7 +157,7 @@ bool SceneManager::ChangeScene(Scene* new_scene)
 		if (!(ret = (app->game->start()))) return ret;
 	}
 
-	if ((new_scene == intro && current_scene != win) || new_scene == win)
+	if (new_scene == intro || new_scene == win)
 	{
 		if (!(ret = (app->game->cleanUp()))) return ret;
 	}
@@ -186,4 +186,23 @@ bool SceneManager::fadeToBlack(Scene* new_scene, float time)
 std::string SceneManager::getFilePropsVillage()
 {
 	return filePropsVillage;
+}
+
+void SceneManager::changeScene(int scene)
+{
+	if (fadeIn || fadeOut)
+		return;
+
+	switch (scene)
+	{
+	case 1: next_scene = intro; break;
+	case 2: next_scene = act1; break;
+	case 3: next_scene = act2; break;
+	case 4: next_scene = win; break;
+	default: return;
+	}
+
+	fadeTime = 2.0f;
+	fadeIn = true;
+	fadeTimer.start();
 }

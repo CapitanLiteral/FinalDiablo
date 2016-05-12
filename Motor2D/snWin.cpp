@@ -73,7 +73,7 @@ bool snWin::Load()
 }
 bool snWin::unLoad()
 {
-	app->gui->gui_elements.clear();
+	app->gui->clearUI();
 	return true;
 }
 
