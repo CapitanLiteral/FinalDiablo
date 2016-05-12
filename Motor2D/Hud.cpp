@@ -29,46 +29,46 @@ Hud::~Hud()
 bool Hud::start()
 {
 	// Base
-	lifePos = { -136, -44 };
-	ragePos = { 366, -44 };
+	lifePos = { -136, -39 };
+	ragePos = { 366, -39 };
 
-	lifeRect = { 371, 118, 79, 78 };
-	rageRect = { 451, 118, 78, 78 };
-	staminaRect = { 530, 118, 102, 18 };
+	lifeRect = { 576, 704, 79, 78 };
+	rageRect = { 448, 704, 78, 78 };
+	staminaRect = { 320, 703, 102, 18 };
 
-	menuExpandOpened = { 281, 253, 16, 27 };
-	menuExpandClosed = { 296, 253, 16, 27 };
+	menuExpandOpened = { 1151, 576, 14, 25 };
+	menuExpandClosed = { 1183, 576, 14, 25 };
 
-	GuiImage* base = app->gui->addGuiImage({ 166, 430 }, { 166, 386, 408, 47 }, NULL, this);
+	GuiImage* base = app->gui->addGuiImage({ 166, 425 }, { 166, 882, 309, 52 }, NULL, this);/**/
 
-	app->gui->addGuiImage({ -132, -19 }, { 362, 226, 76, 53 }, base, this); // lifeback
-	app->gui->addGuiImage({ 364, -18 }, { 437, 226, 80, 53 }, base, this); // rageback
+	app->gui->addGuiImage({ -132, -5 }, { 704, 730, 76, 53 }, base, this); // lifeback/**/
+	app->gui->addGuiImage({ 364, -13 }, { 832, 730, 80, 53 }, base, this); // rageback/**/
 
-	life = app->gui->addGuiImage({ -136, -44 }, { 371, 118, 79, 78 }, base, this);
-	rage = app->gui->addGuiImage({ 366, -44 }, { 451, 118, 78, 78 }, base, this);
-	stamina = app->gui->addGuiImage({ 27, 20 }, { 530, 118, 102, 18 }, base, this);
+	life = app->gui->addGuiImage({ -136, -39 }, { 576, 704, 79, 78 }, base, this);/**/
+	rage = app->gui->addGuiImage({ 366, -39 }, { 448, 704, 78, 78 }, base, this);/**/
+	stamina = app->gui->addGuiImage({ 27, 25 }, { 320, 703, 102, 18 }, base, this);/**/
 
-	app->gui->addGuiImage({ -166, -55 }, { 0, 331, 116, 103 }, base, this); // lifefront
-	app->gui->addGuiImage({ 358, -55 }, { 524, 331, 116, 102 }, base, this); // ragefront
+	app->gui->addGuiImage({ -166, -41 }, { 0, 840, 116, 103 }, base, this); // lifefront/**/
+	app->gui->addGuiImage({ 359, -50 }, { 524, 832, 116, 102 }, base, this); // ragefront/**/
 
 	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 5 }, NULL, FONT_WHITE, this);
 	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 20 }, NULL, FONT_WHITE, this);
 
-	staminaDorn = app->gui->addGuiImage({ 9, 19 }, { 153, 280, 18, 22 }, base, this);
-	menuExpand = app->gui->addGuiImage({ 145, 8 }, menuExpandOpened, base, this);
+	staminaDorn = app->gui->addGuiImage({ 9, 24 }, { 1088, 576, 16, 20 }, base, this);/**/
+	menuExpand = app->gui->addGuiImage({ 145, 13 }, menuExpandOpened, base, this);/**/
 
-	panel = app->gui->addGuiImage({ 98, -25 }, { 170, 253, 110, 25 }, base, this);
-	character = app->gui->addGuiImage({ 3, 3 }, { 170, 279, 20, 19 }, panel, this);
-	inventory = app->gui->addGuiImage({ 24, 3 }, { 191, 279, 20, 19 }, panel, this);
-	tree = app->gui->addGuiImage({ 45, 3 }, { 212, 279, 20, 19 }, panel, this);
-	map = app->gui->addGuiImage({ 66, 3 }, { 233, 279, 20, 19 }, panel, this);
-	pause = app->gui->addGuiImage({ 87, 3 }, { 254, 279, 20, 19 }, panel, this);
+	panel = app->gui->addGuiImage({ 98, -25 }, { 960, 576, 110, 25 }, base, this);/**/
+	character = app->gui->addGuiImage({ 3, 3 }, { 1344, 448, 20, 19 }, panel, this);/**/
+	inventory = app->gui->addGuiImage({ 24, 3 }, { 1376, 448, 20, 19 }, panel, this);/**/
+	tree = app->gui->addGuiImage({ 45, 3 }, { 1344, 480, 20, 19 }, panel, this);/**/
+	map = app->gui->addGuiImage({ 66, 3 }, { 1376, 480, 20, 19 }, panel, this);/**/
+	pause = app->gui->addGuiImage({ 87, 3 }, { 1408, 448, 20, 19 }, panel, this);/**/
 
-	app->gui->addGuiImage({ -50, 0 }, { 102, 280, 50, 47 }, base, this); // leftSkill
-	current_skill = basic_attack = app->gui->addGuiImage({ 308, 0 }, { 102, 280, 50, 47 }, base, this);
-	frenzy = app->gui->addGuiImage({ 162, -70 }, { 51, 280, 50, 47 }, base, this);
-	whack = app->gui->addGuiImage({ 233, -70 }, { 0, 280, 50, 47 }, base, this);
-	growl = app->gui->addGuiImage({ 305, -70 }, { 0, 280, 50, 47 }, base, this);
+	app->gui->addGuiImage({ -50, 5 }, { 960, 832, 50, 47 }, base, this); // leftSkill/**/
+	current_skill = basic_attack = app->gui->addGuiImage({ 308, 5 }, { 960, 832, 50, 47 }, base, this);/**/
+	frenzy = app->gui->addGuiImage({ 162, -70 }, { 896, 832, 50, 47 }, base, this);/**/
+	whack = app->gui->addGuiImage({ 233, -70 }, { 832, 832, 50, 47 }, base, this);/**/
+	growl = app->gui->addGuiImage({ 305, -70 }, { 832, 832, 50, 47 }, base, this);/**/
 
 	life->interactable = true;
 	rage->interactable = true;
@@ -90,10 +90,10 @@ bool Hud::start()
 	whack->active = false;
 	growl->active = false;
 
-	slot1 = app->gui->addGuiInventory({ 176, 9 }, { 342, 395, 30, 30 }, 1, 1, 30, 30, base, this);
-	slot2 = app->gui->addGuiInventory({ 207, 9 }, { 342, 395, 30, 30 }, 1, 1, 30, 30, base, this);
-	slot3 = app->gui->addGuiInventory({ 238, 9 }, { 342, 395, 30, 30 }, 1, 1, 30, 30, base, this);
-	slot4 = app->gui->addGuiInventory({ 269, 9 }, { 342, 395, 30, 30 }, 1, 1, 30, 30, base, this);
+	slot1 = app->gui->addGuiInventory({ 176, 14 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);/**/
+	slot2 = app->gui->addGuiInventory({ 207, 14 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);/**/
+	slot3 = app->gui->addGuiInventory({ 238, 14 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);/**/
+	slot4 = app->gui->addGuiInventory({ 269, 14 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);/**/
 
 	// Map - loads earlier to be in background
 	mapMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
@@ -110,8 +110,8 @@ bool Hud::start()
 	// Pause Menu
 
 	pauseMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
-	p_exit = app->gui->addGuiImage({ 45, 200 }, { 460, 0, 534, 35 }, pauseMenu, this);
-	p_back = app->gui->addGuiImage({ 95, 270 }, { 994, 0, 438, 35 }, pauseMenu, this);
+	p_exit = app->gui->addGuiImage({ 94, 200 }, { 94, 642, 534, 35 }, pauseMenu, this);/**/
+	p_back = app->gui->addGuiImage({ 95, 270 }, { 629, 642, 438, 35 }, pauseMenu, this);/**/
 
 	p_exit->interactable = true;
 	p_back->interactable = true;
@@ -133,11 +133,11 @@ bool Hud::preUpdate()
 	if ((app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)
 		|| (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT))
 	{
-		staminaDorn->SetTextureRect({ 153, 301, 18, 22 });
+		staminaDorn->SetTextureRect({ 1120, 576, 18, 22 });
 	}
 	else
 	{
-		staminaDorn->SetTextureRect({ 153, 280, 18, 22 });
+		staminaDorn->SetTextureRect({ 1088, 576, 18, 22 });
 	}
 
 	// Pause menu
