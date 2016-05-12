@@ -46,7 +46,7 @@ bool Player::start()
 					  colliderSize.x, colliderSize.y};		// Size
 	collider = app->collision->addCollider(rect, COLLIDER_PLAYER, this);
 
-	deathImage = app->gui->addGuiImageFader({ 0, 0 }, { 810, 1065, 799, 599 }, 5, NULL, NULL);
+	deathImage = app->gui->addGuiImageFader({ 0, 0 }, { 810, 1065, 669, 501 }, 5, NULL, NULL);
 	deathImage->SetLocalPosition({ 0, 0 });
 	deathImage->Center(true, true);
 	deathImage->Desactivate();
@@ -197,7 +197,8 @@ void Player::respawn()
 void Player::draw()
 {
 	//Not elegant, but works // May be the vibration of player comes from here ERROR
-	setDirection();
+	if (current_action == WALKING || current_action == RUNNING)
+		setDirection();
 	//if (previous_direction != current_direction || 
 	//	previous_action != current_action)
 	//{
@@ -428,8 +429,25 @@ void Player::handleInput()
 						//if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
 						if (collision)
 						{
+							LOG("Detected click to attack, current direction: %d", current_direction);
 							current_input_event = I_ATTACK;
 							prevEnemyFocus = enemyFocus;
+							fPoint p;
+							p.x = enemyFocus->getWorldPosition().x;
+							p.y = enemyFocus->getWorldPosition().y;
+							setDirection(p);
+							LOG("After setDirection, current direction: %d", current_direction);
+							/*switch (currentPhase)
+							{
+							case BARBARIAN:
+								break;
+							case BUTCHER:
+								break;
+							case DIABLO:
+								break;
+							default:
+								break;
+							}*/
 						}
 						else
 						{
