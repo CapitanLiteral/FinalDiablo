@@ -54,6 +54,7 @@ private:
 	INPUT_EVENTS current_input_event;
 	ACTION_STATE updateAction();
 	void handleInput();
+	void OnCollision(Collider* c1, Collider* c2);
 
 	void drawDebug() const;
 
@@ -86,6 +87,7 @@ private:
 //Attack
 private:
 	Entity* enemyFocus = NULL;
+	bool collision = false;
 
 	//This have nosense in my opinion by CapitánLiteral
 public:
