@@ -45,6 +45,10 @@ bool Entity::entityUpdate(float internDT)
 	if (attributes->getLife() <= 0)
 	{
 		current_input = EI_DIE;
+		if (!died)
+		{
+			//player->attributes->addExp(100);
+		}
 	}
 
 	updateAction();
@@ -172,7 +176,12 @@ void Entity::draw()
 		previousState = currentState;
 		previousDirection = currentDirection;
 	}
-	else if (currentState == E_DEATH)
+	else if (currentState == E_DEATH && !died)
+	{
+		currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
+		died = true;
+	}
+	else if (currentState == E_BASIC_ATTACK && !died)
 	{
 		currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
 	}

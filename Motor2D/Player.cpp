@@ -87,6 +87,9 @@ bool Player::preUpdate()
 
 bool Player::update(float dt)
 {
+	LOG("Exp: %d", attributes->getExp());
+	LOG("Level: %f", attributes->getLevel());
+	LOG("Rage: %f", attributes->getRage());
 	bool ret = true;
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
