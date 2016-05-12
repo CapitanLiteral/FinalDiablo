@@ -90,7 +90,7 @@ bool Game::update(float dt)
 	for (; item != game_modules.end(); item++)
 	{
 		if (!pause)
-			(*item)->update(dt);
+			if (!(*item)->update(dt)) return false;
 
 		(*item)->draw();
 	}
