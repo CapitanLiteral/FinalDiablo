@@ -67,6 +67,20 @@ bool Act1::start()
 	//app->game->em->createNpc({ 490, 2400 }, NPC_HEALER);
 	//app->game->em->createNpc({400,2400}, NPC_GOSSIP);
 
+	app->game->em->createPaladin({ 450, 2500 });
+
+	
+
+	/*app->game->em->createPaladin({ 470, 2500 });
+	app->game->em->createPaladin({ 350, 2500 });
+	app->game->em->createPaladin({ 450, 2600 });
+	app->game->em->createPaladin({ 450, 2500 });*/
+	
+	
+	app->game->em->createNpc({300,2300}, NPC_COUNSELOR);
+	app->game->em->createNpc({ 400, 2300 }, NPC_HEALER);
+	app->game->em->createNpc({500,2300}, NPC_GOSSIP);
+
 	createProps();
 
 	return true;

@@ -58,7 +58,10 @@ public:
 
 public:
 	GuiImage* introductionImage = NULL;
-	GuiImage* randImage = NULL;
+	GuiImage* goodDayImage = NULL;
+	GuiImage* helloImage = NULL;
+	GuiImage* changeImage = NULL;
+	GuiImage* lordImage = NULL;
 	float	playerRange;
 	uint readed;
 };
@@ -79,7 +82,10 @@ public:
 
 public:
 	GuiImage* introductionImage = NULL;
-	GuiImage* randImage = NULL;
+	GuiImage* goodDayImage = NULL;
+	GuiImage* helloImage = NULL;
+	GuiImage* changeImage = NULL;
+	GuiImage* lordImage = NULL;
 	float	playerRange;
 	uint readed;
 };

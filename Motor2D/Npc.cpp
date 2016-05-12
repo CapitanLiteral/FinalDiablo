@@ -56,16 +56,16 @@ bool NpcCounselor::entityUpdate(float dt)
 		{
 			if (app->game->player->attributes->getLevel() == 1  || readed)
 			{
-			//	introductionImage->Activate();
+				introductionImage->Activate();
 				readed = false;
 			}
 			else if (app->game->player->attributes->getLevel() < 5)
-			{//
+			{
 				secondImage->Activate();
 			}
 			else if (app->game->player->attributes->getLevel() == 5)
 			{
-			//	readyToGoImage->Activate();
+				readyToGoImage->Activate();
 				readyForSecondZone = true;
 			}
 			else if (readyForSecondZone)
@@ -74,26 +74,26 @@ bool NpcCounselor::entityUpdate(float dt)
 			}
 			else if (app->game->player->attributes->getLevel() == 5 && readyForSecondZone)
 			{
-				//secondIntroductionImage->Activate();
+				secondIntroductionImage->Activate();
 			}
 			else if (app->game->player->attributes->getLevel() < 10)
 			{
-				//secondSecondaryImage->Activate();
+				secondSecondaryImage->Activate();
 			}
 			else if (app->game->player->attributes->getLevel() == 10)
 			{
-			//	finalFightImage->Activate();
+				finalFightImage->Activate();
 				//set position al centre on hi han ordas fe penya forta
 			}
 		}
 	}
 	else{
-		/*introductionImage->Desactivate();
+		introductionImage->Desactivate();
 		secondImage->Desactivate();
 		readyToGoImage->Desactivate();
 		secondIntroductionImage->Desactivate();
 		secondSecondaryImage->Desactivate();
-		finalFightImage->Desactivate();*/
+		finalFightImage->Desactivate();
 	}
 
 	return true;
@@ -133,7 +133,19 @@ bool NpcCounselor::playerInRange()
 }
 
 void NpcCounselor::loadGui(){
-	
+	iPoint p = { 0, 0 };
+	introductionImage = app->gui->addGuiImage(p, { 1024, 704, 409, 157 }, NULL, NULL);
+	introductionImage->Desactivate();
+	secondImage = app->gui->addGuiImage(p, { 1472, 704, 111, 86 }, NULL, NULL);
+	secondImage->Desactivate();
+	readyToGoImage = app->gui->addGuiImage(p, {1216,896,111,86}, NULL, NULL);
+	readyToGoImage->Desactivate();
+	secondIntroductionImage = app->gui->addGuiImage(p, {1345,895,111,85}, NULL, NULL);
+	secondIntroductionImage->Desactivate();
+	secondSecondaryImage = app->gui->addGuiImage(p, {1472,832,111,85}, NULL, NULL);
+	secondSecondaryImage->Desactivate();
+	finalFightImage = app->gui->addGuiImage(p, {1472,960,111,85}, NULL, NULL);
+	finalFightImage->Desactivate();
 }
 
 //Constructor
@@ -177,18 +189,37 @@ bool NpcHealer::entityUpdate(float dt)
 		{
 			if (readed < 3)
 			{
-				//introductionImage->Activate();
+				introductionImage->Activate();
 				readed++;
 			}
-			else if (readed >= 3)
+			else
 			{
-				//	randImage->Activate();
+				uint num = 1 + rand()&(101 - 1);
+				if (num <=25)
+				{
+					goodDayImage->Activate();
+				}
+				else if (25<num <=50)
+				{
+					helloImage->Activate();
+				}
+				else if (50<num <=75)
+				{
+					changeImage->Activate();
+				}
+				else if (75<num)
+				{
+					lordImage->Activate();
+				}
 			}
 		}
 	}
 	else{
-		/*introductionImage->Desactivate();
-		randImage->Desactivate();*/
+		introductionImage->Desactivate();
+		goodDayImage->Desactivate();
+		helloImage->Desactivate();
+		changeImage->Desactivate();
+		lordImage->Desactivate();
 	}
 
 	return true;
@@ -229,8 +260,16 @@ bool NpcHealer::playerInRange()
 void NpcHealer::loadGui(){
 
 	iPoint p = { 0, 0 };
-	introductionImage = app->gui->addGuiImage(p, { 1457, 697, 409, 156 }, NULL, NULL);
+	introductionImage = app->gui->addGuiImage(p, { 1600, 0, 409, 157 }, NULL, NULL);
 	introductionImage->Desactivate();
+	goodDayImage = app->gui->addGuiImage(p, { 1600, 192, 111, 40 },NULL,NULL);
+	goodDayImage->Desactivate();
+	helloImage = app->gui->addGuiImage(p, {1600,256,111,40}, NULL, NULL);
+	helloImage->Desactivate();
+	changeImage = app->gui->addGuiImage(p, {1728,192,111,40}, NULL, NULL);
+	changeImage->Desactivate();
+	lordImage = app->gui->addGuiImage(p, {1728,256,111,40}, NULL, NULL);
+	lordImage->Desactivate();
 }
 
 NpcGossip::NpcGossip(const iPoint &p, uint ID)
@@ -238,7 +277,7 @@ NpcGossip::NpcGossip(const iPoint &p, uint ID)
 	type = entityType::NPC_GOSSIP;
 	setWorldPosition(p);
 	playerRange = 70.0f;
-
+	loadGui();
 	colliderOffset.Set(25, 75);
 	colliderSize.Set(45, 80);
 
@@ -267,18 +306,37 @@ bool NpcGossip::entityUpdate(float dt)
 		{
 			if (readed < 3)
 			{
-				//introductionImage->Activate();
+				introductionImage->Activate();
 				readed++;
 			}
-			else if (readed >= 3)
+			else
 			{
-			//	randImage->Activate();
+				uint num = 1 + rand()&(101 - 1);
+				if (num<=25)
+				{
+					goodDayImage->Activate();
+				}
+				else if (25<num<=50)
+				{
+					helloImage->Activate();
+				}
+				else if (50<num<=75)
+				{
+					changeImage->Activate();
+				}
+				else if (75<num)
+				{
+					lordImage->Activate();
+				}
 			}
 		}
 	}
 	else{
-	/*	introductionImage->Desactivate();
-		randImage->Desactivate();*/
+		introductionImage->Desactivate();
+		goodDayImage->Desactivate();
+		helloImage->Desactivate();
+		changeImage->Desactivate();
+		lordImage->Desactivate();
 	}
 
 	return true;
@@ -319,6 +377,14 @@ bool NpcGossip::playerInRange()
 void NpcGossip::loadGui(){
 
 	iPoint p = { 0, 0 };
-	introductionImage = app->gui->addGuiImage(p, { 1457, 697, 409, 156 }, NULL, NULL);
+	introductionImage = app->gui->addGuiImage(p, { 1600, 320, 409, 157 }, NULL, NULL);
 	introductionImage->Desactivate();
+	goodDayImage = app->gui->addGuiImage(p, { 1600, 192, 111, 40 }, NULL, NULL);
+	goodDayImage->Desactivate();
+	helloImage = app->gui->addGuiImage(p, { 1600, 256, 111, 40 }, NULL, NULL);
+	helloImage->Desactivate();
+	changeImage = app->gui->addGuiImage(p, { 1728, 192, 111, 40 }, NULL, NULL);
+	changeImage->Desactivate();
+	lordImage = app->gui->addGuiImage(p, { 1728, 256, 111, 40 }, NULL, NULL);
+	lordImage->Desactivate();
 }
