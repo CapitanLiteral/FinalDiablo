@@ -41,6 +41,7 @@ public:
 
 	// Gui creation functions
 	GuiImage* addGuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list);
+	GuiImageFader* addGuiImageFader(iPoint p, SDL_Rect r, uint32 duration, GuiElement* par, Module* list);
 	Fader* addFader(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex = NULL, int alpha = 0);
 	GuiAnimation* addGuiAnimation(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex = NULL, Animation* anim = NULL);
 	GuiImage* addGuiImageWithLabel(iPoint p, SDL_Rect r, std::string t, _TTF_Font* f, iPoint i, GuiElement* par, Module* list);

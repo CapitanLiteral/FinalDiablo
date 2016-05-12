@@ -12,6 +12,7 @@
 #include "Game.h"
 #include "EntityManager.h"
 #include "Entity.h"
+#include "Gui.h"
 #include "Window.h"
 
 Player::Player()
@@ -44,6 +45,11 @@ bool Player::start()
 					  worldPosition.y - colliderOffset.y,	// Position
 					  colliderSize.x, colliderSize.y};		// Size
 	collider = app->collision->addCollider(rect, COLLIDER_PLAYER, this);
+
+	deathImage = app->gui->addGuiImageFader({ 0, 0 }, { 810, 1065, 799, 599 }, 5, NULL, NULL);
+	deathImage->SetLocalPosition({ 0, 0 });
+	deathImage->Center(true, true);
+	deathImage->Desactivate();
 
 	// ANIMATION
 	if (loadAnimations())
@@ -129,7 +135,13 @@ bool Player::update(float dt)
 	}
 	else
 	{
-		respawn();
+		if (current_animation->isOver())
+		{
+			//Start lose image
+			deathImage->Activate();
+			deathImage->timer.start();
+			respawn();
+		}
 	}
 
 	if (app->debug)
@@ -155,6 +167,27 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 void Player::respawn()
 {
 	worldPosition = startingPosition;
+
+	attributes->addLife(attributes->getMaxLife());
+
+	current_action = IDLE;
+	current_direction = D_FRONT;
+
+	switch (currentPhase)
+	{
+	case BARBARIAN:
+		current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+		break;
+	case BUTCHER:
+		current_animation = &butcherAnim.find({ current_action, current_direction })->second;
+		break;
+	case DIABLO:
+		current_animation = &diabloAnim.find({ current_action, current_direction })->second;
+		break;
+	}
+
+	//At end of tp unblit lose image
+	deathImage->Desactivate();
 }
 
 void Player::draw()
@@ -336,6 +369,10 @@ void Player::drawDebug() const
 		}
 	}
 
+	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		attributes->addLife(-2000);
+	}
 }
 
 Player::~Player()
@@ -352,6 +389,7 @@ void Player::handleInput()
 			if (attributes->getLife() <= 0)
 			{
 				current_input_event = I_DIE;
+				deathTimer.start();
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 			{
