@@ -530,3 +530,31 @@ void GuiAnimation::draw()
 		p.y - app->render->camera.y,
 		&anim->getCurrentFrame());
 }
+
+
+//GuiImageFader
+GuiImageFader::GuiImageFader(iPoint p, SDL_Rect r, uint32 dur, GuiElement* par, Module* list)
+	: GuiElement(p, r, GUI_IMAGE_FADER, par, list), duration(dur)
+{
+
+}
+
+void GuiImageFader::draw()
+{
+	iPoint p = getScreenPosition();
+
+	app->render->Blit(app->gui->getAtlas(),
+		p.x - app->render->camera.x,
+		p.y - app->render->camera.y,
+		&tex_rect, { 255, 255, 255, alpha });
+}
+
+void GuiImageFader::update(GuiElement* hover, GuiElement* focus)
+{
+	if (timer.ReadSec() <= duration)
+	{
+		alpha += 255/(duration*1000);
+	}
+	if (alpha > 255)
+		alpha = 255;
+}

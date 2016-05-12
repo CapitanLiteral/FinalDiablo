@@ -1,7 +1,10 @@
-#pragma once
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
+
 #include "Module.h"
 #include "p2Point.h"
 #include "Animation.h"
+#include "Timer.h"
 
 #include <map>
 
@@ -13,6 +16,7 @@ class Collider;
 class Sprite;
 class SDL_Texture;
 class Entity;
+class GuiImageFader;
 
 enum ACTION_STATE;
 enum DIRECTION;
@@ -123,6 +127,12 @@ private:
 	void setColliderPosition(iPoint coords);
 
 
+//Death
+private:
+	Timer deathTimer;
+	GuiImageFader* deathImage = NULL;
+
+
 	//Animation things
 private:
 	Sprite* sprite = NULL;
@@ -145,6 +155,8 @@ private:
 
 	bool loadAnimations();
 };
+
+#endif
 
 enum DIRECTION
 {
