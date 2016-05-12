@@ -15,13 +15,16 @@ Paladin::Paladin(iPoint pos) : Entity()
 {
 	setWorldPosition(pos);
 
+	visionRadius = 120.0f;
+	targetRadius = 7.0f;
+
 	type = PALADIN;
 	entityAnim = app->game->em->getPaladinAnimation();
 
 	currentState = E_IDLE;
 	currentDirection = E_DOWN;
 
-	currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
+	currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
 
 	imageSprite = new Sprite(app->game->em->getPaladinTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);

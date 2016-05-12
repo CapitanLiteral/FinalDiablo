@@ -136,7 +136,7 @@ void Entity::draw()
 	setDirection();
 	if (previousDirection != currentDirection || previousState != currentState)
 	{
-		currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
+		currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
 		previousState = currentState;
 		previousDirection = currentDirection;
 	}
