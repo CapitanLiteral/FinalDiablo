@@ -79,14 +79,20 @@ bool Player::preUpdate()
 bool Player::update(float dt)
 {
 	bool ret = true;
-
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
 	if (enemyFocus != NULL)
 	{
 		LOG("Enemy taget");
 	}
-	
+
+	LOG("Collision %d", collision);
+	if (enemyFocus != NULL)
+	{
+		LOG("TargetLife %f", enemyFocus->attributes->getLife());
+	}
+		
+	//LOG("Path size: %d", path.size());
 	//if (isInDestiny())
 	//{
 	//	current_input_event = I_STOP;
@@ -110,9 +116,11 @@ bool Player::update(float dt)
 		case SKILL:
 			break;
 		case BASIC_ATTACK:
-			if (current_animation->Finished() && enemyFocus != NULL)
+			if (current_animation->isOver() && enemyFocus != NULL)
 			{
 				enemyFocus->attributes->damage(attributes, UNKNOWN);
+				current_input_event = I_STOP;
+				current_animation->Reset();
 			}
 			break;
 		}
@@ -128,6 +136,18 @@ bool Player::update(float dt)
 	}
 
 	return ret;
+}
+
+void Player::OnCollision(Collider* c1, Collider* c2)
+{
+	if (enemyFocus != NULL)
+	{
+		if ((c1 == collider || c2 == collider) && (c1 == enemyFocus->getCollider() || c2 == enemyFocus->getCollider()))
+		{
+			collision = true;
+		}
+	}
+	
 }
 
 void Player::respawn()
@@ -241,12 +261,21 @@ void Player::updateMovement(float dt)
 void Player::move(float dt)
 {
 	fPoint vel = velocity * dt;
+	if (path.size() > 0)
+	{
+		worldPosition.x += int(vel.x);
+		worldPosition.y += int(vel.y);
+	}
+	else
+	{
+		current_input_event = I_STOP;
 
-	worldPosition.x += int(vel.x);
-	worldPosition.y += int(vel.y);
-
+	}
+	
+	//LOG("Moving 1");
 	//NOTE: Collider movement, may be changed
-	collider->SetPos(worldPosition.x, worldPosition.y); //Maybe ERROR, watch out
+
+	collider->SetPos(worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y); //Maybe ERROR, watch out
 	if (isInDestiny() || (enemyFocus != NULL && enemyFocus->getMapPos().DistanceTo(worldPosition) <= targetRadius && current_action == WALKING))
 	{
 		path.clear();
@@ -347,20 +376,31 @@ void Player::handleInput()
 						//Comprobar si es terra
 						getNewPath(target);
 						current_input_event = I_WALK;
+						collision = false;
 					}//si no es terra					
-					else
+					else if (prevEnemyFocus == enemyFocus || 
+							prevEnemyFocus == NULL)
 					{
 						//comprobar si estas a rang d'atac
-						if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
+						//if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
+						if (collision)
 						{
 							current_input_event = I_ATTACK;
+							prevEnemyFocus = enemyFocus;
 						}
 						else
 						{
 							getNewPath(target);
 							current_input_event = I_WALK;
+
 						}
-					}			
+					}
+					else
+					{
+						getNewPath(target);
+						current_input_event = I_WALK;
+						prevEnemyFocus = enemyFocus;
+					}
 					
 					
 					
@@ -371,6 +411,8 @@ void Player::handleInput()
 			}
 		}
 	}
+	LOG("Input: %d", current_input_event);
+	LOG("Action: %d", current_action);
 }
 /*void Player::setMovement(int x, int y)
 {
@@ -406,6 +448,10 @@ ACTION_STATE Player::updateAction()
 			else if (current_input_event == I_DIE)
 			{
 				current_action = DEATH;
+			}
+			else if (current_input_event == I_ATTACK)
+			{
+				current_action = BASIC_ATTACK;
 			}
 		}
 			break;
@@ -445,6 +491,10 @@ ACTION_STATE Player::updateAction()
 			else if (current_input_event == I_DIE)
 			{
 				current_action = DEATH;
+			}
+			else 	if (current_input_event == I_WALK)
+			{
+				current_action = WALKING;
 			}
 		}
 

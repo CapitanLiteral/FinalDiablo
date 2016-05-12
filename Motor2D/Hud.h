@@ -29,7 +29,7 @@ public:
 
 public:
 
-	void displayDamage(int x, int y, float damage, bool crit){}
+	void displayDamage(int x, int y, float damage, bool crit = false){}
 	void levelChanged(int level, int prev){}
 	bool useSlotItem(GuiInventory* inv = NULL);
 
@@ -63,7 +63,7 @@ private:
 	GuiImage* inventory = NULL;
 	GuiImage* tree = NULL;
 	GuiImage* map = NULL;
-	GuiImage* pauseMenu = NULL;
+	GuiImage* pause = NULL;
 
 	GuiImage* current_skill = NULL;
 	GuiImage* basic_attack = NULL;
@@ -89,7 +89,7 @@ private:
 
 
 	// Pause Menu
-	GuiImage* pause = NULL;
+	GuiImage* pauseMenu = NULL;
 	GuiImage* p_exit = NULL;
 	GuiImage* p_back = NULL;
 };

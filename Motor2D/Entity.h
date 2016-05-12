@@ -124,15 +124,18 @@ private:
 
 	fPoint velocity;
 	int currentNode;
-	float targetRadius = 30.0f; //Maybe ERROR, watch out
+	float visionRadius = 40.0f;
+	float targetRadius = 7.0f; //Maybe ERROR, watch out
 
 	bool movement;
 	bool targetReached;
 
+	bool inputBlocked = false;
+
 //Movement methods
 	vector<iPoint> getNewPath(iPoint target);
 	void getNewTarget();
-	void setTarget(iPoint target);
+	void setTarget(iPoint _target);
 	void updateVelocity(float dt);
 	void updateMovement(float dt);
 	bool isTargetReached();
