@@ -54,6 +54,10 @@ public:
 	
 	void createProps();
 
+
+	Entity* counselor;
+	Entity* healer;
+
 private:
 
 	Sprite* propProva;

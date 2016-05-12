@@ -189,6 +189,9 @@ public:
 	virtual void addExp(int exp);
 	virtual bool setLevel(int val);
 
+	//Modifiers
+	void levelUp(){ current_level++; }
+
 	// Getters
 	float getMaxLife()const;
 	float getStrength()const;

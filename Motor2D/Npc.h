@@ -64,6 +64,7 @@ public:
 	GuiImage* lordImage = NULL;
 	float	playerRange;
 	uint readed;
+	uint num;
 };
 
 class NpcGossip : public Entity
@@ -88,6 +89,7 @@ public:
 	GuiImage* lordImage = NULL;
 	float	playerRange;
 	uint readed;
+	uint num;
 };
 
 

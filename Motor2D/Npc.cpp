@@ -194,26 +194,38 @@ bool NpcHealer::entityUpdate(float dt)
 			}
 			else
 			{
-				uint num = 1 + rand()&(101 - 1);
+				num = 1 + rand()&(101 - 1);
 				if (num <=25)
 				{
 					goodDayImage->Activate();
 					introductionImage->Desactivate();
+					helloImage->Desactivate();
+					changeImage->Desactivate();
+					lordImage->Desactivate();
 				}
-				else if (25<num <=50)
+				else if (25<num && num<=50)
 				{
 					helloImage->Activate();
 					introductionImage->Desactivate();
+					goodDayImage->Desactivate();
+					changeImage->Desactivate();
+					lordImage->Desactivate();
 				}
-				else if (50<num <=75)
+				else if (50<num && num <=75)
 				{
 					changeImage->Activate();
 					introductionImage->Desactivate();
+					goodDayImage->Desactivate();
+					helloImage->Desactivate();
+					lordImage->Desactivate();
 				}
 				else if (75<num)
 				{
 					lordImage->Activate();
 					introductionImage->Desactivate();
+					goodDayImage->Desactivate();
+					helloImage->Desactivate();
+					changeImage->Desactivate();
 				}
 			}
 		}
@@ -315,26 +327,38 @@ bool NpcGossip::entityUpdate(float dt)
 			}
 			else
 			{
-				uint num = 1 + rand()&(101 - 1);
-				if (num<=25)
+				num = 1 + rand()&(101 - 1);
+				if (num <= 25)
 				{
 					goodDayImage->Activate();
 					introductionImage->Desactivate();
+					helloImage->Desactivate();
+					changeImage->Desactivate();
+					lordImage->Desactivate();
 				}
-				else if (25<num<=50)
+				else if (25<num && num <= 50)
 				{
 					helloImage->Activate();
 					introductionImage->Desactivate();
+					goodDayImage->Desactivate();
+					changeImage->Desactivate();
+					lordImage->Desactivate();
 				}
-				else if (50<num<=75)
+				else if (50<num && num <= 75)
 				{
 					changeImage->Activate();
 					introductionImage->Desactivate();
+					goodDayImage->Desactivate();
+					helloImage->Desactivate();
+					lordImage->Desactivate();
 				}
 				else if (75<num)
 				{
 					lordImage->Activate();
 					introductionImage->Desactivate();
+					goodDayImage->Desactivate();
+					helloImage->Desactivate();
+					changeImage->Desactivate();
 				}
 			}
 		}
