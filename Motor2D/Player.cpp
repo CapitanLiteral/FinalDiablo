@@ -18,6 +18,7 @@
 Player::Player()
 {
 	AttributeBuilder builder;
+	builder.base_damage = 700;
 	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
 	attributes = new PlayerAttributes(builder);
 	
@@ -46,8 +47,8 @@ bool Player::start()
 					  colliderSize.x, colliderSize.y};		// Size
 	collider = app->collision->addCollider(rect, COLLIDER_PLAYER, this);
 
-	deathImage = app->gui->addGuiImageFader({ 0, 0 }, { 810, 1065, 669, 501 }, 5, NULL, NULL);
-	deathImage->SetLocalPosition({ 0, 0 });
+	deathImage = app->gui->addGuiImageFader({ 0, 0 }, { 679, 1065, 669, 501 }, 5, NULL, NULL);
+	//deathImage->SetLocalPosition({ 0, 0 });
 	deathImage->Center(true, true);
 	deathImage->Desactivate();
 
@@ -89,12 +90,12 @@ bool Player::update(float dt)
 	bool ret = true;
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
-	if (enemyFocus != NULL)
-	{
-		LOG("Enemy taget");
-	}
+	//if (enemyFocus != NULL)
+	//{
+	//	LOG("Enemy taget");
+	//}
 
-	LOG("Collision %d", collision);
+	//LOG("Collision %d", collision);
 	if (enemyFocus != NULL && enemyFocus->type != NPC_COUNSELOR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
 	{
 		LOG("TargetLife %f", enemyFocus->attributes->getLife());
@@ -135,6 +136,7 @@ bool Player::update(float dt)
 	}
 	else
 	{
+		inputBlocked = true;
 		if (current_animation->isOver())
 		{
 			//Start lose image
@@ -192,6 +194,8 @@ void Player::respawn()
 
 	//At end of tp unblit lose image
 		//Done by the gui element itself
+
+	inputBlocked = false;
 }
 
 void Player::draw()
@@ -394,7 +398,6 @@ void Player::handleInput()
 			if (attributes->getLife() <= 0)
 			{
 				current_input_event = I_DIE;
-				deathTimer.start();
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 			{
@@ -472,8 +475,8 @@ void Player::handleInput()
 			}
 		}
 	}
-	LOG("Input: %d", current_input_event);
-	LOG("Action: %d", current_action);
+	//LOG("Input: %d", current_input_event);
+	//LOG("Action: %d", current_action);
 }
 /*void Player::setMovement(int x, int y)
 {
