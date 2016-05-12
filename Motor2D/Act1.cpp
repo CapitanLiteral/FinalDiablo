@@ -155,6 +155,10 @@ bool Act1::update(float dt)
 	{
 		app->sm->fadeToBlack(app->sm->act2);
 	}
+	if (app->input->getKey(SDL_SCANCODE_J) == KEY_DOWN)
+	{
+		app->sm->fadeToBlack(app->sm->win);
+	}
 
 	if (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{

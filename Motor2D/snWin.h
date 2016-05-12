@@ -8,7 +8,9 @@
 using namespace std;
 
 class Entity;
-
+class GuiImage;
+class GuiElement;
+class GuiButton;
 
 class snWin : public Scene
 {
@@ -19,23 +21,8 @@ public:
 	// Destructor
 	~snWin();
 
-	// Called before render is available
-	bool awake(pugi::xml_node& conf);
-
-	// Called the first frame
 	bool start();
-
-	// preUpdate
-	bool preUpdate();
-
-	// update
 	bool update(float dt);
-
-	// postUpdate
-	bool postUpdate();
-
-	// Called before quitting
-	bool cleanUp();
 
 	// Called on certain event
 	void OnEvent(GuiElement* element, GUI_Event even);
@@ -52,9 +39,10 @@ private:
 
 public:
 	//NOTE: provisional.
-	SDL_Texture* back = NULL;
 	Timer ret;
 
+	GuiButton* backMenuButton = NULL;
+	GuiImage* background = NULL;
 
 
 };

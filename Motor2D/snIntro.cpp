@@ -8,6 +8,7 @@
 #include "Audio.h"
 #include "Animation.h"
 #include "Textures.h"
+#include "snWin.h"
 
 
 snIntro::snIntro() :Scene()
@@ -39,10 +40,10 @@ bool snIntro::start()
 	logo = app->gui->addGuiAnimation({ 250, 0 }, { 1829, 82, 800, 600 }, NULL, this, logoSprite, &logoAnim);
 
 	//Play button
-	play_button = app->gui->addGuiButton({ 315, 250 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "Single player", NULL, this);
+	playButton = app->gui->addGuiButton({ 315, 250 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "Single player", NULL, this);
 	
 	//Exit button
-	exit_button = app->gui->addGuiButton({ 315, 320 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "ExiT Diablo II", NULL, this);
+	exitButton = app->gui->addGuiButton({ 315, 320 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "ExiT Diablo II", NULL, this);
 
 	return true;
 }
@@ -62,57 +63,57 @@ bool snIntro::update(float dt)
 void snIntro::OnEvent(GuiElement* element, GUI_Event even)
 {	
 	//Play button
-	if (play_button == element)
+	if (playButton == element)
 	{
 		switch (even)
 		{
 
 		case EVENT_MOUSE_LEFTCLICK_DOWN:
 		{
-			play_button->button_image.SetTextureRect(play_button->click_tex);
-			play_button->button_label.SetLocalPosition({ 50, 8 });
+			playButton->button_image.SetTextureRect(playButton->click_tex);
+			playButton->button_label.SetLocalPosition({ 50, 8 });
 		}
 			break;
 
 		case EVENT_MOUSE_EXIT:
 		{
-			play_button->button_image.SetTextureRect(play_button->idle_tex);
-			play_button->button_label.Center(true, true);
+			playButton->button_image.SetTextureRect(playButton->idle_tex);
+			playButton->button_label.Center(true, true);
 		}
 			break;
 
 		case EVENT_MOUSE_LEFTCLICK_UP:
 		{
-			play_button->button_image.SetTextureRect(play_button->idle_tex);
-			play_button->button_label.Center(true, true);
+			playButton->button_image.SetTextureRect(playButton->idle_tex);
+			playButton->button_label.Center(true, true);
 			app->sm->fadeToBlack(app->sm->act1);
 		}
 			break;
 		}
 	}
 	//Exit button
-	if (exit_button == element)
+	if (exitButton == element)
 	{
 		switch (even)
 		{
 		case EVENT_MOUSE_LEFTCLICK_DOWN:
 		{
-			exit_button->button_image.SetTextureRect(exit_button->click_tex);
-			exit_button->button_label.SetLocalPosition({ 50, 8 });
+			exitButton->button_image.SetTextureRect(exitButton->click_tex);
+			exitButton->button_label.SetLocalPosition({ 50, 8 });
 		}
 			break;
 
 		case EVENT_MOUSE_EXIT:
 		{
-			exit_button->button_image.SetTextureRect(exit_button->idle_tex);
-			exit_button->button_label.Center(true, true);
+			exitButton->button_image.SetTextureRect(exitButton->idle_tex);
+			exitButton->button_label.Center(true, true);
 		}
 			break;
 
 		case EVENT_MOUSE_LEFTCLICK_UP:
 		{
-			exit_button->button_image.SetTextureRect(exit_button->idle_tex);
-			exit_button->button_label.Center(true, true);
+			exitButton->button_image.SetTextureRect(exitButton->idle_tex);
+			exitButton->button_label.Center(true, true);
 			exit = true;
 		}
 			break;
