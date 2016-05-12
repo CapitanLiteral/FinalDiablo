@@ -560,10 +560,11 @@ Entity* EntityManager::createNpc(iPoint position, entityType type)
 {
 	switch (type)
 	{
-	case (NPC_COUNSELOUR):
+	case (NPC_COUNSELOR):
 		{
 			 NpcCounselor* ret = new NpcCounselor(position, nextId);
 			 activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+			 nextId++;
 			 return ret;
 			break;
 		}
@@ -571,6 +572,7 @@ Entity* EntityManager::createNpc(iPoint position, entityType type)
 	{
 		NpcHealer* ret = new NpcHealer(position, nextId);
 		activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+		nextId++;
 		return ret;
 		break;
 	}
@@ -578,11 +580,11 @@ Entity* EntityManager::createNpc(iPoint position, entityType type)
 	{
 		NpcGossip* ret = new NpcGossip(position, nextId);
 		activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+		nextId++;
 		return ret;
 		break;
 	}
 	}
-	nextId++;
 	return NULL;
 }
 

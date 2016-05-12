@@ -117,10 +117,10 @@ struct AttributeBuilder
 	// Base Offensive Attributes
 	float	base_attackSpeed = 2.0f;
 	float	base_castSpeed = 2.0f;
-	float	base_damage = 500.0f;
+	float	base_damage = 100.0f;
 	float	base_accuracy = 200.0f;
-	float	base_critChance = 5.0f;
-	float	base_critMultiplier = 200.0f;
+	float	base_critChance = 0.05f;
+	float	base_critMultiplier = 1.3f;
 
 	// Base Deffensive Attributes
 	float	base_armor = 0.0f;
