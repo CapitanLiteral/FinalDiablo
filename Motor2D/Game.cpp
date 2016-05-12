@@ -4,7 +4,7 @@
 #include "Hud.h"
 #include "EntityManager.h"
 #include "Attributes.h"
-#include "hudBelt.h"
+#include "Gui.h"
 
 
 Game::Game() : Module()
@@ -16,8 +16,7 @@ Game::Game() : Module()
 
 	player->attributes->setHud(hud);
 	player->attributes->setReferences(&player->worldPosition.x, &player->worldPosition.y);
-	hud->character = player->attributes;
-	hud->belt->character = player->attributes;
+	hud->playerAtt = player->attributes;
 
 	//add modules to the list
 	addModule(player);
@@ -54,6 +53,10 @@ bool Game::awake(pugi::xml_node& conf)
 // Called before the first frame
 bool Game::start()
 {
+	active = true;
+
+	app->gui->clearUI();
+
 	list<Module*>::iterator item = game_modules.begin();
 
 	for (; item != game_modules.end(); item++)
@@ -110,6 +113,10 @@ bool Game::postUpdate()
 // Called before quitting
 bool Game::cleanUp()
 {
+	active = false;
+
+	app->gui->clearUI();
+
 	list<Module*>::iterator item = game_modules.begin();
 
 	for (; item != game_modules.end(); item++)

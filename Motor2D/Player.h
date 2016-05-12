@@ -87,6 +87,7 @@ private:
 //Attack
 private:
 	Entity* enemyFocus = NULL;
+	Entity* prevEnemyFocus = NULL;
 	bool collision = false;
 
 	//This have nosense in my opinion by CapitánLiteral

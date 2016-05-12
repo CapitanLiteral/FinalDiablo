@@ -324,6 +324,10 @@ bool Render::completeBlit(SDL_Texture* texture, int x, int y, const SDL_Rect sec
 
 bool Render::isInsideCameraZone(SDL_Rect rect)const
 {
+	bool a = (rect.x + rect.w >= camera.x &&
+		rect.x <= camera.x + camera.w &&
+		rect.y + rect.h <= camera.y + camera.h &&
+		rect.y >= camera.y);
 	return (rect.x + rect.w >= camera.x &&
 		rect.x <= camera.x + camera.w &&
 		rect.y + rect.h >= camera.y &&

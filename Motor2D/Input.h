@@ -51,9 +51,9 @@ public:
 	// Gather relevant win events
 	bool getWindowEvent(EventWindow ev);
 
-	void startInput(p2SString edit_input, int pos);
+	void startInput(std::string edit_input, int pos);
 	void StopInput();
-	p2SString getInput(int& cursor);
+	std::string getInput(int& cursor);
 
 	// Check key states (includes mouse and joy buttons)
 	KeyState getKey(int id) const
@@ -93,7 +93,7 @@ private:
 	int			mouse_y;
 
 	bool		enable_input;
-	p2SString   input_text;
+	std::string   input_text;
 	int			cursor_pos;
 };
 

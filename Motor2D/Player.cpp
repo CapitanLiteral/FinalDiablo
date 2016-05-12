@@ -79,7 +79,6 @@ bool Player::preUpdate()
 bool Player::update(float dt)
 {
 	bool ret = true;
-
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
 	if (enemyFocus != NULL)
@@ -88,7 +87,11 @@ bool Player::update(float dt)
 	}
 
 	LOG("Collision %d", collision);
-	
+	if (enemyFocus != NULL)
+	{
+		LOG("TargetLife %f", enemyFocus->attributes->getLife());
+	}
+		
 	//LOG("Path size: %d", path.size());
 	//if (isInDestiny())
 	//{
@@ -113,9 +116,9 @@ bool Player::update(float dt)
 		case SKILL:
 			break;
 		case BASIC_ATTACK:
-			if (current_animation->Finished() && enemyFocus != NULL)
+			if (current_animation->isOver() && enemyFocus != NULL)
 			{
-				//enemyFocus->attributes->damage(attributes, UNKNOWN);
+				enemyFocus->attributes->damage(attributes, UNKNOWN);
 				current_input_event = I_STOP;
 				current_animation->Reset();
 			}
@@ -271,8 +274,9 @@ void Player::move(float dt)
 	
 	//LOG("Moving 1");
 	//NOTE: Collider movement, may be changed
-	collider->SetPos(worldPosition.x, worldPosition.y); //Maybe ERROR, watch out
-	if (isInDestiny()/* || (enemyFocus != NULL && enemyFocus->getMapPos().DistanceTo(worldPosition) <= targetRadius && current_action == WALKING)*/)
+
+	collider->SetPos(worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y); //Maybe ERROR, watch out
+	if (isInDestiny() || (enemyFocus != NULL && enemyFocus->getMapPos().DistanceTo(worldPosition) <= targetRadius && current_action == WALKING))
 	{
 		path.clear();
 	}
@@ -374,13 +378,15 @@ void Player::handleInput()
 						current_input_event = I_WALK;
 						collision = false;
 					}//si no es terra					
-					else
+					else if (prevEnemyFocus == enemyFocus || 
+							prevEnemyFocus == NULL)
 					{
 						//comprobar si estas a rang d'atac
 						//if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
 						if (collision)
 						{
 							current_input_event = I_ATTACK;
+							prevEnemyFocus = enemyFocus;
 						}
 						else
 						{
@@ -388,7 +394,13 @@ void Player::handleInput()
 							current_input_event = I_WALK;
 
 						}
-					}			
+					}
+					else
+					{
+						getNewPath(target);
+						current_input_event = I_WALK;
+						prevEnemyFocus = enemyFocus;
+					}
 					
 					
 					

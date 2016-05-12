@@ -83,13 +83,11 @@
     <ClCompile Include="Act2.cpp" />
     <ClCompile Include="Attributes.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Griswold.cpp" />
     <ClCompile Include="GuiInventory.cpp" />
     <ClCompile Include="GuiItem.cpp" />
     <ClCompile Include="GuiSlot.cpp" />
-    <ClCompile Include="hudBelt.cpp" />
-    <ClCompile Include="hudBlood.cpp" />
     <ClCompile Include="hudInventory.cpp" />
-    <ClCompile Include="hudPause.cpp" />
     <ClCompile Include="hudSkilltree.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -119,6 +117,7 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="GuiElements.cpp" />
     <ClCompile Include="snWin.cpp" />
+    <ClCompile Include="Wolf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Act1.h" />
@@ -126,15 +125,13 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Attributes.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Griswold.h" />
     <ClInclude Include="GuiElements.h" />
     <ClInclude Include="GuiInventory.h" />
     <ClInclude Include="GuiItem.h" />
     <ClInclude Include="GuiSlot.h" />
-    <ClInclude Include="hudBelt.h" />
-    <ClInclude Include="hudBlood.h" />
     <ClInclude Include="hudElement.h" />
     <ClInclude Include="hudInventory.h" />
-    <ClInclude Include="hudPause.h" />
     <ClInclude Include="hudSkilltree.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
@@ -172,6 +169,7 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="ExtraSTL.h" />
     <ClInclude Include="snWin.h" />
+    <ClInclude Include="Wolf.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

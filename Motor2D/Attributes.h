@@ -178,7 +178,7 @@ public:
 
 	// When damaging, call this methos with the attacker's attributs and attack
 	// Returns true if still alive
-	bool damage(Attributes* attacker, int attackType);
+	bool damage(Attributes* attacker, int attackType = 0);
 
 	// Immediate Getters
 	float getLevel()const	{ return current_level; }
