@@ -46,7 +46,7 @@ bool Gui::start()
 	//Disables the cursor
 	SDL_ShowCursor(SDL_DISABLE);
 	//Mouse--------
-	mouse = new GuiMouseImage({ mouse_x, mouse_y }, { 189, 98, 33, 26 }, NULL, this);
+	mouse = new GuiMouseImage({ mouse_x, mouse_y }, { 320, 1024, 33, 26 }, NULL, this);
 	dragged_item = NULL;
 	//-------------
 	return true;

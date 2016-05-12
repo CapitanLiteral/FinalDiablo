@@ -63,6 +63,7 @@ enum INPUT_EVENTS
 
 enum SKILLS
 {
+	SKILL_NONE,
 	SKILL1,
 	SKILL2
 };
@@ -187,6 +188,8 @@ private:
 	ACTION_STATE previous_action;
 	DIRECTION current_direction = D_FRONT;
 	DIRECTION previous_direction;
+
+	SKILLS current_skill = SKILL_NONE;
 
 	SDL_Texture* barbarianImage = NULL;
 	SDL_Texture* butcherImage = NULL;
