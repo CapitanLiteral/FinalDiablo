@@ -6,6 +6,18 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "p2Log.h"
+#include <sstream>
+#include <string>
+
+template <typename T>
+std::string NumberToString(T Number)
+{
+	ostringstream ss;
+	ss << Number;
+	std::string ret;
+	ret.assign(ss.str());
+	return ret;
+}
 
 //Constructor
 Hud::Hud() : Module()
@@ -47,7 +59,7 @@ bool Hud::start()
 	inventory = app->gui->addGuiImage({ 24, 3 }, { 191, 279, 20, 19 }, panel, this);
 	tree = app->gui->addGuiImage({ 45, 3 }, { 212, 279, 20, 19 }, panel, this);
 	map = app->gui->addGuiImage({ 66, 3 }, { 233, 279, 20, 19 }, panel, this);
-	pauseMenu = app->gui->addGuiImage({ 87, 3 }, { 254, 279, 20, 19 }, panel, this);
+	pause = app->gui->addGuiImage({ 87, 3 }, { 254, 279, 20, 19 }, panel, this);
 
 	app->gui->addGuiImage({ -50, 0 }, { 102, 280, 50, 47 }, base, this); // leftSkill
 	current_skill = basic_attack = app->gui->addGuiImage({ 308, 0 }, { 102, 280, 50, 47 }, base, this);
@@ -55,17 +67,19 @@ bool Hud::start()
 	whack = app->gui->addGuiImage({ 233, -70 }, { 0, 280, 50, 47 }, base, this);
 	growl = app->gui->addGuiImage({ 305, -70 }, { 0, 280, 50, 47 }, base, this);
 
+	life->interactable = true;
+	rage->interactable = true;
+	character->interactable = true;
+	inventory->interactable = true;
+	tree->interactable = true;
+	map->interactable = true;
+	pause->interactable = true;
 	staminaDorn->interactable = true;
 	menuExpand->interactable = true;
 	basic_attack->interactable = true;
 	frenzy->interactable = true;
 	whack->interactable = true;
 	growl->interactable = true;
-	character->interactable = true;
-	inventory->interactable = true;
-	tree->interactable = true;
-	map->interactable = true;
-	pauseMenu->interactable = true;
 
 	frenzy->active = false;
 	whack->active = false;
@@ -90,14 +104,14 @@ bool Hud::start()
 
 	// Pause Menu
 
-	pause = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
-	p_exit = app->gui->addGuiImage({ 45, 200 }, { 460, 0, 534, 35 }, pause, this);
-	p_back = app->gui->addGuiImage({ 95, 270 }, { 994, 0, 438, 35 }, pause, this);
+	pauseMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
+	p_exit = app->gui->addGuiImage({ 45, 200 }, { 460, 0, 534, 35 }, pauseMenu, this);
+	p_back = app->gui->addGuiImage({ 95, 270 }, { 994, 0, 438, 35 }, pauseMenu, this);
 
 	p_exit->interactable = true;
 	p_back->interactable = true;
 
-	pause->Desactivate();
+	pauseMenu->Desactivate();
 
 	return true;
 }
@@ -119,8 +133,7 @@ bool Hud::preUpdate()
 	// Pause menu
 	if (app->input->getKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
-		if (pause->active) pause->Desactivate();
-		else pause->Activate();
+		pauseMenu->active ? pause->Desactivate() : pause->Activate();
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN) useSlotItem(slot1);
@@ -238,19 +251,48 @@ bool Hud::update(float dt)
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
 
-	std::string text = "penis";
-	//text.assign("%i/%i", int(playerAtt->getLife()), int(playerAtt->getMaxLife()));
-	lifeLabel->SetText(text);
-	//text.assign("%i/%i", int(playerAtt->getRage()), int(playerAtt->getMaxRage()));
-	lifeLabel->SetText(text);
+	std::string text;
+
+	if (lifeLabel->active)
+	{
+		text.assign("Life: ");
+		text.append(NumberToString(int(playerAtt->getLife())));
+		text.append("/");
+		text.append(NumberToString(int(playerAtt->getMaxLife())));
+		lifeLabel->SetText(text);
+	}
+	if (rageLabel->active)
+	{
+		text.assign("Rage: ");
+		text.append(NumberToString(int(playerAtt->getRage())));
+		text.append("/");
+		text.append(NumberToString(int(playerAtt->getMaxRage())));
+		rageLabel->SetText(text);
+	}
 
 	return true;
 }
 
 void Hud::OnEvent(GuiElement* element, GUI_Event even)
 {
-	//Base
+	/*character->interactable = true;
+	inventory->interactable = true;
+	tree->interactable = true;
+	map->interactable = true;
+	pauseMenu->interactable = true;
+	staminaDorn->interactable = true;
+	menuExpand->interactable = true;
+	basic_attack->interactable = true;
+	frenzy->interactable = true;
+	whack->interactable = true;
+	growl->interactable = true;*/
 
+	//Base
+	if (pause == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		pauseMenu->Activate();
+	}
 
 	// Character
 
@@ -273,7 +315,7 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	if (p_back == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
-		pause->Desactivate();
+		pauseMenu->Desactivate();
 	}
 }
 
