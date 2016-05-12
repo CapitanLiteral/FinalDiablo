@@ -613,6 +613,11 @@ float PlayerAttributes::getItemRarity()const
 	return ((base_item_rarity + getMod(FLAT_ITEM_RARITY)) * getMod(NONFLAT_ITEM_RARITY));
 }
 
+int PlayerAttributes::getMaxExp()const
+{
+	return int(base_exp);
+}
+
 float PlayerAttributes::getMod(modifierType type)const
 {
 	float ret = 0.0f;

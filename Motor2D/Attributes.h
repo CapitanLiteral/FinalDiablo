@@ -183,6 +183,7 @@ public:
 	// Immediate Getters
 	float getLevel()const	{ return current_level; }
 	float getLife()const	{ return current_life; }
+	int	 getExp()const		{ return experience; }
 
 	// Adders / setters
 	bool addLife(float val);
@@ -324,6 +325,7 @@ public:
 	float getRageRegen()const;
 	float getStaminaRegen()const;
 	float getItemRarity()const;
+	int   getMaxExp()const;
 
 protected:
 
