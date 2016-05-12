@@ -459,6 +459,8 @@ void Entity::handleInput()
 					}
 					else
 					{
+						target = app->game->player->getWorldPosition();
+						target = app->map->WorldToMap(target.x, target.y);
 						getNewPath(target);
 						current_input = EI_WALK;
 					}
