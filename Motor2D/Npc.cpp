@@ -198,18 +198,22 @@ bool NpcHealer::entityUpdate(float dt)
 				if (num <=25)
 				{
 					goodDayImage->Activate();
+					introductionImage->Desactivate();
 				}
 				else if (25<num <=50)
 				{
 					helloImage->Activate();
+					introductionImage->Desactivate();
 				}
 				else if (50<num <=75)
 				{
 					changeImage->Activate();
+					introductionImage->Desactivate();
 				}
 				else if (75<num)
 				{
 					lordImage->Activate();
+					introductionImage->Desactivate();
 				}
 			}
 		}
@@ -315,18 +319,22 @@ bool NpcGossip::entityUpdate(float dt)
 				if (num<=25)
 				{
 					goodDayImage->Activate();
+					introductionImage->Desactivate();
 				}
 				else if (25<num<=50)
 				{
 					helloImage->Activate();
+					introductionImage->Desactivate();
 				}
 				else if (50<num<=75)
 				{
 					changeImage->Activate();
+					introductionImage->Desactivate();
 				}
 				else if (75<num)
 				{
 					lordImage->Activate();
+					introductionImage->Desactivate();
 				}
 			}
 		}

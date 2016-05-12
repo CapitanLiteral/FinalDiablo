@@ -20,11 +20,12 @@ SceneManager::SceneManager() : Module()
 	act2 = new Act2();
 	win = new snWin();
 
-	addScene(win);
+	
 	addScene(intro);
 	//addScene(outdoor1);
 	addScene(act1);
 	addScene(act2);
+	addScene(win);
 }
 
 SceneManager::~SceneManager()
@@ -170,7 +171,7 @@ bool SceneManager::ChangeScene(Scene* new_scene)
 bool SceneManager::fadeToBlack(Scene* new_scene, float time)
 {
 	bool ret = true;
-
+	bool a = !(fadeIn || fadeOut);
 	if (!(fadeIn || fadeOut))
 	{
 		next_scene = new_scene;

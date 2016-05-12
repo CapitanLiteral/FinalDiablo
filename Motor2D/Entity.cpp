@@ -37,9 +37,11 @@ bool Entity::entityUpdate(float internDT)
 		case E_SKILL:
 			break;
 		case E_BASIC_ATTACK:
-			if (currentAnimation->Finished() && player != NULL)
+			if (currentAnimation->isOver() && player != NULL)
 			{
 				player->attributes->damage(attributes,0);
+				current_input = EI_STOP;
+				currentAnimation->Reset();
 			}
 			break;
 		}

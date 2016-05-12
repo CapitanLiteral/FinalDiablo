@@ -33,8 +33,8 @@ private:
 	bool exit;
 
 	//Ui elements
-	GuiButton* play_button = NULL;
-	GuiButton* exit_button = NULL;
+	GuiButton* playButton = NULL;
+	GuiButton* exitButton = NULL;
 	GuiImage* background = NULL;
 	GuiAnimation* logo = NULL;
 

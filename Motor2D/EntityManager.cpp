@@ -7,6 +7,7 @@
 #include "Griswold.h"
 #include "FileSystem.h"
 #include "Attributes.h"
+#include "Map.h"
 
 #include "App.h"
 #include "Render.h"
@@ -71,19 +72,22 @@ bool EntityManager::preUpdate()
 		{
 			iPoint point = app->input->getMouseWorldPosition();
 
-			createPaladin(point);
+			if (getEntityOnMouse()==NULL)
+				createPaladin(point);
 		}
 		if (app->input->getKey(SDL_SCANCODE_2) == KEY_DOWN)
 		{
 			iPoint point = app->input->getMouseWorldPosition();
 
-			createWolf(point);
+			if (getEntityOnMouse() == NULL)
+				createWolf(point);
 		}
 		if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN)
 		{
 			iPoint point = app->input->getMouseWorldPosition();
 
-			createGriswold(point);
+			if (getEntityOnMouse() == NULL)
+				createGriswold(point);
 		}
 	}
 
