@@ -165,7 +165,7 @@ protected:
 	Animation* currentAnimation = NULL;
 	std::map<std::pair<entityState, entityDirection>, Animation>	entityAnim;
 	SDL_Texture* pDebug = NULL;
-
+	bool died = false;
 //Enum instances
 	entityInputState current_input = EI_NULL;
 	entityState currentState = E_IDLE;
