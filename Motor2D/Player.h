@@ -96,7 +96,7 @@ private:
 	iPoint colliderSize;
 	bool alive;
 	iPoint startingPosition;
-	bool inputBlocked = false; // to do PAUSE // need getter and setter
+	bool inputBlocked = false; // to do PAUSE
 	INPUT_EVENTS current_input_event;
 	ACTION_STATE updateAction();
 	void handleInput();
@@ -130,11 +130,17 @@ private:
 	void setDirection();
 	void setDirection(fPoint pos);
 
+	//interaction
+	bool entityInRange();
+
 //Attack
 private:
 	Entity* enemyFocus = NULL;
 	Entity* prevEnemyFocus = NULL;
 	bool collision = false;
+
+//interaction with colliders;
+	float	entityRange;
 
 	//This have nosense in my opinion by CapitánLiteral
 public:
@@ -152,11 +158,12 @@ public:
 	void setMapPosition(iPoint tile);
 	void setWorldPosition(iPoint coords);
 	void setStartingWorldPosition(iPoint coords);
+	void setInputBlocked(bool value);
 
 	Collider* getCollider() const;
 	iPoint getColliderOffset() const;
 	iPoint getColliderSize() const;
-
+	bool getInputBlocked() const;
 	Sprite* getSprite() const;
 
 	//Getters and setters of this shit

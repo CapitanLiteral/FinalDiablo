@@ -55,7 +55,6 @@ bool NpcCounselor::entityUpdate(float dt)
 	{
 		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && mouseHover())
 		{
-			int i = app->game->player->attributes->getLevel();
 			if (app->game->player->attributes->getLevel() == 1  || readed)
 			{
 				introductionImage->Activate();
@@ -114,18 +113,16 @@ void NpcCounselor::drawDebug()
 
 bool NpcCounselor::playerInRange()
 {
-	iPoint target_player = app->game->player->getWorldPosition();
+	iPoint targetPlayer = app->game->player->getWorldPosition();
 
 	iPoint dist;
 
-	dist.x = target_player.x - getWorldPosition().x;
-	dist.y = target_player.y - getWorldPosition().y;
+	dist.x = targetPlayer.x - getWorldPosition().x;
+	dist.y = targetPlayer.y - getWorldPosition().y;
 
-	float ret = dist.getModule();
-	ret = ret;
 	float range = sqrt(dist.x*dist.x + dist.y*dist.y);
 
-	if (playerRange > ret)
+	if (playerRange > range)
 	{
 		return true;
 	}
@@ -188,6 +185,9 @@ bool NpcHealer::entityUpdate(float dt)
 	{
 		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && mouseHover())
 		{
+			if (app->game->player->attributes->getLife() < app->game->player->attributes->getMaxLife()){
+				app->game->player->attributes->setLife(app->game->player->attributes->getMaxLife());
+			}
 			if (readed < 3)
 			{
 				introductionImage->Activate();
@@ -256,17 +256,16 @@ void NpcHealer::drawDebug()
 
 bool NpcHealer::playerInRange()
 {
-	iPoint target_player = app->game->player->getWorldPosition();
+	iPoint targetPlayer = app->game->player->getWorldPosition();
 
 	fPoint dist;
 
-	dist.x = target_player.x - getWorldPosition().x;
-	dist.y = target_player.y - getWorldPosition().y;
+	dist.x = targetPlayer.x - getWorldPosition().x;
+	dist.y = targetPlayer.y - getWorldPosition().y;
 
-	float ret = dist.getModule();
-	ret = ret;
+	float range = sqrt(dist.x*dist.x + dist.y*dist.y);
 
-	if (playerRange > ret)
+	if (playerRange > range)
 	{
 		return true;
 	}
@@ -389,17 +388,16 @@ void NpcGossip::drawDebug()
 
 bool NpcGossip::playerInRange()
 {
-	iPoint target_player = app->game->player->getWorldPosition();
+	iPoint targetPlayer = app->game->player->getWorldPosition();
 
 	fPoint dist;
 
-	dist.x = target_player.x - getWorldPosition().x;
-	dist.y = target_player.y - getWorldPosition().y;
+	dist.x = targetPlayer.x - getWorldPosition().x;
+	dist.y = targetPlayer.y - getWorldPosition().y;
 
-	float ret = dist.getModule();
-	ret = ret;
+	float range = sqrt(dist.x*dist.x + dist.y*dist.y);
 
-	if (playerRange > ret)
+	if (playerRange > range)
 	{
 		return true;
 	}
