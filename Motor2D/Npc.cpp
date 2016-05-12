@@ -194,19 +194,20 @@ bool NpcHealer::entityUpdate(float dt)
 			}
 			else
 			{
-				if (readed%0 == 0)
+				uint num = 1 + rand()&(101 - 1);
+				if (num = <25)
 				{
 					goodDayImage->Activate();
 				}
-				if (readed % 1 == 1)
+				else if (25<num = <50)
 				{
 					helloImage->Activate();
 				}
-				if (readed % 2==2)
+				else if (50<num = <75)
 				{
 					changeImage->Activate();
 				}
-				if (readed % 3==3)
+				else if (75<num)
 				{
 					lordImage->Activate();
 				}
@@ -310,19 +311,20 @@ bool NpcGossip::entityUpdate(float dt)
 			}
 			else
 			{
-				if (readed % 0 == 0)
+				uint num = 1 + rand()&(101 - 1);
+				if (num=<25)
 				{
 					goodDayImage->Activate();
 				}
-				if (readed % 1 == 1)
+				else if (25<num=<50)
 				{
 					helloImage->Activate();
 				}
-				if (readed % 2 == 2)
+				else if (50<num=<75)
 				{
 					changeImage->Activate();
 				}
-				if (readed % 3 == 3)
+				else if (75<num)
 				{
 					lordImage->Activate();
 				}
