@@ -35,25 +35,14 @@ bool Hud::start()
 	lifeRect = { 576, 704, 79, 78 };
 	rageRect = { 448, 704, 78, 78 };
 	staminaRect = { 320, 703, 102, 18 };
+	expRect = { 320, 703, 102, 18 };
 
 	menuExpandOpened = { 1151, 576, 14, 25 };
 	menuExpandClosed = { 1183, 576, 14, 25 };
 
 	GuiImage* base = app->gui->addGuiImage({ 166, 425 }, { 166, 882, 309, 52 }, NULL, this);/**/
 
-	app->gui->addGuiImage({ -132, -5 }, { 704, 730, 76, 53 }, base, this); // lifeback/**/
-	app->gui->addGuiImage({ 364, -13 }, { 832, 730, 80, 53 }, base, this); // rageback/**/
-
-	life = app->gui->addGuiImage({ -136, -39 }, { 576, 704, 79, 78 }, base, this);/**/
-	rage = app->gui->addGuiImage({ 366, -39 }, { 448, 704, 78, 78 }, base, this);/**/
 	stamina = app->gui->addGuiImage({ 27, 25 }, { 320, 703, 102, 18 }, base, this);/**/
-
-	app->gui->addGuiImage({ -166, -41 }, { 0, 840, 116, 103 }, base, this); // lifefront/**/
-	app->gui->addGuiImage({ 359, -50 }, { 524, 832, 116, 102 }, base, this); // ragefront/**/
-
-	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 5 }, NULL, FONT_WHITE, this);
-	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 20 }, NULL, FONT_WHITE, this);
-
 	staminaDorn = app->gui->addGuiImage({ 9, 24 }, { 1088, 576, 16, 20 }, base, this);/**/
 	menuExpand = app->gui->addGuiImage({ 145, 13 }, menuExpandOpened, base, this);/**/
 
@@ -81,9 +70,7 @@ bool Hud::start()
 	frenzy->interactable = true;
 	whack->interactable = true;
 	growl->interactable = true;
-
-	lifeLabel->active = false;
-	rageLabel->active = false;
+	
 	frenzy->active = false;
 	whack->active = false;
 	growl->active = false;
@@ -97,7 +84,7 @@ bool Hud::start()
 	mapMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Character
-	characterMenu = app->gui->addGuiImage({ 321, 0 }, { 1128, 588, 319, 430 }, NULL, this);
+	characterMenu = app->gui->addGuiImage({ 321, 0 }, { 832, 0, 319, 430 }, NULL, this);
 	i_inventory = app->gui->addGuiInventory({ 16, 255 }, { 1144, 843, 290, 116 }, 10, 4, ITEM_SECTION_SIZE, ITEM_SECTION_SIZE, characterMenu, this);
 
 	characterMenu->active = false;
@@ -112,8 +99,8 @@ bool Hud::start()
 	// Pause Menu
 
 	pauseMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
-	p_exit = app->gui->addGuiImage({ 94, 200 }, { 94, 642, 534, 35 }, pauseMenu, this);/**/
-	p_back = app->gui->addGuiImage({ 95, 270 }, { 629, 642, 438, 35 }, pauseMenu, this);/**/
+	p_exit = app->gui->addGuiImage({ 54, 200 }, { 94, 642, 534, 35 }, pauseMenu, this);/**/
+	p_back = app->gui->addGuiImage({ 75, 270 }, { 629, 642, 438, 35 }, pauseMenu, this);/**/
 
 	p_exit->interactable = true;
 	p_back->interactable = true;
@@ -126,12 +113,25 @@ bool Hud::start()
 	pauseMenu->Desactivate();
 
 
+	// above menus
 
+	app->gui->addGuiImage({ -132, -5 }, { 704, 730, 76, 53 }, base, this); // lifeback/**/
+	app->gui->addGuiImage({ 364, -13 }, { 832, 730, 80, 53 }, base, this); // rageback/**/
 
+	life = app->gui->addGuiImage({ -136, -39 }, { 576, 704, 79, 78 }, base, this);/**/
+	rage = app->gui->addGuiImage({ 366, -39 }, { 448, 704, 78, 78 }, base, this);/**/
 
+	app->gui->addGuiImage({ -166, -41 }, { 0, 840, 116, 103 }, base, this); // lifefront/**/
+	app->gui->addGuiImage({ 359, -50 }, { 524, 832, 116, 102 }, base, this); // ragefront/**/
 
+	exp = app->gui->addGuiImage({ 0, 0 }, { 320, 703, 102, 18 }, NULL, this);
 
-	exp = app->gui->addGuiImage({ 0, 0 }, { 530, 118, 102, 18 }, NULL, this);
+	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 5 }, NULL, FONT_WHITE, this);
+	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 20 }, NULL, FONT_WHITE, this);
+	expLabel = app->gui->addGuiLabel("0", NULL, { 10, 30 }, NULL, FONT_WHITE, this);
+
+	lifeLabel->active = false;
+	rageLabel->active = false;
 
 	return true;
 }
@@ -209,14 +209,9 @@ bool Hud::preUpdate()
 				treeMenu->Activate();
 			}
 		}
-		else if(app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
-		{
-			clearTabs();
-			characterMenu->Activate();
-		}
 		else if(app->input->getKey(SDL_SCANCODE_TAB) == KEY_DOWN)
 		{
-			characterMenu->Activate();
+			mapMenu->active ? mapMenu->Desactivate() : mapMenu->Activate();
 		}
 	}
 
@@ -337,17 +332,15 @@ bool Hud::update(float dt)
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
 
-	playerAtt->addExp(5);
-
 	// update exp image
 	float maxExp = playerAtt->getMaxExp();
 	if (playerAtt->getExp() >= maxExp)
 	{
-		exp->SetTextureRect(expRext);
+		exp->SetTextureRect(expRect);
 	}
 	else if (playerAtt->getExp() > 0.0f)
 	{
-		rect = expRext;
+		rect = expRect;
 
 		dif = maxExp - playerAtt->getExp();
 		dif *= rect.w;
@@ -379,6 +372,16 @@ bool Hud::update(float dt)
 		text.append("/");
 		text.append(NumberToString(int(playerAtt->getMaxRage())));
 		rageLabel->SetText(text);
+	}
+	if (expLabel->active)
+	{
+		text.assign("Lvl: ");
+		text.append(NumberToString(int(playerAtt->getLevel())));
+		text.append(" -> Exp: ");
+		text.append(NumberToString(int(playerAtt->getExp())));
+		text.append("/");
+		text.append(NumberToString(int(playerAtt->getMaxExp())));
+		expLabel->SetText(text);
 	}
 
 	return true;
@@ -448,8 +451,7 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	else if (p_exit == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
-		exit = false;
-		app->sm->changeScene(4);
+		exit = true;
 	}
 	else if (p_back == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
@@ -467,7 +469,7 @@ bool Hud::addItem()
 	GuiItem* new_item;
 	iPoint coords[1] = { { 0, 0 } };
 	new_item = new GuiItem(1, coords, { 2285, 799, ITEM_SECTION_SIZE, ITEM_SECTION_SIZE });
-	if (!inventory->AutomaticaddItem(new_item))
+	if (!i_inventory->AutomaticaddItem(new_item))
 	{
 		delete new_item;
 		ret = false;

@@ -583,6 +583,7 @@ bool PlayerAttributes::setLevel(int val)
 	{
 		if (hud != NULL) hud->levelChanged(val, current_level);
 		current_level = val;
+		base_exp = 1000 * current_level;
 	}
 
 	return ret;
