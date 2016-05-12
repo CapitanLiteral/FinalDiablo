@@ -246,7 +246,7 @@ void Player::move(float dt)
 	worldPosition.y += int(vel.y);
 
 	//NOTE: Collider movement, may be changed
-	collider->SetPos(worldPosition.x, worldPosition.y); //Maybe ERROR, watch out
+	collider->SetPos(worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y); //Maybe ERROR, watch out
 	if (isInDestiny() || (enemyFocus != NULL && enemyFocus->getMapPos().DistanceTo(worldPosition) <= targetRadius && current_action == WALKING))
 	{
 		path.clear();
