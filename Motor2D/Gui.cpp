@@ -284,5 +284,7 @@ bool Gui::clearUI()
 		RELEASE(tmp);
 	}
 
+	gui_elements.clear();
+
 	return true;
 }

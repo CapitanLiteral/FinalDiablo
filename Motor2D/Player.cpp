@@ -13,6 +13,7 @@
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Gui.h"
+#include "Window.h"
 
 Player::Player()
 {
@@ -47,8 +48,8 @@ bool Player::start()
 
 	deathImage = app->gui->addGuiImageFader({ 0, 0 }, { 810, 1065, 799, 599 }, 5, NULL, NULL);
 	deathImage->SetLocalPosition({ 0, 0 });
-	//deathImage->Center(true, true);
-	//deathImage->Desactivate();
+	deathImage->Center(true, true);
+	deathImage->Desactivate();
 
 	// ANIMATION
 	if (loadAnimations())
@@ -396,7 +397,6 @@ void Player::handleInput()
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
-				
 				//Do things
 				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 				{

@@ -18,13 +18,55 @@ class SDL_Texture;
 class Entity;
 class GuiImageFader;
 
-enum ACTION_STATE;
-enum DIRECTION;
-enum PHASE;
-enum INPUT_EVENTS;
-enum SKILLS;
 
 
+enum ACTION_STATE
+{
+	IDLE = 0,
+	WALKING = 1,
+	BASIC_ATTACK = 2,
+	DEATH = 3,
+	RUNNING = 4,
+	SKILL, // Do the skill things
+	NOTHING,
+};
+
+enum DIRECTION
+{
+	D_BACK,
+	D_BACK_RIGHT,
+	D_RIGHT,
+	D_FRONT_RIGHT,
+	D_FRONT,
+	D_FRONT_LEFT,
+	D_LEFT,
+	D_BACK_LEFT,
+	D_DEFAULT
+};
+
+enum PHASE
+{
+	BARBARIAN,
+	BUTCHER,
+	DIABLO
+};
+
+enum INPUT_EVENTS
+{
+	I_NULL = 0,
+	I_WALK,
+	I_RUN,
+	I_SKILL,
+	I_ATTACK,
+	I_STOP,
+	I_DIE
+};
+
+enum SKILLS
+{
+	SKILL1,
+	SKILL2
+};
 
 class Player : public Module
 {
@@ -54,7 +96,7 @@ private:
 	iPoint colliderSize;
 	bool alive;
 	iPoint startingPosition;
-	bool inputBlocked; // to do PAUSE // need getter and setter
+	bool inputBlocked = false; // to do PAUSE // need getter and setter
 	INPUT_EVENTS current_input_event;
 	ACTION_STATE updateAction();
 	void handleInput();
@@ -141,11 +183,11 @@ private:
 	std::map<std::pair<ACTION_STATE, DIRECTION>, Animation>	butcherAnim;
 	std::map<std::pair<ACTION_STATE, DIRECTION>, Animation>	diabloAnim;
 
-	PHASE currentPhase;
+	PHASE currentPhase = BARBARIAN;
 	Animation* current_animation;
-	ACTION_STATE current_action;
+	ACTION_STATE current_action = IDLE;
 	ACTION_STATE previous_action;
-	DIRECTION current_direction;
+	DIRECTION current_direction = D_FRONT;
 	DIRECTION previous_direction;
 
 	SDL_Texture* barbarianImage = NULL;
@@ -157,51 +199,3 @@ private:
 };
 
 #endif
-
-enum DIRECTION
-{
-	D_BACK,
-	D_BACK_RIGHT,
-	D_RIGHT,
-	D_FRONT_RIGHT,
-	D_FRONT,
-	D_FRONT_LEFT,
-	D_LEFT,
-	D_BACK_LEFT,
-	D_DEFAULT
-};
-
-enum ACTION_STATE
-{
-	IDLE = 0,
-	WALKING = 1,
-	BASIC_ATTACK = 2,
-	DEATH = 3,
-	RUNNING = 4,
-	SKILL, // Do the skill things
-	NOTHING,
-};
-
-enum PHASE
-{
-	BARBARIAN,
-	BUTCHER,
-	DIABLO
-};
-
-enum INPUT_EVENTS
-{
-	I_NULL = 0,
-	I_WALK,
-	I_RUN,
-	I_SKILL,
-	I_ATTACK,
-	I_STOP,
-	I_DIE
-};
-
-enum SKILLS
-{
-	SKILL1,
-	SKILL2
-};

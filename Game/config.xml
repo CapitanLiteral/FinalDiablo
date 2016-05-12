@@ -16,7 +16,7 @@
   </fonts>
 
   <gui>
-    <atlas file="gui/DiabloAtlas.png"/>
+    <atlas file="gui/Atlas_UI.png"/>
   </gui>
     
   <window>
