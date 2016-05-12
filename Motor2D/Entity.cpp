@@ -255,7 +255,7 @@ void Entity::move(float dt)
 	worldPosition.y += int(vel.y);
 
 	//NOTE: Collider movement, may be changed
-	collider->SetPos(worldPosition.x, worldPosition.y); //Maybe ERROR, watch out
+	collider->SetPos(worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y); //Maybe ERROR, watch out
 	if (isInDestiny() || (player != NULL && player->getMapPosition().DistanceTo(worldPosition) <= targetRadius && currentState == E_WALK))
 	{
 		path.clear();
