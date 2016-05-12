@@ -101,11 +101,7 @@ bool Player::update(float dt)
 	//}
 	//setDirection();
 	//current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
-	std::string a = "aaa ";
-	app->win->SetTitle(a.c_str());
-	a.append("current_action:");
-	a.append(std::to_string(current_action));
-	app->win->SetTitle(a.c_str());
+
 	if (current_action != DEATH)
 	{
 		switch (current_action)
@@ -349,17 +345,8 @@ Player::~Player()
 
 void Player::handleInput()
 {
-	std::string a = "hola ";
-	app->win->SetTitle(a.c_str());
-	a.append("input:");
-	a.append(std::to_string(inputBlocked));
-	app->win->SetTitle(a.c_str());
 	if (!inputBlocked)
 	{
-
-		a.append("input is ok");
-		app->win->SetTitle(a.c_str());
-
 		if (current_action != DEATH)
 		{
 			if (attributes->getLife() <= 0)
@@ -372,8 +359,6 @@ void Player::handleInput()
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
-				a.append(" Esquera");
-				app->win->SetTitle(a.c_str());
 				//Do things
 				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 				{
@@ -382,7 +367,6 @@ void Player::handleInput()
 				}
 				else
 				{
-					app->win->SetTitle(a.c_str());
 					//Maybe ERROR, watch out //Only to test pathfinding
 					clickCoords = app->input->getMouseWorldPosition();
 					target = app->map->WorldToMap(clickCoords.x, clickCoords.y);
