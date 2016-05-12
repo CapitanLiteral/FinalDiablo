@@ -362,6 +362,7 @@ void Particle::setRandomSpeed(float velocity, float minAngle, float maxAngle)
 
 void Particle::setLinearSpeed(float velocity, fPoint directiorVec)
 {
+	directiorVec.Normalize();
 	speed.x = velocity * directiorVec.x;
 	speed.y = velocity * directiorVec.y;
 }
