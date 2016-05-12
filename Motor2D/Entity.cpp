@@ -152,8 +152,9 @@ void Entity::setStartingWorldPosition(iPoint coords)//This might be useless
 
 void Entity::setColliderPosition(iPoint coords)
 {
-
+	collider->SetPos(coords.x,coords.y);
 }
+
 void Entity::setId(int id)
 {
 	this->id = id;

@@ -12,6 +12,9 @@
 #include "snWin.h"
 #include "Audio.h"
 #include "Player.h"
+#include "EntityManager.h"
+#include "Act1.h"
+#include "Entity.h"
 
 Act2::Act2()
 {
@@ -51,10 +54,17 @@ bool Act2::start()
 		RELEASE_ARRAY(data);
 	}
 
-	
 	app->render->sprites.clear(); //memory leak falta el RELEASE //Maybe ERROR, watch out
-	//app->render->sprites.push_back(app->game->player->getSprite()); //Maybe ERROR, watch out
+	app->render->sprites.push_back(app->game->player->getSprite()); //Maybe ERROR, watch out
+	app->render->sprites.push_back(app->sm->act1->counselor->getSprite());
+	app->render->sprites.push_back(app->sm->act1->healer->getSprite());
 	app->game->player->setWorldPosition({ 0, 1200 });
+	app->game->player->setStartingWorldPosition({ 0, 1200 });
+	app->sm->act1->counselor->setWorldPosition({ 40, 1200 });
+	app->sm->act1->counselor->setColliderPosition({ 16, 1120 });
+	app->sm->act1->healer->setWorldPosition({ 150, 1200 });
+	app->sm->act1->healer->setColliderPosition({ 130, 1130 });
+	app->game->em->createNpc({210, 1200 }, NPC_GOSSIP);
 
 	return true;
 }
@@ -131,6 +141,10 @@ bool Act2::update(float dt)
 		}
 	}
 
+	if (app->input->getKey(SDL_SCANCODE_L) == KEY_UP)
+	{
+		app->game->player->attributes->levelUp();
+	}
 	return true;
 }
 

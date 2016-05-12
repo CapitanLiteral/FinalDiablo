@@ -164,6 +164,14 @@ GuiImage* Gui::addGuiImage(iPoint p, SDL_Rect r, GuiElement* par, Module* list)
 	return image;
 }
 
+GuiImageFader* Gui::addGuiImageFader(iPoint p, SDL_Rect r, uint32 duration, GuiElement* par, Module* list)
+{
+	GuiImageFader* image = new GuiImageFader(p, r, duration, par, list);
+	if (image->parent != NULL)image->parent->addChild(image);
+	gui_elements.push_back(image);
+	return image;
+}
+
 Fader* Gui::addFader(iPoint p, SDL_Rect r, GuiElement* par, Module* list, SDL_Texture* tex, int alpha)
 {
 	Fader* fade = new Fader(p, r, par, list, tex, alpha);
@@ -275,6 +283,8 @@ bool Gui::clearUI()
 		GuiElement* tmp = *item;
 		RELEASE(tmp);
 	}
+
+	gui_elements.clear();
 
 	return true;
 }

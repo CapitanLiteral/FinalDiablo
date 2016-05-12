@@ -365,8 +365,8 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	else if (p_exit == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
-		exit = true;
-		//app->sm->fadeToBlack(app->sm->intro);
+		exit = false;
+		app->sm->changeScene(4);
 	}
 	else if (p_back == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
