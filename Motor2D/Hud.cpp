@@ -35,7 +35,7 @@ bool Hud::start()
 	lifeRect = { 371, 118, 79, 78 };
 	rageRect = { 451, 118, 78, 78 };
 	staminaRect = { 530, 118, 102, 18 };
-	evilBarRect = { 173, 867, 120, 3 };
+	//evilBarRect = { 173, 867, 120, 3 };
 
 	menuExpandOpened = { 281, 253, 16, 27 };
 	menuExpandClosed = { 296, 253, 16, 27 };
@@ -48,7 +48,7 @@ bool Hud::start()
 	life = app->gui->addGuiImage({ -136, -44 }, { 371, 118, 79, 78 }, base, this);
 	rage = app->gui->addGuiImage({ 366, -44 }, { 451, 118, 78, 78 }, base, this);
 	stamina = app->gui->addGuiImage({ 27, 20 }, { 530, 118, 102, 18 }, base, this);
-	evilBar = app->gui->addGuiImage({27,10}, { 173, 867, 120, 3 }, base, this);
+	//evilBar = app->gui->addGuiImage({27,10}, { 173, 867, 120, 3 }, base, this);
 
 	app->gui->addGuiImage({ -166, -55 }, { 0, 331, 116, 103 }, base, this); // lifefront
 	app->gui->addGuiImage({ 358, -55 }, { 524, 331, 116, 102 }, base, this); // ragefront

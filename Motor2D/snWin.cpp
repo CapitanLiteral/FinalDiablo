@@ -18,7 +18,7 @@ snWin::~snWin()
 bool snWin::start()
 {
 
-	background = app->gui->addGuiImage({ 0, 0 }, { 5, 1065, 800, 600 }, NULL, this);
+	background = app->gui->addGuiImage({ 0, 0 }, { 5, 1065, 669, 501}, NULL, this);
 	backMenuButton = app->gui->addGuiButton({ 315, 320 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "Back To Menu", NULL, this);
 
 	//ret.start();
