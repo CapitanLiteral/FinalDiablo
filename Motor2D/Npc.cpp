@@ -54,6 +54,7 @@ bool NpcCounselor::entityUpdate(float dt)
 	{
 		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && mouseHover())
 		{
+			int i = app->game->player->attributes->getLevel();
 			if (app->game->player->attributes->getLevel() == 1  || readed)
 			{
 				introductionImage->Activate();

@@ -48,6 +48,8 @@ public:
 	bool ChangeScene(Scene* new_scene);
 	bool fadeToBlack(Scene* new_scene, float time = 2.0f);
 
+	void changeScene(int scene);
+
 	std::string getFilePropsVillage();
 
 public:

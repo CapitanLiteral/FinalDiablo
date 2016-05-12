@@ -190,7 +190,9 @@ public:
 	virtual bool setLevel(int val);
 
 	//Modifiers
-	void levelUp(){ current_level++; }
+	void levelUp(){ 
+		current_level++; 
+	}
 
 	// Getters
 	float getMaxLife()const;

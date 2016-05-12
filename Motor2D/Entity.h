@@ -80,7 +80,7 @@ protected:
 
 	Collider* collider = NULL;
 
-	float visionRadius = 40.0f;
+	float visionRadius = 120.0f;
 	float targetRadius = 7.0f;
 public:
 	Attributes* attributes = NULL;
@@ -127,8 +127,8 @@ private:
 	fPoint velocity;
 	int currentNode;
 
-	bool movement;
-	bool targetReached;
+	bool movement = false;
+	bool targetReached = false;
 
 	bool inputBlocked = false;
 

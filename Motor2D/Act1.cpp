@@ -159,7 +159,7 @@ bool Act1::update(float dt)
 		app->sm->fadeToBlack(app->sm->win);
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (app->input->getKey(SDL_SCANCODE_L) == KEY_UP)
 	{
 		app->game->player->attributes->levelUp();
 	}

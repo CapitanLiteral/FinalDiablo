@@ -12,6 +12,7 @@
 #include "Game.h"
 #include "EntityManager.h"
 #include "Entity.h"
+#include "Window.h"
 
 Player::Player()
 {
@@ -358,7 +359,6 @@ void Player::handleInput()
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
-				
 				//Do things
 				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 				{
