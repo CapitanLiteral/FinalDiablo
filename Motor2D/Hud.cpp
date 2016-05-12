@@ -81,6 +81,8 @@ bool Hud::start()
 	whack->interactable = true;
 	growl->interactable = true;
 
+	lifeLabel->active = false;
+	rageLabel->active = false;
 	frenzy->active = false;
 	whack->active = false;
 	growl->active = false;
@@ -91,16 +93,16 @@ bool Hud::start()
 	slot4 = app->gui->addGuiInventory({ 269, 9 }, { 342, 395, 30, 30 }, 1, 1, 30, 30, base, this);
 
 	// Character
-
+	characterMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Inventory
-
+	inventoryMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Tree
-
+	treeMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Map
-
+	mapMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Pause Menu
 
@@ -133,7 +135,22 @@ bool Hud::preUpdate()
 	// Pause menu
 	if (app->input->getKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
-		pauseMenu->active ? pause->Desactivate() : pause->Activate();
+		if (pauseMenu->active)
+		{
+			pauseMenu->Desactivate();
+		}
+		else if (characterMenu->active
+			|| inventoryMenu->active
+			|| treeMenu->active
+			|| mapMenu->active)
+		{
+			clearTabs();
+		}
+		else
+		{
+			panel->Desactivate();
+			pauseMenu->Activate();
+		}
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN) useSlotItem(slot1);
@@ -279,7 +296,7 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	inventory->interactable = true;
 	tree->interactable = true;
 	map->interactable = true;
-	pauseMenu->interactable = true;
+	pause->interactable = true;
 	staminaDorn->interactable = true;
 	menuExpand->interactable = true;
 	basic_attack->interactable = true;
@@ -287,10 +304,39 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	whack->interactable = true;
 	growl->interactable = true;*/
 
-	//Base
-	if (pause == element
+	if (character == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
+		clearTabs();
+		panel->Desactivate();
+		characterMenu->Activate();
+	}
+	else if (inventory == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		clearTabs();
+		panel->Desactivate();
+		inventoryMenu->Activate();
+	}
+	else if (tree == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		clearTabs();
+		panel->Desactivate();
+		treeMenu->Activate();
+	}
+	else if (map == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		clearTabs();
+		panel->Desactivate();
+		mapMenu->Activate();
+	}
+	else if (pause == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		clearTabs();
+		panel->Desactivate();
 		pauseMenu->Activate();
 	}
 
@@ -307,12 +353,12 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 
 
 	// Pause Menu
-	if (p_exit == element
+	else if (p_exit == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
 		//app->sm->fadeToBlack(app->sm->intro);
 	}
-	if (p_back == element
+	else if (p_back == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
 		pauseMenu->Desactivate();
@@ -333,4 +379,12 @@ bool Hud::useSlotItem(GuiInventory* slot)
 	}
 
 	return ret;
+}
+
+void Hud::clearTabs()
+{
+	//if (characterMenu->active) characterMenu->Desactivate();
+	//if (inventoryMenu->active) inventoryMenu->Desactivate();
+	//if (treeMenu->active) treeMenu->Desactivate();
+	//if (mapMenu->active) mapMenu->Desactivate();
 }

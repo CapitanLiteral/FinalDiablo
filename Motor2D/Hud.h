@@ -27,10 +27,12 @@ public:
 
 	void OnEvent(GuiElement* element, GUI_Event even);
 
-public:
-
 	void displayDamage(int x, int y, float damage, bool crit = false){}
 	void levelChanged(int level, int prev){}
+
+private:
+
+	void clearTabs();
 	bool useSlotItem(GuiInventory* inv = NULL);
 
 public:
@@ -77,16 +79,16 @@ private:
 	GuiInventory* slot4 = NULL;
 	
 	// Character
-
+	GuiImage* characterMenu = NULL;
 
 	// Inventory
-
+	GuiImage* inventoryMenu = NULL;
 
 	// Tree
-
+	GuiImage* treeMenu = NULL;
 
 	// Map
-
+	GuiImage* mapMenu = NULL;
 
 	// Pause Menu
 	GuiImage* pauseMenu = NULL;
