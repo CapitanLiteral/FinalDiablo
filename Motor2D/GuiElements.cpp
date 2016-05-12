@@ -380,10 +380,12 @@ void GuiElement::removeChild(GuiElement* child)
 
 void GuiElement::Activate()
 {
-	active = true;
-	for (list<GuiElement*>::iterator item = childs.begin(); item != childs.end(); item++)
-	{
-		item._Ptr->_Myval->Activate();
+	if (active){
+		active = true;
+		for (list<GuiElement*>::iterator item = childs.begin(); item != childs.end(); item++)
+		{
+			item._Ptr->_Myval->Activate();
+		}
 	}
 }
 
@@ -408,10 +410,12 @@ void GuiElement::DesactivateChilds()
 
 void GuiElement::Desactivate()
 {
-	active = false;
-	for (list<GuiElement*>::iterator item = childs.begin(); item != childs.end(); item++)
-	{
-		item._Ptr->_Myval->Desactivate();
+	if (active){
+		active = false;
+		for (list<GuiElement*>::iterator item = childs.begin(); item != childs.end(); item++)
+		{
+			item._Ptr->_Myval->Desactivate();
+		}
 	}
 }
 
