@@ -17,6 +17,7 @@
 Player::Player()
 {
 	AttributeBuilder builder;
+	builder.base_damage = 700;
 	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
 	attributes = new PlayerAttributes(builder);
 	
@@ -83,12 +84,12 @@ bool Player::update(float dt)
 	bool ret = true;
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
-	if (enemyFocus != NULL)
-	{
-		LOG("Enemy taget");
-	}
+	//if (enemyFocus != NULL)
+	//{
+	//	LOG("Enemy taget");
+	//}
 
-	LOG("Collision %d", collision);
+	//LOG("Collision %d", collision);
 	if (enemyFocus != NULL && enemyFocus->type != NPC_COUNSELOR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
 	{
 		LOG("TargetLife %f", enemyFocus->attributes->getLife());
@@ -412,8 +413,8 @@ void Player::handleInput()
 			}
 		}
 	}
-	LOG("Input: %d", current_input_event);
-	LOG("Action: %d", current_action);
+	//LOG("Input: %d", current_input_event);
+	//LOG("Action: %d", current_action);
 }
 /*void Player::setMovement(int x, int y)
 {

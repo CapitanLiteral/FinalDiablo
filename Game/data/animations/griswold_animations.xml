@@ -162,7 +162,7 @@
 				<values name = "7" x ="0" y = "3456" w = "128" h = "128" frameNumber = "8" margin = "" pivot_x = "60" pivot_y = "80"/>
 			</UP_LEFT>
 					
-			<loop value = "1" />
+			<loop value = "0" />
 
 			<speed value = "0.10" />
 		
