@@ -1,12 +1,12 @@
-#ifndef __WOLF_H__
-#define __WOLF_H__
+#ifndef __GRISWOLD_H__
+#define __GRISWOLD_H__
 
 #include "Entity.h"
 
 class Griswold : public Entity
 {
 public:
-	Griswold();
+	Griswold(iPoint pos);
 	~Griswold();
 
 private:

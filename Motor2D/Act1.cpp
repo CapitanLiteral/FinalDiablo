@@ -64,12 +64,12 @@ bool Act1::start()
 
 	//app->game->em->addEnemy(iPoint{ 0, 2150 }, ENEMY_GRISWOLD);*/
 
-	iPoint a = { 450, 2450 };
 	app->game->player->setWorldPosition({ 450, 2400 });
 	//app->game->em->addNpc(a, NPC_COUNSELOR);
 	//a.x -= 40;
 	//a.y -= 40;
-	app->game->em->createNpc(a, NPC_HEALER);
+	app->game->em->createPaladin({ 450, 2500 });
+	app->game->em->createNpc({ 450, 2450 }, NPC_HEALER);
 	//app->game->em->addNpc(a, NPC_GOSSIP);
 	createProps();
 

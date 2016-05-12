@@ -144,7 +144,7 @@ NpcHealer::NpcHealer(const iPoint &p, uint ID)
 	colliderSize.Set(64, 128);
 
 	currentState = E_IDLE;
-	direction = E_DOWN;
+	currentDirection = E_DOWN;
 
 	SDL_Rect rect = { worldPosition.x - colliderOffset.x,
 		worldPosition.y - colliderOffset.y,	// Position
@@ -153,7 +153,7 @@ NpcHealer::NpcHealer(const iPoint &p, uint ID)
 	collider = app->collision->addCollider(rect, COLLIDER_NPC, app->game->em);
 
 	entityAnim = app->game->em->getHealerAnimation();
-	currentAnimation = &entityAnim->find({ currentState, direction })->second;
+	currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
 	imageSprite = new Sprite(app->game->em->getHealerTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 

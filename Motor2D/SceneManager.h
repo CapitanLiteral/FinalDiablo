@@ -19,10 +19,10 @@ class snWin;
 
 class SceneManager : public Module
 {
-public:
-	SceneManager();
 
-	//Destructor
+public:
+
+	SceneManager();
 	~SceneManager();
 
 	// Called before render is available
@@ -63,9 +63,6 @@ private:
 	Scene*		next_scene = NULL;
 
 	//FADER
-
-	
-
 	bool fadeIn = false;
 	bool fadeOut = false;
 	float fadeTime;

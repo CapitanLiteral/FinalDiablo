@@ -30,7 +30,8 @@ enum entityState
 	E_BASIC_ATTACK,
 	E_DEATH,
 	E_WAIT_TO_ATTACK,
-	E_INACTIVE
+	E_INACTIVE,
+	E_SKILL
 };
 
 enum entityInputState
@@ -164,7 +165,8 @@ protected:
 	entityInputState current_input = EI_NULL;
 	entityState currentState = E_IDLE;
 	entityState previousState = E_IDLE;
-	entityDirection direction = E_DOWN;
+	entityDirection currentDirection = E_DOWN;
+	entityDirection previousDirection = E_DOWN;
 
 //--------------------------------------
 };

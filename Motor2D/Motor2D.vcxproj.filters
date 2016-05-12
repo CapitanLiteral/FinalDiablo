@@ -13,12 +13,6 @@
     <ClCompile Include="snIntro.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snIntro</Filter>
     </ClCompile>
-    <ClCompile Include="hudBelt.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBelt</Filter>
-    </ClCompile>
-    <ClCompile Include="hudPause.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudPause</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClCompile>
@@ -36,9 +30,6 @@
     </ClCompile>
     <ClCompile Include="snWin.cpp">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snWin</Filter>
-    </ClCompile>
-    <ClCompile Include="hudBlood.cpp">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBlood</Filter>
     </ClCompile>
     <ClCompile Include="hudSkilltree.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree</Filter>
@@ -121,6 +112,12 @@
     <ClCompile Include="Npc.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Wolf.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Griswold.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -165,12 +162,6 @@
     <ClInclude Include="hudElement.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements</Filter>
     </ClInclude>
-    <ClInclude Include="hudBelt.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBelt</Filter>
-    </ClInclude>
-    <ClInclude Include="hudPause.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudPause</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
@@ -188,9 +179,6 @@
     </ClInclude>
     <ClInclude Include="snWin.h">
       <Filter>Desenvolupament  ========\Modules\Game Layer\Scenes\snWin</Filter>
-    </ClInclude>
-    <ClInclude Include="hudBlood.h">
-      <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBlood</Filter>
     </ClInclude>
     <ClInclude Include="hudSkilltree.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree</Filter>
@@ -276,6 +264,12 @@
     <ClInclude Include="Npc.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Wolf.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Griswold.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -329,17 +323,8 @@
     <Filter Include="Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements">
       <UniqueIdentifier>{e54e4de0-ef91-49e5-aa76-d1cd58096b20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBelt">
-      <UniqueIdentifier>{1f597317-7711-474b-83b7-f94f019ffb23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudPause">
-      <UniqueIdentifier>{ddc02d96-4370-43e4-a077-e4566b2a3044}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudInventory">
       <UniqueIdentifier>{749a4e10-224d-494c-9745-d50d07b818ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudBlood">
-      <UniqueIdentifier>{e1b9b919-0b5d-488c-9f38-90be2bcc3001}</UniqueIdentifier>
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Engine Layer\Hud\hudElements\hudSkilltree">
       <UniqueIdentifier>{81258b05-5d87-4ba2-a924-29796fd9192e}</UniqueIdentifier>

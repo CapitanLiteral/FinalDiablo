@@ -3,7 +3,10 @@
 #include "Player.h"
 #include "Npc.h"
 #include "Paladin.h"
+#include "Wolf.h"
+#include "Griswold.h"
 #include "FileSystem.h"
+#include "Attributes.h"
 
 #include "App.h"
 #include "Render.h"
@@ -65,11 +68,7 @@ bool EntityManager::preUpdate()
 	{
 		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
 		{
-			iPoint point = app->input->getMousePosition();
-			point = app->render->ScreenToWorld(point.x, point.y);
-			point.x = point.x - 22;
-			point.y = point.y - (93 / 2);
-			//point = app->map->worldToMap(point.x, point.y);
+			iPoint point = app->input->getMouseWorldPosition();
 
 			createPaladin(point);
 		}
@@ -510,57 +509,42 @@ void EntityManager::sortEntities()
 
 }
 
-/*Entity* EntityManager::createEntity(iPoint pos, const char* textureName, SDL_Rect& section, SDL_Rect& collider, entityType _type)
+Paladin* EntityManager::createPaladin(iPoint pos)
 {
-	Entity* ret = NULL;
+	Paladin* ret = NULL;
 
-	ret = new Entity();
+	ret = new Paladin(pos);
 
-	ret->setPosition(pos.x, pos.y);
-	ret->setSection(section);
-	ret->setCollider(collider);
-	ret->imageTexture = app->textures->load(textureName);
-	ret->type = _type;
-	ret->imageSprite.create(ret->imageTexture, ret->position.x, ret->position.y);
-	ret->imageSprite.setSection(section);
+	ret->setId(nextId);
 
 	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
 
-	ret->id = nextId;
 	++nextId;
 
 	return ret;
 }
 
-Player* EntityManager::createPlayer(iPoint pos, const char* textureName, SDL_Rect& section, SDL_Rect& collider)
+Wolf* EntityManager::createWolf(iPoint pos)
 {
-	Player* ret = NULL;
-	if (player == NULL)
-	{
-		ret = new Player();
-		player = ret;
+	Wolf* ret = NULL;
 
-		ret->setPosition(pos.x, pos.y);
-		ret->setSection(section);
-		ret->setCollider(collider);
-		ret->imageTexture = app->textures->load(textureName);
-		ret->type = PLAYER;
-		ret->imageSprite.create(ret->imageTexture, ret->position.x, ret->position.y);
-		ret->imageSprite.setSection(section);
+	ret = new Wolf(pos);
 
-		ret->id = 0;
-	}
-	else
-		LOG("Player already created.");
+	ret->setWorldPosition(pos);
+	ret->setId(nextId);
+
+	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+
+	++nextId;
 
 	return ret;
-}*/
+}
 
-Paladin* EntityManager::createPaladin(iPoint pos)
+Griswold* EntityManager::createGriswold(iPoint pos)
 {
-	Paladin* ret = NULL;
+	Griswold* ret = NULL;
 
-	ret = new Paladin();
+	ret = new Griswold(pos);
 
 	ret->setWorldPosition(pos);
 	ret->setId(nextId);
@@ -612,6 +596,11 @@ std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::get
 	return &paladinAnim;
 }
 
+AttributeBuilder* EntityManager::getPaladinAttributBuilder()
+{
+	return &paladinAttributeBuilder;
+}
+
 SDL_Texture* EntityManager::getWolfTexture()
 {
 	return wolfTexture;
@@ -622,6 +611,11 @@ std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::get
 	return &wolfAnim;
 }
 
+AttributeBuilder* EntityManager::getWolfAttributBuilder()
+{
+	return &wolfAttributeBuilder;
+}
+
 SDL_Texture* EntityManager::getGriswoldTexture()
 {
 	return griswoldTexture;
@@ -630,6 +624,11 @@ SDL_Texture* EntityManager::getGriswoldTexture()
 std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getGriswoldAnimation()
 {
 	return &griswoldAnim;
+}
+
+AttributeBuilder* EntityManager::getGriswoldAttributBuilder()
+{
+	return &griswoldAttributeBuilder;
 }
 
 SDL_Texture* EntityManager::getCounselorTexture()
@@ -720,4 +719,27 @@ Entity* EntityManager::getEntityOnMouse()
 	iPoint pos = app->input->getMouseWorldPosition();
 
 	return getEntityAtPosition(pos);
+}
+
+void EntityManager::setEnemiesAttributes()
+{
+	//TODO: Should load all attributes from an xml
+
+	//############################
+	//###     EnemyPaladin     ###
+	//############################
+
+	
+
+	//############################
+	//###      EnemyWolf       ###
+	//############################
+
+	
+
+	//############################
+	//###    EnemyGriswold     ###
+	//############################
+
+	
 }

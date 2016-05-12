@@ -5,16 +5,20 @@
 #include "p2Point.h"
 #include <map>
 #include "Animation.h"
+#include "Attributes.h"
 
 #include "SDL\include\SDL.h"
 
 class Player;
 class Paladin;
+class Wolf;
+class Griswold;
 class Npc;
 class Entity;
 enum entityType;
 enum entityState;
 enum entityDirection;
+class AttributeBuilder;
 
 class EntityManager : public Module
 {
@@ -44,16 +48,23 @@ public:
 
 	Paladin* createPaladin(iPoint pos);
 
+	Wolf* createWolf(iPoint pos);
+
+	Griswold* createGriswold(iPoint pos);
+
 	Entity* createNpc(iPoint position, entityType type);
 
 	SDL_Texture* getPaladinTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation>* getPaladinAnimation();
+	AttributeBuilder* getPaladinAttributBuilder();
 
 	SDL_Texture* getWolfTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation>* getWolfAnimation();
+	AttributeBuilder* getWolfAttributBuilder();
 
 	SDL_Texture* getGriswoldTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation>* getGriswoldAnimation();
+	AttributeBuilder* getGriswoldAttributBuilder();
 
 	SDL_Texture* getCounselorTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation>* getCounselorAnimation();
@@ -92,18 +103,22 @@ private:
 
 	bool loadEnemiesAnimations();
 	bool loadNpcAnimations();
+	void setEnemiesAttributes();
 
 	//Paladin
 	SDL_Texture* paladinTexture = NULL;
 	std::map<std::pair<entityState, entityDirection>, Animation>	paladinAnim;
+	AttributeBuilder paladinAttributeBuilder;
 
 	//Wolf
 	SDL_Texture* wolfTexture;
 	std::map<std::pair<entityState, entityDirection>, Animation>	wolfAnim;
+	AttributeBuilder wolfAttributeBuilder;
 
 	//Griswold texture
 	SDL_Texture* griswoldTexture;
 	std::map<std::pair<entityState, entityDirection>, Animation>	griswoldAnim;
+	AttributeBuilder griswoldAttributeBuilder;
 
 	//Counselor texture
 	SDL_Texture* counselorTexture;

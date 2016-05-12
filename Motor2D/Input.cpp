@@ -129,7 +129,7 @@ bool Input::preUpdate()
 			break;
 
 			case SDL_TEXTINPUT:
-				input_text.Insert(cursor_pos,event.text.text);
+				input_text.insert(cursor_pos,event.text.text);
 				cursor_pos += strlen(event.text.text);
 			break;
 
@@ -140,15 +140,15 @@ bool Input::preUpdate()
 					switch (event.key.keysym.sym)
 					{
 					case SDLK_BACKSPACE:
-						input_text.Cut(cursor_pos - 1, cursor_pos -1);
+						input_text.erase(input_text.at(cursor_pos - 1));
 						if (cursor_pos > 0)
 							cursor_pos--;
 					break;
 					case SDLK_DELETE:
-						input_text.Cut(cursor_pos, cursor_pos);
+						input_text.erase(input_text.at(cursor_pos));
 					break;
 					case SDLK_RIGHT:
-						if (cursor_pos < input_text.Length())
+						if (cursor_pos < input_text.size())
 							cursor_pos++;
 					break;
 					case SDLK_LEFT:
@@ -159,7 +159,7 @@ bool Input::preUpdate()
 						cursor_pos = 0;
 					break;
 					case SDLK_END:
-						cursor_pos = input_text.Length();
+						cursor_pos = input_text.size();
 					break;
 
 					}
@@ -217,7 +217,7 @@ iPoint Input::getMouseMotion()
 	
 }
 
-void Input::startInput(p2SString edit_input, int pos)
+void Input::startInput(std::string edit_input, int pos)
 {
 	SDL_StartTextInput();
 	//so it can have lots of input boxes
@@ -230,7 +230,7 @@ void Input::StopInput()
 	enable_input = false;
 	SDL_StopTextInput();
 }
-p2SString Input::getInput(int& cursor)
+std::string Input::getInput(int& cursor)
 {
 	cursor = cursor_pos;
 	return input_text;
