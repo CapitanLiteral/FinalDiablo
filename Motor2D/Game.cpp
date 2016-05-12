@@ -17,36 +17,22 @@ Game::Game() : Module()
 	player->attributes->setHud(hud);
 	player->attributes->setReferences(&player->worldPosition.x, &player->worldPosition.y);
 	hud->playerAtt = player->attributes;
-
-	//add modules to the list
-	addModule(player);
-	addModule(em);
-	addModule(hud);
 }
 
 //Destructor
 Game::~Game()
 {
-	list<Module*>::reverse_iterator item = game_modules.rbegin();
-
-	while (item != game_modules.rend())
-	{
-		RELEASE(*item);
-		++item;
-	}
-
-	game_modules.clear();
+	RELEASE(hud);
+	RELEASE(em);
+	RELEASE(player);
 }
 
 // Called before render is available
 bool Game::awake(pugi::xml_node& conf)
 {
-	list<Module*>::iterator item = game_modules.begin();
-
-	for (; item != game_modules.end(); item++)
-	{
-		(*item)->awake(conf);
-	}
+	player->awake(conf);
+	em->awake(conf);
+	hud->awake(conf);
 	return true;
 }
 
@@ -57,12 +43,9 @@ bool Game::start()
 
 	app->gui->clearUI();
 
-	list<Module*>::iterator item = game_modules.begin();
-
-	for (; item != game_modules.end(); item++)
-	{
-		(*item)->start();
-	}
+	player->start();
+	em->start();
+	hud->start();
 
 	return true;
 }
@@ -70,12 +53,9 @@ bool Game::start()
 //preUpdate
 bool Game::preUpdate()
 {
-	list<Module*>::iterator item = game_modules.begin();
-
-	for (; item != game_modules.end(); item++)
-	{
-		(*item)->preUpdate();
-	}
+	player->preUpdate();
+	em->preUpdate();
+	hud->preUpdate();
 
 	return true;
 }
@@ -85,16 +65,11 @@ bool Game::update(float dt)
 {
 	player->attributes->update();
 
-	list<Module*>::iterator item = game_modules.begin();
+	player->update(dt);
+	em->update(dt);
+	hud->update(dt);
 
-	for (; item != game_modules.end(); item++)
-	{
-		if (!pause)
-			if (!(*item)->update(dt)) return false;
-
-		(*item)->draw();
-	}
-
+	player->draw();
 
 	return true;
 }
@@ -102,12 +77,9 @@ bool Game::update(float dt)
 //postUpdate
 bool Game::postUpdate()
 {
-	list<Module*>::iterator item = game_modules.begin();
-
-	for (; item != game_modules.end(); item++)
-	{
-		(*item)->postUpdate();
-	}
+	player->postUpdate();
+	em->postUpdate();
+	hud->postUpdate();
 
 	return true;
 }
@@ -119,28 +91,9 @@ bool Game::cleanUp()
 
 	app->gui->clearUI();
 
-	list<Module*>::iterator item = game_modules.begin();
-
-	for (; item != game_modules.end(); item++)
-	{
-		(*item)->cleanUp();
-	}
+	hud->cleanUp();
+	em->cleanUp();
+	player->cleanUp();
 
 	return true;
-}
-
-void Game::draw()
-{
-	list<Module*>::iterator item = game_modules.begin();
-
-	for (; item != game_modules.end(); item++)
-	{
-		(*item)->draw();
-	}
-}
-
-void Game::addModule(Module* module)
-{
-	module->Init();
-	game_modules.push_back(module);
 }

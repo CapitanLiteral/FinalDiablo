@@ -91,13 +91,16 @@ bool Player::preUpdate()
 
 bool Player::update(float dt)
 {
+	LOG("Exp: %d", attributes->getExp());
+	LOG("Level: %f", attributes->getLevel());
+	LOG("Rage: %f", attributes->getRage());
 	bool ret = true;
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 	
 	if (entityInRange()){
 		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && app->game->em->getEntityOnMouse())
 		{
-			app->game->player->setInputBlocked(true);
+			//app->game->player->setInputBlocked(true);
 			//app->game->player->movement = false;
 			//app->game->player->move(0.0f);
 			
@@ -106,7 +109,7 @@ bool Player::update(float dt)
 		}
 		else if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !app->game->em->getEntityOnMouse())
 		{
-			app->game->player->setInputBlocked(false);
+			//app->game->player->setInputBlocked(false);
 			//app->game->player->movement = true;
 			//si clickes fora es mogui
 		}
