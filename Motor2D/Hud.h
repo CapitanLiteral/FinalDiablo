@@ -57,6 +57,7 @@ private:
 	iPoint growlPos;
 
 	SDL_Rect lifeRect;
+	//SDL_Rect evilBarRect;
 	SDL_Rect rageRect;
 	SDL_Rect staminaRect;
 	SDL_Rect expRext;
@@ -65,6 +66,7 @@ private:
 	SDL_Rect menuExpandClosed;
 
 	GuiImage* life = NULL;
+	//GuiImage* evilBar = NULL;
 	GuiImage* rage = NULL;
 	GuiImage* stamina = NULL;
 	GuiImage* exp = NULL;

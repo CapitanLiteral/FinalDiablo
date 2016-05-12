@@ -12,11 +12,13 @@
 #include "Game.h"
 #include "EntityManager.h"
 #include "Entity.h"
+#include "Gui.h"
 #include "Window.h"
 
 Player::Player()
 {
 	AttributeBuilder builder;
+	builder.base_damage = 700;
 	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
 	attributes = new PlayerAttributes(builder);
 	
@@ -44,6 +46,11 @@ bool Player::start()
 					  worldPosition.y - colliderOffset.y,	// Position
 					  colliderSize.x, colliderSize.y};		// Size
 	collider = app->collision->addCollider(rect, COLLIDER_PLAYER, this);
+
+	deathImage = app->gui->addGuiImageFader({ 0, 0 }, { 679, 1065, 669, 501 }, 5, NULL, NULL);
+	//deathImage->SetLocalPosition({ 0, 0 });
+	deathImage->Center(true, true);
+	deathImage->Desactivate();
 
 	// ANIMATION
 	if (loadAnimations())
@@ -83,12 +90,12 @@ bool Player::update(float dt)
 	bool ret = true;
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 
-	if (enemyFocus != NULL)
-	{
-		LOG("Enemy taget");
-	}
+	//if (enemyFocus != NULL)
+	//{
+	//	LOG("Enemy taget");
+	//}
 
-	LOG("Collision %d", collision);
+	//LOG("Collision %d", collision);
 	if (enemyFocus != NULL && enemyFocus->type != NPC_COUNSELOR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
 	{
 		LOG("TargetLife %f", enemyFocus->attributes->getLife());
@@ -129,7 +136,14 @@ bool Player::update(float dt)
 	}
 	else
 	{
-		respawn();
+		inputBlocked = true;
+		if (current_animation->isOver())
+		{
+			//Start lose image
+			deathImage->Activate();
+			deathImage->timer.start();
+			respawn();
+		}
 	}
 
 	if (app->debug)
@@ -155,12 +169,40 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 void Player::respawn()
 {
 	worldPosition = startingPosition;
+
+	collider->SetPos(startingPosition.x - colliderOffset.x, startingPosition.y - colliderOffset.y);
+
+	attributes->addLife(attributes->getMaxLife());
+
+	current_action = IDLE;
+	current_direction = D_FRONT;
+
+	current_animation->Reset();
+
+	switch (currentPhase)
+	{
+	case BARBARIAN:
+		current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+		break;
+	case BUTCHER:
+		current_animation = &butcherAnim.find({ current_action, current_direction })->second;
+		break;
+	case DIABLO:
+		current_animation = &diabloAnim.find({ current_action, current_direction })->second;
+		break;
+	}
+
+	//At end of tp unblit lose image
+		//Done by the gui element itself
+
+	inputBlocked = false;
 }
 
 void Player::draw()
 {
 	//Not elegant, but works // May be the vibration of player comes from here ERROR
-	setDirection();
+	if (current_action == WALKING || current_action == RUNNING)
+		setDirection();
 	//if (previous_direction != current_direction || 
 	//	previous_action != current_action)
 	//{
@@ -336,6 +378,10 @@ void Player::drawDebug() const
 		}
 	}
 
+	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		attributes->addLife(-2050);
+	}
 }
 
 Player::~Player()
@@ -386,8 +432,25 @@ void Player::handleInput()
 						//if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
 						if (collision)
 						{
+							LOG("Detected click to attack, current direction: %d", current_direction);
 							current_input_event = I_ATTACK;
 							prevEnemyFocus = enemyFocus;
+							fPoint p;
+							p.x = enemyFocus->getWorldPosition().x;
+							p.y = enemyFocus->getWorldPosition().y;
+							setDirection(p);
+							LOG("After setDirection, current direction: %d", current_direction);
+							/*switch (currentPhase)
+							{
+							case BARBARIAN:
+								break;
+							case BUTCHER:
+								break;
+							case DIABLO:
+								break;
+							default:
+								break;
+							}*/
 						}
 						else
 						{
@@ -412,8 +475,8 @@ void Player::handleInput()
 			}
 		}
 	}
-	LOG("Input: %d", current_input_event);
-	LOG("Action: %d", current_action);
+	//LOG("Input: %d", current_input_event);
+	//LOG("Action: %d", current_action);
 }
 /*void Player::setMovement(int x, int y)
 {

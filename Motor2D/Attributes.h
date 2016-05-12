@@ -75,7 +75,7 @@ enum modifierType
 	FLAT_STAMINA_REGEN,
 	NONFLAT_STAMINA_REGEN,
 	FLAT_ITEM_RARITY,
-	NONFLAT_ITEM_RARITY
+	NONFLAT_ITEM_RARITY,
 };
 
 
@@ -189,6 +189,11 @@ public:
 	bool addLife(float val);
 	virtual void addExp(int exp);
 	virtual bool setLevel(int val);
+
+	//Modifiers
+	void levelUp(){ 
+		current_level++; 
+	}
 
 	// Getters
 	float getMaxLife()const;

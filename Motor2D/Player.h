@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
+
 #include "Module.h"
 #include "p2Point.h"
 #include "Animation.h"
@@ -13,6 +15,7 @@ class Collider;
 class Sprite;
 class SDL_Texture;
 class Entity;
+class GuiImageFader;
 
 
 
@@ -165,6 +168,11 @@ private:
 	void setColliderPosition(iPoint coords);
 
 
+//Death
+private:
+	GuiImageFader* deathImage = NULL;
+
+
 	//Animation things
 private:
 	Sprite* sprite = NULL;
@@ -188,7 +196,4 @@ private:
 	bool loadAnimations();
 };
 
-
-
-
-
+#endif
