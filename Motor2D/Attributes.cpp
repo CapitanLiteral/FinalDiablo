@@ -134,15 +134,18 @@ bool Attributes::update()
 	return ret;
 }
 
-void Attributes::reset()
+void Attributes::reset(bool clearMods)
 {
 	// reset life
 	current_life = getMaxLife();
 
-	// clear mods
-	for (int i = 0; i < modifiers.max_size(); i++)
+	if (clearMods)
 	{
-		modifiers[i].clear();
+		// clear mods
+		for (int i = 0; i < modifiers.max_size(); i++)
+		{
+			modifiers[i].clear();
+		}
 	}
 }
 
@@ -393,9 +396,14 @@ bool Attributes::damage(Attributes* attacker, int attackType)
 		// trigger hit with/out bool crit
 		if (hud && x && y) hud->displayDamage((*x), (*y), damage, crit);
 
-		if (attacker->player && !ret) // on player kill
+		if (attacker->player) // on player
 		{
-			attacker->addExp(experience);
+			if (!ret) // on kill
+			{
+				attacker->addExp(experience);
+			}
+
+			attacker->addRage(25.0f);
 		}
 	}
 
@@ -495,17 +503,20 @@ bool PlayerAttributes::update()
 	return ret;
 }
 
-void PlayerAttributes::reset()
+void PlayerAttributes::reset(bool clearMods)
 {
 	// reset life
 	current_life = getMaxLife();
 	current_rage = getMaxRage();
 	current_stamina = getMaxStamina();
 
-	// clear mods
-	for (int i = 0; i < modifiers.max_size(); i++)
+	if (clearMods)
 	{
-		modifiers[i].clear();
+		// clear mods
+		for (int i = 0; i < modifiers.max_size(); i++)
+		{
+			modifiers[i].clear();
+		}
 	}
 }
 
@@ -583,7 +594,15 @@ bool PlayerAttributes::setLevel(int val)
 	{
 		if (hud != NULL) hud->levelChanged(val, current_level);
 		current_level = val;
+
+		base_life += base_life + (0.7f * float(current_level));
+		base_damage += base_damage + (0.3f * float(current_level));
+		base_strength += base_strength + (0.3f * float(current_level));
+		base_intelligence += base_intelligence + (0.3f * float(current_level));
+		base_dexterity += base_dexterity + (0.3f * float(current_level));
+
 		base_exp = 1000 * current_level;
+		reset(false);
 	}
 
 	return ret;
