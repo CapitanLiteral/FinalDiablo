@@ -152,11 +152,11 @@ bool Act1::update(float dt)
 
 	if (app->input->getKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
-		app->sm->fadeToBlack(app->sm->act2);
+		app->sm->changeScene(3);
 	}
 	if (app->input->getKey(SDL_SCANCODE_J) == KEY_DOWN)
 	{
-		app->sm->fadeToBlack(app->sm->win);
+		app->sm->changeScene(4);
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_L) == KEY_UP)

@@ -14,6 +14,7 @@
 #include "Entity.h"
 #include "Gui.h"
 #include "Window.h"
+#include "ParticleManager.h"
 
 Player::Player()
 {
@@ -135,6 +136,22 @@ bool Player::update(float dt)
 				current_animation->Reset();
 			}
 			break;
+		}
+		if (current_skill != SKILL_NONE)
+		{
+			switch (current_skill)
+			{
+			case SKILL1:
+			{
+				iPoint p = app->input->getMouseWorldPosition();
+				fPoint dirVec(-(worldPosition.x - p.x), worldPosition.y-p.y);
+				app->particleManager->createLineEmisor(worldPosition.x, worldPosition.y, dirVec);
+				current_skill = SKILL_NONE;
+			}
+				break;
+			case SKILL2:
+				break;
+			}
 		}
 	}
 	else
@@ -405,6 +422,7 @@ void Player::handleInput()
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 			{
 				//Do skill
+				current_input_event = I_SKILL;
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
@@ -520,6 +538,11 @@ ACTION_STATE Player::updateAction()
 			{
 				current_action = BASIC_ATTACK;
 			}
+			else if (current_input_event == I_SKILL)
+			{
+				current_action = IDLE;
+				current_skill = SKILL1; //Should decide here if 1 or 2
+			}
 		}
 			break;
 
@@ -543,8 +566,8 @@ ACTION_STATE Player::updateAction()
 			}
 			else if (current_input_event == I_SKILL)
 			{
-				//Maybe check here which hability is
-				current_action = SKILL;
+				current_action = IDLE;
+				current_skill = SKILL1; //Should decide here if 1 or 2
 			}
 		}
 			break;

@@ -60,7 +60,7 @@ private:
 	//SDL_Rect evilBarRect;
 	SDL_Rect rageRect;
 	SDL_Rect staminaRect;
-	SDL_Rect expRext;
+	SDL_Rect expRect;
 
 	SDL_Rect menuExpandOpened;
 	SDL_Rect menuExpandClosed;
@@ -73,6 +73,7 @@ private:
 
 	GuiLabel* lifeLabel = NULL;
 	GuiLabel* rageLabel = NULL;
+	GuiLabel* expLabel = NULL;
 
 	GuiImage* staminaDorn = NULL; // man in black
 	GuiImage* menuExpand = NULL; // pointing up

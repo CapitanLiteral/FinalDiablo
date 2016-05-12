@@ -28,7 +28,7 @@ bool snIntro::start()
 	//Gui Elements
 
 	//Background
-	background = app->gui->addGuiImage({ -83, 0 }, {1829, 82, 800, 600}, NULL, this);
+	background = app->gui->addGuiImage({ -83, 0 }, {0, 0, 800, 600}, NULL, this);
 	
 	//Logo
 	logoSprite = app->tex->Load("images/LogoAnim.png");
@@ -40,10 +40,10 @@ bool snIntro::start()
 	logo = app->gui->addGuiAnimation({ 250, 0 }, { 1829, 82, 800, 600 }, NULL, this, logoSprite, &logoAnim);
 
 	//Play button
-	playButton = app->gui->addGuiButton({ 315, 250 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "Single player", NULL, this);
+	playButton = app->gui->addGuiButton({ 315, 250 }, { 0, 960, 270, 35 }, { 0, 960, 270, 35 }, { 0, 1024, 270, 35 }, "Single player", NULL, this);
 	
 	//Exit button
-	exitButton = app->gui->addGuiButton({ 315, 320 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "ExiT Diablo II", NULL, this);
+	exitButton = app->gui->addGuiButton({ 315, 320 }, { 0, 960, 270, 35 }, { 0, 960, 270, 35 }, { 0, 1024, 270, 35 }, "ExiT Diablo II", NULL, this);
 
 	return true;
 }
