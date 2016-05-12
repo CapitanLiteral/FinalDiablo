@@ -5,6 +5,7 @@
 #include "Fonts.h"
 #include "Input.h"
 #include "SceneManager.h"
+#include "p2Log.h"
 
 //Constructor
 Hud::Hud() : Module()
@@ -142,7 +143,11 @@ bool Hud::preUpdate()
 bool Hud::update(float dt)
 {
 	// exit if no character assigned
-	if (playerAtt == NULL) return true;
+	if (playerAtt == NULL)
+	{
+		LOG("NO PLAYER ASSIGNED TO HUD");
+		return true;
+	}
 
 	SDL_Rect rect;
 	iPoint pos;
@@ -233,10 +238,10 @@ bool Hud::update(float dt)
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
 
-	std::string text;
-	text.assign("%i/%i", int(playerAtt->getLife()), int(playerAtt->getMaxLife()));
+	std::string text = "penis";
+	//text.assign("%i/%i", int(playerAtt->getLife()), int(playerAtt->getMaxLife()));
 	lifeLabel->SetText(text);
-	text.assign("%i/%i", int(playerAtt->getRage()), int(playerAtt->getMaxRage()));
+	//text.assign("%i/%i", int(playerAtt->getRage()), int(playerAtt->getMaxRage()));
 	lifeLabel->SetText(text);
 
 	return true;
