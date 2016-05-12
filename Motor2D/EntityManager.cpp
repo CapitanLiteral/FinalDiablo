@@ -67,11 +67,23 @@ bool EntityManager::preUpdate()
 
 	if (app->debug)
 	{
-		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+		if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN)
 		{
 			iPoint point = app->input->getMouseWorldPosition();
 
 			createPaladin(point);
+		}
+		if (app->input->getKey(SDL_SCANCODE_2) == KEY_DOWN)
+		{
+			iPoint point = app->input->getMouseWorldPosition();
+
+			createWolf(point);
+		}
+		if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN)
+		{
+			iPoint point = app->input->getMouseWorldPosition();
+
+			createGriswold(point);
 		}
 	}
 
@@ -738,11 +750,11 @@ void EntityManager::setEnemiesAttributes()
 	//###      EnemyWolf       ###
 	//############################
 
-	
+	wolfAttributeBuilder.base_movementSpeed = 100;
 
 	//############################
 	//###    EnemyGriswold     ###
 	//############################
 
-	
+	griswoldAttributeBuilder.base_movementSpeed = 100;
 }
