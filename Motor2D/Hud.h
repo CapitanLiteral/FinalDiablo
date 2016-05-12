@@ -34,6 +34,8 @@ private:
 
 	void clearTabs();
 	bool useSlotItem(GuiInventory* inv = NULL);
+	void hidePanel();
+	void activatePanel();
 
 public:
 
@@ -41,14 +43,24 @@ public:
 	PlayerAttributes* playerAtt = NULL;
 
 private:
+
+	bool exit;
 	
 	// Base
 	iPoint lifePos;
 	iPoint ragePos;
 
+	iPoint basic_attackPos;
+	iPoint frenzyPos;
+	iPoint whackPos;
+	iPoint growlPos;
+
 	SDL_Rect lifeRect;
 	SDL_Rect rageRect;
 	SDL_Rect staminaRect;
+
+	SDL_Rect menuExpandOpened;
+	SDL_Rect menuExpandClosed;
 
 	GuiImage* life = NULL;
 	GuiImage* rage = NULL;
