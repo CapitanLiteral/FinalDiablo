@@ -87,7 +87,7 @@ bool Player::update(float dt)
 	}
 
 	LOG("Collision %d", collision);
-	if (enemyFocus != NULL)
+	if (enemyFocus != NULL && enemyFocus->type != NPC_COUNSELOUR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
 	{
 		LOG("TargetLife %f", enemyFocus->attributes->getLife());
 	}
@@ -378,8 +378,8 @@ void Player::handleInput()
 						current_input_event = I_WALK;
 						collision = false;
 					}//si no es terra					
-					else if (prevEnemyFocus == enemyFocus || 
-							prevEnemyFocus == NULL)
+					else if ((prevEnemyFocus == enemyFocus || 
+						prevEnemyFocus == NULL) && enemyFocus->type != NPC_COUNSELOUR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
 					{
 						//comprobar si estas a rang d'atac
 						//if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
