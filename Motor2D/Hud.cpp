@@ -70,8 +70,6 @@ bool Hud::start()
 	whack = app->gui->addGuiImage({ 233, -70 }, { 832, 832, 50, 47 }, base, this);/**/
 	growl = app->gui->addGuiImage({ 305, -70 }, { 832, 832, 50, 47 }, base, this);/**/
 
-	life->interactable = true;
-	rage->interactable = true;
 	character->interactable = true;
 	inventory->interactable = true;
 	tree->interactable = true;
@@ -90,16 +88,20 @@ bool Hud::start()
 	whack->active = false;
 	growl->active = false;
 
-	slot1 = app->gui->addGuiInventory({ 176, 14 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);/**/
-	slot2 = app->gui->addGuiInventory({ 207, 14 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);/**/
-	slot3 = app->gui->addGuiInventory({ 238, 14 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);/**/
-	slot4 = app->gui->addGuiInventory({ 269, 14 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);/**/
+	slot1 = app->gui->addGuiInventory({ 176, 9 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);
+	slot2 = app->gui->addGuiInventory({ 207, 9 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);
+	slot3 = app->gui->addGuiInventory({ 238, 9 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);
+	slot4 = app->gui->addGuiInventory({ 269, 9 }, { 342, 896, 30, 30 }, 1, 1, 30, 30, base, this);
 
 	// Map - loads earlier to be in background
 	mapMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Character
-	characterMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
+	characterMenu = app->gui->addGuiImage({ 321, 0 }, { 1128, 588, 319, 430 }, NULL, this);
+	i_inventory = app->gui->addGuiInventory({ 16, 255 }, { 1144, 843, 290, 116 }, 10, 4, ITEM_SECTION_SIZE, ITEM_SECTION_SIZE, characterMenu, this);
+
+	characterMenu->active = false;
+	i_inventory->active = false;
 
 	// Inventory
 	inventoryMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
@@ -122,6 +124,14 @@ bool Hud::start()
 	treeMenu->Desactivate();
 	mapMenu->Desactivate();
 	pauseMenu->Desactivate();
+
+
+
+
+
+
+
+	exp = app->gui->addGuiImage({ 0, 0 }, { 530, 118, 102, 18 }, NULL, this);
 
 	return true;
 }
@@ -159,6 +169,54 @@ bool Hud::preUpdate()
 		{
 			panel->Desactivate();
 			pauseMenu->Activate();
+		}
+	}
+	else
+	{
+		if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+		{
+			if (characterMenu->active)
+			{
+				clearTabs();
+			}
+			else
+			{
+				hidePanel();
+				characterMenu->Activate();
+			}
+		}
+		else if(app->input->getKey(SDL_SCANCODE_I) == KEY_DOWN)
+		{
+			if (inventoryMenu->active)
+			{
+				clearTabs();
+			}
+			else
+			{
+				hidePanel();
+				inventoryMenu->Activate();
+			}
+		}
+		else if(app->input->getKey(SDL_SCANCODE_P) == KEY_DOWN)
+		{
+			if (treeMenu->active)
+			{
+				clearTabs();
+			}
+			else
+			{
+				hidePanel();
+				treeMenu->Activate();
+			}
+		}
+		else if(app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+		{
+			clearTabs();
+			characterMenu->Activate();
+		}
+		else if(app->input->getKey(SDL_SCANCODE_TAB) == KEY_DOWN)
+		{
+			characterMenu->Activate();
 		}
 	}
 
@@ -279,6 +337,31 @@ bool Hud::update(float dt)
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
 
+	playerAtt->addExp(5);
+
+	// update exp image
+	float maxExp = playerAtt->getMaxExp();
+	if (playerAtt->getExp() >= maxExp)
+	{
+		exp->SetTextureRect(expRext);
+	}
+	else if (playerAtt->getExp() > 0.0f)
+	{
+		rect = expRext;
+
+		dif = maxExp - playerAtt->getExp();
+		dif *= rect.w;
+		dif /= maxExp;
+
+		rect.w -= int(dif);
+
+		exp->SetTextureRect(rect);
+	}
+	else
+	{
+		exp->SetTextureRect({ 0, 0, 0, 0 });
+	}
+
 	std::string text;
 
 	if (lifeLabel->active)
@@ -376,6 +459,34 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	}
 }
 
+bool Hud::addItem()
+{
+	bool ret = true;
+	/*
+	//Potion
+	GuiItem* new_item;
+	iPoint coords[1] = { { 0, 0 } };
+	new_item = new GuiItem(1, coords, { 2285, 799, ITEM_SECTION_SIZE, ITEM_SECTION_SIZE });
+	if (!inventory->AutomaticaddItem(new_item))
+	{
+		delete new_item;
+		ret = false;
+	}
+	*/
+
+	return ret;
+}
+
+void Hud::clearTabs()
+{
+	if (characterMenu->active) characterMenu->Desactivate();
+	if (inventoryMenu->active) inventoryMenu->Desactivate();
+	if (treeMenu->active) treeMenu->Desactivate();
+	if (mapMenu->active) mapMenu->Desactivate();
+	if (pauseMenu->active) pauseMenu->Desactivate();
+	activatePanel();
+}
+
 bool Hud::useSlotItem(GuiInventory* slot)
 {
 	bool ret;
@@ -390,16 +501,6 @@ bool Hud::useSlotItem(GuiInventory* slot)
 	}
 
 	return ret;
-}
-
-void Hud::clearTabs()
-{
-	if (characterMenu->active) characterMenu->Desactivate();
-	if (inventoryMenu->active) inventoryMenu->Desactivate();
-	if (treeMenu->active) treeMenu->Desactivate();
-	if (mapMenu->active) mapMenu->Desactivate();
-	if (pauseMenu->active) pauseMenu->Desactivate();
-	activatePanel();
 }
 
 void Hud::hidePanel()

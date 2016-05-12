@@ -8,14 +8,32 @@
 #include "Player.h"
 #include "Attributes.h"
 #include "Pathfinding.h"
+#include "Textures.h"
+#include "p2Log.h"
 
 Entity::Entity()
 {
 	player = app->game->player;
+
+	pDebug = app->tex->Load("maps/mini_path.png");
+
+	if (pDebug == NULL)
+	{
+		LOG("Mini path entity not loaded correctly");
+	}
+	else
+	{
+		LOG("Mini path entity loaded correctly");
+	}
 }
 
 Entity::~Entity()
 {
+}
+
+bool Entity::start()
+{
+	return true;
 }
 
 bool Entity::entityUpdate(float internDT)
@@ -23,8 +41,15 @@ bool Entity::entityUpdate(float internDT)
 	bool ret = true;
 
 	handleInput();
+
+	if (attributes->getLife() <= 0)
+	{
+		current_input = EI_DIE;
+	}
+
 	updateAction();
 
+	LOG("currentState: %d", currentState);
 	if (currentState != E_DEATH)
 	{
 		switch (currentState)
@@ -45,6 +70,10 @@ bool Entity::entityUpdate(float internDT)
 			}
 			break;
 		}
+	}
+	else
+	{
+		collider->SetPos(10000, 0);
 	}
 
 	return ret;
@@ -123,8 +152,9 @@ void Entity::setStartingWorldPosition(iPoint coords)//This might be useless
 
 void Entity::setColliderPosition(iPoint coords)
 {
-
+	collider->SetPos(coords.x,coords.y);
 }
+
 void Entity::setId(int id)
 {
 	this->id = id;
@@ -142,6 +172,10 @@ void Entity::draw()
 		previousState = currentState;
 		previousDirection = currentDirection;
 	}
+	else if (currentState == E_DEATH)
+	{
+		currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
+	}
 
 	imageSprite->updateSprite(worldPosition, currentAnimation->pivot, currentAnimation->getCurrentFrame());
 }
@@ -151,10 +185,19 @@ void Entity::drawDebug()
 	app->render->DrawCircle(worldPosition.x, worldPosition.y, targetRadius, 255, 0, 0, 255, true);
 	app->render->DrawCircle(worldPosition.x, worldPosition.y, visionRadius, 0, 0, 255, 255, true);
 
+	iPoint t_pos = getMapPos();
+	app->render->Blit(pDebug, t_pos.x, t_pos.y);
 	if (movement)
 	{
 		app->render->DrawLine(worldPosition.x, worldPosition.y, target.x, target.y, 0, 0, 255);
 		app->render->DrawLine(worldPosition.x, worldPosition.y, velocity.x + worldPosition.x, velocity.y + worldPosition.y, 0, 255, 255);
+	}
+	//Path
+	for (int i = 0; i < path.size(); i++)
+	{
+		iPoint tmp = path[i];
+		tmp = app->map->getTileBlit(tmp.x, tmp.y);
+		app->render->Blit(pDebug, tmp.x, tmp.y);
 	}
 }
 
@@ -443,12 +486,12 @@ void Entity::handleInput()
 {
 	if (!inputBlocked)
 	{
-		if (currentState != E_DEATH)
+		if (attributes->getLife() <= 0)
 		{
-			if (attributes->getLife() <= 0)
-			{
-				current_input = EI_DIE;
-			}
+			current_input = EI_DIE;
+		}
+		if (currentState != E_DEATH)
+		{			
 			//Do things
 			if (player)
 			{

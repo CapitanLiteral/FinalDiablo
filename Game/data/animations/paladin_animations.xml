@@ -131,35 +131,35 @@
 			<name value = "3"  />
 			
 			<UP> <!-- Up 0-->
-				<values name = "0" x ="0" y = "3584" w = "128" h = "128" frameNumber = "15" margin = "" pivot_x = "70" pivot_y = "96"/>
+				<values name = "0" x ="0" y = "4096" w = "128" h = "128" frameNumber = "7" margin = "" pivot_x = "55" pivot_y = "77"/>
 			</UP>
 
 			<UP_RIGHT> <!-- UP_RIGHT 1-->
-				<values name = "1" x ="0" y = "3712" w = "128" h = "128" frameNumber = "15" margin = "" pivot_x = "62" pivot_y = "96"/>
+				<values name = "1" x ="0" y = "4096" w = "128" h = "128" frameNumber = "7" margin = "" pivot_x = "55" pivot_y = "77"/>
 			</UP_RIGHT>
 
 			<RIGHT> <!-- RIGHT 2-->
-				<values name = "2" x ="0" y = "3840" w = "128" h = "128" frameNumber = "15" margin = "" pivot_x = "57" pivot_y = "92"/>
+				<values name = "2" x ="0" y = "4096" w = "128" h = "128" frameNumber = "7" margin = "" pivot_x = "55" pivot_y = "77"/>
 			</RIGHT>
 
 			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
-				<values name = "3" x ="0" y = "4096" w = "128" h = "128" frameNumber = "15" margin = "" pivot_x = "55" pivot_y = "55"/>
+				<values name = "3" x ="0" y = "4096" w = "128" h = "128" frameNumber = "7" margin = "" pivot_x = "55" pivot_y = "77"/>
 			</DOWN_RIGHT>
 
 			<DOWN> <!-- DOWN 4-->
-				<values name = "4" x ="0" y = "3072" w = "128" h = "128" frameNumber = "15" margin = "" pivot_x = "60" pivot_y = "90"/>
+				<values name = "4" x ="0" y = "4096" w = "128" h = "128" frameNumber = "7" margin = "" pivot_x = "55" pivot_y = "77"/>
 			</DOWN>
 
 			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
-				<values name = "5" x ="0" y = "3200" w = "128" h = "128" frameNumber = "15" margin = "" pivot_x = "60" pivot_y = "100"/>
+				<values name = "5" x ="0" y = "4096" w = "128" h = "128" frameNumber = "7" margin = "" pivot_x = "55" pivot_y = "77"/>
 			</DOWN_LEFT>
 
 			<LEFT> <!-- LEFT 6-->
-				<values name = "6" x ="0" y = "3328" w = "128" h = "128" frameNumber = "15" margin = "" pivot_x = "70" pivot_y = "95"/>
+				<values name = "6" x ="0" y = "4096" w = "128" h = "128" frameNumber = "7" margin = "" pivot_x = "55" pivot_y = "77"/>
 			</LEFT>
 
 			<UP_LEFT> <!-- UP_LEFT 7-->
-				<values name = "7" x ="0" y = "3456" w = "128" h = "128" frameNumber = "15" margin = "" pivot_x = "70" pivot_y = "97"/>
+				<values name = "7" x ="0" y = "4096" w = "128" h = "128" frameNumber = "7" margin = "" pivot_x = "55" pivot_y = "77"/>
 			</UP_LEFT>
 					
 			<loop value = "0" />

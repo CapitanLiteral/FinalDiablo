@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "p2Point.h"
 #include "Animation.h"
+#include "Timer.h"
 
 #include <list>
 #include <string>
@@ -24,7 +25,8 @@ enum GUI_Type
 	GUI_MOUSE_IMAGE,
 	GUI_ITEM,
 	GUI_INVENTORY,
-	GUI_SLOT
+	GUI_SLOT,
+	GUI_IMAGE_FADER
 };
 
 enum GUI_Event
@@ -126,6 +128,20 @@ public:
 
 	void draw();
 	void update(GuiElement* hover, GuiElement* focus){}
+};
+
+class GuiImageFader : public GuiElement
+{
+public:
+	GuiImageFader(iPoint p, SDL_Rect r, uint32 dur, GuiElement* par, Module* list = NULL);
+	~GuiImageFader(){};
+
+	void draw();
+	void update(GuiElement* hover, GuiElement* focus);
+
+	int alpha = 0;
+	uint32 duration = 0;
+	Timer timer;
 };
 
 class Fader : public GuiElement

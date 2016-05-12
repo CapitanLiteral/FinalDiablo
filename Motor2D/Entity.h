@@ -62,6 +62,8 @@ public:
 
 	virtual ~Entity();
 
+	virtual bool start();
+
 	virtual bool entityUpdate(float internDT);
 
 	virtual bool entityPostUpdate();
@@ -162,7 +164,7 @@ protected:
 	Sprite* imageSprite = NULL;
 	Animation* currentAnimation = NULL;
 	std::map<std::pair<entityState, entityDirection>, Animation>	entityAnim;
-	
+	SDL_Texture* pDebug = NULL;
 
 //Enum instances
 	entityInputState current_input = EI_NULL;

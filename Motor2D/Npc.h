@@ -38,6 +38,8 @@ public:
 	bool readed;
 	bool readyForSecondZone;
 	float	playerRange;
+	Timer ret;
+	Timer ret1;
 };
 
 
@@ -64,6 +66,7 @@ public:
 	GuiImage* lordImage = NULL;
 	float	playerRange;
 	uint readed;
+	uint num;
 };
 
 class NpcGossip : public Entity
@@ -88,6 +91,7 @@ public:
 	GuiImage* lordImage = NULL;
 	float	playerRange;
 	uint readed;
+	uint num;
 };
 
 

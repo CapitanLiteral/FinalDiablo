@@ -70,9 +70,8 @@ bool Act1::start()
 	app->game->em->createPaladin({ 450, 2500 });*/
 	
 	
-	app->game->em->createNpc({300,2300}, NPC_COUNSELOR);
-	app->game->em->createNpc({ 400, 2300 }, NPC_HEALER);
-	app->game->em->createNpc({500,2300}, NPC_GOSSIP);
+	counselor = app->game->em->createNpc({300,2300}, NPC_COUNSELOR);
+	healer = app->game->em->createNpc({ 400, 2300 }, NPC_HEALER);
 
 	createProps();
 
@@ -160,6 +159,11 @@ bool Act1::update(float dt)
 		app->sm->changeScene(4);
 	}
 
+	if (app->input->getKey(SDL_SCANCODE_L) == KEY_UP)
+	{
+		app->game->player->attributes->levelUp();
+	}
+
 	if (app->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		app->render->camera.y += 10;
@@ -219,7 +223,7 @@ bool Act1::cleanUp()
 		item++;
 	}
 	entity_list.clear();
-
+	
 
 	return true;
 }

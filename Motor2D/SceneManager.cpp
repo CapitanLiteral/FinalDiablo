@@ -66,7 +66,7 @@ bool SceneManager::preUpdate()
 //update
 bool SceneManager::update(float dt)
 {
-	current_scene->update(dt);
+	//current_scene->update(dt);
 
 	bool ret = true;
 
