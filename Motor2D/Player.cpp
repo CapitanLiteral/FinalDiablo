@@ -168,10 +168,14 @@ void Player::respawn()
 {
 	worldPosition = startingPosition;
 
+	collider->SetPos(startingPosition.x - colliderOffset.x, startingPosition.y - colliderOffset.y);
+
 	attributes->addLife(attributes->getMaxLife());
 
 	current_action = IDLE;
 	current_direction = D_FRONT;
+
+	current_animation->Reset();
 
 	switch (currentPhase)
 	{
@@ -187,7 +191,7 @@ void Player::respawn()
 	}
 
 	//At end of tp unblit lose image
-	deathImage->Desactivate();
+		//Done by the gui element itself
 }
 
 void Player::draw()
@@ -371,7 +375,7 @@ void Player::drawDebug() const
 
 	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		attributes->addLife(-2000);
+		attributes->addLife(-2050);
 	}
 }
 

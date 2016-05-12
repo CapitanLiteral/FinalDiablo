@@ -551,10 +551,12 @@ void GuiImageFader::draw()
 
 void GuiImageFader::update(GuiElement* hover, GuiElement* focus)
 {
-	if (timer.ReadSec() <= duration)
+	if (timer.ReadSec() < duration)
 	{
 		alpha += 255/(duration*1000);
 	}
 	if (alpha > 255)
 		alpha = 255;
+	if (timer.ReadSec() >= duration)
+		Desactivate();
 }
