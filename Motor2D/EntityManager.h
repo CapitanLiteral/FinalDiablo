@@ -55,25 +55,25 @@ public:
 	Entity* createNpc(iPoint position, entityType type);
 
 	SDL_Texture* getPaladinTexture();
-	std::map<std::pair<entityState, entityDirection>, Animation>* getPaladinAnimation();
+	std::map<std::pair<entityState, entityDirection>, Animation> getPaladinAnimation();
 	AttributeBuilder* getPaladinAttributBuilder();
 
 	SDL_Texture* getWolfTexture();
-	std::map<std::pair<entityState, entityDirection>, Animation>* getWolfAnimation();
+	std::map<std::pair<entityState, entityDirection>, Animation> getWolfAnimation();
 	AttributeBuilder* getWolfAttributBuilder();
 
 	SDL_Texture* getGriswoldTexture();
-	std::map<std::pair<entityState, entityDirection>, Animation>* getGriswoldAnimation();
+	std::map<std::pair<entityState, entityDirection>, Animation> getGriswoldAnimation();
 	AttributeBuilder* getGriswoldAttributBuilder();
 
 	SDL_Texture* getCounselorTexture();
-	std::map<std::pair<entityState, entityDirection>, Animation>* getCounselorAnimation();
+	std::map<std::pair<entityState, entityDirection>, Animation> getCounselorAnimation();
 
 	SDL_Texture* getHealerTexture();
-	std::map<std::pair<entityState, entityDirection>, Animation>* getHealerAnimation();
+	std::map<std::pair<entityState, entityDirection>, Animation> getHealerAnimation();
 
 	SDL_Texture* getGossipTexture();
-	std::map<std::pair<entityState, entityDirection>, Animation>* getGossipAnimation();
+	std::map<std::pair<entityState, entityDirection>, Animation> getGossipAnimation();
 
 	uint getEntityAtPositionId(iPoint position);
 

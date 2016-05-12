@@ -20,7 +20,7 @@ Wolf::Wolf(iPoint pos) : Entity()
 	currentState = E_IDLE;
 	currentDirection = E_DOWN;
 
-	currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
+	currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
 
 	imageSprite = new Sprite(app->game->em->getWolfTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);

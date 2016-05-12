@@ -591,9 +591,9 @@ SDL_Texture* EntityManager::getPaladinTexture()
 	return paladinTexture;
 }
 
-std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getPaladinAnimation()
+std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getPaladinAnimation()
 {
-	return &paladinAnim;
+	return paladinAnim;
 }
 
 AttributeBuilder* EntityManager::getPaladinAttributBuilder()
@@ -606,9 +606,9 @@ SDL_Texture* EntityManager::getWolfTexture()
 	return wolfTexture;
 }
 
-std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getWolfAnimation()
+std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getWolfAnimation()
 {
-	return &wolfAnim;
+	return wolfAnim;
 }
 
 AttributeBuilder* EntityManager::getWolfAttributBuilder()
@@ -621,9 +621,9 @@ SDL_Texture* EntityManager::getGriswoldTexture()
 	return griswoldTexture;
 }
 
-std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getGriswoldAnimation()
+std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getGriswoldAnimation()
 {
-	return &griswoldAnim;
+	return griswoldAnim;
 }
 
 AttributeBuilder* EntityManager::getGriswoldAttributBuilder()
@@ -636,9 +636,9 @@ SDL_Texture* EntityManager::getCounselorTexture()
 	return counselorTexture;
 }
 
-std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getCounselorAnimation()
+std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getCounselorAnimation()
 {
-	return &counselorAnim;
+	return counselorAnim;
 }
 
 SDL_Texture* EntityManager::getHealerTexture()
@@ -646,9 +646,9 @@ SDL_Texture* EntityManager::getHealerTexture()
 	return healerTexture;
 }
 
-std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getHealerAnimation()
+std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getHealerAnimation()
 {
-	return &healerAnim;
+	return healerAnim;
 }
 
 SDL_Texture* EntityManager::getGossipTexture()
@@ -656,9 +656,9 @@ SDL_Texture* EntityManager::getGossipTexture()
 	return gossipTexture;
 }
 
-std::map<std::pair<entityState, entityDirection>, Animation>* EntityManager::getGossipAnimation()
+std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getGossipAnimation()
 {
-	return &gossipAnim;
+	return gossipAnim;
 }
 
 uint EntityManager::getEntityAtPositionId(iPoint position)

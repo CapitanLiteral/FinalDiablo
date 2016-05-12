@@ -80,6 +80,8 @@ protected:
 
 	Collider* collider = NULL;
 
+	float visionRadius = 40.0f;
+	float targetRadius = 7.0f;
 public:
 	Attributes* attributes = NULL;
 	entityType type = UNKNOWN;
@@ -124,8 +126,6 @@ private:
 
 	fPoint velocity;
 	int currentNode;
-	float visionRadius = 40.0f;
-	float targetRadius = 7.0f; //Maybe ERROR, watch out
 
 	bool movement;
 	bool targetReached;
@@ -161,7 +161,7 @@ private:
 protected:
 	Sprite* imageSprite = NULL;
 	Animation* currentAnimation = NULL;
-	std::map<std::pair<entityState, entityDirection>, Animation>*	entityAnim = NULL;
+	std::map<std::pair<entityState, entityDirection>, Animation>	entityAnim;
 	
 
 //Enum instances

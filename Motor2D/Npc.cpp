@@ -34,7 +34,7 @@ NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
 	collider = app->collision->addCollider(rect, COLLIDER_NPC, app->game->em);
 
 	entityAnim = app->game->em->getCounselorAnimation();
-	currentAnimation = &entityAnim->find({ E_IDLE, E_DOWN })->second;
+	currentAnimation = &entityAnim.find({ E_IDLE, E_DOWN })->second;
 	imageSprite = new Sprite(app->game->em->getCounselorTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
@@ -153,7 +153,7 @@ NpcHealer::NpcHealer(const iPoint &p, uint ID)
 	collider = app->collision->addCollider(rect, COLLIDER_NPC, app->game->em);
 
 	entityAnim = app->game->em->getHealerAnimation();
-	currentAnimation = &entityAnim->find({ currentState, currentDirection })->second;
+	currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
 	imageSprite = new Sprite(app->game->em->getHealerTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
@@ -241,7 +241,7 @@ NpcGossip::NpcGossip(const iPoint &p, uint ID)
 	collider = app->collision->addCollider(rect, COLLIDER_NPC, app->game->em);
 
 	entityAnim = app->game->em->getGossipAnimation();
-	currentAnimation = &entityAnim->find({ E_IDLE, E_DOWN })->second;
+	currentAnimation = &entityAnim.find({ E_IDLE, E_DOWN })->second;
 	imageSprite = new Sprite(app->game->em->getGossipTexture(), worldPosition, currentAnimation->pivot, (SDL_Rect)currentAnimation->PeekCurrentFrame());
 	app->render->addSpriteToList(imageSprite);
 
