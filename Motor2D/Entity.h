@@ -173,7 +173,7 @@ protected:
 	entityDirection currentDirection = E_DOWN;
 	entityDirection previousDirection = E_DOWN;
 
-//--------------------------------------
+//----------------------------------
 };
 
 #endif

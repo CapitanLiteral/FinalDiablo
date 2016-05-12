@@ -98,20 +98,17 @@ bool Player::update(float dt)
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 	
 	if (entityInRange()){
-		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && app->game->em->getEntityOnMouse())
+		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			//app->game->player->setInputBlocked(true);
-			//app->game->player->movement = false;
-			//app->game->player->move(0.0f);
-			
-			//Si clickes dins que es pari
-			
-		}
-		else if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !app->game->em->getEntityOnMouse())
-		{
-			//app->game->player->setInputBlocked(false);
-			//app->game->player->movement = true;
-			//si clickes fora es mogui
+			Entity* ret;
+			if (ret = app->game->em->getEntityOnMouse())
+				if (ret->getCollider()->type == COLLIDER_NPC){
+					current_input_event = I_STOP;
+				}
+				else if (ret->getCollider()->type == COLLIDER_ENEMY)
+				{
+					current_input_event = I_ATTACK;
+				}
 		}
 	}
 	//if (enemyFocus != NULL)
