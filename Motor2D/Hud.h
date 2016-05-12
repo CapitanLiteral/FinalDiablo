@@ -27,11 +27,15 @@ public:
 
 	void OnEvent(GuiElement* element, GUI_Event even);
 
-public:
-
 	void displayDamage(int x, int y, float damage, bool crit = false){}
 	void levelChanged(int level, int prev){}
+
+private:
+
+	void clearTabs();
 	bool useSlotItem(GuiInventory* inv = NULL);
+	void hidePanel();
+	void activatePanel();
 
 public:
 
@@ -39,14 +43,24 @@ public:
 	PlayerAttributes* playerAtt = NULL;
 
 private:
+
+	bool exit;
 	
 	// Base
 	iPoint lifePos;
 	iPoint ragePos;
 
+	iPoint basic_attackPos;
+	iPoint frenzyPos;
+	iPoint whackPos;
+	iPoint growlPos;
+
 	SDL_Rect lifeRect;
 	SDL_Rect rageRect;
 	SDL_Rect staminaRect;
+
+	SDL_Rect menuExpandOpened;
+	SDL_Rect menuExpandClosed;
 
 	GuiImage* life = NULL;
 	GuiImage* rage = NULL;
@@ -77,16 +91,16 @@ private:
 	GuiInventory* slot4 = NULL;
 	
 	// Character
-
+	GuiImage* characterMenu = NULL;
 
 	// Inventory
-
+	GuiImage* inventoryMenu = NULL;
 
 	// Tree
-
+	GuiImage* treeMenu = NULL;
 
 	// Map
-
+	GuiImage* mapMenu = NULL;
 
 	// Pause Menu
 	GuiImage* pauseMenu = NULL;

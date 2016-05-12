@@ -389,11 +389,9 @@ void GuiElement::Activate()
 
 void GuiElement::ActivateChilds()
 {
-	if (active){
 	for (list<GuiElement*>::iterator item = childs.begin(); item != childs.end(); item++)
 	{
 		item._Ptr->_Myval->active = true;
-	}
 	}
 }
 void GuiElement::DesactivateChilds()

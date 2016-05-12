@@ -20,7 +20,7 @@ std::string NumberToString(T Number)
 }
 
 //Constructor
-Hud::Hud() : Module()
+Hud::Hud() : Module(), exit(false)
 {}
 
 Hud::~Hud()
@@ -35,6 +35,9 @@ bool Hud::start()
 	lifeRect = { 371, 118, 79, 78 };
 	rageRect = { 451, 118, 78, 78 };
 	staminaRect = { 530, 118, 102, 18 };
+
+	menuExpandOpened = { 281, 253, 16, 27 };
+	menuExpandClosed = { 296, 253, 16, 27 };
 
 	GuiImage* base = app->gui->addGuiImage({ 166, 430 }, { 166, 386, 408, 47 }, NULL, this);
 
@@ -52,7 +55,7 @@ bool Hud::start()
 	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 20 }, NULL, FONT_WHITE, this);
 
 	staminaDorn = app->gui->addGuiImage({ 9, 19 }, { 153, 280, 18, 22 }, base, this);
-	menuExpand = app->gui->addGuiImage({ 145, 8 }, { 296, 253, 16, 27 }, base, this);
+	menuExpand = app->gui->addGuiImage({ 145, 8 }, menuExpandOpened, base, this);
 
 	panel = app->gui->addGuiImage({ 98, -25 }, { 170, 253, 110, 25 }, base, this);
 	character = app->gui->addGuiImage({ 3, 3 }, { 170, 279, 20, 19 }, panel, this);
@@ -81,6 +84,8 @@ bool Hud::start()
 	whack->interactable = true;
 	growl->interactable = true;
 
+	lifeLabel->active = false;
+	rageLabel->active = false;
 	frenzy->active = false;
 	whack->active = false;
 	growl->active = false;
@@ -90,17 +95,17 @@ bool Hud::start()
 	slot3 = app->gui->addGuiInventory({ 238, 9 }, { 342, 395, 30, 30 }, 1, 1, 30, 30, base, this);
 	slot4 = app->gui->addGuiInventory({ 269, 9 }, { 342, 395, 30, 30 }, 1, 1, 30, 30, base, this);
 
-	// Character
+	// Map - loads earlier to be in background
+	mapMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
+	// Character
+	characterMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Inventory
-
+	inventoryMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Tree
-
-
-	// Map
-
+	treeMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Pause Menu
 
@@ -111,6 +116,11 @@ bool Hud::start()
 	p_exit->interactable = true;
 	p_back->interactable = true;
 
+	// hide all tabs
+	characterMenu->Desactivate();
+	inventoryMenu->Desactivate();
+	treeMenu->Desactivate();
+	mapMenu->Desactivate();
 	pauseMenu->Desactivate();
 
 	return true;
@@ -133,7 +143,23 @@ bool Hud::preUpdate()
 	// Pause menu
 	if (app->input->getKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
-		pauseMenu->active ? pause->Desactivate() : pause->Activate();
+		if (pauseMenu->active)
+		{
+			activatePanel();
+			pauseMenu->Desactivate();
+		}
+		else if (characterMenu->active
+			|| inventoryMenu->active
+			|| treeMenu->active
+			|| mapMenu->active)
+		{
+			clearTabs();
+		}
+		else
+		{
+			panel->Desactivate();
+			pauseMenu->Activate();
+		}
 	}
 
 	if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN) useSlotItem(slot1);
@@ -155,6 +181,8 @@ bool Hud::preUpdate()
 //Called each frame
 bool Hud::update(float dt)
 {
+	if (exit) return false;
+
 	// exit if no character assigned
 	if (playerAtt == NULL)
 	{
@@ -275,23 +303,50 @@ bool Hud::update(float dt)
 
 void Hud::OnEvent(GuiElement* element, GUI_Event even)
 {
-	/*character->interactable = true;
-	inventory->interactable = true;
-	tree->interactable = true;
-	map->interactable = true;
-	pauseMenu->interactable = true;
-	staminaDorn->interactable = true;
-	menuExpand->interactable = true;
-	basic_attack->interactable = true;
-	frenzy->interactable = true;
-	whack->interactable = true;
-	growl->interactable = true;*/
-
-	//Base
-	if (pause == element
+	if (character == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
+		clearTabs();
+		hidePanel();
+		characterMenu->Activate();
+	}
+	else if (inventory == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		clearTabs();
+		hidePanel();
+		inventoryMenu->Activate();
+	}
+	else if (tree == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		clearTabs();
+		hidePanel();
+		treeMenu->Activate();
+	}
+	else if (map == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		mapMenu->Activate();
+	}
+	else if (pause == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		clearTabs();
+		hidePanel();
 		pauseMenu->Activate();
+	}
+	else if (menuExpand == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		if (panel->active)
+		{
+			hidePanel();
+		}
+		else
+		{
+			activatePanel();
+		}
 	}
 
 	// Character
@@ -307,14 +362,16 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 
 
 	// Pause Menu
-	if (p_exit == element
+	else if (p_exit == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
+		exit = true;
 		//app->sm->fadeToBlack(app->sm->intro);
 	}
-	if (p_back == element
+	else if (p_back == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
+		activatePanel();
 		pauseMenu->Desactivate();
 	}
 }
@@ -333,4 +390,26 @@ bool Hud::useSlotItem(GuiInventory* slot)
 	}
 
 	return ret;
+}
+
+void Hud::clearTabs()
+{
+	if (characterMenu->active) characterMenu->Desactivate();
+	if (inventoryMenu->active) inventoryMenu->Desactivate();
+	if (treeMenu->active) treeMenu->Desactivate();
+	if (mapMenu->active) mapMenu->Desactivate();
+	if (pauseMenu->active) pauseMenu->Desactivate();
+	activatePanel();
+}
+
+void Hud::hidePanel()
+{
+	panel->Desactivate();
+	menuExpand->SetTextureRect(menuExpandClosed);
+}
+
+void Hud::activatePanel()
+{
+	panel->Activate();
+	menuExpand->SetTextureRect(menuExpandOpened);
 }

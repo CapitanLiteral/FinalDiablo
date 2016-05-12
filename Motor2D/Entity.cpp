@@ -254,9 +254,9 @@ void Entity::move(float dt)
 	worldPosition.x += int(vel.x);
 	worldPosition.y += int(vel.y);
 
-	//NOTE: Collider movement, may be changed
-	collider->SetPos(worldPosition.x, worldPosition.y); //Maybe ERROR, watch out
-	if (isInDestiny() || (player != NULL && player->getMapPosition().DistanceTo(worldPosition) <= targetRadius && currentState == E_WALK))
+	
+	collider->SetPos(worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y); //Maybe ERROR, watch out
+	if (isInDestiny() || (player != NULL && player->getWorldPosition().DistanceNoSqrt(worldPosition) <= targetRadius * targetRadius && currentState == E_WALK))
 	{
 		path.clear();
 	}
@@ -459,6 +459,8 @@ void Entity::handleInput()
 					}
 					else
 					{
+						target = app->game->player->getWorldPosition();
+						target = app->map->WorldToMap(target.x, target.y);
 						getNewPath(target);
 						current_input = EI_WALK;
 					}
