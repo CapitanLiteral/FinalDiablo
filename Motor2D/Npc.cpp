@@ -68,9 +68,9 @@ bool NpcCounselor::entityUpdate(float dt)
 			else if (app->game->player->attributes->getLevel() == 5 && !readyForSecondZone)
 			{
 				readyToGoImage->Activate();
-				readyForSecondZone = true;
 				ret.start();
 				if (ret.Read() < 5){
+					readyForSecondZone = true;
 					app->sm->fadeToBlack(app->sm->act2);
 				}
 			}

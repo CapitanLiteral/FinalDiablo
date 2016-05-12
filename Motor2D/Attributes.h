@@ -75,7 +75,7 @@ enum modifierType
 	FLAT_STAMINA_REGEN,
 	NONFLAT_STAMINA_REGEN,
 	FLAT_ITEM_RARITY,
-	NONFLAT_ITEM_RARITY
+	NONFLAT_ITEM_RARITY,
 };
 
 
@@ -183,6 +183,7 @@ public:
 	// Immediate Getters
 	float getLevel()const	{ return current_level; }
 	float getLife()const	{ return current_life; }
+	int	 getExp()const		{ return experience; }
 
 	// Adders / setters
 	bool addLife(float val);
@@ -329,6 +330,7 @@ public:
 	float getRageRegen()const;
 	float getStaminaRegen()const;
 	float getItemRarity()const;
+	int   getMaxExp()const;
 
 protected:
 

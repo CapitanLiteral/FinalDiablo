@@ -29,6 +29,7 @@ public:
 
 	void displayDamage(int x, int y, float damage, bool crit = false){}
 	void levelChanged(int level, int prev){}
+	bool addItem();
 
 private:
 
@@ -56,15 +57,19 @@ private:
 	iPoint growlPos;
 
 	SDL_Rect lifeRect;
+	//SDL_Rect evilBarRect;
 	SDL_Rect rageRect;
 	SDL_Rect staminaRect;
+	SDL_Rect expRext;
 
 	SDL_Rect menuExpandOpened;
 	SDL_Rect menuExpandClosed;
 
 	GuiImage* life = NULL;
+	//GuiImage* evilBar = NULL;
 	GuiImage* rage = NULL;
 	GuiImage* stamina = NULL;
+	GuiImage* exp = NULL;
 
 	GuiLabel* lifeLabel = NULL;
 	GuiLabel* rageLabel = NULL;
@@ -95,6 +100,7 @@ private:
 
 	// Inventory
 	GuiImage* inventoryMenu = NULL;
+	GuiInventory* i_inventory = NULL;
 
 	// Tree
 	GuiImage* treeMenu = NULL;

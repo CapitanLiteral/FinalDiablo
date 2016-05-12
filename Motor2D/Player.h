@@ -4,7 +4,6 @@
 #include "Module.h"
 #include "p2Point.h"
 #include "Animation.h"
-#include "Timer.h"
 
 #include <map>
 
@@ -171,7 +170,6 @@ private:
 
 //Death
 private:
-	Timer deathTimer;
 	GuiImageFader* deathImage = NULL;
 
 
