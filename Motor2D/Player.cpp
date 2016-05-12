@@ -91,13 +91,24 @@ bool Player::preUpdate()
 
 bool Player::update(float dt)
 {
-	LOG("Exp: %d", attributes->getExp());
-	LOG("Level: %f", attributes->getLevel());
-	LOG("Rage: %f", attributes->getRage());
+	
 	bool ret = true;
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
 	
-	if (entityInRange()){
+	//TODO JOSEP PARTICULA LVL UP
+	if (attributes->getLevel() == 5)
+	{
+		currentPhase = BUTCHER;
+		sprite->texture = butcherImage;
+	}
+	else if (attributes->getLevel() == 10)
+	{
+		currentPhase = DIABLO;
+		sprite->texture = diabloImage;
+	}
+
+	if (entityInRange())
+	{
 		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
 			Entity* ret;

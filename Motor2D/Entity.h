@@ -83,7 +83,7 @@ protected:
 	Collider* collider = NULL;
 
 	float visionRadius = 120.0f;
-	float targetRadius = 7.0f;
+	float targetRadius = 50.0f;
 public:
 	Attributes* attributes = NULL;
 	entityType type = UNKNOWN;
