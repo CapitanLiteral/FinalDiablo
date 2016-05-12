@@ -83,6 +83,8 @@ bool Game::preUpdate()
 //update
 bool Game::update(float dt)
 {
+	player->attributes->update();
+
 	list<Module*>::iterator item = game_modules.begin();
 
 	for (; item != game_modules.end(); item++)

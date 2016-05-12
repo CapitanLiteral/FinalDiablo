@@ -156,7 +156,7 @@ bool Attributes::addLife(float val)
 	{
 		float maxLife = getMaxLife();
 
-		if (current_life + val < maxLife)
+		if (current_life + val <= maxLife)
 		{
 			current_life += val;
 		}
@@ -235,12 +235,12 @@ float Attributes::getAccuracy()const // depends on dexterity
 
 float Attributes::getCritChance()const // depends on power charges and intelligence
 {
-	return ((base_critChance + getMod(FLAT_CRIT_CHANCE)) * (getMod(NONFLAT_CRIT_CHANCE) + (getPowerCharges() * getPowerChargeCritChanceIncrease()) + (getIntelligence() / 5.0f)));
+	return ((base_critChance + getMod(FLAT_CRIT_CHANCE)) * (getMod(NONFLAT_CRIT_CHANCE) + (getPowerCharges() * getPowerChargeCritChanceIncrease()) + (getIntelligence() / 500.0f)));
 }
 
 float Attributes::getCritMult()const // depends on intelligence
 {
-	return ((base_critMultiplier + getMod(FLAT_CRIT_MULT) + (getIntelligence() / 2.0f)) * getMod(NONFLAT_CRIT_MULT));
+	return ((base_critMultiplier + getMod(FLAT_CRIT_MULT) + (getIntelligence() / 200.0f)) * getMod(NONFLAT_CRIT_MULT));
 }
 
 float Attributes::getArmor()const
@@ -398,6 +398,8 @@ bool Attributes::damage(Attributes* attacker, int attackType)
 			attacker->addExp(experience);
 		}
 	}
+
+	if (hud && x && y) hud->displayDamage((*x), (*y), 0.0f);
 
 	return ret;
 }
