@@ -141,6 +141,10 @@ bool Act2::update(float dt)
 		}
 	}
 
+	if (app->input->getKey(SDL_SCANCODE_L) == KEY_UP)
+	{
+		app->game->player->attributes->levelUp();
+	}
 	return true;
 }
 

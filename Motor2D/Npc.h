@@ -38,6 +38,8 @@ public:
 	bool readed;
 	bool readyForSecondZone;
 	float	playerRange;
+	Timer ret;
+	Timer ret1;
 };
 
 

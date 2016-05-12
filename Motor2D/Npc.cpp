@@ -11,6 +11,7 @@
 #include "p2Point.h"
 #include "snWin.h"
 #include "Act1.h"
+#include "Act2.h"
 #include "Collision.h"
 #include "Attributes.h"
 //Provisional?
@@ -30,6 +31,7 @@ NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
 
 	readed = true;
 	readyForSecondZone = false;
+	act2 = false;
 
 	SDL_Rect rect = { worldPosition.x - colliderOffset.x,
 			worldPosition.y - colliderOffset.y,	// Position
@@ -64,14 +66,14 @@ bool NpcCounselor::entityUpdate(float dt)
 			{
 				secondImage->Activate();
 			}
-			else if (app->game->player->attributes->getLevel() == 5)
+			else if (app->game->player->attributes->getLevel() == 5 && !readyForSecondZone)
 			{
 				readyToGoImage->Activate();
 				readyForSecondZone = true;
-			}
-			else if (readyForSecondZone)
-			{
-				//Pasar a la siguiente escena
+				ret.start();
+				if (ret.Read() < 5){
+					app->sm->fadeToBlack(app->sm->act2);
+				}
 			}
 			else if (app->game->player->attributes->getLevel() == 5 && readyForSecondZone)
 			{
@@ -80,11 +82,10 @@ bool NpcCounselor::entityUpdate(float dt)
 			else if (app->game->player->attributes->getLevel() < 10)
 			{
 				secondSecondaryImage->Activate();
-			}
-			else if (app->game->player->attributes->getLevel() == 10)
-			{
-				finalFightImage->Activate();
-				//set position al centre on hi han ordas fe penya forta
+				ret1.start();
+				if (ret.Read() < 5){
+					//final battle
+				}
 			}
 		}
 	}
