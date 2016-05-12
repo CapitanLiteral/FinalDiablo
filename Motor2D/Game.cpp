@@ -53,6 +53,8 @@ bool Game::awake(pugi::xml_node& conf)
 // Called before the first frame
 bool Game::start()
 {
+	active = true;
+
 	app->gui->clearUI();
 
 	list<Module*>::iterator item = game_modules.begin();
@@ -111,6 +113,8 @@ bool Game::postUpdate()
 // Called before quitting
 bool Game::cleanUp()
 {
+	active = false;
+
 	app->gui->clearUI();
 
 	list<Module*>::iterator item = game_modules.begin();
