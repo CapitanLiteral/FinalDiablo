@@ -13,7 +13,6 @@ class Player;
 class Paladin;
 class Wolf;
 class Griswold;
-class Npc;
 class Entity;
 enum entityType;
 enum entityState;

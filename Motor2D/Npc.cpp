@@ -20,10 +20,13 @@
 //Constructor
 NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
 {
-	type = entityType::NPC_COUNSELOUR;
+	type = entityType::NPC_COUNSELOR;
 	loadGui();
 	setWorldPosition(p);
 	playerRange = 70.0f;
+
+	colliderOffset.Set(25, 75);
+	colliderSize.Set(45, 80);
 
 	readed = true;
 	readyForSecondZone = false;
@@ -31,6 +34,7 @@ NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
 	SDL_Rect rect = { worldPosition.x - colliderOffset.x,
 			worldPosition.y - colliderOffset.y,	// Position
 			colliderSize.x, colliderSize.y };		// Size
+	
 	collider = app->collision->addCollider(rect, COLLIDER_NPC, app->game->em);
 
 	entityAnim = app->game->em->getCounselorAnimation();
@@ -140,8 +144,8 @@ NpcHealer::NpcHealer(const iPoint &p, uint ID)
 	setWorldPosition(p);
 	playerRange = 70.0f;
 	
-	colliderOffset.Set(41, 94);
-	colliderSize.Set(64, 128);
+	colliderOffset.Set(25, 75);
+	colliderSize.Set(45, 80);
 
 	currentState = E_IDLE;
 	currentDirection = E_DOWN;
@@ -178,7 +182,7 @@ bool NpcHealer::entityUpdate(float dt)
 			}
 			else if (readed >= 3)
 			{
-				//randImage->Activate();
+				//	randImage->Activate();
 			}
 		}
 	}
@@ -234,6 +238,9 @@ NpcGossip::NpcGossip(const iPoint &p, uint ID)
 	type = entityType::NPC_GOSSIP;
 	setWorldPosition(p);
 	playerRange = 70.0f;
+
+	colliderOffset.Set(25, 75);
+	colliderSize.Set(45, 80);
 
 	SDL_Rect rect = { worldPosition.x - colliderOffset.x,
 		worldPosition.y - colliderOffset.y,	// Position
