@@ -16,6 +16,7 @@
 Player::Player()
 {
 	AttributeBuilder builder;
+	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
 	attributes = new PlayerAttributes(builder);
 	
 	worldPosition.x = 0;

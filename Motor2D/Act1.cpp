@@ -67,7 +67,7 @@ bool Act1::start()
 	//app->game->em->createNpc({ 490, 2400 }, NPC_HEALER);
 	//app->game->em->createNpc({400,2400}, NPC_GOSSIP);
 
-	app->game->em->createPaladin({ 450, 2500 });
+	//app->game->em->createPaladin({ 450, 2500 });
 
 	
 

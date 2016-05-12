@@ -48,6 +48,7 @@ bool EntityManager::start()
 
 	ret = loadEnemiesAnimations();
 	ret = loadNpcAnimations();
+	setEnemiesAttributes();
 
 	paladinTexture = app->tex->Load("images/Paladin.png");
 	wolfTexture = app->tex->Load("images/Wolf.png");
@@ -731,7 +732,7 @@ void EntityManager::setEnemiesAttributes()
 	//###     EnemyPaladin     ###
 	//############################
 
-	
+	paladinAttributeBuilder.base_movementSpeed = 100;
 
 	//############################
 	//###      EnemyWolf       ###
