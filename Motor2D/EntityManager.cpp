@@ -753,16 +753,19 @@ void EntityManager::setEnemiesAttributes()
 	//############################
 
 	paladinAttributeBuilder.base_movementSpeed = 100;
+	paladinAttributeBuilder.experience = 350;
 
 	//############################
 	//###      EnemyWolf       ###
 	//############################
 
 	wolfAttributeBuilder.base_movementSpeed = 100;
+	wolfAttributeBuilder.experience = 200;
 
 	//############################
 	//###    EnemyGriswold     ###
 	//############################
 
 	griswoldAttributeBuilder.base_movementSpeed = 100;
+	griswoldAttributeBuilder.experience = 500;
 }
