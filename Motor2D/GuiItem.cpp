@@ -5,15 +5,12 @@
 #include "GuiInventory.h"
 #include "Gui.h"
 #include "Render.h"
-//Absolutely not
-#include "Player.h"
-#include "Game.h"
+#include "Attributes.h"
 
 
 
-GuiItem::GuiItem(int s, iPoint* coord, SDL_Rect r) 
-	:GuiElement({ 0, 0 }, r, GUI_ITEM, NULL, NULL)
-	, image({ 0, 0 }, r, this, NULL)
+GuiItem::GuiItem(int s, iPoint* coord, SDL_Rect r, int quantity, PlayerAttributes* lis)
+	: GuiElement({ 0, 0 }, r, GUI_ITEM, NULL, NULL), quantity(quantity), lis(lis), image({ 0, 0 }, r, this, NULL)
 {
 	size = s;
 	coords = new iPoint[size];
@@ -49,7 +46,6 @@ void GuiItem::drawDebug()
 
 void GuiItem::update(GuiElement* hover, GuiElement* focus)
 {
-	//If there's no dragged_item, when clicking over the item, it's freed from the inventory
 	if (!(app->gui->dragged_item))
 	{
 		if (CheckCollision(app->input->getMousePosition()))
@@ -63,12 +59,6 @@ void GuiItem::update(GuiElement* hover, GuiElement* focus)
 			}
 		}
 	}
-
-	//If this is the dragging item, move it
-	/*if (app->gui->dragged_item == this)
-	{
-		Move();
-	}*/
 }
 
 //Gives the pivot position over the screen
@@ -83,8 +73,6 @@ iPoint GuiItem::getPivotPosition()
 //Frees the slots under the item
 void GuiItem::FreeSlots()
 {
-	//TODO 6: iterate all the slots that the item occupies and free them (inventory_item = NULL)
-	//Hint: functionality very similiar to AssignItemToSlots(), but now at item.cpp, and freeing the slots
 	for (int i = 0; i < size; i++)
 	{
 		GuiSlot* slot = inventory->getSlotFromCoord(reference_slot->coords + coords[i]);
@@ -96,8 +84,6 @@ void GuiItem::FreeSlots()
 //Moves accordingly to the mouse
 void GuiItem::Move()
 { 
-	//TODO 4: Fill Move() function so, the item movement is exactly like the cursor (hint: not using the draggable property or mouse motion)
-	//and also make that the item is centered at the cursor (is at the middle not at the vertex)
 	iPoint tmp = app->input->getMousePosition();
 	tmp.x -= getLocalRect().w / 2;
 	tmp.y -= getLocalRect().h / 2;
@@ -105,9 +91,14 @@ void GuiItem::Move()
 	SetLocalPosition(tmp);
 }
 
-//WARNING: guarrada
-void GuiItem::Effect()
+
+void Potion::Effect()
 {
-	//Player* player = app->game->player;
-	//player->RestoreHP(50);
+	if (lis)
+	{
+		TempMod* mod = new TempMod(5.0f, 1.5f, NONFLAT_LIFE_REGEN);
+		lis->addMod(mod);
+	}
 }
+
+

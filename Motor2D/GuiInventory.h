@@ -89,6 +89,9 @@ public:
 	
 	//Slot coloring, because of feedback :D
 	void SetSlotsState(GuiItem* item, SLOT_STATE state);
+
+	void addPotion(GuiItem* item);
+	int getQuantity();
 	
 	/*
 	--------Attributes

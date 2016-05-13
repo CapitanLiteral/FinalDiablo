@@ -21,7 +21,14 @@ std::string NumberToString(T Number)
 
 //Constructor
 Hud::Hud() : Module(), exit(false)
-{}
+{
+	t_1Mod = new Modifier(0.0f, FLAT_ARMOR);
+	t_2Mod = new Modifier(0.0f, NONFLAT_DAMAGE);
+	t_3Mod = new Modifier(0.0f, NONFLAT_LIFE);
+	t_4Mod = new Modifier(0.0f, NONFLAT_LIFE_LEACH);
+	t_5Mod = new Modifier(0.0f, NONFLAT_LIFE_REGEN);
+	t_6Mod = new Modifier(0.0f, FLAT_CRIT_CHANCE);
+}
 
 Hud::~Hud()
 {}
@@ -35,7 +42,7 @@ bool Hud::start()
 	lifeRect = { 576, 704, 79, 78 };
 	rageRect = { 448, 704, 78, 78 };
 	staminaRect = { 320, 703, 102, 18 };
-	expRect = { 320, 703, 102, 18 };
+	expRect = { 173, 867, 121, 4 };
 
 	menuExpandOpened = { 1151, 576, 14, 25 };
 	menuExpandClosed = { 1183, 576, 14, 25 };
@@ -84,17 +91,63 @@ bool Hud::start()
 	mapMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
 
 	// Character
-	characterMenu = app->gui->addGuiImage({ 321, 0 }, { 832, 0, 319, 430 }, NULL, this);
-	i_inventory = app->gui->addGuiInventory({ 16, 255 }, { 1144, 843, 290, 116 }, 10, 4, ITEM_SECTION_SIZE, ITEM_SECTION_SIZE, characterMenu, this);
-
-	characterMenu->active = false;
-	i_inventory->active = false;
+	characterMenu = app->gui->addGuiImage({ 0, 0 }, { 2047, 1, 289, 430 }, NULL, this);
+	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 45 }, characterMenu, FONT_WHITE, this);
+	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 60 }, characterMenu, FONT_WHITE, this);
+	expLabel = app->gui->addGuiLabel("0", NULL, { 10, 30 }, characterMenu, FONT_WHITE, this);
 
 	// Inventory
-	inventoryMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
+	inventoryMenu = app->gui->addGuiImage({ 321, 0 }, { 832, 1, 319, 430 }, NULL, this);
+	//i_inventory = app->gui->addGuiInventory({ 16, 255 }, { 1144, 843, 290, 116 }, 10, 4, ITEM_SECTION_SIZE, ITEM_SECTION_SIZE, characterMenu, this);
 
 	// Tree
-	treeMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
+	treeMenu = app->gui->addGuiImage({ 321, 0 }, { 1216, 1, 321, 429 }, NULL, this);
+	t_1 = app->gui->addGuiImage({ 46, 37 }, { 960, 449, 48, 48 }, treeMenu, this); // armor
+	t_2 = app->gui->addGuiImage({ 114, 35 }, { 832, 448, 48, 48 }, treeMenu, this); // damage
+	t_3 = app->gui->addGuiImage({ 45, 172 }, { 1009, 498, 48, 48 }, treeMenu, this); // life
+	t_4 = app->gui->addGuiImage({ 114, 242 }, { 832, 497, 48, 48 }, treeMenu, this); // life leach
+	t_5 = app->gui->addGuiImage({ 45, 310 }, { 881, 497, 48, 48 }, treeMenu, this); // life regen
+	t_6 = app->gui->addGuiImage({ 114, 310 }, { 1009, 449, 48, 48 }, treeMenu, this); // attack speed
+	t_exit = app->gui->addGuiImage({ 168, 382 }, { 1280, 576, 38, 38 }, treeMenu, this);
+
+	points = app->gui->addGuiLabel("0", NULL, { 265, 62 }, treeMenu, FONT_WHITE, this);
+
+	t_1Label = app->gui->addGuiLabel("+100 Armor each", NULL, { 321 + 45, 37 - 17 }, NULL, FONT_WHITE, this);
+	t_2Label = app->gui->addGuiLabel("+2% Damage each", NULL, { 321 + 114, 35 - 17 }, NULL, FONT_WHITE, this);
+	t_3Label = app->gui->addGuiLabel("+5% Life each", NULL, { 321 + 45, 172 - 17 }, NULL, FONT_WHITE, this);
+	t_4Label = app->gui->addGuiLabel("+2% Life Leach each", NULL, { 321 + 114, 242 - 17 }, NULL, FONT_WHITE, this);
+	t_5Label = app->gui->addGuiLabel("+5% Life Regen each.", NULL, { 321 + 45, 310 - 17 }, NULL, FONT_WHITE, this);
+	t_6Label = app->gui->addGuiLabel("+1% Crit. Chance each", NULL, { 321 + 114, 310 - 17 }, NULL, FONT_WHITE, this);
+
+	t_1QuantLabel = app->gui->addGuiLabel("0", NULL, { 44 + 46, 44 + 37 }, treeMenu, FONT_WHITE, this);
+	t_2QuantLabel = app->gui->addGuiLabel("0", NULL, { 44 + 114, 44 + 35 }, treeMenu, FONT_WHITE, this);
+	t_3QuantLabel = app->gui->addGuiLabel("0", NULL, { 44 + 45, 44 + 172 }, treeMenu, FONT_WHITE, this);
+	t_4QuantLabel = app->gui->addGuiLabel("0", NULL, { 44 + 114, 44 + 242 }, treeMenu, FONT_WHITE, this);
+	t_5QuantLabel = app->gui->addGuiLabel("0", NULL, { 44 + 45, 44 + 310 }, treeMenu, FONT_WHITE, this);
+	t_6QuantLabel = app->gui->addGuiLabel("0", NULL, { 44 + 114, 44 + 310 }, treeMenu, FONT_WHITE, this);
+
+	t_1->interactable = true;
+	t_2->interactable = true;
+	t_3->interactable = true;
+	t_4->interactable = true;
+	t_5->interactable = true;
+	t_6->interactable = true;
+
+	t_1Label->active = false;
+	t_2Label->active = false;
+	t_3Label->active = false;
+	t_4Label->active = false;
+	t_5Label->active = false;
+	t_6Label->active = false;
+
+	// tree mods
+	playerAtt->addMod(t_1Mod);
+	playerAtt->addMod(t_2Mod);
+	playerAtt->addMod(t_3Mod);
+	playerAtt->addMod(t_4Mod);
+	playerAtt->addMod(t_5Mod);
+	playerAtt->addMod(t_6Mod);
+
 
 	// Pause Menu
 
@@ -124,11 +177,7 @@ bool Hud::start()
 	app->gui->addGuiImage({ -166, -41 }, { 0, 840, 116, 103 }, base, this); // lifefront/**/
 	app->gui->addGuiImage({ 359, -50 }, { 524, 832, 116, 102 }, base, this); // ragefront/**/
 
-	exp = app->gui->addGuiImage({ 0, 0 }, { 320, 703, 102, 18 }, NULL, this);
-
-	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 45 }, NULL, FONT_WHITE, this);
-	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 60 }, NULL, FONT_WHITE, this);
-	expLabel = app->gui->addGuiLabel("0", NULL, { 10, 30 }, NULL, FONT_WHITE, this);
+	exp = app->gui->addGuiImage({ 10, 12 }, { 173, 867, 121, 4 }, base, this);
 
 	return true;
 }
@@ -172,36 +221,27 @@ bool Hud::preUpdate()
 	{
 		if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
 		{
-			if (characterMenu->active)
+			if (!characterMenu->active)
 			{
 				clearTabs();
-			}
-			else
-			{
 				hidePanel();
 				characterMenu->Activate();
 			}
 		}
 		else if(app->input->getKey(SDL_SCANCODE_I) == KEY_DOWN)
 		{
-			if (inventoryMenu->active)
+			if (!inventoryMenu->active)
 			{
 				clearTabs();
-			}
-			else
-			{
 				hidePanel();
 				inventoryMenu->Activate();
 			}
 		}
 		else if(app->input->getKey(SDL_SCANCODE_P) == KEY_DOWN)
 		{
-			if (treeMenu->active)
+			if (!treeMenu->active)
 			{
 				clearTabs();
-			}
-			else
-			{
 				hidePanel();
 				treeMenu->Activate();
 			}
@@ -217,13 +257,13 @@ bool Hud::preUpdate()
 	if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN) useSlotItem(slot3);
 	if (app->input->getKey(SDL_SCANCODE_4) == KEY_DOWN) useSlotItem(slot4);
 
-	/* life & rage & stamina debug utility:
-	if (character != NULL)
+	// life & rage & stamina debug utility:
+	if (playerAtt != NULL)
 	{
-	if (app->input->getKey(SDL_SCANCODE_5) == KEY_REPEAT) character->addLife(-20.0f);
-	if (app->input->getKey(SDL_SCANCODE_6) == KEY_REPEAT) character->addRage(2.0f);
-	if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT) character->addStamina(-0.1f);
-	}*/
+		if (app->input->getKey(SDL_SCANCODE_5) == KEY_REPEAT) playerAtt->addLife(-20.0f);
+		if (app->input->getKey(SDL_SCANCODE_6) == KEY_REPEAT) playerAtt->addRage(2.0f);
+		if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT) playerAtt->addStamina(-0.1f);   
+	}
 
 	return true;
 }
@@ -236,7 +276,7 @@ bool Hud::update(float dt)
 	// exit if no character assigned
 	if (playerAtt == NULL)
 	{
-		LOG("NO PLAYER ASSIGNED TO HUD");
+		if (app->debug) LOG("NO PLAYER ASSIGNED TO HUD");
 		return true;
 	}
 
@@ -329,7 +369,7 @@ bool Hud::update(float dt)
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
 
-	playerAtt->addExp(5);
+	playerAtt->addExp(5 * playerAtt->getLevel());
 
 	// update exp image
 	float maxExp = playerAtt->getMaxExp();
@@ -383,6 +423,26 @@ bool Hud::update(float dt)
 		expLabel->SetText(text);
 	}
 
+
+	// Tree
+
+	if (treeMenu->active)
+	{
+		text.assign(NumberToString(int(t_1Mod->value / 100.f)));
+		t_1QuantLabel->SetText(text);
+		text.assign(NumberToString(int(t_2Mod->value / 0.02f)));
+		t_2QuantLabel->SetText(text);
+		text.assign(NumberToString(int(t_3Mod->value / 0.05f)));
+		t_3QuantLabel->SetText(text);
+		text.assign(NumberToString(int(t_4Mod->value / 0.02f)));
+		t_4QuantLabel->SetText(text);
+		text.assign(NumberToString(int(t_5Mod->value / 0.05f)));
+		t_5QuantLabel->SetText(text);
+		text.assign(NumberToString(int(t_6Mod->value / 0.01f)));
+		t_6QuantLabel->SetText(text);
+		text.assign(NumberToString(playerAtt->availablePoints));
+		points->SetText(text);
+	}
 	return true;
 }
 
@@ -441,7 +501,167 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 
 
 	// Tree
-
+	else if (t_1 == element)
+	{
+		switch (even)
+		{
+		case EVENT_MOUSE_LEFTCLICK_DOWN:
+		{
+			if (playerAtt->availablePoints > 0 && t_1Mod->value < 500.0f)
+			{
+				t_1Mod->value += 100.0f;
+				playerAtt->availablePoints--;
+			}
+			break;
+		}
+		case EVENT_MOUSE_RIGHTCLICK_DOWN:
+		{
+			if (t_1Mod->value > 0.0f && t_3Mod->value <= 0.0f)
+			{
+				t_1Mod->value -= 100.0f;
+				playerAtt->availablePoints++;
+			}
+			break;
+		}
+		case EVENT_MOUSE_ENTER: t_1Label->Activate(); break;
+		case EVENT_MOUSE_EXIT: t_1Label->Desactivate(); break;
+		}
+	}
+	else if (t_2 == element)
+	{
+		switch (even)
+		{
+		case EVENT_MOUSE_LEFTCLICK_DOWN:
+		{
+			if (playerAtt->availablePoints > 0 && t_2Mod->value < 0.09f)
+			{
+				t_2Mod->value += 0.02f;
+				playerAtt->availablePoints--;
+			}
+			break;
+		}
+		case EVENT_MOUSE_RIGHTCLICK_DOWN:
+		{
+			if (t_2Mod->value > 0.0f && t_4Mod->value <= 0.0f)
+			{
+				t_2Mod->value -= 0.02f;
+				playerAtt->availablePoints++;
+			}
+			break;
+		}
+		case EVENT_MOUSE_ENTER: t_2Label->Activate(); break;
+		case EVENT_MOUSE_EXIT: t_2Label->Desactivate(); break;
+		}
+	}
+	else if (t_3 == element)
+	{
+		switch (even)
+		{
+		case EVENT_MOUSE_LEFTCLICK_DOWN:
+		{
+			if (playerAtt->availablePoints > 0 && t_3Mod->value < 0.25f && t_1Mod->value >= 500.0f)
+			{
+				t_3Mod->value += 0.05f;
+				playerAtt->availablePoints--;
+			}
+			break;
+		}
+		case EVENT_MOUSE_RIGHTCLICK_DOWN:
+		{
+			if (t_3Mod->value > 0.0f && t_5Mod->value <= 0.0f)
+			{
+				t_3Mod->value -= 0.05f;
+				playerAtt->availablePoints++;
+			}
+			break;
+		}
+		case EVENT_MOUSE_ENTER: t_3Label->Activate(); break;
+		case EVENT_MOUSE_EXIT: t_3Label->Desactivate(); break;
+		}
+	}
+	else if (t_4 == element)
+	{
+		switch (even)
+		{
+		case EVENT_MOUSE_LEFTCLICK_DOWN:
+		{
+			if (playerAtt->availablePoints > 0 && t_4Mod->value < 0.10f && t_2Mod->value >= 0.09f)
+			{
+				t_4Mod->value += 0.02f;
+				playerAtt->availablePoints--;
+			}
+			break;
+		}
+		case EVENT_MOUSE_RIGHTCLICK_DOWN:
+		{
+			if (t_4Mod->value > 0.0f && t_6Mod->value <= 0.0f)
+			{
+				t_4Mod->value -= 0.02f;
+				playerAtt->availablePoints++;
+			}
+			break;
+		}
+		case EVENT_MOUSE_ENTER: t_4Label->Activate(); break;
+		case EVENT_MOUSE_EXIT: t_4Label->Desactivate(); break;
+		}
+	}
+	else if (t_5 == element)
+	{
+		switch (even)
+		{
+		case EVENT_MOUSE_LEFTCLICK_DOWN:
+		{
+			if (playerAtt->availablePoints > 0 && t_5Mod->value < 0.25f && t_3Mod->value >= 0.25f)
+			{
+				t_5Mod->value += 0.05f;
+				playerAtt->availablePoints--;
+			}
+			break;
+		}
+		case EVENT_MOUSE_RIGHTCLICK_DOWN:
+		{
+			if (t_5Mod->value > 0.0f)
+			{
+				t_5Mod->value -= 0.05f;
+				playerAtt->availablePoints++;
+			}
+			break;
+		}
+		case EVENT_MOUSE_ENTER: t_5Label->Activate(); break;
+		case EVENT_MOUSE_EXIT: t_5Label->Desactivate(); break;
+		}
+	}
+	else if (t_6 == element)
+	{
+		switch (even)
+		{
+		case EVENT_MOUSE_LEFTCLICK_DOWN:
+		{
+			if (playerAtt->availablePoints > 0 && t_6Mod->value < 0.05f && t_4Mod->value >= 0.10f)
+			{
+				t_6Mod->value += 0.01f;
+				playerAtt->availablePoints--;
+			}
+			break;
+		}
+		case EVENT_MOUSE_RIGHTCLICK_DOWN:
+		{
+			if (t_6Mod->value > 0.0f)
+			{
+				t_6Mod->value -= 0.01f;
+				playerAtt->availablePoints++;
+			}
+			break;
+		}
+		case EVENT_MOUSE_ENTER: t_6Label->Activate(); break;
+		case EVENT_MOUSE_EXIT: t_6Label->Desactivate(); break;
+		}
+	}
+	else if (t_exit == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		clearTabs();
+	}
 
 	// Map
 
@@ -463,17 +683,7 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 bool Hud::addItem()
 {
 	bool ret = true;
-	/*
-	//Potion
-	GuiItem* new_item;
-	iPoint coords[1] = { { 0, 0 } };
-	new_item = new GuiItem(1, coords, { 2285, 799, ITEM_SECTION_SIZE, ITEM_SECTION_SIZE });
-	if (!i_inventory->AutomaticaddItem(new_item))
-	{
-		delete new_item;
-		ret = false;
-	}
-	*/
+	
 
 	return ret;
 }
