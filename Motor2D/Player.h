@@ -83,6 +83,7 @@ public:
 	PlayerAttributes* attributes = NULL;
 	iPoint worldPosition;	// position in pixels of player // This is the point of the pivot in the world //The feet of the player
 	iPoint mapPosition;		// position of the tile where player is
+	bool soundChecked = false;
 
 	//
 public:
@@ -231,6 +232,9 @@ private:
 
 private:
 	Particle evolvePart;
+
+private: 
+   int fxPlayerLvlUp;
 };
 
 #endif

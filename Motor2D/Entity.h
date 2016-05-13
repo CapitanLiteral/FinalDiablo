@@ -174,6 +174,9 @@ protected:
 	entityDirection previousDirection = E_DOWN;
 
 //----------------------------------
+
+	int fxPlayerGetHit;
+	
 };
 
 #endif

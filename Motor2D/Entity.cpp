@@ -9,11 +9,14 @@
 #include "Attributes.h"
 #include "Pathfinding.h"
 #include "Textures.h"
+#include "Audio.h"
 #include "p2Log.h"
 
 Entity::Entity()
 {
 	player = app->game->player;
+
+	fxPlayerGetHit = app->game->em->fxPlayerGetHit;
 
 	pDebug = app->tex->Load("maps/mini_path.png");
 
@@ -39,6 +42,9 @@ bool Entity::start()
 bool Entity::entityUpdate(float internDT)
 {
 	bool ret = true;
+
+	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
+		app->audio->PlayFx(fxPlayerGetHit);
 
 	handleInput();
 
@@ -69,6 +75,7 @@ bool Entity::entityUpdate(float internDT)
 			if (currentAnimation->isOver() && player != NULL)
 			{
 				player->attributes->damage(attributes,0);
+				app->audio->PlayFx(fxPlayerGetHit);
 				current_input = EI_STOP;
 				currentAnimation->Reset();
 			}

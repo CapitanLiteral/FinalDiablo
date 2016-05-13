@@ -8,6 +8,7 @@
 #include "FileSystem.h"
 #include "Attributes.h"
 #include "Map.h"
+#include "Audio.h"
 
 #include "App.h"
 #include "Render.h"
@@ -58,6 +59,9 @@ bool EntityManager::start()
 	healerTexture = app->tex->Load("images/atmaIdle.png");
 	gossipTexture = app->tex->Load("images/alkorIdle.png");
 
+	//FX-SOUNDS
+	fxPlayerGetHit = app->audio->LoadFx("audio/fx/Barbarian_GetHit.wav");
+	
 
 	return ret;
 }
