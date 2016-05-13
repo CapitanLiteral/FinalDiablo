@@ -101,6 +101,7 @@ bool Player::start()
 	rageArround.fx = app->audio->LoadFx("audio/fx/Diablo_attack");
 	rageArround.texture = particlesAtlas;
 
+
 	rageCoolDown.start();//tmp
 	skill2CoolDown.start();
 
@@ -142,13 +143,20 @@ bool Player::update(float dt)
 
 	bool ret = true;
 
-	app->render->CenterCamera(worldPosition.x, worldPosition.y);
-
-	/*if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+	if (!app->debug)
 	{
-		iPoint p = app->input->getMouseWorldPosition();
-		LOG("X: %d Y: %d", p.x,p.y);
-	}*/
+		app->render->CenterCamera(worldPosition.x, worldPosition.y);
+	}
+	
+	if (app->debug)
+	{
+		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+		{
+			iPoint p = app->input->getMouseWorldPosition();
+			LOG("X: %d Y: %d", p.x, p.y);
+		}
+	}
+	
 	
 	//TODO JOSEP PARTICULA LVL UP
 	if (attributes->getLevel() == 5)
@@ -179,7 +187,8 @@ bool Player::update(float dt)
 		{
 			Entity* ret;
 			if (ret = app->game->em->getEntityOnMouse())
-				if (ret->getCollider()->type == COLLIDER_NPC){
+				if (ret->getCollider()->type == COLLIDER_NPC)
+				{
 					current_input_event = I_STOP;
 				}
 				else if (ret->getCollider()->type == COLLIDER_ENEMY)
@@ -273,7 +282,7 @@ bool Player::update(float dt)
 			}
 		}
 	}
-
+	float a = showLoseImage.ReadSec();
 	if (showLoseImage.ReadSec() >= timeToShow && dead)
 	{
 		//Start lose image
@@ -527,7 +536,7 @@ void Player::drawDebug() const
 
 	if (app->debug)
 	{
-		if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (app->input->getKey(SDL_SCANCODE_D) == KEY_DOWN)
 		{
 			attributes->addLife(-2050);
 		}
@@ -581,14 +590,20 @@ void Player::handleInput()
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 			{
 				//Do skill
-				current_input_event = I_SKILL;
-				skill = 2;
+				if (attributes->getLevel() >= 3)
+				{
+					current_input_event = I_SKILL;
+					skill = 2;
+				}
 			}
 			if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
 				//Do skill
-				current_input_event = I_SKILL;
-				skill = 1;
+				if (attributes->getLevel() >= 5)
+				{
+					current_input_event = I_SKILL;
+					skill = 1;
+				}
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
