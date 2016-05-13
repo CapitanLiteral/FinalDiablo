@@ -88,11 +88,17 @@ bool Player::preUpdate()
 
 bool Player::update(float dt)
 {
-	LOG("Exp: %d", attributes->getExp());
-	LOG("Level: %f", attributes->getLevel());
-	LOG("Rage: %f", attributes->getRage());
+	//LOG("Exp: %d", attributes->getExp());
+	//LOG("Level: %f", attributes->getLevel());
+	//LOG("Rage: %f", attributes->getRage());
 	bool ret = true;
+
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
+	/*if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+	{
+		iPoint p = app->input->getMouseWorldPosition();
+		LOG("X: %d Y: %d", p.x,p.y);
+	}*/
 
 	//if (enemyFocus != NULL)
 	//{
@@ -102,7 +108,7 @@ bool Player::update(float dt)
 	//LOG("Collision %d", collision);
 	if (enemyFocus != NULL && enemyFocus->type != NPC_COUNSELOR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
 	{
-		LOG("TargetLife %f", enemyFocus->attributes->getLife());
+		//LOG("TargetLife %f", enemyFocus->attributes->getLife());
 	}
 		
 	//LOG("Path size: %d", path.size());
@@ -453,14 +459,14 @@ void Player::handleInput()
 						//if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
 						if (collision)
 						{
-							LOG("Detected click to attack, current direction: %d", current_direction);
+							//LOG("Detected click to attack, current direction: %d", current_direction);
 							current_input_event = I_ATTACK;
 							prevEnemyFocus = enemyFocus;
 							fPoint p;
 							p.x = enemyFocus->getWorldPosition().x;
 							p.y = enemyFocus->getWorldPosition().y;
 							setDirection(p);
-							LOG("After setDirection, current direction: %d", current_direction);
+							//LOG("After setDirection, current direction: %d", current_direction);
 							/*switch (currentPhase)
 							{
 							case BARBARIAN:

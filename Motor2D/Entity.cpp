@@ -53,7 +53,7 @@ bool Entity::entityUpdate(float internDT)
 
 	updateAction();
 
-	LOG("currentState: %d", currentState);
+	//LOG("currentState: %d", currentState);
 	if (currentState != E_DEATH)
 	{
 		switch (currentState)
