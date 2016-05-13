@@ -13,6 +13,7 @@ class Player;
 class Paladin;
 class Wolf;
 class Griswold;
+class Boss;
 class Entity;
 enum entityType;
 enum entityState;
@@ -51,6 +52,8 @@ public:
 
 	Griswold* createGriswold(iPoint pos);
 
+	Boss* createBoss(iPoint pos);
+
 	Entity* createNpc(iPoint position, entityType type);
 
 	SDL_Texture* getPaladinTexture();
@@ -64,6 +67,10 @@ public:
 	SDL_Texture* getGriswoldTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation> getGriswoldAnimation();
 	AttributeBuilder* getGriswoldAttributBuilder();
+
+	SDL_Texture* EntityManager::getBossTexture();
+	std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getBossAnimation();
+	AttributeBuilder* EntityManager::getBossAttributBuilder();
 
 	SDL_Texture* getCounselorTexture();
 	std::map<std::pair<entityState, entityDirection>, Animation> getCounselorAnimation();
@@ -118,6 +125,11 @@ private:
 	SDL_Texture* griswoldTexture;
 	std::map<std::pair<entityState, entityDirection>, Animation>	griswoldAnim;
 	AttributeBuilder griswoldAttributeBuilder;
+
+	//Boss texture
+	SDL_Texture* bossTexture;
+	std::map<std::pair<entityState, entityDirection>, Animation>	bossAnim;
+	AttributeBuilder bossAttributeBuilder;
 
 	//Counselor texture
 	SDL_Texture* counselorTexture;

@@ -66,6 +66,91 @@ bool Act2::start()
 	app->sm->act1->healer->setColliderPosition({ 130, 1130 });
 	app->game->em->createNpc({210, 1200 }, NPC_GOSSIP);
 
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	//@@@@@              ENEMIES CREATION                @@@@@
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+	//############################
+	//###       GRISWOLDS      ###
+	//############################
+
+	app->game->em->createGriswold({ -215, 1309 });
+	app->game->em->createGriswold({ -363, 1416 });
+	app->game->em->createGriswold({ -81, 1584 });
+
+	app->game->em->createGriswold({ 217, 1895 });
+	app->game->em->createGriswold({ 576, 2063 });
+	app->game->em->createGriswold({ 913, 2246 });
+	app->game->em->createGriswold({ 1175, 2369 });
+	app->game->em->createGriswold({ 1456, 2239 });
+
+	app->game->em->createGriswold({ 2300, 2516 });
+	app->game->em->createGriswold({ 1889, 2706 });
+	app->game->em->createGriswold({ 1613, 2840 });
+	app->game->em->createGriswold({ 1397, 2969 });
+
+	app->game->em->createGriswold({ 1688, 3230 });
+	app->game->em->createGriswold({ 2138, 3537 });
+	app->game->em->createGriswold({ 1873, 3640 });
+	app->game->em->createGriswold({ 1565, 3768 });
+	app->game->em->createGriswold({ 2694, 3533 });
+	app->game->em->createGriswold({ 3220, 3542 });
+	app->game->em->createGriswold({ 3569, 3490 });
+	app->game->em->createGriswold({ 3890, 3321 });
+	app->game->em->createGriswold({ 4186, 3141 });
+	app->game->em->createGriswold({ 4483, 2995 });
+	app->game->em->createGriswold({ 4790, 2773 });
+	app->game->em->createGriswold({ 4950, 2854 });
+	app->game->em->createGriswold({ 3997, 2890 });
+	app->game->em->createGriswold({ 3676, 2714 });
+	app->game->em->createGriswold({ 3959, 2392 });
+	app->game->em->createGriswold({ 3574, 2261 });
+
+	app->game->em->createGriswold({ 861, 2887 });
+	app->game->em->createGriswold({ 517, 2690 });
+	app->game->em->createGriswold({ 354, 2863 });
+	app->game->em->createGriswold({ 233, 2975 });
+	app->game->em->createGriswold({ 78, 3114 });
+	app->game->em->createGriswold({ 105, 2843 });
+	app->game->em->createGriswold({ 105, 2501 });
+	app->game->em->createGriswold({ -332, 2522 });
+	app->game->em->createGriswold({ -261, 2813 });
+	app->game->em->createGriswold({ -704, 2516 });
+	app->game->em->createGriswold({ -340, 2266 });
+	app->game->em->createGriswold({ -796, 2343 });
+	app->game->em->createGriswold({ -1125, 2270 });
+	app->game->em->createGriswold({ -1619, 2000 });
+	app->game->em->createGriswold({ -725, 3114 });
+
+	app->game->em->createGriswold({ 240, 4208 });
+	app->game->em->createGriswold({ -130, 4288 });
+	app->game->em->createGriswold({ -444, 4300 });
+	app->game->em->createGriswold({ -680, 4198 });
+	app->game->em->createGriswold({ -991, 4042 });
+	app->game->em->createGriswold({ -1335, 3862 });
+	app->game->em->createGriswold({ -1719, 3575 });
+	app->game->em->createGriswold({ -1434, 3412 });
+
+	app->game->em->createGriswold({ -1116, 3197 });
+	app->game->em->createGriswold({ -1430, 3101 });
+	app->game->em->createGriswold({ -1739, 2964 });
+	app->game->em->createGriswold({ -2111, 2797 });
+	app->game->em->createGriswold({ -2377, 2677 });
+	app->game->em->createGriswold({ -2524, 2508 });
+	app->game->em->createGriswold({ -2607, 2792 });
+	app->game->em->createGriswold({ -2756, 2652 });
+	app->game->em->createGriswold({ -3038, 2849 });
+
+	app->game->em->createGriswold({ -2956, 2166 });
+	app->game->em->createGriswold({ -2679, 2001 });
+	app->game->em->createGriswold({ -2367, 1868 });
+	app->game->em->createGriswold({ -2068, 1743 });
+	app->game->em->createGriswold({ -1773, 1936 });
+	app->game->em->createGriswold({ -1782, 1540 });
+
+
+	app->game->em->createBoss({ 2789, 1827});
+
 	return true;
 }
 

@@ -35,6 +35,8 @@ public:
 private:
 
 	void clearTabs();
+	void clearLeftTabs();
+	void clearRightTabs();
 	bool useSlotItem(GuiInventory* inv = NULL);
 	void hidePanel();
 	void activatePanel();
@@ -70,10 +72,6 @@ private:
 	GuiImage* stamina = NULL;
 	GuiImage* exp = NULL;
 
-	GuiLabel* lifeLabel = NULL;
-	GuiLabel* rageLabel = NULL;
-	GuiLabel* expLabel = NULL;
-
 	GuiImage* staminaDorn = NULL; // man in black
 	GuiImage* menuExpand = NULL; // pointing up
 
@@ -97,6 +95,23 @@ private:
 	
 	// Character
 	GuiImage* characterMenu = NULL;
+
+	GuiLabel* levelLabel = NULL;
+
+	GuiLabel* expLabel = NULL;
+	GuiLabel* lifeLabel = NULL;
+	GuiLabel* rageLabel = NULL;
+
+	GuiLabel* strengthLabel = NULL;
+	GuiLabel* intelligenceLabel = NULL;
+	GuiLabel* dexterityLabel = NULL;
+
+	GuiLabel* lifeRegenLabel = NULL;
+	GuiLabel* armorLabel = NULL;
+	GuiLabel* lifeLeachLabel = NULL;
+	GuiLabel* critChanceLabel = NULL;
+
+	GuiLabel* Label = NULL;
 
 	// Inventory
 	GuiImage* inventoryMenu = NULL;

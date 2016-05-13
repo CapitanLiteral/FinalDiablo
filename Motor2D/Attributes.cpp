@@ -89,7 +89,6 @@ bool Attributes::addMod(Modifier* mod)
 		{
 			if (!(ret = (getFrenzyCharges() >= getMaxFrenzyCharges()))) return ret;
 			break;
-			break;
 		}
 		case POWER_CHARGE:
 		{
@@ -465,6 +464,7 @@ base_maxStamina(builder.base_maxStamina)
 {
 	player = true;
 
+	experience = 0;
 	base_exp = 1000 * current_level;
 
 	rageDegenTimer.start();

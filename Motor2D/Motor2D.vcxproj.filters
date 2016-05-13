@@ -118,6 +118,9 @@
     <ClCompile Include="Griswold.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -268,6 +271,9 @@
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Griswold.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
   </ItemGroup>

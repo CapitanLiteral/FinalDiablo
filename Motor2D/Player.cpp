@@ -142,13 +142,20 @@ bool Player::update(float dt)
 
 	bool ret = true;
 
-	app->render->CenterCamera(worldPosition.x, worldPosition.y);
-
-	/*if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+	if (!app->debug)
 	{
-		iPoint p = app->input->getMouseWorldPosition();
-		LOG("X: %d Y: %d", p.x,p.y);
-	}*/
+		app->render->CenterCamera(worldPosition.x, worldPosition.y);
+	}
+	
+	if (app->debug)
+	{
+		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+		{
+			iPoint p = app->input->getMouseWorldPosition();
+			LOG("X: %d Y: %d", p.x, p.y);
+		}
+	}
+	
 	
 	//TODO JOSEP PARTICULA LVL UP
 	if (attributes->getLevel() == 5)

@@ -5,6 +5,7 @@
 #include "Paladin.h"
 #include "Wolf.h"
 #include "Griswold.h"
+#include "Boss.h"
 #include "FileSystem.h"
 #include "Attributes.h"
 #include "Map.h"
@@ -55,6 +56,8 @@ bool EntityManager::start()
 	paladinTexture = app->tex->Load("images/Paladin.png");
 	wolfTexture = app->tex->Load("images/Wolf.png");
 	griswoldTexture = app->tex->Load("images/Griswold.png");
+	bossTexture = app->tex->Load("images/Izual.png");
+
 	counselorTexture = app->tex->Load("images/aidanIdle.png");
 	healerTexture = app->tex->Load("images/atmaIdle.png");
 	gossipTexture = app->tex->Load("images/alkorIdle.png");
@@ -324,6 +327,63 @@ bool EntityManager::loadEnemiesAnimations()
 		}
 	}
 
+
+	//############################
+	//###    EnemyBoss         ###
+	//############################
+
+	size = app->fs->Load("animations/Izual_animations.xml", &buff);
+	result = anim_file.load_buffer(buff, size);
+	RELEASE(buff);
+
+	if (result == NULL)
+	{
+		LOG("Could not load animation xml file. Pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+		anim = anim_file.child("animations").child("IZUAL");
+
+	if (ret == true)
+	{
+		for (pugi::xml_node action = anim.child("IDLE"); action != NULL; action = action.next_sibling())
+		{
+			for (pugi::xml_node dir = action.child("UP"); dir != action.child("loop"); dir = dir.next_sibling())
+			{
+				std::pair<entityState, entityDirection> p;
+				int state = action.child("name").attribute("value").as_int();
+				p.first = (entityState)state;
+
+				int di = dir.first_child().attribute("name").as_int();
+				p.second = (entityDirection)di;
+
+				Animation anims;
+				int x = dir.first_child().attribute("x").as_int();
+				int y = dir.first_child().attribute("y").as_int();
+				int w = dir.first_child().attribute("w").as_int();
+				int h = dir.first_child().attribute("h").as_int();
+				int fN = dir.first_child().attribute("frameNumber").as_int();
+				int margin = dir.first_child().attribute("margin").as_int();
+				bool loop = action.child("loop").attribute("value").as_bool();
+				int pivotX = dir.first_child().attribute("pivot_x").as_int();
+				int pivotY = dir.first_child().attribute("pivot_y").as_int();
+				float animSpeed = action.child("speed").attribute("value").as_float();
+				anims.setAnimation(x, y, w, h, fN, margin);
+				anims.loop = loop;
+				anims.speed = animSpeed;
+				anims.pivot.x = pivotX;
+				anims.pivot.y = pivotY;
+
+				iPoint piv;
+				bossAnim.insert(std::pair<std::pair<entityState, entityDirection>, Animation >(p, anims));
+				bossAnim.find({ p.first, p.second })->second.pivot.Set(pivotX, pivotY);
+				piv = bossAnim.find({ p.first, p.second })->second.pivot;
+
+			}
+		}
+	}
+
+
 	return ret;
 }
 
@@ -577,6 +637,22 @@ Griswold* EntityManager::createGriswold(iPoint pos)
 	return ret;
 }
 
+Boss* EntityManager::createBoss(iPoint pos)
+{
+	Boss* ret = NULL;
+
+	ret = new Boss(pos);
+
+	ret->setWorldPosition(pos);
+	ret->setId(nextId);
+
+	activeEntities.insert(std::pair<uint, Entity*>(nextId, ret));
+
+	++nextId;
+
+	return ret;
+}
+
 Entity* EntityManager::createNpc(iPoint position, entityType type)
 {
 	switch (type)
@@ -652,6 +728,21 @@ std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getG
 AttributeBuilder* EntityManager::getGriswoldAttributBuilder()
 {
 	return &griswoldAttributeBuilder;
+}
+
+SDL_Texture* EntityManager::getBossTexture()
+{
+	return bossTexture;
+}
+
+std::map<std::pair<entityState, entityDirection>, Animation> EntityManager::getBossAnimation()
+{
+	return bossAnim;
+}
+
+AttributeBuilder* EntityManager::getBossAttributBuilder()
+{
+	return &bossAttributeBuilder;
 }
 
 SDL_Texture* EntityManager::getCounselorTexture()
@@ -753,16 +844,19 @@ void EntityManager::setEnemiesAttributes()
 	//############################
 
 	paladinAttributeBuilder.base_movementSpeed = 100;
+	paladinAttributeBuilder.experience = 350;
 
 	//############################
 	//###      EnemyWolf       ###
 	//############################
 
 	wolfAttributeBuilder.base_movementSpeed = 100;
+	wolfAttributeBuilder.experience = 200;
 
 	//############################
 	//###    EnemyGriswold     ###
 	//############################
 
 	griswoldAttributeBuilder.base_movementSpeed = 100;
+	griswoldAttributeBuilder.experience = 500;
 }
