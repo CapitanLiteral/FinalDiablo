@@ -363,7 +363,7 @@ bool GuiElement::CheckEvent(GuiElement* hover, GuiElement* focus, bool& interact
 			}
 		}
 	
-	return true;
+	return inside;
 }
 
 void GuiElement::addChild(GuiElement* child)

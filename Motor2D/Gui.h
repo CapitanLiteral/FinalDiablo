@@ -69,6 +69,8 @@ public:
 	bool			mouse_hovering;
 	GuiItem*		dragged_item;
 
+	bool uiInteraction = false;
+
 private:
 	bool			debug;
 	bool            mouse_clicked;
