@@ -368,9 +368,7 @@ bool Hud::update(float dt)
 	{
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
-
-	playerAtt->addExp(5 * playerAtt->getLevel());
-
+	
 	// update exp image
 	float maxExp = playerAtt->getMaxExp();
 	if (playerAtt->getExp() >= maxExp)
