@@ -193,6 +193,10 @@ bool Attributes::setLevel(int val)
 	return ret;
 }
 
+void Attributes::setLife(int newLife)
+{
+	current_life = newLife;
+}
 
 // Getters
 

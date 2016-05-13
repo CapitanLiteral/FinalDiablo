@@ -190,6 +190,7 @@ public:
 	virtual void addExp(int exp);
 	virtual bool addRage(float val){ return false; }
 	virtual bool setLevel(int val);
+	void setLife(int newLife);
 
 	//Modifiers
 	void levelUp(){ 

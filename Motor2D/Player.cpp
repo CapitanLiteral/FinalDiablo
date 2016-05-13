@@ -53,6 +53,9 @@ bool Player::start()
 	deathImage->Center(true, true);
 	deathImage->Desactivate();
 
+	//Entity range detection
+	entityRange = 100.0f;
+
 	// ANIMATION
 	if (loadAnimations())
 	{
@@ -88,12 +91,37 @@ bool Player::preUpdate()
 
 bool Player::update(float dt)
 {
-	LOG("Exp: %d", attributes->getExp());
-	LOG("Level: %f", attributes->getLevel());
-	LOG("Rage: %f", attributes->getRage());
+	
 	bool ret = true;
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
+	
+	//TODO JOSEP PARTICULA LVL UP
+	if (attributes->getLevel() == 5)
+	{
+		currentPhase = BUTCHER;
+		sprite->texture = butcherImage;
+	}
+	else if (attributes->getLevel() == 10)
+	{
+		currentPhase = DIABLO;
+		sprite->texture = diabloImage;
+	}
 
+	if (entityInRange())
+	{
+		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		{
+			Entity* ret;
+			if (ret = app->game->em->getEntityOnMouse())
+				if (ret->getCollider()->type == COLLIDER_NPC){
+					current_input_event = I_STOP;
+				}
+				else if (ret->getCollider()->type == COLLIDER_ENEMY)
+				{
+					//current_input_event = I_ATTACK;
+				}
+		}
+	}
 	//if (enemyFocus != NULL)
 	//{
 	//	LOG("Enemy taget");
@@ -112,6 +140,7 @@ bool Player::update(float dt)
 	//}
 	//setDirection();
 	//current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+
 
 	if (current_action != DEATH)
 	{
@@ -373,15 +402,12 @@ bool Player::isInDestiny() //Maybe ERROR, watch out //This does not work
 
 void Player::drawDebug() const
 {
-	iPoint t_pos = getMapPosition();
-	//fPoint p_pos = GetPivotPosition();
+	iPoint position = getMapPosition();
 
-	app->render->Blit(pDebug, t_pos.x, t_pos.y);
-	//App->render->DrawQuad(GetPlayerRect(), 255, 0, 0, 1000, false);
+	app->render->Blit(pDebug, position.x, position.y);
 	app->render->DrawCircle(worldPosition.x, worldPosition.y, targetRadius, 255, 0, 0, 1000);
-	//app->render->DrawQuad({ p_pos.x, p_pos.y, 3, 3 }, 255, 0, 0, 255, false);
 
-
+	app->render->DrawCircle(worldPosition.x, worldPosition.y, entityRange, 0, 0, 255);
 	//App->render->DrawCircle(p_pos.x, p_pos.y, attack_range, 255, 0, 0);
 
 	if (movement)
@@ -697,6 +723,41 @@ void Player::setStartingWorldPosition(iPoint coords)
 	startingPosition = coords;
 }
 
+//False to stop the player movement
+void Player::setInputBlocked(bool value)
+{
+	inputBlocked = value;
+}
+
+//if entity is on range
+bool Player::entityInRange()
+{
+	iPoint targetEntity;
+
+	for (std::map<uint, Entity*>::iterator iterator = app->game->em->activeEntities.begin(); //es comproven totes cada frame meh. alguna manera millor hi haura
+		iterator != app->game->em->activeEntities.end();
+		iterator++)
+	{
+		if (iterator->second->getCollider())
+		{
+			targetEntity = iterator->second->getWorldPosition();
+			iPoint dist;
+
+			dist.x = targetEntity.x - getWorldPosition().x;
+			dist.y = targetEntity.y - getWorldPosition().y;
+
+			float range = sqrt(dist.x*dist.x + dist.y*dist.y);
+
+			if (entityRange > range)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 void Player::setColliderPosition(iPoint coords)
 {
 	collider->SetPos(coords.x - colliderOffset.x, coords.y - colliderOffset.y);
@@ -707,6 +768,11 @@ fPoint Player::getPivotPosition()
 	fPoint ret{0, 0};
 
 	return ret;
+}
+
+bool Player::getInputBlocked() const
+{
+	return inputBlocked;
 }
 
 void Player::setDirection()
