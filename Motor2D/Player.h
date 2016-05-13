@@ -18,6 +18,7 @@ class Sprite;
 class SDL_Texture;
 class Entity;
 class GuiImageFader;
+class GuiImage;
 class TempMod;
 
 
@@ -83,6 +84,7 @@ public:
 	PlayerAttributes* attributes = NULL;
 	iPoint worldPosition;	// position in pixels of player // This is the point of the pivot in the world //The feet of the player
 	iPoint mapPosition;		// position of the tile where player is
+	bool soundChecked = false;
 
 	//
 public:
@@ -91,6 +93,11 @@ public:
 	bool preUpdate();
 	bool update(float dt);
 	void draw();
+	//Potis
+	std::vector<bool> activePotis;
+	iPoint position{ 346, 440 };
+	SDL_Texture* atlas;
+	SDL_Rect potiAtlas;
 
 	//Player interm way of life
 private:
@@ -235,6 +242,9 @@ private:
 private:
 	Particle evolvePart;
 	SDL_Texture* evolveText = NULL;
+
+private: 
+   int fxPlayerLvlUp;
 };
 
 #endif

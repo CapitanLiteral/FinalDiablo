@@ -188,6 +188,10 @@ bool NpcHealer::entityUpdate(float dt)
 	{
 		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && mouseHover())
 		{
+			for (int i = 0; i < 4; i++)
+			{
+				app->game->player->activePotis[i] = true;
+			}
 			if (app->game->player->attributes->getLife() < app->game->player->attributes->getMaxLife()){
 				app->game->player->attributes->setLife(app->game->player->attributes->getMaxLife());
 			}
