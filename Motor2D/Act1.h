@@ -82,7 +82,6 @@ private:
 	Sprite* carriage4;
 	SDL_Texture* propAtlas = nullptr;
 	std::string propFileName;
-
 };
 
 #endif _Act1_H

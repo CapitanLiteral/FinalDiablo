@@ -39,6 +39,7 @@ bool Act1::start()
 	propAtlas = app->tex->Load(propFileName.c_str());
 	win = false;
 
+	
 	//app->audio->PlayMusic("audio/music/town1.ogg", 0);
 
 	if (debug == NULL)
@@ -152,7 +153,8 @@ bool Act1::start()
 	healer = app->game->em->createNpc({ 1440, 2265 }, NPC_HEALER);
 
 	createProps();
-
+	
+	//app->audio->PlayMusic("audio/music/town1.ogg",0.5f);
 	return true;
 }
 
@@ -166,6 +168,7 @@ bool Act1::preUpdate()
 // update
 bool Act1::update(float dt)
 {
+	
 	//Map
 	app->map->draw();
 

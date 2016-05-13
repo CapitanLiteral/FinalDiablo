@@ -77,6 +77,7 @@ bool Gui::preUpdate()
 		}
 	}
 
+	uiInteraction = false;
 	
 	list<GuiElement*>::iterator item;
 
@@ -84,7 +85,7 @@ bool Gui::preUpdate()
 	{
 		if (((*item)->interactable || &(*item._Ptr->_Myval) == hover_element) && (*item)->active)
 		{
-			(*item)->CheckEvent(hover_element, focus, mouse_hovering);
+			if ((*item)->CheckEvent(hover_element, focus, mouse_hovering)) uiInteraction = true;
 			
 		}
 	}

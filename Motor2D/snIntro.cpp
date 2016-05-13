@@ -46,6 +46,7 @@ bool snIntro::start()
 	//Exit button
 	exitButton = app->gui->addGuiButton({ 315, 320 }, { 0, 960, 270, 35 }, { 0, 960, 270, 35 }, { 0, 1024, 270, 35 }, "ExiT Diablo II", NULL, this);
 
+	//app->audio->PlayMusic("audio/music/introedit.ogg",0.5f);
 	return true;
 }
 
@@ -88,6 +89,7 @@ void snIntro::OnEvent(GuiElement* element, GUI_Event even)
 			playButton->button_image.SetTextureRect(playButton->idle_tex);
 			playButton->button_label.Center(true, true);
 			app->sm->fadeToBlack(app->sm->act1);
+			app->audio->active = false;
 		}
 			break;
 		}

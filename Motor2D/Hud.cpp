@@ -644,7 +644,7 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 		{
 		case EVENT_MOUSE_LEFTCLICK_DOWN:
 		{
-			if (playerAtt->availablePoints > 0 && t_4Mod->value < 0.10f && t_2Mod->value >= 0.09f)
+			if (playerAtt->availablePoints > 0 && t_4Mod->value < 0.09f && t_2Mod->value >= 0.09f)
 			{
 				t_4Mod->value += 0.02f;
 				playerAtt->availablePoints--;
@@ -696,7 +696,7 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 		{
 		case EVENT_MOUSE_LEFTCLICK_DOWN:
 		{
-			if (playerAtt->availablePoints > 0 && t_6Mod->value < 0.05f && t_4Mod->value >= 0.10f)
+			if (playerAtt->availablePoints > 0 && t_6Mod->value <= 0.04f && t_4Mod->value >= 0.09f)
 			{
 				t_6Mod->value += 0.01f;
 				playerAtt->availablePoints--;
