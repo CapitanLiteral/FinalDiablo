@@ -68,8 +68,22 @@ bool NpcCounselor::entityUpdate(float dt)
 			{
 				readyToGoImage->Activate();
 				ret.start();
-				if (ret.Read() < 5){
+				if (ret.Read() < 5)
+				{
 					readyForSecondZone = true;
+
+					std::map<uint, Entity*>::iterator entity = app->game->em->activeEntities.begin();
+					for (; entity != app->game->em->activeEntities.end(); entity++)
+					{
+						if (entity->second->type != NPC_COUNSELOR && 
+							entity->second->type != NPC_GOSSIP && 
+							entity->second->type != NPC_HEALER)
+						{
+							entity->second->setMapPosition({ 10000, 0 });
+							entity->second->setColliderPosition({ 10000, 0 });
+						}
+					}
+
 					app->sm->fadeToBlack(app->sm->act2);
 				}
 			}
@@ -87,8 +101,10 @@ bool NpcCounselor::entityUpdate(float dt)
 			}
 		}		
 	}
-	else{
-		if (!playerInRange()){
+	else
+	{
+		if (!playerInRange())
+		{
 			introductionImage->Desactivate();
 		}
 			secondImage->Desactivate();
@@ -96,7 +112,7 @@ bool NpcCounselor::entityUpdate(float dt)
 			secondIntroductionImage->Desactivate();
 			secondSecondaryImage->Desactivate();
 			finalFightImage->Desactivate();
-		}
+	}
 	
 
 	return true;

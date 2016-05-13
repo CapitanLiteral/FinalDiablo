@@ -273,6 +273,7 @@ bool Act1::update(float dt)
 	return true;
 }
 
+
 // postUpdate
 bool Act1::postUpdate()
 {
@@ -296,16 +297,16 @@ bool Act1::postUpdate()
 bool Act1::cleanUp()
 {
 	// remove all entities
-	list<Entity*>::iterator item;
-	item = entity_list.begin();
+	//list<Entity*>::iterator item;
+	//item = entity_list.begin();
 
-	while (item != entity_list.end())
-	{
-		//app->game->em->remove(item._Ptr->_Myval->id);
-		item++;
-	}
-	entity_list.clear();
-	
+	//while (item != entity_list.end())
+	//{
+	//	app->game->em->remove((*item)->getId());
+	//	item++;
+	//}
+	//entity_list.clear();
+	//app->game->em->cleanUp();
 
 	return true;
 }
