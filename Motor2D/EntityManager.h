@@ -130,6 +130,11 @@ private:
 	//Gossip texture
 	SDL_Texture* gossipTexture;
 	std::map<std::pair<entityState, entityDirection>, Animation>	gossipAnim;
+
+public:
+	
+	int fxPlayerGetHit;
+	int fxPlayerLvlUp;
 };
 
 #endif

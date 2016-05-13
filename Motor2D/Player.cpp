@@ -14,6 +14,7 @@
 #include "Entity.h"
 #include "Gui.h"
 #include "Window.h"
+#include "Audio.h"
 
 Player::Player()
 {
@@ -64,6 +65,9 @@ bool Player::start()
 	//Entity range detection
 	entityRange = 100.0f;
 
+	//FX sounds
+	fxPlayerLvlUp = app->audio->LoadFx("audio/fx/LvlUp.wav");
+	
 	// ANIMATION
 	if (loadAnimations())
 	{
@@ -150,11 +154,22 @@ bool Player::update(float dt)
 	{
 		currentPhase = BUTCHER;
 		sprite->texture = butcherImage;
+		if (soundChecked == false)
+		{
+			app->audio->PlayFx(fxPlayerLvlUp, 0);
+			soundChecked = true;
+		}
 	}
 	else if (attributes->getLevel() == 10)
 	{
 		currentPhase = DIABLO;
 		sprite->texture = diabloImage;
+
+		if (soundChecked == true)
+		{
+			app->audio->PlayFx(fxPlayerLvlUp, 0);
+			soundChecked = false;
+		}
 	}
 
 	if (entityInRange())

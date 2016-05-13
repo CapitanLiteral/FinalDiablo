@@ -339,6 +339,10 @@ protected:
 	// Mod Getter - gets flat and nonflat modifier values
 	float getMod(modifierType type)const;
 
+public:
+
+	int availablePoints = 0;
+
 private:
 
 	// Base General Attributes
@@ -360,13 +364,5 @@ private:
 	Timer	rageDegenTimer;
 	Timer	staminaRegenTimer;
 };
-
-
-
-
-
-
-
-
 
 #endif
