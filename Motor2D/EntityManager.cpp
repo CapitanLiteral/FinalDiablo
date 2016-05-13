@@ -877,4 +877,13 @@ void EntityManager::setEnemiesAttributes()
 	griswoldAttributeBuilder.base_life = 1000;
 	griswoldAttributeBuilder.experience = 500;
 	griswoldAttributeBuilder.base_damage = 200;
+
+	//############################
+	//###    EnemyBOSS     ###
+	//############################
+
+	bossAttributeBuilder.base_movementSpeed = 100;
+	bossAttributeBuilder.base_life = 30000;
+	bossAttributeBuilder.experience = 500;
+	bossAttributeBuilder.base_damage = 3000;
 }
