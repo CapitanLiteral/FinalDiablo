@@ -106,9 +106,19 @@ bool Player::preUpdate()
 
 bool Player::update(float dt)
 {
+	//LOG("Exp: %d", attributes->getExp());
+	//LOG("Level: %f", attributes->getLevel());
+	//LOG("Rage: %f", attributes->getRage());
 	
 	bool ret = true;
+
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
+
+	/*if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+	{
+		iPoint p = app->input->getMouseWorldPosition();
+		LOG("X: %d Y: %d", p.x,p.y);
+	}*/
 	
 	//TODO JOSEP PARTICULA LVL UP
 	if (attributes->getLevel() == 5)
