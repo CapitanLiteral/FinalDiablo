@@ -32,6 +32,8 @@ Paladin::Paladin(iPoint pos) : Entity()
 
 	collider = app->collision->addCollider({worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y, colliderSize.x, colliderSize.y}, COLLIDER_ENEMY, app->game->em);
 
+	collider->entityLinked = this;
+
 	alive = true;
 
 	attributes = new Attributes(*app->game->em->getPaladinAttributBuilder());

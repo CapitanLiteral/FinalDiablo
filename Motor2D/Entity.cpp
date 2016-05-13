@@ -85,7 +85,7 @@ bool Entity::entityUpdate(float internDT)
 	}
 	updateAction();
 
-	LOG("currentState: %d", currentState);
+	//LOG("currentState: %d", currentState);
 	if (currentState != E_DEATH)
 	{
 		switch (currentState)
@@ -111,6 +111,8 @@ bool Entity::entityUpdate(float internDT)
 	{
 		collider->SetPos(10000, 0);
 	}
+
+	//LOG("Entity life: %f", attributes->getLife());
 
 	return ret;
 }
