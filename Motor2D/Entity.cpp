@@ -10,6 +10,7 @@
 #include "Pathfinding.h"
 #include "Textures.h"
 #include "p2Log.h"
+#include "Gui.h"
 
 Entity::Entity()
 {
@@ -25,6 +26,9 @@ Entity::Entity()
 	{
 		LOG("Mini path entity loaded correctly");
 	}
+	lifeBarRect = { 320, 725, 102, 18 };
+	lifeBar = app->gui->addGuiImage({ 300, 0 }, { 320, 725, 102, 18 }, NULL, NULL);/**/
+	lifeBar->Desactivate();
 }
 
 Entity::~Entity()
@@ -51,6 +55,34 @@ bool Entity::entityUpdate(float internDT)
 		}
 	}
 
+	if (mouseHover() && getCollider()->type == COLLIDER_ENEMY){
+		lifeBar->Activate();
+	}
+	if (lifeBar->active == true){
+		SDL_Rect rect;
+		float dif;
+		float entityLife = attributes->getLife();
+		if (entityLife > 0.0f)
+		{
+			rect = lifeBarRect;
+			dif = attributes->getMaxLife() - entityLife;
+			//dif *= rect.w;
+		//	dif /= entityLife;
+			rect.w -= dif;
+
+			//rect.w -= int(dif);
+
+			lifeBar->SetTextureRect(rect);
+		}
+		else
+		{
+			lifeBar->SetTextureRect({ 0, 0, 0, 0 });
+		}
+	}
+
+	if (!mouseHover()){
+		lifeBar->Desactivate();
+	}
 	updateAction();
 
 	LOG("currentState: %d", currentState);
