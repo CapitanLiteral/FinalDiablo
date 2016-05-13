@@ -14,7 +14,6 @@
 #include "Entity.h"
 #include "Gui.h"
 #include "Window.h"
-#include "ParticleManager.h"
 
 Player::Player()
 {
@@ -62,6 +61,7 @@ bool Player::start()
 		barbarianImage = app->tex->Load("images/Barbarian.png");
 		butcherImage = app->tex->Load("images/Butcher.png");
 		diabloImage = app->tex->Load("images/Diablo.png");
+		particlesAtlas = app->tex->Load("Particles/Particles.png");
 
 		current_animation = &barbarianAnim.find({ IDLE, D_FRONT })->second;
 
@@ -74,6 +74,21 @@ bool Player::start()
 	}
 	else
 		ret = false;
+
+	rageArround.anim.setAnimation(0, 132, 64, 64, 7, 0);
+	rageArround.active = true;
+	rageArround.anim.speed = 0.15f;
+	rageArround.anim.loop = true;
+	rageArround.anim.pivot.Set(30, 50);
+	rageArround.life = 10;
+	rageArround.fx = rageFx;
+	rageArround.texture = particlesAtlas;
+
+	rageCoolDown.start();//tmp
+	skill2CoolDown.start();
+
+	rageMod = new TempMod(rageDuration, 0.05, NONFLAT_DAMAGE); //0.5%dmg = 0.05
+	
 
 	return ret;
 }
@@ -99,7 +114,7 @@ bool Player::update(float dt)
 	//LOG("Collision %d", collision);
 	if (enemyFocus != NULL && enemyFocus->type != NPC_COUNSELOR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
 	{
-		LOG("TargetLife %f", enemyFocus->attributes->getLife());
+		//LOG("TargetLife %f", enemyFocus->attributes->getLife());
 	}
 		
 	//LOG("Path size: %d", path.size());
@@ -140,13 +155,19 @@ bool Player::update(float dt)
 			{
 			case SKILL1:
 			{
-				iPoint p = app->input->getMouseWorldPosition();
-				fPoint dirVec(-(worldPosition.x - p.x), worldPosition.y-p.y);
-				app->particleManager->createLineEmisor(worldPosition.x, worldPosition.y, dirVec);
+				attributes->addMod(rageMod);
+				current_rage = app->particleManager->createParticle(rageArround, worldPosition.x, worldPosition.y, rageDuration, { 0, 0 }, { 64, 64 }, COLLIDER_PLAYER_PARTICLE, this, true, particlesAtlas);
+				rageTime.start();
 				current_skill = SKILL_NONE;
 			}
 				break;
 			case SKILL2:
+			{
+				iPoint p = app->input->getMouseWorldPosition();
+				fPoint dirVec(-(worldPosition.x - p.x), worldPosition.y-p.y);
+				app->particleManager->createLineEmisor(worldPosition.x, worldPosition.y, dirVec, this);
+				current_skill = SKILL_NONE;
+			}
 				break;
 			}
 		}
@@ -181,6 +202,28 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 		}
 	}
 	
+	if (c1->type == COLLIDER_PLAYER_PARTICLE || c2->type == COLLIDER_PLAYER_PARTICLE)
+	{
+		if (c1->entityLinked)
+		{
+			if (c2->collisioned == false)
+			{
+				int dmg = c1->entityLinked->attributes->getMaxLife()*0.03;
+				c1->entityLinked->attributes->addLife(-dmg);
+				c2->collisioned = true;
+			}
+		}
+		else if(c2->entityLinked && c2->type == COLLIDER_ENEMY)
+		{
+			if (c1->collisioned == false)
+			{
+				int dmg = c2->entityLinked->attributes->getMaxLife()*0.03;
+				c2->entityLinked->attributes->addLife(-dmg);
+				c1->collisioned = true;
+			}
+		}
+	}
+
 }
 
 void Player::respawn()
@@ -245,6 +288,20 @@ void Player::draw()
 	sprite->updateSprite(worldPosition,
 						current_animation->pivot,
 						current_animation->getCurrentFrame());
+
+	if (current_rage)
+	{
+		if (rageTime.ReadSec() < rageDuration)
+		{
+			current_rage->position.x = worldPosition.x;
+			current_rage->position.y = worldPosition.y;
+			current_rage->col->SetPos(worldPosition.x - current_rage->anim.pivot.x, worldPosition.y - current_rage->anim.pivot.y);
+		}
+		else
+		{
+			current_rage = NULL;
+		}
+	}//This if MUST be removed and forgotten for ever
 
 }
 
@@ -450,14 +507,14 @@ void Player::handleInput()
 						//if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
 						if (collision)
 						{
-							LOG("Detected click to attack, current direction: %d", current_direction);
+							//LOG("Detected click to attack, current direction: %d", current_direction);
 							current_input_event = I_ATTACK;
 							prevEnemyFocus = enemyFocus;
 							fPoint p;
 							p.x = enemyFocus->getWorldPosition().x;
 							p.y = enemyFocus->getWorldPosition().y;
 							setDirection(p);
-							LOG("After setDirection, current direction: %d", current_direction);
+							//LOG("After setDirection, current direction: %d", current_direction);
 							/*switch (currentPhase)
 							{
 							case BARBARIAN:
@@ -538,7 +595,20 @@ ACTION_STATE Player::updateAction()
 			else if (current_input_event == I_SKILL)
 			{
 				current_action = IDLE;
-				current_skill = SKILL1; //Should decide here if 1 or 2
+
+				//if () //Must choose what skill  and check cost
+
+				if (rageCoolDown.ReadSec() >= cooldownRageDuration)
+				{
+					current_skill = SKILL1;
+					rageCoolDown.start();
+				}
+
+				if (skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
+				{
+					current_skill = SKILL2;
+					skill2CoolDown.start();
+				}
 			}
 		}
 			break;
@@ -564,7 +634,20 @@ ACTION_STATE Player::updateAction()
 			else if (current_input_event == I_SKILL)
 			{
 				current_action = IDLE;
-				current_skill = SKILL1; //Should decide here if 1 or 2
+
+				//if () //Must choose what skill  and check cost
+				
+				if (rageCoolDown.ReadSec() >= cooldownRageDuration)
+				{
+					current_skill = SKILL1; 
+					rageCoolDown.start();
+				}
+
+				if (skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
+				{
+					current_skill = SKILL2;
+					skill2CoolDown.start();
+				}
 			}
 		}
 			break;

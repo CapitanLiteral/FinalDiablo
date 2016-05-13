@@ -7,6 +7,8 @@
 
 using namespace std;
 
+class Entity;
+
 enum COLLIDER_TYPE
 {
 	COLLIDER_NONE = -1,
@@ -26,6 +28,8 @@ struct Collider
 	bool to_delete;
 	COLLIDER_TYPE type;
 	Module* callback;
+	Entity* entityLinked = NULL;
+	bool collisioned = false;
 
 	Collider(SDL_Rect SDL_Rect, COLLIDER_TYPE type, Module* callback = NULL) : rect(SDL_Rect), type(type), callback(callback), to_delete(false)
 	{ }

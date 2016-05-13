@@ -29,6 +29,7 @@ struct Particle
 	bool				alive;
 	bool				active;
 	Collider*			col = NULL;
+	iPoint				colOffset;
 
 	Particle();
 	Particle(const Particle& p);
