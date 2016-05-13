@@ -57,7 +57,8 @@ bool ParticleManager::update(float dt)
 	{
 		if ((*it)->update(dt) == false)
 		{
-			(*it)->col->to_delete = true;
+			if ((*it)->col)
+				(*it)->col->to_delete = true;
 			RELEASE(*it);
 			it = particleList.erase(it);
 		}
