@@ -241,7 +241,9 @@ bool Player::update(float dt)
 				attributes->addMod(rageMod);
 				current_rage = app->particleManager->createParticle(rageArround, worldPosition.x, worldPosition.y, rageDuration, { 0, 0 }, { 64, 64 }, COLLIDER_PLAYER_PARTICLE, this, true, particlesAtlas);
 				rageTime.start();
+				attributes->addRage(-furySkill1Cost);
 				current_skill = SKILL_NONE;
+				skill = 0;
 			}
 				break;
 			case SKILL2:
@@ -249,7 +251,9 @@ bool Player::update(float dt)
 				iPoint p = app->input->getMouseWorldPosition();
 				fPoint dirVec(-(worldPosition.x - p.x), worldPosition.y-p.y);
 				app->particleManager->createLineEmisor(worldPosition.x, worldPosition.y, dirVec, this);
+				attributes->addRage(-furySkill2Cost);
 				current_skill = SKILL_NONE;
+				skill = 0;
 			}
 				break;
 			}
@@ -521,9 +525,12 @@ void Player::drawDebug() const
 		}
 	}
 
-	if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (app->debug)
 	{
-		attributes->addLife(-2050);
+		if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			attributes->addLife(-2050);
+		}
 	}
 }
 
@@ -575,6 +582,13 @@ void Player::handleInput()
 			{
 				//Do skill
 				current_input_event = I_SKILL;
+				skill = 2;
+			}
+			if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			{
+				//Do skill
+				current_input_event = I_SKILL;
+				skill = 1;
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
@@ -694,18 +708,22 @@ ACTION_STATE Player::updateAction()
 			{
 				current_action = IDLE;
 
-				//if () //Must choose what skill  and check cost
-
-				if (rageCoolDown.ReadSec() >= cooldownRageDuration)
+				switch (skill)
 				{
-					current_skill = SKILL1;
-					rageCoolDown.start();
-				}
-
-				if (skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
-				{
-					current_skill = SKILL2;
-					skill2CoolDown.start();
+				case 1:
+					if (attributes->getRage() >= furySkill1Cost && rageCoolDown.ReadSec() >= cooldownRageDuration)
+					{
+						current_skill = SKILL1;
+						rageCoolDown.start();
+					}
+					break;
+				case 2:
+					if (attributes->getRage() >= furySkill2Cost && skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
+					{
+						current_skill = SKILL2;
+						skill2CoolDown.start();
+					}
+					break;
 				}
 			}
 		}
@@ -733,18 +751,22 @@ ACTION_STATE Player::updateAction()
 			{
 				current_action = IDLE;
 
-				//if () //Must choose what skill  and check cost
-				
-				if (rageCoolDown.ReadSec() >= cooldownRageDuration)
+				switch (skill)
 				{
-					current_skill = SKILL1; 
-					rageCoolDown.start();
-				}
-
-				if (skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
-				{
-					current_skill = SKILL2;
-					skill2CoolDown.start();
+				case 1:
+					if (attributes->getRage() >= furySkill1Cost && rageCoolDown.ReadSec() >= cooldownRageDuration)
+					{
+						current_skill = SKILL1;
+						rageCoolDown.start();
+					}
+					break;
+				case 2:
+					if (attributes->getRage() >= furySkill2Cost && skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
+					{
+						current_skill = SKILL2;
+						skill2CoolDown.start();
+					}
+					break;
 				}
 			}
 		}

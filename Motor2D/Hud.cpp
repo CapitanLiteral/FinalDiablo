@@ -92,9 +92,17 @@ bool Hud::start()
 
 	// Character
 	characterMenu = app->gui->addGuiImage({ 0, 0 }, { 2047, 1, 289, 430 }, NULL, this);
-	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 45 }, characterMenu, FONT_WHITE, this);
-	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 60 }, characterMenu, FONT_WHITE, this);
-	expLabel = app->gui->addGuiLabel("0", NULL, { 10, 30 }, characterMenu, FONT_WHITE, this);
+	levelLabel = app->gui->addGuiLabel("0", NULL, { 10, 30 }, characterMenu, FONT_WHITE, this);
+	expLabel = app->gui->addGuiLabel("0", NULL, { 10, 60 }, characterMenu, FONT_WHITE, this);
+	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 75 }, characterMenu, FONT_WHITE, this);
+	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 90 }, characterMenu, FONT_WHITE, this);
+	strengthLabel = app->gui->addGuiLabel("0", NULL, { 10, 120 }, characterMenu, FONT_WHITE, this);
+	intelligenceLabel = app->gui->addGuiLabel("0", NULL, { 10, 135 }, characterMenu, FONT_WHITE, this);
+	dexterityLabel = app->gui->addGuiLabel("0", NULL, { 10, 150 }, characterMenu, FONT_WHITE, this);
+	lifeRegenLabel = app->gui->addGuiLabel("0", NULL, { 10, 180 }, characterMenu, FONT_WHITE, this);
+	armorLabel = app->gui->addGuiLabel("0", NULL, { 10, 210 }, characterMenu, FONT_WHITE, this);
+	lifeLeachLabel = app->gui->addGuiLabel("0", NULL, { 10, 240 }, characterMenu, FONT_WHITE, this);
+	critChanceLabel = app->gui->addGuiLabel("0", NULL, { 10, 270 }, characterMenu, FONT_WHITE, this);
 
 	// Inventory
 	inventoryMenu = app->gui->addGuiImage({ 321, 0 }, { 832, 1, 319, 430 }, NULL, this);
@@ -221,29 +229,57 @@ bool Hud::preUpdate()
 	{
 		if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
 		{
-			if (!characterMenu->active)
+			if (characterMenu->active)
 			{
-				clearTabs();
+				characterMenu->Desactivate();
+				if (!inventoryMenu->active && !treeMenu->active) activatePanel();
+			}
+			else
+			{
 				hidePanel();
 				characterMenu->Activate();
 			}
 		}
 		else if(app->input->getKey(SDL_SCANCODE_I) == KEY_DOWN)
 		{
-			if (!inventoryMenu->active)
+			if (inventoryMenu->active)
 			{
-				clearTabs();
+				inventoryMenu->Desactivate();
+				if (!characterMenu->active) activatePanel();
+			}
+			else
+			{
+				clearRightTabs();
 				hidePanel();
 				inventoryMenu->Activate();
 			}
 		}
 		else if(app->input->getKey(SDL_SCANCODE_P) == KEY_DOWN)
 		{
-			if (!treeMenu->active)
+			if (treeMenu->active)
 			{
-				clearTabs();
+				treeMenu->Desactivate();
+				if (!characterMenu->active) activatePanel();
+
+				t_1Label->active = false;
+				t_2Label->active = false;
+				t_3Label->active = false;
+				t_4Label->active = false;
+				t_5Label->active = false;
+				t_6Label->active = false;
+			}
+			else
+			{
+				clearRightTabs();
 				hidePanel();
 				treeMenu->Activate();
+
+				t_1Label->active = false;
+				t_2Label->active = false;
+				t_3Label->active = false;
+				t_4Label->active = false;
+				t_5Label->active = false;
+				t_6Label->active = false;
 			}
 		}
 		else if(app->input->getKey(SDL_SCANCODE_TAB) == KEY_DOWN)
@@ -368,6 +404,8 @@ bool Hud::update(float dt)
 	{
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
+
+	//playerAtt->addExp(5 * playerAtt->getLevel());
 	
 	// update exp image
 	float maxExp = playerAtt->getMaxExp();
@@ -394,31 +432,54 @@ bool Hud::update(float dt)
 
 	std::string text;
 
-	if (lifeLabel->active)
+	// Character
+
+	if (characterMenu->active)
 	{
+		text.assign("Lvl: ");
+		text.append(NumberToString(int(playerAtt->getLevel())));
+		levelLabel->SetText(text);
+
+		text.assign("Exp: ");
+		text.append(NumberToString(int(playerAtt->getExp())));
+		text.append("/");
+		text.append(NumberToString(int(playerAtt->getMaxExp())));
+		expLabel->SetText(text);
 		text.assign("Life: ");
 		text.append(NumberToString(int(playerAtt->getLife())));
 		text.append("/");
 		text.append(NumberToString(int(playerAtt->getMaxLife())));
 		lifeLabel->SetText(text);
-	}
-	if (rageLabel->active)
-	{
 		text.assign("Rage: ");
 		text.append(NumberToString(int(playerAtt->getRage())));
 		text.append("/");
 		text.append(NumberToString(int(playerAtt->getMaxRage())));
 		rageLabel->SetText(text);
-	}
-	if (expLabel->active)
-	{
-		text.assign("Lvl: ");
-		text.append(NumberToString(int(playerAtt->getLevel())));
-		text.append(" -> Exp: ");
-		text.append(NumberToString(int(playerAtt->getExp())));
-		text.append("/");
-		text.append(NumberToString(int(playerAtt->getMaxExp())));
-		expLabel->SetText(text);
+
+		text.assign("Strength: ");
+		text.append(NumberToString(int(playerAtt->getStrength())));
+		strengthLabel->SetText(text);
+		text.assign("Intelligence: ");
+		text.append(NumberToString(int(playerAtt->getIntelligence())));
+		intelligenceLabel->SetText(text);
+		text.assign("Dexterity: ");
+		text.append(NumberToString(int(playerAtt->getDexterity())));
+		dexterityLabel->SetText(text);
+
+		text.assign("Life Regen: ");
+		text.append(NumberToString(int(playerAtt->getLifeRegen())));
+		lifeRegenLabel->SetText(text);
+		text.assign("Armor: ");
+		text.append(NumberToString(int(playerAtt->getArmor())));
+		armorLabel->SetText(text);
+		text.assign("Life Leach: ");
+		text.append(NumberToString(int(playerAtt->getLifeLeach() * 100)));
+		text.append("%");
+		lifeLeachLabel->SetText(text);
+		text.assign("Crit Chance: ");
+		text.append(NumberToString(int(playerAtt->getCritChance() * 100)));
+		text.append("%");
+		critChanceLabel->SetText(text);
 	}
 
 
@@ -449,28 +510,28 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	if (character == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
-		clearTabs();
+		clearLeftTabs();
 		hidePanel();
 		characterMenu->Activate();
 	}
 	else if (inventory == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
-		clearTabs();
+		clearRightTabs();
 		hidePanel();
 		inventoryMenu->Activate();
 	}
 	else if (tree == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
-		clearTabs();
+		clearRightTabs();
 		hidePanel();
 		treeMenu->Activate();
 	}
 	else if (map == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
-		mapMenu->Activate();
+		mapMenu->active ? mapMenu->Desactivate() : mapMenu->Activate();
 	}
 	else if (pause == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
@@ -691,8 +752,34 @@ void Hud::clearTabs()
 	if (characterMenu->active) characterMenu->Desactivate();
 	if (inventoryMenu->active) inventoryMenu->Desactivate();
 	if (treeMenu->active) treeMenu->Desactivate();
-	if (mapMenu->active) mapMenu->Desactivate();
 	if (pauseMenu->active) pauseMenu->Desactivate();
+
+	t_1Label->active = false;
+	t_2Label->active = false;
+	t_3Label->active = false;
+	t_4Label->active = false;
+	t_5Label->active = false;
+	t_6Label->active = false;
+
+	activatePanel();
+}
+void Hud::clearLeftTabs()
+{
+	if (characterMenu->active) characterMenu->Desactivate();
+	activatePanel();
+}
+void Hud::clearRightTabs()
+{
+	if (inventoryMenu->active) inventoryMenu->Desactivate();
+	if (treeMenu->active) treeMenu->Desactivate();
+
+	t_1Label->active = false;
+	t_2Label->active = false;
+	t_3Label->active = false;
+	t_4Label->active = false;
+	t_5Label->active = false;
+	t_6Label->active = false;
+
 	activatePanel();
 }
 

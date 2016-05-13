@@ -69,6 +69,7 @@ public:
 
 	virtual bool unLoad()
 	{
+		cleanUp();
 		return true;
 	}
 

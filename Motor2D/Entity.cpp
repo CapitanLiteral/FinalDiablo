@@ -554,7 +554,7 @@ void Entity::handleInput()
 		}
 		if (currentState != E_DEATH)
 		{			
-			LOG("life: %d", attributes->getLife());
+			//LOG("life: %d", attributes->getLife());
 			//Do things
 			if (player)
 			{

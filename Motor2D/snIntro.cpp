@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "Input.h"
 #include "Act1.h"
+#include "Act2.h"
 #include "Gui.h"
 #include "Audio.h"
 #include "Animation.h"
