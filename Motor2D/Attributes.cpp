@@ -604,11 +604,11 @@ bool PlayerAttributes::setLevel(int val)
 
 		current_level = val;
 
-		base_life += base_life + (0.7f * float(current_level));
-		base_damage += base_damage + (0.3f * float(current_level));
-		base_strength += base_strength + (0.3f * float(current_level));
-		base_intelligence += base_intelligence + (0.3f * float(current_level));
-		base_dexterity += base_dexterity + (0.3f * float(current_level));
+		base_life = base_life + (0.7f * float(current_level));
+		base_damage = base_damage + (0.3f * float(current_level));
+		base_strength = base_strength + (0.3f * float(current_level));
+		base_intelligence = base_intelligence + (0.3f * float(current_level));
+		base_dexterity = base_dexterity + (0.3f * float(current_level));
 
 		base_exp = 1000 * current_level;
 		reset(false);
