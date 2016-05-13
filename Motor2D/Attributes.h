@@ -84,7 +84,7 @@ enum modifierType
 class Modifier
 {
 public:
-	Modifier(float value, modifierType type) : value(value), type(type), remove(false){}
+	Modifier(float value, modifierType type) : value(value), type(type), remove(true){}
 	~Modifier(){}
 	virtual bool update(){ return remove; }
 	virtual void clear(){}
