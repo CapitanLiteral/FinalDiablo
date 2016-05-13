@@ -67,6 +67,7 @@ bool Player::start()
 
 	//FX sounds
 	fxPlayerLvlUp = app->audio->LoadFx("audio/fx/LvlUp.wav");
+	walkFx = app->audio->LoadFx("audio/fx/Walk_sound");
 	
 	// ANIMATION
 	if (loadAnimations())
@@ -97,7 +98,7 @@ bool Player::start()
 	rageArround.anim.loop = true;
 	rageArround.anim.pivot.Set(30, 50);
 	rageArround.life = 10;
-	rageArround.fx = rageFx;
+	rageArround.fx = app->audio->LoadFx("audio/fx/Diablo_attack");
 	rageArround.texture = particlesAtlas;
 
 	rageCoolDown.start();//tmp
@@ -1044,7 +1045,7 @@ bool Player::loadAnimations()
 					anims.speed = animSpeed;
 					anims.pivot.x = pivotX;
 					anims.pivot.y = pivotY;
-
+					app->audio->PlayFx(walkFx);
 					int entity = ent.child("name").attribute("value").as_int();
 					iPoint piv;
 					switch (entity)

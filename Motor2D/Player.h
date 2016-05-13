@@ -241,6 +241,8 @@ private:
 
 private: 
    int fxPlayerLvlUp;
+   int abilitieFx;
+   int walkFx;
 };
 
 #endif

@@ -45,6 +45,7 @@ bool ParticleManager::start()
 	spriteAtlas = new Sprite(particleAtlas, { 0, 0 }, { 0, 0, 0, 0}, UI);
 	app->render->addSpriteToList(spriteAtlas);
 
+	fxPlayerSkill = app->audio->LoadFx("audio/fx/Diablo_attack");
 	return ret;
 }
 
@@ -571,6 +572,8 @@ LineEmisor::LineEmisor(fPoint director) : Emisor()
 	colliderType = (COLLIDER_TYPE)lineEmisorNode.child("collider").attribute("type").as_int();
 
 	particleEmited.texture = app->particleManager->getAtlas();
+
+	fx = app->particleManager->fxPlayerSkill;
 
 	direction = director;
 	direction.y = -direction.y;

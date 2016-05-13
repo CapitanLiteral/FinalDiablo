@@ -200,6 +200,8 @@ public:
 	LineEmisor* createLineEmisor(int  x, int y, fPoint direction, Module* listener = NULL, bool active = true);
 
 	ConeEmisor* createConeEmisor(int x, int y, fPoint direction, Module* listener = NULL, bool active = true);
+
+	int fxPlayerSkill=0;
 };
 
 

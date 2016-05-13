@@ -40,6 +40,9 @@ private:
 
 	Animation logoAnim;
 	SDL_Texture* logoSprite = NULL;
+
+	//music
+	int backgroundMusic;
 };
 
 #endif // __SNINTRO_H__
