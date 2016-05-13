@@ -19,7 +19,7 @@ bool snWin::start()
 {
 
 	background = app->gui->addGuiImage({ 0, 0 }, { 5, 1065, 669, 501}, NULL, this);
-	backMenuButton = app->gui->addGuiButton({ 315, 320 }, { 0, 0, 270, 35 }, { 0, 0, 270, 35 }, { 0, 36, 270, 35 }, "Back To Menu", NULL, this);
+	backMenuButton = app->gui->addGuiButton({ 200, 400 }, { 0, 960, 270, 35 }, { 0, 960, 270, 35 }, { 0, 1024, 270, 35 }, "Back To Menu", NULL, this);
 
 	//ret.start();
 	return true;
@@ -56,7 +56,7 @@ void snWin::OnEvent(GuiElement* element, GUI_Event even)
 		{
 			backMenuButton->button_image.SetTextureRect(backMenuButton->idle_tex);
 			backMenuButton->button_label.Center(true, true);
-			app->sm->fadeToBlack(app->sm->intro);
+			app->sm->changeScene(1);
 		}
 		break;
 
