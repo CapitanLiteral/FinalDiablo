@@ -19,7 +19,7 @@
 Player::Player()
 {
 	AttributeBuilder builder;
-	builder.base_damage = 700;
+	builder.base_damage = 50;
 	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
 	attributes = new PlayerAttributes(builder);
 	
