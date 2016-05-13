@@ -24,7 +24,7 @@ NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
 	type = entityType::NPC_COUNSELOR;
 	loadGui();
 	setWorldPosition(p);
-	playerRange = 70.0f;
+	playerRange = 90.0f;
 
 	colliderOffset.Set(25, 75);
 	colliderSize.Set(45, 80);

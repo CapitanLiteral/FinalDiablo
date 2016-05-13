@@ -118,7 +118,7 @@ bool Player::update(float dt)
 				}
 				else if (ret->getCollider()->type == COLLIDER_ENEMY)
 				{
-					current_input_event = I_ATTACK;
+					//current_input_event = I_ATTACK;
 				}
 		}
 	}
