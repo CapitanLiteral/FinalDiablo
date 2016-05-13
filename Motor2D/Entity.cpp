@@ -185,6 +185,14 @@ void Entity::draw()
 	{
 		currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
 	}
+	else if (currentState == E_IDLE && !died)
+	{
+		currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
+	}
+	else if (currentState == E_IDLE && !died)
+	{
+		currentAnimation = &entityAnim.find({ currentState, currentDirection })->second;
+	}
 
 	imageSprite->updateSprite(worldPosition, currentAnimation->pivot, currentAnimation->getCurrentFrame());
 }
@@ -340,19 +348,19 @@ void Entity::setDirection()
 	if (angle < 22.5 && angle > -22.5)
 		dir = E_RIGHT;
 	else if (angle >= 22.5 && angle <= 67.5)
-		dir = E_UP_RIGHT;
+		dir = E_DOWN_RIGHT;
 	else if (angle > 67.5 && angle < 112.5)
-		dir = E_UP;
+		dir = E_DOWN;
 	else if (angle >= 112.5 && angle <= 157.5)
-		dir = E_UP_LEFT;
+		dir = E_DOWN_LEFT;
 	else if (angle > 157.5 || angle < -157.5)
 		dir = E_LEFT;
 	else if (angle >= -157.5 && angle <= -112.5)
-		dir = E_DOWN_LEFT;
+		dir = E_UP_LEFT;
 	else if (angle > -112.5 && angle < -67.5)
-		dir = E_DOWN;
+		dir = E_UP;
 	else if (angle >= -67.5 && angle <= -22.5)
-		dir = E_DOWN_RIGHT;
+		dir = E_UP_RIGHT;
 
 	if (dir != currentDirection)
 	{
@@ -442,6 +450,10 @@ entityState Entity::updateAction()
 			{
 				currentState = E_DEATH;
 			}
+			else if (current_input == EI_WALK)
+			{
+				currentState = E_WALK;
+			}
 		}
 
 		break;
@@ -501,6 +513,7 @@ void Entity::handleInput()
 		}
 		if (currentState != E_DEATH)
 		{			
+			LOG("life: %d", attributes->getLife());
 			//Do things
 			if (player)
 			{
@@ -518,6 +531,10 @@ void Entity::handleInput()
 						getNewPath(target);
 						current_input = EI_WALK;
 					}
+				}
+				else
+				{
+					current_input = EI_STOP;
 				}
 			}
 		}

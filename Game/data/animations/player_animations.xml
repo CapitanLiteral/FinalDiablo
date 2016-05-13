@@ -290,7 +290,7 @@
 		<values name = "7" x ="0" y = "3456" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "70" pivot_y = "90"/>
 	</UP_LEFT>
 			
-	<loop value = "1" />
+	<loop value = "0" />
 
 	<speed value = "0.15" />
 
@@ -331,7 +331,7 @@
 		<values name = "7" x ="0" y = "2432" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "70" pivot_y = "50"/>
 	</UP_LEFT>
 			
-	<loop value = "1" />
+	<loop value = "0" />
 
 	<speed value = "0.15" />
 
@@ -366,7 +366,7 @@
 	</DOWN>
 
 	<DOWN_LEFT> <!-- DOWN_LEFT 5-->
-		<values name = "5" x ="0" y = "256" w = "256" h = "256" frameNumber = "12" margin = "" pivot_x = "1202" pivot_y = "170"/>
+		<values name = "5" x ="0" y = "256" w = "256" h = "256" frameNumber = "12" margin = "" pivot_x = "120" pivot_y = "170"/>
 	</DOWN_LEFT>
 
 	<LEFT> <!-- LEFT 6-->
@@ -459,7 +459,7 @@
 		<values name = "7" x ="0" y = "5120" w = "256" h = "256" frameNumber = "16" margin = "" pivot_x = "120" pivot_y = "150"/>
 	</UP_LEFT>                         
 			
-	<loop value = "1" />
+	<loop value = "0" />
 
 	<speed value = "0.15" />
 
@@ -500,7 +500,7 @@
 		<values name = "7" x ="0" y = "" w = "256" h = "256" frameNumber = "16" margin = "" pivot_x = "150" pivot_y = "707"/>
 	</UP_LEFT>                         
 			
-	<loop value = "1" />
+	<loop value = "0" />
 
 	<speed value = "0.15" />
 

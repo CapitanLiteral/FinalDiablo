@@ -148,8 +148,8 @@ bool Act1::start()
 	app->game->em->createWolf({ -952, 2789 });
 	app->game->em->createWolf({ -1954, 2356 });
 	
-	counselor = app->game->em->createNpc({300,2300}, NPC_COUNSELOR);
-	healer = app->game->em->createNpc({ 400, 2300 }, NPC_HEALER);
+	counselor = app->game->em->createNpc({515,2415}, NPC_COUNSELOR);
+	healer = app->game->em->createNpc({ 1440, 2265 }, NPC_HEALER);
 
 	createProps();
 
@@ -226,8 +226,7 @@ bool Act1::update(float dt)
 		{
 			app->render->camera.y += floor(CAM_SPEED * 5 * dt);
 		}
-	}
-
+	
 	if (app->input->getKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
 		app->sm->changeScene(3);
@@ -264,6 +263,11 @@ bool Act1::update(float dt)
 		app->render->camera.x -= 10;
 		//app->render->renderZone.x -= 10;
 	}
+	
+	
+	}
+
+	
 	
 
 	return true;
