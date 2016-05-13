@@ -111,7 +111,7 @@ private: //Do all getters and setters
 	iPoint clickCoords;
 	fPoint velocity;
 	int currentNode;
-	float targetRadius = 7.0f; //Maybe ERROR, watch out
+	float targetRadius = 7.0f; 
 
 	bool movement;
 	bool targetReached;

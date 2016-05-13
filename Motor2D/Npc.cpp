@@ -85,16 +85,19 @@ bool NpcCounselor::entityUpdate(float dt)
 					//final battle
 				}
 			}
-		}
+		}		
 	}
 	else{
-		introductionImage->Desactivate();
-		secondImage->Desactivate();
-		readyToGoImage->Desactivate();
-		secondIntroductionImage->Desactivate();
-		secondSecondaryImage->Desactivate();
-		finalFightImage->Desactivate();
-	}
+		if (!playerInRange()){
+			introductionImage->Desactivate();
+		}
+			secondImage->Desactivate();
+			readyToGoImage->Desactivate();
+			secondIntroductionImage->Desactivate();
+			secondSecondaryImage->Desactivate();
+			finalFightImage->Desactivate();
+		}
+	
 
 	return true;
 }
@@ -133,7 +136,7 @@ bool NpcCounselor::playerInRange()
 void NpcCounselor::loadGui(){
 	iPoint p = { 0, 0 };
 	introductionImage = app->gui->addGuiImage(p, { 1024, 704, 409, 157 }, NULL, NULL);
-	introductionImage->Desactivate();
+	//introductionImage->Desactivate();
 	secondImage = app->gui->addGuiImage(p, { 1472, 704, 111, 86 }, NULL, NULL);
 	secondImage->Desactivate();
 	readyToGoImage = app->gui->addGuiImage(p, {1216,896,111,86}, NULL, NULL);

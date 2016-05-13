@@ -70,8 +70,8 @@ bool Act1::start()
 	app->game->em->createPaladin({ 450, 2500 });*/
 	
 	
-	counselor = app->game->em->createNpc({300,2300}, NPC_COUNSELOR);
-	healer = app->game->em->createNpc({ 1440, 2260 }, NPC_HEALER);
+	counselor = app->game->em->createNpc({515,2415}, NPC_COUNSELOR);
+	healer = app->game->em->createNpc({ 1440, 2265 }, NPC_HEALER);
 
 	createProps();
 
