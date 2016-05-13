@@ -184,6 +184,7 @@ Particle* ParticleManager::createParticle(const Particle& refParticle, int x, in
 
 	if (colliderType != COLLIDER_NONE)
 	{
+		ret->colOffset = colliderOffset;
 		ret->col = app->collision->addCollider({ x - colliderOffset.x, y - colliderOffset.y, colliderSize.x, colliderSize.y }, colliderType, listener);
 	}
 
@@ -299,8 +300,8 @@ bool Particle::update(float dt)
 
 		if (col)
 		{
-			col->rect.x += speed.x * dt;
-			col->rect.y += speed.y * dt;
+			col->rect.x = position.x - colOffset.x;
+			col->rect.y = position.y - colOffset.y;
 		}
 	}
 

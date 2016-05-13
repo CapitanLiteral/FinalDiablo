@@ -34,13 +34,13 @@
 
 		<particle_velocity value = "200" />
 
-		<frequence value = "50" />
+		<frequence value = "20" />
 
 		<particle_life value = "2" />
 
 		<duration value = "0.5f" />
 
-		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+		<collider offsetX = "9" offsetY = "14" sizeW = "20" sizeH = "22" type = "2" />
 
 	</line_emisor>
 

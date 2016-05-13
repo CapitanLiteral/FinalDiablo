@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "p2Point.h"
 #include "Animation.h"
+#include "ParticleManager.h"
+#include "Timer.h"
 
 #include <map>
 
@@ -17,6 +19,7 @@ class SDL_Texture;
 class Entity;
 class GuiImageFader;
 class GuiImage;
+class TempMod;
 
 
 
@@ -65,7 +68,7 @@ enum INPUT_EVENTS
 enum SKILLS
 {
 	SKILL_NONE,
-	SKILL1,
+	SKILL1, //Rage. Actually will be an attack more powerfull
 	SKILL2
 };
 
@@ -185,6 +188,23 @@ private:
 //Death
 private:
 	GuiImageFader* deathImage = NULL;
+	Timer showLoseImage;
+	uint32 timeToShow = 2;
+
+private:
+	Particle rageArround;
+	int rageFx = -1;
+	SDL_Texture* particlesAtlas = NULL; 
+	Particle* current_rage = NULL;
+	Timer rageTime; //Must change that but need now
+	uint32 rageDuration = 5;
+	Timer rageCoolDown;
+	uint32 cooldownRageDuration = 15;
+	TempMod* rageMod = NULL;
+
+	Timer skill2CoolDown;
+	uint32 cooldownSkill2Duration = 12;
+	//int skillwDmg = attributes->getDamage() * 0.13;  //To check if valancedw
 
 
 	//Animation things
@@ -210,6 +230,13 @@ private:
 	SDL_Texture* pDebug = NULL;
 
 	bool loadAnimations();
+
+	void setCurrentAnimation();
+	bool dead = false;
+	bool imageTimerStarted = false;
+
+private:
+	Particle evolvePart;
 };
 
 #endif

@@ -58,17 +58,95 @@ bool Act1::start()
 	app->game->player->setWorldPosition({ 450, 2400 });
 	app->game->player->setStartingWorldPosition({ 450, 2400 });
 
-	//app->game->em->createPaladin({ 470, 2500 });
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	//@@@@@              ENEMIES CREATION                @@@@@
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-	//app->game->em->createPaladin({ 450, 2500 });
+	//############################
+	//###       PALADINS       ###
+	//############################
 
+	app->game->em->createPaladin({ 87, 1407 });
+	app->game->em->createPaladin({ 153, 1535 });
+	app->game->em->createPaladin({ -52, 1529 });
+	app->game->em->createPaladin({ 15, 1624 });
+	app->game->em->createPaladin({ -339, 1642 });
+	app->game->em->createPaladin({ -170, 1715 });
+
+	app->game->em->createPaladin({ -821, 1913 });
+	app->game->em->createPaladin({ -584, 2040 });
+	app->game->em->createPaladin({ -439, 1935 });
+
+	app->game->em->createPaladin({ -1381, 2067 });
+	app->game->em->createPaladin({ -1123, 2191 });
+	app->game->em->createPaladin({ -1623, 2258 });
+	app->game->em->createPaladin({ -1282, 2354 });
+	app->game->em->createPaladin({ -1558, 2403 });
+	app->game->em->createPaladin({ -1313, 2551 });
+	app->game->em->createPaladin({ -1131, 2458 });
+	app->game->em->createPaladin({ -1008, 2328 });
+
+	app->game->em->createPaladin({ -514, 2726 });
+	app->game->em->createPaladin({ -461, 2839 });
+	app->game->em->createPaladin({ -318, 2924 });
+	app->game->em->createPaladin({ -123, 2910 });
+
+	app->game->em->createPaladin({ 975, 2036 });
+	app->game->em->createPaladin({ 1214, 2070 });
+
+	app->game->em->createPaladin({ 1748, 2471 });
+	app->game->em->createPaladin({ 1839, 2611 });
+	app->game->em->createPaladin({ 2113, 2570 });
+	app->game->em->createPaladin({ 2014, 2730 });
+	app->game->em->createPaladin({ 2296, 2547 });
+
+	app->game->em->createPaladin({ 437, 3358 });
+	app->game->em->createPaladin({ 616, 3263 });
+	app->game->em->createPaladin({ 873, 3422 });
+
+	app->game->em->createPaladin({ 1848, 3119 });
+	app->game->em->createPaladin({ 1668, 3266 });
+	app->game->em->createPaladin({ 1609, 3409 });
+	app->game->em->createPaladin({ 1524, 3517 });
+	app->game->em->createPaladin({ 2036, 3256 });
+	app->game->em->createPaladin({ 2397, 3096 });
+
+	app->game->em->createPaladin({ 1637, 2204 });
+
+	app->game->em->createPaladin({ 2397, 3096 });
+
+	//############################
+	//###        WOLFES        ###
+	//############################
 	
+	app->game->em->createWolf({ 401, 1750 });
+	app->game->em->createWolf({ 774, 1783 });
+	app->game->em->createWolf({ 101, 1954 });
+	app->game->em->createWolf({ -617, 1662 });
+	app->game->em->createWolf({ -36, 2038 });
+	app->game->em->createWolf({ 185, 1930 });
 
-	/*app->game->em->createPaladin({ 470, 2500 });
-	app->game->em->createPaladin({ 350, 2500 });
-	app->game->em->createPaladin({ 450, 2600 });
-	app->game->em->createPaladin({ 450, 2500 });*/
-	
+	app->game->em->createWolf({ 142, 2327 });
+	app->game->em->createWolf({ 190, 2547 });
+	app->game->em->createWolf({ 534, 2126 });
+	app->game->em->createWolf({ 904, 2303 });
+	app->game->em->createWolf({ 996, 2556 });
+	app->game->em->createWolf({ 412, 2753 });
+	app->game->em->createWolf({ 783, 2698 });
+
+	app->game->em->createWolf({ 2516, 2748 });
+
+	app->game->em->createWolf({ 1232, 3032 });
+	app->game->em->createWolf({ 899, 3175 });
+	app->game->em->createWolf({ 804, 3675 });
+
+	app->game->em->createWolf({ 114, 3137 });
+	app->game->em->createWolf({ 260, 22959 });
+	app->game->em->createWolf({ 674, 2957 });
+
+	app->game->em->createWolf({ -384, 3144 });
+	app->game->em->createWolf({ -952, 2789 });
+	app->game->em->createWolf({ -1954, 2356 });
 	
 	counselor = app->game->em->createNpc({515,2415}, NPC_COUNSELOR);
 	healer = app->game->em->createNpc({ 1440, 2265 }, NPC_HEALER);
