@@ -195,11 +195,14 @@ private:
 	Timer rageCoolDown;
 	uint32 cooldownRageDuration = 15;
 	TempMod* rageMod = NULL;
+	int furySkill1Cost = 20;
 
 	Timer skill2CoolDown;
 	uint32 cooldownSkill2Duration = 12;
-	//int skillwDmg = attributes->getDamage() * 0.13;  //To check if valancedw
+	int furySkill2Cost = 30;
 
+
+	int skill = 0;
 
 	//Animation things
 private:
@@ -231,6 +234,7 @@ private:
 
 private:
 	Particle evolvePart;
+	SDL_Texture* evolveText = NULL;
 };
 
 #endif

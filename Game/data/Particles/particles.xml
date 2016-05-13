@@ -5,7 +5,7 @@
 
 <particles>
 
-	<texture value = "Particles/fire.png" />
+	<texture value = "Particles/fire_shuriken.png" />
 	
 	<radial_emisor>
 
@@ -28,19 +28,19 @@
 
 	<line_emisor>
 
-		<anim x = "0" y = "0" w = "78" h = "156" frame_number = "9" speed = "0.1" loop = "true" margin = "0" pivot_x = "36" pivot_y = "104" />
+		<anim x = "0" y = "0" w = "32" h = "32" frame_number = "11" speed = "0.2" loop = "true" margin = "0" pivot_x = "16" pivot_y = "16" />
 
 		<emisor_speed x = "0" y = "0" />
 
 		<particle_velocity value = "200" />
 
-		<frequence value = "20" />
+		<frequence value = "10" />
 
 		<particle_life value = "2" />
 
 		<duration value = "0.5f" />
 
-		<collider offsetX = "9" offsetY = "14" sizeW = "20" sizeH = "22" type = "2" />
+		<collider offsetX = "15" offsetY = "15" sizeW = "25" sizeH = "25" type = "2" />
 
 	</line_emisor>
 
