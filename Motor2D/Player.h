@@ -6,7 +6,7 @@
 #include "Animation.h"
 #include "ParticleManager.h"
 #include "Timer.h"
-#include "Attributes.h"
+//#include "Attributes.h"
 
 #include <map>
 
@@ -20,6 +20,7 @@ class Entity;
 class GuiImageFader;
 class GuiImage;
 class TempMod;
+class PlayerAttributes;
 
 
 
@@ -82,7 +83,6 @@ public:
 	//Player things
 public:
 	PlayerAttributes* attributes = NULL;
-	AttributeBuilder builder;
 	iPoint worldPosition;	// position in pixels of player // This is the point of the pivot in the world //The feet of the player
 	iPoint mapPosition;		// position of the tile where player is
 	bool soundChecked = false;

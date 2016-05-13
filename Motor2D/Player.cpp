@@ -18,6 +18,7 @@
 
 Player::Player()
 {
+	AttributeBuilder builder;
 	builder.base_damage = 50;
 	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
 	builder.base_lifeRegen = 15;
@@ -51,7 +52,15 @@ bool Player::start()
 	bool ret = true;
 
 	currentPhase = BARBARIAN;
-	attributes = new PlayerAttributes(builder);
+
+	if (attributes == NULL)
+	{
+		AttributeBuilder builder;
+		builder.base_damage = 50;
+		builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
+		builder.base_lifeRegen = 15;
+		attributes = new PlayerAttributes(builder);
+	}
 
 	//POTIS
 	atlas = app->gui->getAtlas();

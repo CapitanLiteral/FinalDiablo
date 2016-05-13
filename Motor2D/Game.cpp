@@ -63,15 +63,17 @@ bool Game::preUpdate()
 //update
 bool Game::update(float dt)
 {
+	bool ret;
+
 	player->attributes->update();
 
 	player->update(dt);
 	em->update(dt);
-	hud->update(dt);
+	ret = hud->update(dt);
 
 	player->draw();
 
-	return true;
+	return ret;
 }
 
 //postUpdate
