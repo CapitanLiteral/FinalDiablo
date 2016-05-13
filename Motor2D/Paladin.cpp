@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "Collision.h"
 #include "Attributes.h"
+#include "Gui.h"
 
 
 Paladin::Paladin(iPoint pos) : Entity()
@@ -42,3 +43,40 @@ Paladin::~Paladin()
 {
 
 }
+/*
+bool Paladin::entityUpdate(float dt)
+{
+	if (mouseHover()){
+		lifeBar->Activate();
+	}
+	if (lifeBar->active == true){
+		SDL_Rect rect;
+		float dif;
+		float maxEntityLife = attributes->getMaxLife();
+		if (attributes->getMaxLife() >= maxEntityLife)
+		{
+			lifeBar->SetTextureRect(lifeBarRect);
+		}
+		else if (attributes->getMaxLife() > 0.0f)
+		{
+			rect = lifeBarRect;
+
+			dif = maxEntityLife - attributes->getMaxLife();
+			dif *= rect.w;
+			dif /= maxEntityLife;
+
+			rect.w -= int(dif);
+
+			lifeBar->SetTextureRect(rect);
+		}
+		else
+		{
+			lifeBar->SetTextureRect({ 0, 0, 0, 0 });
+		}
+	}
+
+	if (!mouseHover()){
+		lifeBar->Desactivate();
+	}
+	return true;
+}*/

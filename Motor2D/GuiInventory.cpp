@@ -3,6 +3,8 @@
 #include "Render.h"
 #include "Input.h"
 #include "Gui.h"
+#include "Game.h"
+#include "Player.h"
 
 
 //Constructor
@@ -24,6 +26,8 @@ GuiInventory::GuiInventory(iPoint p, SDL_Rect r,int col, int row, int slot_w, in
 			slots.push_back(tmp);
 		}
 	}
+
+	//items.push_back(new Potion(1, new iPoint({ 0, 0 }), { 703, 892, 29, 29 }, 1, app->game->player->attributes));
 }
 
 //Destructor
@@ -188,6 +192,7 @@ void GuiInventory::addItem(GuiItem* item, GuiSlot* new_slot)
 //Checks if there's space for an item and then adds it
 bool GuiInventory::AutomaticaddItem(GuiItem* item)
 {
+	/*
 	for (int i = 0; i < slots.size(); i++)
 	{
 			if (IsPlaceable(item, slots[i].coords, false))
@@ -196,9 +201,15 @@ bool GuiInventory::AutomaticaddItem(GuiItem* item)
 				return true;
 			}
 	}
+	*/
 
+	if ((*items.begin())->quantity < (*items.begin())->maxquantity)
+	{
+		(*items.begin())->quantity++;
+	}
 	return false;
 }
+
 
 //Frees and Item from the inventory
 void GuiInventory::FreeItem(GuiItem* item)
@@ -237,10 +248,6 @@ bool GuiInventory::IsPlaceable(GuiItem* item, iPoint& coord, bool exchange, GuiI
 	//Placing in case there's no need to do an exchange
 	if (exchange == false)
 	{
-		//TODO 3: fill this part of IsPlaceable() so, it returns if the item can or not be placed.
-		//To do this, you have to check all the slots, and if one of them are free (inventory_item = NULL), then
-		//check all the slots that the item would ocuppy if that first slot was it's reference slot. 
-		//If all those slots are free return true. But, if only one of them are occupied, return false.
 		for (int i = 0; i < item->size; i++)
 		{
 			GuiSlot* tmp = getSlotFromCoord(coord + item->coords[i]);
@@ -252,18 +259,8 @@ bool GuiInventory::IsPlaceable(GuiItem* item, iPoint& coord, bool exchange, GuiI
 		
 		return true;
 	}
-	//-----
-
-	//Placing in case there's permission to do an exchange
 	else
 	{
-		//TODO 7: make the IsPlaceable() function be able to check if there's an item under the dragegd item and then, they can be exchanged
-		//Remember, there can only be an exchange if there's just one item at the place where we want to put the dragged item, 
-		//if there's more than one, it can't be placed. If there's none, it can be placed. If there's just one item, it can be placed and exchanged
-		//Use the variable extra_item, to check if there's any, one, or more items where we want to place the dragged item.
-		//Hint : extra_item is a double pointer so the value of the pointer it is pointing, can be changed. because, maybe we will need this value to
-		//really exchange the items ;)
-
 		for (int i = 0; i < item->size; i++)
 		{
 			GuiSlot* tmp = getSlotFromCoord(coord + item->coords[i]);
@@ -367,4 +364,26 @@ void GuiInventory::SetSlotsState(GuiItem* item, SLOT_STATE state)
 		if (slot)
 			slot->state = state;
 	}
+}
+
+
+void GuiInventory::addPotion(GuiItem* item)
+{
+	if ((*items.begin())->quantity < (*items.begin())->maxquantity)
+	{
+		(*items.begin())->quantity++;
+	}
+}
+
+
+int GuiInventory::getQuantity()
+{
+	int ret = 0;
+
+	if (!items.empty())
+	{
+		ret = (*items.begin())->quantity;
+	}
+
+	return ret;
 }

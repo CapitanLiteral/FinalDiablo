@@ -3,13 +3,16 @@
 
 #include "Entity.h"
 
+class GuiImage;
+
 class Paladin : public Entity
 {
 public: 
 	Paladin(iPoint pos);
 	~Paladin();
 
-private:
+	//bool entityUpdate(float dt);
 
+private:
 };
 #endif

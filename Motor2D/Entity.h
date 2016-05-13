@@ -10,6 +10,7 @@
 class Sprite;
 class Attributes;
 class Player;
+class GuiImage;
 
 enum entityType
 {
@@ -166,6 +167,8 @@ protected:
 	std::map<std::pair<entityState, entityDirection>, Animation>	entityAnim;
 	SDL_Texture* pDebug = NULL;
 	bool died = false;
+	GuiImage* lifeBar;
+	SDL_Rect lifeBarRect;
 //Enum instances
 	entityInputState current_input = EI_NULL;
 	entityState currentState = E_IDLE;

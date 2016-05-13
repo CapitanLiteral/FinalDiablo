@@ -31,6 +31,11 @@ Player::Player()
 	colliderOffset.SetToZero();
 	colliderSize.SetToZero();
 
+	for (int i = 0; i < 4; i++)
+	{
+		activePotis.push_back(true);
+	}
+
 }
 
 bool Player::awake(pugi::xml_node &config)
@@ -43,6 +48,10 @@ bool Player::awake(pugi::xml_node &config)
 bool Player::start()
 {
 	bool ret = true;
+	//POTIS
+	atlas = app->gui->getAtlas();
+	potiAtlas = { 703, 892, 29, 29 };
+
 	SDL_Rect rect = { worldPosition.x - colliderOffset.x, 
 					  worldPosition.y - colliderOffset.y,	// Position
 					  colliderSize.x, colliderSize.y};		// Size
@@ -114,6 +123,22 @@ bool Player::update(float dt)
 	//LOG("Level: %f", attributes->getLevel());
 	//LOG("Rage: %f", attributes->getRage());
 	
+	//POTIS
+	for (int i = 0; i < 4; i++)
+	{
+		if (activePotis[i])
+		{
+			app->render->Blit(atlas, position.x - app->render->camera.x + 50 + i*29, position.y - app->render->camera.y-50, &potiAtlas);
+			//app->render->Blit(atlas, position.x + 32 * i, position.y-500, &potiAtlas);
+		}
+	}
+
+
+	for (int i = 0; i < 4; i++)
+	{
+
+	}
+
 	bool ret = true;
 
 	app->render->CenterCamera(worldPosition.x, worldPosition.y);
@@ -510,11 +535,40 @@ void Player::handleInput()
 {
 	if (!inputBlocked)
 	{
+		
 		if (current_action != DEATH)
 		{
 			if (attributes->getLife() <= 0)
 			{
 				current_input_event = I_DIE;
+			}
+			if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN)
+			{
+				activePotis[0] = false;
+				float maxLife = attributes->getMaxLife();
+				maxLife *= 0.1f;
+				attributes->addMod(new TempMod(3.0f, maxLife, FLAT_LIFE_REGEN));
+			}
+			if (app->input->getKey(SDL_SCANCODE_2) == KEY_DOWN)
+			{
+				activePotis[1] = false;
+				float maxLife = attributes->getMaxLife();
+				maxLife *= 0.1f;
+				attributes->addMod(new TempMod(3.0f, 30.0f, FLAT_LIFE_REGEN));
+			}
+			if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN)
+			{
+				activePotis[2] = false;
+				float maxLife = attributes->getMaxLife();
+				maxLife *= 0.1f;
+				attributes->addMod(new TempMod(3.0f, 30.0f, FLAT_LIFE_REGEN));
+			}
+			if (app->input->getKey(SDL_SCANCODE_4) == KEY_DOWN)
+			{
+				activePotis[3] = false;
+				float maxLife = attributes->getMaxLife();
+				maxLife *= 0.1f;
+				attributes->addMod(new TempMod(3.0f, 30.0f, FLAT_LIFE_REGEN));
 			}
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 			{
@@ -582,8 +636,7 @@ void Player::handleInput()
 						getNewPath(target);
 						current_input_event = I_WALK;
 						prevEnemyFocus = enemyFocus;
-					}
-					
+					}				
 					
 					
 					//Move
@@ -593,6 +646,7 @@ void Player::handleInput()
 			}
 		}
 	}
+	inputBlocked = false;
 	//LOG("Input: %d", current_input_event);
 	//LOG("Action: %d", current_action);
 }

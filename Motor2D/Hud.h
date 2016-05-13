@@ -12,6 +12,7 @@ enum GUI_Event;
 class GuiImage;
 class GuiLabel;
 class GuiInventory;
+class Modifier;
 class PlayerAttributes;
 
 
@@ -57,7 +58,6 @@ private:
 	iPoint growlPos;
 
 	SDL_Rect lifeRect;
-	//SDL_Rect evilBarRect;
 	SDL_Rect rageRect;
 	SDL_Rect staminaRect;
 	SDL_Rect expRect;
@@ -66,7 +66,6 @@ private:
 	SDL_Rect menuExpandClosed;
 
 	GuiImage* life = NULL;
-	//GuiImage* evilBar = NULL;
 	GuiImage* rage = NULL;
 	GuiImage* stamina = NULL;
 	GuiImage* exp = NULL;
@@ -105,6 +104,34 @@ private:
 
 	// Tree
 	GuiImage* treeMenu = NULL;
+	GuiImage* t_1 = NULL;
+	GuiImage* t_2 = NULL;
+	GuiImage* t_3 = NULL;
+	GuiImage* t_4 = NULL;
+	GuiImage* t_5 = NULL;
+	GuiImage* t_6 = NULL;
+	GuiImage* t_exit = NULL;
+
+	GuiLabel* points = NULL;
+	GuiLabel* t_1Label = NULL;
+	GuiLabel* t_2Label = NULL;
+	GuiLabel* t_3Label = NULL;
+	GuiLabel* t_4Label = NULL;
+	GuiLabel* t_5Label = NULL;
+	GuiLabel* t_6Label = NULL;
+	GuiLabel* t_1QuantLabel = NULL;
+	GuiLabel* t_2QuantLabel = NULL;
+	GuiLabel* t_3QuantLabel = NULL;
+	GuiLabel* t_4QuantLabel = NULL;
+	GuiLabel* t_5QuantLabel = NULL;
+	GuiLabel* t_6QuantLabel = NULL;
+
+	Modifier* t_1Mod;
+	Modifier* t_2Mod;
+	Modifier* t_3Mod;
+	Modifier* t_4Mod;
+	Modifier* t_5Mod;
+	Modifier* t_6Mod;
 
 	// Map
 	GuiImage* mapMenu = NULL;
