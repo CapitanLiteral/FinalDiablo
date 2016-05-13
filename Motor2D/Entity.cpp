@@ -539,6 +539,7 @@ void Entity::handleInput()
 			}
 		}
 	}
+	inputBlocked = false;
 }
 
 

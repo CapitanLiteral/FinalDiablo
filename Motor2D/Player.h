@@ -16,6 +16,7 @@ class Sprite;
 class SDL_Texture;
 class Entity;
 class GuiImageFader;
+class GuiImage;
 
 
 
@@ -88,6 +89,11 @@ public:
 	bool preUpdate();
 	bool update(float dt);
 	void draw();
+	//Potis
+	std::vector<bool> activePotis;
+	iPoint position{ 346, 440 };
+	SDL_Texture* atlas;
+	SDL_Rect potiAtlas;
 
 	//Player interm way of life
 private:
