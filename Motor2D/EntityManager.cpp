@@ -10,6 +10,7 @@
 #include "Attributes.h"
 #include "Map.h"
 #include "Audio.h"
+#include "SceneManager.h"
 
 #include "App.h"
 #include "Render.h"
@@ -133,6 +134,18 @@ bool EntityManager::postUpdate()
 	for (; tmp != activeEntities.end(); ++tmp)
 		tmp->second->entityPostUpdate();
 
+	tmp = activeEntities.begin();
+
+	for (; tmp != activeEntities.end(); ++tmp)
+	{
+		if (tmp->second->type == BOSS)
+		{
+			if (tmp->second->attributes->getLife() <= 0)
+			{
+				app->sm->changeScene(4);
+			}
+		}
+	}
 	return ret;
 }
 

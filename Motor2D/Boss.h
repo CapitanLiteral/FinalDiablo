@@ -6,5 +6,8 @@ class Boss :
 public:
 	Boss(iPoint pos);
 	~Boss();
+
+	//bool entityUpdate(float dt);
+
 };
 

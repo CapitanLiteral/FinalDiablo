@@ -599,12 +599,13 @@ bool PlayerAttributes::setLevel(int val)
 		if (hud != NULL) hud->levelChanged(val, current_level);
 
 		if (current_level < val) availablePoints += 3;
-		if (val == 5 || val == 10) availablePoints++;
+		if (val == 5) availablePoints++;
+		else if (val == 10) availablePoints += 2;
 
 
 		current_level = val;
 
-		base_life = base_life + (0.7f * float(current_level));
+		base_life += base_life + (0.7f * float(current_level));
 		base_damage = base_damage + (0.3f * float(current_level));
 		base_strength = base_strength + (0.3f * float(current_level));
 		base_intelligence = base_intelligence + (0.3f * float(current_level));

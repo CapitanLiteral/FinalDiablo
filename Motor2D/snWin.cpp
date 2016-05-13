@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "SceneManager.h"
 #include "snIntro.h"
+#include "Game.h"
 
 	// Constructor
 snWin::snWin()
@@ -20,6 +21,8 @@ bool snWin::start()
 
 	background = app->gui->addGuiImage({ 0, 0 }, { 5, 1065, 669, 501}, NULL, this);
 	backMenuButton = app->gui->addGuiButton({ 200, 400 }, { 0, 960, 270, 35 }, { 0, 960, 270, 35 }, { 0, 1024, 270, 35 }, "Back To Menu", NULL, this);
+
+	//RELEASE(app->game->player);
 
 	//ret.start();
 	return true;

@@ -97,12 +97,12 @@ public:
 class TempMod : public Modifier
 {
 public:
-
-	TempMod(float time, float value, modifierType type) : time(time), Modifier(value, type){ timer.start(); }
-	~TempMod(){}
-	bool update(){ return (remove ? remove : (timer.ReadSec() < time)); }
 	Timer timer;
 	float time;
+	TempMod(float time, float value, modifierType type) : time(time), Modifier(value, type){ timer.start(); }
+	~TempMod(){}	
+	bool update(){ return (!remove ? !remove : (timer.ReadSec() < time)); }
+	
 };
 
 
