@@ -18,11 +18,13 @@
 
 Player::Player()
 {
+
 	AttributeBuilder builder;
 	builder.base_damage = 50;
 	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
+	builder.base_lifeRegen = 15;
 	attributes = new PlayerAttributes(builder);
-	
+
 	worldPosition.x = 0;
 	worldPosition.y = 0;
 	mapPosition.x = 0;
@@ -35,6 +37,7 @@ Player::Player()
 	{
 		activePotis.push_back(true);
 	}
+	//currentPhase = BARBARIAN;
 
 }
 
@@ -48,6 +51,9 @@ bool Player::awake(pugi::xml_node &config)
 bool Player::start()
 {
 	bool ret = true;
+
+
+
 	//POTIS
 	atlas = app->gui->getAtlas();
 	potiAtlas = { 703, 892, 29, 29 };
@@ -149,10 +155,17 @@ bool Player::update(float dt)
 	
 	if (app->debug)
 	{
+		if (app->input->getKey(SDL_SCANCODE_M) == KEY_REPEAT)
+			attributes->addExp(100);
 		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
 		{
 			iPoint p = app->input->getMouseWorldPosition();
 			LOG("X: %d Y: %d", p.x, p.y);
+		}
+		if (app->input->getKey(SDL_SCANCODE_Y) == KEY_DOWN)
+		{
+			worldPosition.x = 2789;
+			worldPosition.y = 1827;
 		}
 	}
 	
@@ -558,6 +571,7 @@ void Player::handleInput()
 			{
 				current_input_event = I_DIE;
 			}
+
 			if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				activePotis[0] = false;
@@ -610,7 +624,7 @@ void Player::handleInput()
 				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
 				{
 					//Sprint
-					current_input_event = I_RUN;
+					//current_input_event = I_RUN;
 				}
 				else
 				{
