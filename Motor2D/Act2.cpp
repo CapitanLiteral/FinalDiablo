@@ -149,6 +149,8 @@ bool Act2::start()
 	app->game->em->createGriswold({ -1782, 1540 });
 
 
+	app->game->em->createBoss({ 2789, 1827});
+
 	return true;
 }
 

@@ -21,7 +21,8 @@ enum entityType
 	NPC_COUNSELOR,
 	NPC_HEALER,
 	NPC_GOSSIP,
-	DUMMY
+	DUMMY,
+	BOSS
 };
 
 enum entityState
