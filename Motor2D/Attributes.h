@@ -109,10 +109,10 @@ public:
 struct AttributeBuilder
 {
 	// Base General Attributes
-	float	base_life = 2000.0f;
-	float	base_strength = 100.0f;
-	float	base_intelligence = 100.0f;
-	float	base_dexterity = 100.0f;
+	float	base_life = 100.0f;
+	float	base_strength = 10.0f;
+	float	base_intelligence = 10.0f;
+	float	base_dexterity = 10.0f;
 
 	// Base Offensive Attributes
 	float	base_attackSpeed = 2.0f;
@@ -174,7 +174,7 @@ public:
 	// Returns true if still alive
 	virtual bool update();
 
-	virtual void reset();
+	virtual void reset(bool clearMods = true);
 
 	// When damaging, call this methos with the attacker's attributs and attack
 	// Returns true if still alive
@@ -188,7 +188,9 @@ public:
 	// Adders / setters
 	bool addLife(float val);
 	virtual void addExp(int exp);
+	virtual bool addRage(float val){ return false; }
 	virtual bool setLevel(int val);
+	void setLife(int newLife);
 
 	//Modifiers
 	void levelUp(){ 
@@ -312,7 +314,7 @@ public:
 
 	bool update();
 
-	void reset();
+	void reset(bool clearMods = true);
 
 	// Immediate Getters
 	float getRage()const	{ return current_rage; }

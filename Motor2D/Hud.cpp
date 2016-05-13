@@ -126,12 +126,9 @@ bool Hud::start()
 
 	exp = app->gui->addGuiImage({ 0, 0 }, { 320, 703, 102, 18 }, NULL, this);
 
-	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 5 }, NULL, FONT_WHITE, this);
-	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 20 }, NULL, FONT_WHITE, this);
+	lifeLabel = app->gui->addGuiLabel("0", NULL, { 10, 45 }, NULL, FONT_WHITE, this);
+	rageLabel = app->gui->addGuiLabel("0", NULL, { 10, 60 }, NULL, FONT_WHITE, this);
 	expLabel = app->gui->addGuiLabel("0", NULL, { 10, 30 }, NULL, FONT_WHITE, this);
-
-	lifeLabel->active = false;
-	rageLabel->active = false;
 
 	return true;
 }
@@ -331,6 +328,8 @@ bool Hud::update(float dt)
 	{
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
+
+	playerAtt->addExp(5);
 
 	// update exp image
 	float maxExp = playerAtt->getMaxExp();

@@ -83,7 +83,7 @@ protected:
 	Collider* collider = NULL;
 
 	float visionRadius = 120.0f;
-	float targetRadius = 7.0f;
+	float targetRadius = 50.0f;
 public:
 	Attributes* attributes = NULL;
 	entityType type = UNKNOWN;
@@ -165,7 +165,7 @@ protected:
 	Animation* currentAnimation = NULL;
 	std::map<std::pair<entityState, entityDirection>, Animation>	entityAnim;
 	SDL_Texture* pDebug = NULL;
-
+	bool died = false;
 //Enum instances
 	entityInputState current_input = EI_NULL;
 	entityState currentState = E_IDLE;
@@ -173,7 +173,7 @@ protected:
 	entityDirection currentDirection = E_DOWN;
 	entityDirection previousDirection = E_DOWN;
 
-//--------------------------------------
+//----------------------------------
 };
 
 #endif
