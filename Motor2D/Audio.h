@@ -16,11 +16,16 @@ public:
 
 	Audio();
 
+	float volume = 50.0f;
+
 	// Destructor
 	virtual ~Audio();
 
 	// Called before render is available
 	bool awake(pugi::xml_node&);
+
+	//Update
+	bool update(float dt);
 
 	// Called before quitting
 	bool cleanUp();
@@ -38,6 +43,8 @@ private:
 
 	_Mix_Music*			music = NULL;
 	list<Mix_Chunk*>	fx;
+     
+
 };
 
 #endif // __AUDIO_H__

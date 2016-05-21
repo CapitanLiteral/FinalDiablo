@@ -17,6 +17,10 @@ Paladin::Paladin(iPoint pos) : Entity()
 	setWorldPosition(pos);
 
 	type = PALADIN;
+
+	visionRadius = 120.0f;
+	targetRadius = 30.0f;
+
 	entityAnim = app->game->em->getPaladinAnimation();
 
 	currentState = E_IDLE;
@@ -48,10 +52,12 @@ bool Paladin::entityUpdate(float dt)
 {
 	bool ret = true;
 
-	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
+	//if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
 		//app->audio->PlayFx(fxPlayerGetHit);
 
 	handleInput();
+
+	updateAction();
 
 	if (attributes->getLife() <= 0)
 	{
@@ -61,36 +67,6 @@ bool Paladin::entityUpdate(float dt)
 			//player->attributes->addExp(100);
 		}
 	}
-
-	if (mouseHover() && getCollider()->type == COLLIDER_ENEMY){
-		lifeBar->Activate();
-	}
-	if (lifeBar->active == true){
-		SDL_Rect rect;
-		float dif;
-		float entityLife = attributes->getLife();
-		if (entityLife > 0.0f)
-		{
-			rect = lifeBarRect;
-			dif = attributes->getMaxLife() - entityLife;
-			//dif *= rect.w;
-			//	dif /= entityLife;
-			rect.w -= dif;
-
-			//rect.w -= int(dif);
-
-			lifeBar->SetTextureRect(rect);
-		}
-		else
-		{
-			lifeBar->SetTextureRect({ 0, 0, 0, 0 });
-		}
-	}
-
-	if (!mouseHover()){
-		lifeBar->Desactivate();
-	}
-	updateAction();
 
 	//LOG("currentState: %d", currentState);
 	if (currentState != E_DEATH)
@@ -135,11 +111,9 @@ void Paladin::handleInput()
 		}
 		if (currentState != E_DEATH)
 		{
-			//LOG("life: %d", attributes->getLife());
-			//Do things
 			if (player)
 			{
-				if (worldPosition.DistanceNoSqrt(player->getWorldPosition()) <= visionRadius * visionRadius)//Range vision just follow you
+				if (worldPosition.DistanceNoSqrt(player->getWorldPosition()) <= visionRadius * visionRadius && timer.ReadSec() >= timeMargin)//Range vision just follow you
 				{
 					setInitVelocity();
 					setDirection();
@@ -255,6 +229,8 @@ void Paladin::setInitVelocity()
 	velocity.y = target.y - worldPosition.y;
 
 	velocity.SetModule(attributes->getMovementSpeed());
+
+	movement = true;
 }
 
 void Paladin::move(float dt)
@@ -263,6 +239,8 @@ void Paladin::move(float dt)
 
 	worldPosition.x += vel.x;
 	worldPosition.y += vel.y;
+
+	moveCollider();
 
 	movement = !isTargetReached();
 
@@ -292,10 +270,9 @@ bool Paladin::isTargetReached()
 
 	if (vel.getModule() <= targetRadius)
 	{
-		targetReached = true;
+		timer.start();
 		return true;
 	}
-
 	return false;
 }
 
@@ -311,11 +288,10 @@ void Paladin::updateMovement(float dt)
 {
 	if (movement)
 	{
-		if (!targetReached)
+		if (!isTargetReached())
 		{
 			updateVelocity(dt);
 			move(dt);
-			targetReached = isTargetReached();
 		}
 	}
 }

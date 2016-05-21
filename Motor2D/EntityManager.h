@@ -146,7 +146,6 @@ private:
 public:
 	
 	int fxPlayerGetHit;
-	int fxPlayerLvlUp;
 };
 
 #endif

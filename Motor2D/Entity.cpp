@@ -246,100 +246,6 @@ void Entity::setDirection(fPoint pos)
 
 entityState Entity::updateAction()
 {
-	if (current_input != EI_NULL)
-	{
-		switch (currentState)
-		{
-		case E_IDLE:
-		{
-			if (current_input == EI_WALK)
-			{
-				currentState = E_WALK;
-			}
-			else if (current_input == EI_DIE)
-			{
-				currentState = E_DEATH;
-			}
-		}
-		break;
-
-		case E_WALK:
-		{
-			if (current_input == EI_STOP)
-			{
-				currentState = E_IDLE;
-			}
-			else if (current_input == EI_DIE)
-			{
-				currentState = E_DEATH;
-			}
-			else if (current_input == EI_ATTACK)
-			{
-				currentState = E_BASIC_ATTACK;
-			}
-		}
-		break;
-
-		case E_BASIC_ATTACK:
-		{
-			if (current_input == EI_STOP)
-			{
-				currentState = E_IDLE;
-			}
-			else if (current_input == EI_DIE)
-			{
-				currentState = E_DEATH;
-			}
-			else if (current_input == EI_WALK)
-			{
-				currentState = E_WALK;
-			}
-		}
-
-		break;
-
-		case E_DEATH:
-		{
-			if (current_input == EI_STOP)
-			{
-				currentState = E_IDLE;
-			}
-		}
-
-		break;
-
-		case RUNNING:
-		{
-			if (current_input == EI_STOP)
-			{
-				currentState = E_IDLE;
-			}
-			else if (current_input == EI_WALK)
-			{
-				currentState = E_WALK;
-			}
-			else if (current_input == EI_DIE)
-			{
-				currentState = E_DEATH;
-			}
-			else if (current_input == EI_ATTACK)
-			{
-				currentState = E_BASIC_ATTACK;
-			}
-		}
-		break;
-		}
-
-		if (previousState != currentState)
-		{
-
-		}
-
-		previousState = currentState;
-
-	}
-	current_input = EI_NULL;
-
 	return currentState;
 }
 
@@ -363,4 +269,44 @@ bool Entity::mouseHover()
 	}
 
 	return ret;
+}
+
+void Entity::moveCollider()
+{
+	if (collider)
+		collider->SetPos(worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y);
+}
+
+void Entity::checkMouseForBar()
+{
+	if (mouseHover() && getCollider()->type == COLLIDER_ENEMY)
+	{
+		lifeBar->Activate();
+	}
+	if (lifeBar->active == true)
+	{
+		SDL_Rect rect;
+		float dif;
+		float entityLife = attributes->getLife();
+		if (entityLife > 0.0f)
+		{
+			rect = lifeBarRect;
+			dif = attributes->getMaxLife() - entityLife;
+			//dif *= rect.w;
+			//	dif /= entityLife;
+			rect.w -= dif;
+
+			//rect.w -= int(dif);
+
+			lifeBar->SetTextureRect(rect);
+		}
+		else
+		{
+			lifeBar->SetTextureRect({ 0, 0, 0, 0 });
+		}
+	}
+
+	if (!mouseHover()){
+		lifeBar->Desactivate();
+	}
 }

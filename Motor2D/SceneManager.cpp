@@ -36,6 +36,7 @@ bool SceneManager::awake(pugi::xml_node& conf)
 {
 	current_scene = intro;
 	filePropsVillage = conf.child("propAtlas").attribute("file").as_string();
+	fileWallsTexture = conf.child("wallsTexture").attribute("file").as_string();
 	return true;
 }
 
@@ -69,6 +70,7 @@ bool SceneManager::update(float dt)
 	//current_scene->update(dt);
 
 	bool ret = true;
+	
 
 	if (current_scene != nullptr)
 	{
@@ -186,6 +188,11 @@ bool SceneManager::fadeToBlack(Scene* new_scene, float time)
 std::string SceneManager::getFilePropsVillage()
 {
 	return filePropsVillage;
+}
+
+std::string SceneManager::getFileWallsTexture()
+{
+	return fileWallsTexture;
 }
 
 void SceneManager::changeScene(int scene)

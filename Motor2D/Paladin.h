@@ -2,6 +2,7 @@
 #define __PALADIN_H__
 
 #include "Entity.h"
+#include "Timer.h"
 
 class GuiImage;
 
@@ -24,5 +25,8 @@ private:
 	void updateVelocity(float dt);
 
 	void updateMovement(float dt);
+
+	Timer timer;
+	uint32 timeMargin = 2;
 };
 #endif

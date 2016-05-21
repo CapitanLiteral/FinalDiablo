@@ -129,7 +129,6 @@ protected:
 	fPoint velocity;
 
 	bool movement = false;
-	bool targetReached = false;
 
 	bool inputBlocked = false;
 
@@ -140,6 +139,8 @@ protected:
 
 	virtual entityState updateAction();
 	virtual void handleInput();
+
+	void moveCollider();
 
 //---------------------------------------
 
@@ -166,6 +167,8 @@ protected:
 	entityDirection previousDirection = E_DOWN;
 
 //----------------------------------
+
+	void checkMouseForBar();
 
 	int fxPlayerGetHit;
 	
