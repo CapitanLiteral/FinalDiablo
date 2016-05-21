@@ -69,6 +69,7 @@ bool SceneManager::update(float dt)
 	//current_scene->update(dt);
 
 	bool ret = true;
+	
 
 	if (current_scene != nullptr)
 	{

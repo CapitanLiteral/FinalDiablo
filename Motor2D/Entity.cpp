@@ -47,7 +47,7 @@ bool Entity::entityUpdate(float internDT)
 {
 	bool ret = true;
 
-	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
+	if (app->input->getKey(SDL_SCANCODE_9) == KEY_DOWN)
 		app->audio->PlayFx(fxPlayerGetHit);
 
 	handleInput();

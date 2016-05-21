@@ -40,7 +40,7 @@ bool Act1::start()
 	win = false;
 
 	
-	//app->audio->PlayMusic("audio/music/town1.ogg", 0);
+	app->audio->PlayMusic("audio/music/town1.ogg");
 
 	if (debug == NULL)
 		debug = app->tex->Load("maps/mini_path.png");
@@ -310,7 +310,7 @@ bool Act1::cleanUp()
 	//}
 	//entity_list.clear();
 	//app->game->em->cleanUp();
-
+	//app->audio->cleanUp();
 	return true;
 }
 
