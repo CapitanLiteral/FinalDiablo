@@ -291,10 +291,11 @@ void Act1::OnCollision(Collider* c1, Collider* c2)
 		}
 		else if (c2->type == COLLIDER_PLAYER)
 		{
-			int dmg = app->game->player->attributes->getMaxLife();
-				//c2->entityLinked->attributes->getMaxLife()*0.03;
+			
+			float dmg = app->game->player->attributes->getMaxLife()*0.5*app->getDT();
+			//c2->entityLinked->attributes->getMaxLife()*0.03;
 			//c2->entityLinked->attributes->addLife(-dmg);
-			app->game->player->attributes->setLife(-dmg);
+			app->game->player->attributes->addLife(-dmg);
 		}
 	}
 
