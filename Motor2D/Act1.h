@@ -15,6 +15,7 @@ class GuiElement;
 class Entity;
 class Map;
 class Particle;
+class Collider;
 
 
 class Act1 : public Scene
@@ -46,6 +47,8 @@ public:
 	//Load/unLoad, called when the scene changes
 	bool Load();
 	bool unLoad();
+	//Collisions
+	void OnCollision(Collider* c1, Collider* c2);
 
 	//NOTE: provisional.
 	SDL_Texture* debug = NULL;
