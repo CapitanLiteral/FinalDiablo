@@ -856,7 +856,7 @@ void EntityManager::setEnemiesAttributes()
 	//###     EnemyPaladin     ###
 	//############################
 
-	paladinAttributeBuilder.base_movementSpeed = 100;
+	paladinAttributeBuilder.base_movementSpeed = 210;
 	paladinAttributeBuilder.experience = 350;
 	paladinAttributeBuilder.base_life = 300;
 	paladinAttributeBuilder.base_damage = 40;

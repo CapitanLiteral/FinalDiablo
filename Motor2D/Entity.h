@@ -124,34 +124,23 @@ public:
 
 
 //MOVEMENT--------------------------------
-private:
-	std::vector<iPoint> path;
+protected:
 	iPoint target;
-
 	fPoint velocity;
-	int currentNode;
 
 	bool movement = false;
-	bool targetReached = false;
 
 	bool inputBlocked = false;
 
 //Movement methods
-	vector<iPoint> getNewPath(iPoint target);
-	void getNewTarget();
-	void setTarget(iPoint _target);
-	void updateVelocity(float dt);
-	void updateMovement(float dt);
-	bool isTargetReached();
-	void move(float dt);
-	void setMovement(int x, int y);
-	bool isInDestiny();
 
 	void setDirection();
 	void setDirection(fPoint pos);
 
-	entityState updateAction();
-	void handleInput();
+	virtual entityState updateAction();
+	virtual void handleInput();
+
+	void moveCollider();
 
 //---------------------------------------
 
@@ -178,6 +167,8 @@ protected:
 	entityDirection previousDirection = E_DOWN;
 
 //----------------------------------
+
+	void checkMouseForBar();
 
 	int fxPlayerGetHit;
 	

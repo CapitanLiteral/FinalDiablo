@@ -77,6 +77,8 @@ public:
 
 protected:
 	virtual void drawDebug();
+
+	float calcAngle(fPoint vec);
 };
 
 // ------------------------------------------------
@@ -148,7 +150,6 @@ private:
 	float acumulator = 0.0f;
 	int particlesEmited = 0;
 
-	float calcAngle(fPoint vec);
 };
 
 // ------------------------------------------------
@@ -185,6 +186,26 @@ public:
 
 private:
 	float particleVelocity;
+};
+
+// ------------------------------------------------
+
+class TridentEmisor : public Emisor
+{
+public:
+	Particle particleEmited;
+	TridentEmisor(fPoint director);
+	~TridentEmisor();
+
+	bool update(float dt);
+	bool postUpdate();
+
+	void drawDebug();
+
+private:
+	float particleVelocity;
+	float angle;
+	fPoint direction;
 };
 
 // ------------------------------------------------
@@ -240,6 +261,8 @@ public:
 	CrossEmisor1* createCross1Emisor(int x, int y, Module* listener = NULL, bool active = true);
 
 	CrossEmisor2* createCross2Emisor(int x, int y, Module* listener = NULL, bool active = true);
+
+	TridentEmisor* createTridentEmisor(int x, int y, fPoint direction, Module* listener = NULL, bool active = true);
 
 	int fxPlayerSkill=0;
 };

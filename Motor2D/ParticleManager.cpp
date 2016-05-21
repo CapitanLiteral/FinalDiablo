@@ -56,8 +56,10 @@ bool ParticleManager::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		iPoint p = app->input->getMouseWorldPosition();
-		createCross1Emisor(p.x, p.y);
-		createCross2Emisor(p.x, p.y);
+		/*createCross1Emisor(p.x, p.y);
+		createCross2Emisor(p.x, p.y);*/
+		createTridentEmisor(p.x, p.y, { 0, 1 });
+		//createConeEmisor(p.x, p.y, { 1, 1 });
 	}
 	
 	std::list<Particle*>::iterator it = particleList.begin();
@@ -295,6 +297,22 @@ CrossEmisor2* ParticleManager::createCross2Emisor(int x, int y, Module* listener
 	return ret;
 }
 
+TridentEmisor* ParticleManager::createTridentEmisor(int x, int y, fPoint direction, Module* listener, bool active)
+{
+	TridentEmisor* ret = NULL;
+
+	ret = new TridentEmisor(direction);
+	ret->position.Set(x, y);
+	ret->active = active;
+
+	if (listener)
+		ret->listener = listener;
+
+	emisorList.push_back(ret);
+
+	return ret;
+}
+
 void ParticleManager::OnCollision(Collider* c1, Collider* c2)
 {
 
@@ -463,6 +481,11 @@ void Emisor::destroy()
 void Emisor::drawDebug()
 {
 	app->render->DrawQuad({ position.x - 1, position.y - 1, 3, 3 }, 0, 255, 0, 255, true, true);
+}
+
+float Emisor::calcAngle(fPoint vec)
+{
+	return atan2f(vec.y, vec.x) * (180 / PI);
 }
 
 
@@ -805,11 +828,6 @@ void ConeEmisor::drawDebug()
 
 }
 
-float ConeEmisor::calcAngle(fPoint vec)
-{
-	return atan2f(vec.y, vec.x) * (180 / PI);
-}
-
 // --CrossEmisor1---------------------------------------
 
 
@@ -983,6 +1001,99 @@ bool CrossEmisor2::postUpdate()
 }
 
 void CrossEmisor2::drawDebug()
+{
+
+}
+
+// --TridentEmisor------------------------------
+
+TridentEmisor::TridentEmisor(fPoint director)
+{
+	pugi::xml_node tridentEmisorNode = app->particleManager->getParticleDoc()->child("particles").child("trident_emisor");
+
+	int animX = tridentEmisorNode.child("anim").attribute("x").as_int();
+	int animY = tridentEmisorNode.child("anim").attribute("y").as_int();
+	int animW = tridentEmisorNode.child("anim").attribute("w").as_int();
+	int animH = tridentEmisorNode.child("anim").attribute("h").as_int();
+	int animFrames = tridentEmisorNode.child("anim").attribute("frame_number").as_int();
+	float animSpeed = tridentEmisorNode.child("anim").attribute("speed").as_float();
+	bool loop = tridentEmisorNode.child("anim").attribute("loop").as_bool();
+	int margin = tridentEmisorNode.child("anim").attribute("margin").as_int();
+	int pivotX = tridentEmisorNode.child("anim").attribute("pivot_x").as_int();
+	int pivotY = tridentEmisorNode.child("anim").attribute("pivot_y").as_int();
+
+	particleEmited.anim.setAnimation(animX, animY, animW, animH, animFrames, margin);
+	particleEmited.anim.loop = loop;
+	particleEmited.anim.pivot.Set(pivotX, pivotY);
+	particleEmited.anim.speed = animSpeed;
+	particleEmited.life = tridentEmisorNode.child("particle_life").attribute("value").as_int();
+	particleEmited.speed.SetToZero();
+
+	float eSpeedX = tridentEmisorNode.child("emisor_speed").attribute("x").as_float();
+	float eSpeedY = tridentEmisorNode.child("emisor_speed").attribute("y").as_float();
+
+	speed.Set(eSpeedX, eSpeedY);
+
+	particleVelocity = tridentEmisorNode.child("particle_velocity").attribute("value").as_float();
+
+	angle = tridentEmisorNode.child("open_angle").attribute("value").as_float();
+
+	colliderOffset.x = tridentEmisorNode.child("collider").attribute("offsetX").as_int();
+	colliderOffset.y = tridentEmisorNode.child("collider").attribute("offsetY").as_int();
+	colliderSize.x = tridentEmisorNode.child("collider").attribute("sizeW").as_int();
+	colliderSize.y = tridentEmisorNode.child("collider").attribute("sizeH").as_int();
+	colliderType = (COLLIDER_TYPE)tridentEmisorNode.child("collider").attribute("type").as_int();
+
+	particleEmited.texture = app->particleManager->getAtlas();
+
+	direction = director;
+	direction.y = -direction.y;
+}
+
+TridentEmisor::~TridentEmisor()
+{
+
+}
+
+bool TridentEmisor::update(float dt)
+{
+	bool ret = true;
+
+	if (alive)
+	{
+		float angleDir = calcAngle(direction);
+		Particle* p = NULL;
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(particleVelocity * (cos((angleDir) * (PI / 180))), particleVelocity * (sin((angleDir) * (PI / 180))));
+
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(particleVelocity * (cos((angleDir + angle) * (PI / 180))), particleVelocity * (sin((angleDir + angle) * (PI / 180))));
+
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(particleVelocity * (cos((angleDir - angle) * (PI / 180))), particleVelocity * (sin((angleDir - angle) * (PI / 180))));
+
+		alive = false;
+	}
+	else
+		ret = false;
+
+	return ret;
+}
+
+bool TridentEmisor::postUpdate()
+{
+	bool ret = true;
+
+	if (fxPlayed == false)
+	{
+		fxPlayed = true;
+		app->audio->PlayFx(fx);
+	}
+
+	return ret;
+}
+
+void TridentEmisor::drawDebug()
 {
 
 }
