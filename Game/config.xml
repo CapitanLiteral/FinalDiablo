@@ -29,6 +29,7 @@
 
   <scene_manager>
     <propAtlas file="textures/town_objects.png"/>
+    <wallsTexture file="textures/new_map_walls.png"/>
   </scene_manager>
   
   <file_system>

@@ -56,6 +56,7 @@ bool ParticleManager::update(float dt)
 	if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		iPoint p = app->input->getMouseWorldPosition();
+		createCross1Emisor(p.x, p.y);
 		createCross2Emisor(p.x, p.y);
 	}
 	
