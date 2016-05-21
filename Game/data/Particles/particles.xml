@@ -64,4 +64,34 @@
 
 	</cone_emisor>
 
+	<cross1_emisor>
+
+		<anim x = "0" y = "0" w = "78" h = "156" frame_number = "9" speed = "0.1" loop = "true" margin = "0" pivot_x = "36" pivot_y = "104" />
+
+		<emisor_speed x = "0" y = "0" />
+
+		<particle_velocity value = "150" />
+
+		<particle_life value = "1" />
+		
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+
+
+	</cross1_emisor>
+
+	<cross2_emisor>
+
+		<anim x = "0" y = "0" w = "78" h = "156" frame_number = "9" speed = "0.1" loop = "true" margin = "0" pivot_x = "36" pivot_y = "104" />
+
+		<emisor_speed x = "0" y = "0" />
+
+		<particle_velocity value = "150" />
+
+		<particle_life value = "1" />
+		
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+
+
+	</cross2_emisor>
+
 </particles>

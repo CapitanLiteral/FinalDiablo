@@ -52,6 +52,13 @@ bool ParticleManager::start()
 bool ParticleManager::update(float dt)
 {
 	bool ret = true;
+
+	if (app->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		iPoint p = app->input->getMouseWorldPosition();
+		createCross1Emisor(p.x, p.y);
+		createCross2Emisor(p.x, p.y);
+	}
 	
 	std::list<Particle*>::iterator it = particleList.begin();
 	while (it != particleList.end())
@@ -250,6 +257,38 @@ ConeEmisor* ParticleManager::createConeEmisor(int x, int y, fPoint direction, Mo
 
 	if (active)
 		ret->timer.start();
+
+	emisorList.push_back(ret);
+
+	return ret;
+}
+
+CrossEmisor1* ParticleManager::createCross1Emisor(int x, int y, Module* listener, bool active)
+{
+	CrossEmisor1* ret = NULL;
+
+	ret = new CrossEmisor1();
+	ret->position.Set(x, y);
+	ret->active = active;
+
+	if (listener)
+		ret->listener = listener;
+
+	emisorList.push_back(ret);
+
+	return ret;
+}
+
+CrossEmisor2* ParticleManager::createCross2Emisor(int x, int y, Module* listener, bool active)
+{
+	CrossEmisor2* ret = NULL;
+
+	ret = new CrossEmisor2();
+	ret->position.Set(x, y);
+	ret->active = active;
+
+	if (listener)
+		ret->listener = listener;
 
 	emisorList.push_back(ret);
 
@@ -533,7 +572,7 @@ void RadialEmisor::drawDebug()
 }
 
 
-// -- RadialEmisor------------------
+// -- LinearEmisor------------------
 
 LineEmisor::LineEmisor(fPoint director) : Emisor()
 {
@@ -643,7 +682,7 @@ void LineEmisor::drawDebug()
 	app->render->DrawLine(position.x, position.y, position.x + (direction.x * velocity * particleEmited.life), position.y + (direction.y * velocity * particleEmited.life), 255, 102, 255, 255, true);
 }
 
-// -- RadialEmisor------------------
+// -- ConeEmisor------------------
 
 ConeEmisor::ConeEmisor(fPoint director) : Emisor()
 {
@@ -769,4 +808,181 @@ void ConeEmisor::drawDebug()
 float ConeEmisor::calcAngle(fPoint vec)
 {
 	return atan2f(vec.y, vec.x) * (180 / PI);
+}
+
+// --CrossEmisor1---------------------------------------
+
+
+CrossEmisor1::CrossEmisor1()
+{
+	pugi::xml_node crossEmisorNode = app->particleManager->getParticleDoc()->child("particles").child("cross1_emisor");
+
+	int animX = crossEmisorNode.child("anim").attribute("x").as_int();
+	int animY = crossEmisorNode.child("anim").attribute("y").as_int();
+	int animW = crossEmisorNode.child("anim").attribute("w").as_int();
+	int animH = crossEmisorNode.child("anim").attribute("h").as_int();
+	int animFrames = crossEmisorNode.child("anim").attribute("frame_number").as_int();
+	float animSpeed = crossEmisorNode.child("anim").attribute("speed").as_float();
+	bool loop = crossEmisorNode.child("anim").attribute("loop").as_bool();
+	int margin = crossEmisorNode.child("anim").attribute("margin").as_int();
+	int pivotX = crossEmisorNode.child("anim").attribute("pivot_x").as_int();
+	int pivotY = crossEmisorNode.child("anim").attribute("pivot_y").as_int();
+
+	particleEmited.anim.setAnimation(animX, animY, animW, animH, animFrames, margin);
+	particleEmited.anim.loop = loop;
+	particleEmited.anim.pivot.Set(pivotX, pivotY);
+	particleEmited.anim.speed = animSpeed;
+	particleEmited.life = crossEmisorNode.child("particle_life").attribute("value").as_int();
+	particleEmited.speed.SetToZero();
+
+	speed.SetToZero();
+
+	particleVelocity = crossEmisorNode.child("particle_velocity").attribute("value").as_float();
+
+	colliderOffset.x = crossEmisorNode.child("collider").attribute("offsetX").as_int();
+	colliderOffset.y = crossEmisorNode.child("collider").attribute("offsetY").as_int();
+	colliderSize.x = crossEmisorNode.child("collider").attribute("sizeW").as_int();
+	colliderSize.y = crossEmisorNode.child("collider").attribute("sizeH").as_int();
+	colliderType = (COLLIDER_TYPE)crossEmisorNode.child("collider").attribute("type").as_int();
+
+	particleEmited.texture = app->particleManager->getAtlas();
+}
+
+CrossEmisor1::~CrossEmisor1()
+{
+
+}
+
+bool CrossEmisor1::update(float dt)
+{
+	bool ret = true;
+
+	if (alive)
+	{
+		Particle* p = NULL;
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(0, -particleVelocity);
+
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(0, particleVelocity);
+
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(-particleVelocity, 0);
+
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(particleVelocity, 0);
+
+
+		alive = false;
+	}
+	else
+		ret = false;
+
+	return ret;
+}
+
+bool CrossEmisor1::postUpdate()
+{
+	bool ret = true;
+
+	if (fxPlayed == false)
+	{
+		fxPlayed = true;
+		app->audio->PlayFx(fx);
+	}
+
+	return ret;
+}
+
+void CrossEmisor1::drawDebug()
+{
+
+}
+
+// --CrossEmisor2---------------------------------------
+
+
+CrossEmisor2::CrossEmisor2()
+{
+	pugi::xml_node crossEmisorNode = app->particleManager->getParticleDoc()->child("particles").child("cross2_emisor");
+
+	int animX = crossEmisorNode.child("anim").attribute("x").as_int();
+	int animY = crossEmisorNode.child("anim").attribute("y").as_int();
+	int animW = crossEmisorNode.child("anim").attribute("w").as_int();
+	int animH = crossEmisorNode.child("anim").attribute("h").as_int();
+	int animFrames = crossEmisorNode.child("anim").attribute("frame_number").as_int();
+	float animSpeed = crossEmisorNode.child("anim").attribute("speed").as_float();
+	bool loop = crossEmisorNode.child("anim").attribute("loop").as_bool();
+	int margin = crossEmisorNode.child("anim").attribute("margin").as_int();
+	int pivotX = crossEmisorNode.child("anim").attribute("pivot_x").as_int();
+	int pivotY = crossEmisorNode.child("anim").attribute("pivot_y").as_int();
+
+	particleEmited.anim.setAnimation(animX, animY, animW, animH, animFrames, margin);
+	particleEmited.anim.loop = loop;
+	particleEmited.anim.pivot.Set(pivotX, pivotY);
+	particleEmited.anim.speed = animSpeed;
+	particleEmited.life = crossEmisorNode.child("particle_life").attribute("value").as_int();
+	particleEmited.speed.SetToZero();
+
+	speed.SetToZero();
+
+	particleVelocity = crossEmisorNode.child("particle_velocity").attribute("value").as_float();
+
+	colliderOffset.x = crossEmisorNode.child("collider").attribute("offsetX").as_int();
+	colliderOffset.y = crossEmisorNode.child("collider").attribute("offsetY").as_int();
+	colliderSize.x = crossEmisorNode.child("collider").attribute("sizeW").as_int();
+	colliderSize.y = crossEmisorNode.child("collider").attribute("sizeH").as_int();
+	colliderType = (COLLIDER_TYPE)crossEmisorNode.child("collider").attribute("type").as_int();
+
+	particleEmited.texture = app->particleManager->getAtlas();
+}
+
+CrossEmisor2::~CrossEmisor2()
+{
+
+}
+
+bool CrossEmisor2::update(float dt)
+{
+	bool ret = true;
+
+	if (alive)
+	{
+		Particle* p = NULL;
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(-particleVelocity, -particleVelocity);
+
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(particleVelocity, particleVelocity);
+
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(-particleVelocity, particleVelocity);
+
+		p = app->particleManager->createParticle(particleEmited, position.x, position.y, particleEmited.life, colliderOffset, colliderSize, colliderType, listener);
+		p->speed.Set(particleVelocity, -particleVelocity);
+
+		alive = false;
+	}
+	else
+		ret = false;
+
+	return ret;
+}
+
+bool CrossEmisor2::postUpdate()
+{
+	bool ret = true;
+
+	if (fxPlayed == false)
+	{
+		fxPlayed = true;
+		app->audio->PlayFx(fx);
+	}
+
+	return ret;
+}
+
+void CrossEmisor2::drawDebug()
+{
+
 }
