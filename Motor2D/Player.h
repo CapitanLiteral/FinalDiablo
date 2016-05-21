@@ -239,9 +239,13 @@ private:
 	SDL_Texture* evolveText = NULL;
 
 private: 
+   
+   //FX for player 
    int fxPlayerLvlUp;
    int abilitieFx;
    int walkFx;
+   int walkFxDiablo;
+   int deathFx;
 };
 
 #endif

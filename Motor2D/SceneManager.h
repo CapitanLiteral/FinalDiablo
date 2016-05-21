@@ -51,6 +51,7 @@ public:
 	void changeScene(int scene);
 
 	std::string getFilePropsVillage();
+	std::string getFileWallsTexture();
 
 public:
 	snIntro*	intro = NULL;
@@ -77,6 +78,7 @@ private:
 	Timer fadeTimer;
 
 	std::string filePropsVillage;
+	std::string fileWallsTexture;
 };
 
 #endif // __SCENEMANAGER_H__

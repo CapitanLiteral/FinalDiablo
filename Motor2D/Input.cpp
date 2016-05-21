@@ -1,6 +1,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "App.h"
+#include "Audio.h"
 #include "Input.h"
 #include "Render.h"
 #include "Window.h"
@@ -52,6 +53,22 @@ bool Input::preUpdate()
 	static SDL_Event event;
 	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
+
+	//you can up volume or down, 
+	if (keyboard[SDL_SCANCODE_KP_MINUS] == KEY_DOWN)
+	{
+		app->audio->volume -= 5;
+	}
+
+	if (keyboard[SDL_SCANCODE_KP_PLUS]== KEY_DOWN)
+	{
+		app->audio->volume += 5;
+	}
+
+	if (keyboard[SDL_SCANCODE_0] == KEY_DOWN)
+	{
+		app->audio->volume = 0.1f;
+	}
 
 	for(int i = 0; i < MAX_KEYS; ++i)
 	{

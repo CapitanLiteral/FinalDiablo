@@ -85,7 +85,10 @@ bool Player::start()
 
 	//FX sounds
 	fxPlayerLvlUp = app->audio->LoadFx("audio/fx/LvlUp.wav");
-	walkFx = app->audio->LoadFx("audio/fx/Walk_sound");
+	walkFx = app->audio->LoadFx("audio/fx/Walk_sound.wav");
+	walkFxDiablo = app->audio->LoadFx("audio/fx/Diablo_Walk.wav");
+	abilitieFx = app->audio->LoadFx("audio/fx/Diablo_attack");
+	deathFx = app->audio->LoadFx("audio/fx/deathhit.wav");
 	
 	// ANIMATION
 	if (loadAnimations())
@@ -116,7 +119,6 @@ bool Player::start()
 	rageArround.anim.loop = true;
 	rageArround.anim.pivot.Set(30, 50);
 	rageArround.life = 10;
-	rageArround.fx = app->audio->LoadFx("audio/fx/Diablo_attack");
 	rageArround.texture = particlesAtlas;
 
 
@@ -194,8 +196,8 @@ bool Player::update(float dt)
 	else if (attributes->getLevel() == 10)
 	{
 		currentPhase = DIABLO;
+		
 		sprite->texture = diabloImage;
-
 		if (soundChecked == true)
 		{
 			app->audio->PlayFx(fxPlayerLvlUp, 0);
@@ -207,12 +209,23 @@ bool Player::update(float dt)
 
 
 	if (current_action != DEATH)
-	{
+	{	
 		switch (current_action)
 		{
 		case IDLE:
 			break;
 		case WALKING:
+<<<<<<< HEAD
+=======
+			//walk FX 
+			if (currentPhase == BARBARIAN)
+		    app->audio->PlayFx(walkFx,0);
+			else if (currentPhase == BUTCHER)
+			app->audio->PlayFx(walkFx,0);
+			else
+		    app->audio->PlayFx(walkFxDiablo,0);
+			updateMovement(dt);
+>>>>>>> origin/master
 			break;
 		case RUNNING:
 			//LowerStamina();
@@ -240,13 +253,21 @@ bool Player::update(float dt)
 			skill = 0;
 		break;
 		}
+		
 	}
 	else
 	{
 		setCurrentAnimation();
 		inputBlocked = true;
 		dead = true;
+<<<<<<< HEAD
 
+=======
+		
+		//death FX
+		app->audio->PlayFx(deathFx, 0);
+		
+>>>>>>> origin/master
 		if (current_animation->isOver())
 		{
 			if (imageTimerStarted == false)
@@ -1129,7 +1150,6 @@ bool Player::loadAnimations()
 					anims.speed = animSpeed;
 					anims.pivot.x = pivotX;
 					anims.pivot.y = pivotY;
-					app->audio->PlayFx(walkFx);
 					int entity = ent.child("name").attribute("value").as_int();
 					iPoint piv;
 					switch (entity)

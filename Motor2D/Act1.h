@@ -54,6 +54,8 @@ public:
 	
 	void createProps();
 
+	void createEnemies();
+
 
 	Entity* counselor;
 	Entity* healer;
@@ -82,6 +84,8 @@ private:
 	Sprite* carriage4;
 	SDL_Texture* propAtlas = nullptr;
 	std::string propFileName;
+	SDL_Texture* wallsTexture = nullptr;
+	Sprite* walls;
 };
 
 #endif _Act1_H

@@ -54,6 +54,15 @@ bool Audio::awake(pugi::xml_node& config)
 	return ret;
 }
 
+//update
+bool Audio::update(float dt)
+{
+	Mix_VolumeMusic(volume);
+	return true;
+
+}
+
+
 // Called before quitting
 bool Audio::cleanUp()
 {
@@ -84,10 +93,11 @@ bool Audio::cleanUp()
 bool Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
-
+	active = true;
+	
 	if(!active)
 		return false;
-
+	
 	if(music != NULL)
 	{
 		if(fade_time > 0.0f)
@@ -138,6 +148,7 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 unsigned int Audio::LoadFx(const char* path)
 {
 	unsigned int ret = 0;
+	active = true;
 
 	if(!active)
 		return 0;
@@ -162,6 +173,7 @@ unsigned int Audio::LoadFx(const char* path)
 bool Audio::PlayFx(unsigned int id, int repeat)
 {
 	bool ret = false;
+	active = true;
 
 	if(!active)
 		return false;
