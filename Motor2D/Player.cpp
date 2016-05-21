@@ -61,6 +61,10 @@ bool Player::start()
 		builder.base_lifeRegen = 15;
 		attributes = new PlayerAttributes(builder);
 	}
+		
+
+	
+
 
 	//POTIS
 	atlas = app->gui->getAtlas();
@@ -128,15 +132,18 @@ bool Player::start()
 }
 bool Player::preUpdate()
 {
-	handleInput();
-
-	updateAction();
+	
 
 	return true;
 }
 
 bool Player::update(float dt)
 {
+
+	handleInput(dt);
+
+	updateAction();
+
 	//LOG("Exp: %d", attributes->getExp());
 	//LOG("Level: %f", attributes->getLevel());
 	//LOG("Rage: %f", attributes->getRage());
@@ -149,12 +156,6 @@ bool Player::update(float dt)
 			app->render->Blit(atlas, position.x - app->render->camera.x + 50 + i*29, position.y - app->render->camera.y-50, &potiAtlas);
 			//app->render->Blit(atlas, position.x + 32 * i, position.y-500, &potiAtlas);
 		}
-	}
-
-
-	for (int i = 0; i < 4; i++)
-	{
-
 	}
 
 	bool ret = true;
@@ -204,40 +205,7 @@ bool Player::update(float dt)
 		}
 	}
 
-	if (entityInRange())
-	{
-		if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			Entity* ret;
-			if (ret = app->game->em->getEntityOnMouse())
-				if (ret->getCollider()->type == COLLIDER_NPC)
-				{
-					current_input_event = I_STOP;
-				}
-				else if (ret->getCollider()->type == COLLIDER_ENEMY)
-				{
-					//current_input_event = I_ATTACK;
-				}
-		}
-	}
-	//if (enemyFocus != NULL)
-	//{
-	//	LOG("Enemy taget");
-	//}
-
-	//LOG("Collision %d", collision);
-	if (enemyFocus != NULL && enemyFocus->type != NPC_COUNSELOR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
-	{
-		//LOG("TargetLife %f", enemyFocus->attributes->getLife());
-	}
-		
-	//LOG("Path size: %d", path.size());
-	//if (isInDestiny())
-	//{
-	//	current_input_event = I_STOP;
-	//}
-	//setDirection();
-	//current_animation = &barbarianAnim.find({ current_action, current_direction })->second;
+	
 
 
 	if (current_action != DEATH)
@@ -254,60 +222,42 @@ bool Player::update(float dt)
 			app->audio->PlayFx(walkFx,0);
 			else
 		    app->audio->PlayFx(walkFxDiablo,0);
-			updateMovement(dt);
+			//updateMovement(dt);
 			break;
 		case RUNNING:
-			updateMovement(dt);
 			//LowerStamina();
-			break;
-		case SKILL:
 			break;
 		case BASIC_ATTACK:
 			if (current_animation->isOver() && enemyFocus != NULL)
 			{
-				enemyFocus->attributes->damage(attributes, UNKNOWN);
+				//Particula de atac basic
 				current_input_event = I_STOP;
 				current_animation->Reset();
 			}
 			break;
+		case SKILL1:
+			attributes->addMod(rageMod);
+			current_rage = app->particleManager->createParticle(rageArround, worldPosition.x, worldPosition.y, rageDuration, { 0, 0 }, { 64, 64 }, COLLIDER_PLAYER_PARTICLE, this, true, particlesAtlas);
+			rageTime.start();
+			attributes->addRage(-furySkill1Cost);
+			skill = 0;
+		break;
+		case SKILL2:
+			iPoint p = app->input->getMouseWorldPosition();
+			fPoint dirVec(-(worldPosition.x - p.x), worldPosition.y - p.y);
+			app->particleManager->createLineEmisor(worldPosition.x, worldPosition.y, dirVec, this);
+			attributes->addRage(-furySkill2Cost);
+			skill = 0;
+		break;
 		}
-		if (current_skill != SKILL_NONE)
-		{
-			switch (current_skill)
-			{
-			case SKILL1:
-			{
-				attributes->addMod(rageMod);
-				current_rage = app->particleManager->createParticle(rageArround, worldPosition.x, worldPosition.y, rageDuration, { 0, 0 }, { 64, 64 }, COLLIDER_PLAYER_PARTICLE, this, true, particlesAtlas);
-				rageTime.start();
-				attributes->addRage(-furySkill1Cost);
-				current_skill = SKILL_NONE;
-				skill = 0;
-			}
-				break;
-			case SKILL2:
-			{
-				iPoint p = app->input->getMouseWorldPosition();
-				fPoint dirVec(-(worldPosition.x - p.x), worldPosition.y-p.y);
-				app->particleManager->createLineEmisor(worldPosition.x, worldPosition.y, dirVec, this);
-				attributes->addRage(-furySkill2Cost);
-				current_skill = SKILL_NONE;
-				skill = 0;
-			}
-				break;
-			}
-		}
-		
 	}
 	else
 	{
 		setCurrentAnimation();
 		inputBlocked = true;
 		dead = true;
-		
 		//death FX
 		app->audio->PlayFx(deathFx, 0);
-		
 		if (current_animation->isOver())
 		{
 			if (imageTimerStarted == false)
@@ -317,7 +267,8 @@ bool Player::update(float dt)
 			}
 		}
 	}
-	float a = showLoseImage.ReadSec();
+	
+
 	if (showLoseImage.ReadSec() >= timeToShow && dead)
 	{
 		//Start lose image
@@ -424,7 +375,7 @@ void Player::draw()
 	}//This if MUST be removed and forgotten for ever
 
 }
-
+/*
 vector<iPoint> Player::getNewPath(iPoint target)
 {
 	iPoint start = app->map->WorldToMap(worldPosition.x, worldPosition.y);
@@ -543,7 +494,7 @@ bool Player::isInDestiny() //Maybe ERROR, watch out //This does not work
 	return false;
 }
 
-
+*/
 
 void Player::drawDebug() const
 {
@@ -571,7 +522,7 @@ void Player::drawDebug() const
 
 	if (app->debug)
 	{
-		if (app->input->getKey(SDL_SCANCODE_D) == KEY_DOWN)
+		if (app->input->getKey(SDL_SCANCODE_F11) == KEY_DOWN)
 		{
 			attributes->addLife(-2050);
 		}
@@ -583,7 +534,7 @@ Player::~Player()
 	RELEASE(attributes);
 }
 
-void Player::handleInput()
+void Player::handleInput(float dt)
 {
 	if (!inputBlocked)
 	{
@@ -623,6 +574,8 @@ void Player::handleInput()
 				maxLife *= 0.1f;
 				attributes->addMod(new TempMod(3.0f, 30.0f, FLAT_LIFE_REGEN));
 			}
+
+			//SKILLS
 			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 			{
 				//Do skill
@@ -641,75 +594,121 @@ void Player::handleInput()
 					skill = 1;
 				}
 			}
-			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 			{
-				//Do things
-				if (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT)
-				{
-					//Sprint
-					//current_input_event = I_RUN;
-				}
-				else
-				{
-					//Maybe ERROR, watch out //Only to test pathfinding
-					clickCoords = app->input->getMouseWorldPosition();
-					target = app->map->WorldToMap(clickCoords.x, clickCoords.y);
-
-					enemyFocus = app->game->em->getEntityOnMouse();
-					if (enemyFocus == NULL)
-					{
-						//Comprobar si es terra
-						getNewPath(target);
-						current_input_event = I_WALK;
-						collision = false;
-					}//si no es terra					
-					else if ((prevEnemyFocus == enemyFocus || 
-						prevEnemyFocus == NULL) && enemyFocus->type != NPC_COUNSELOR && enemyFocus->type != NPC_GOSSIP && enemyFocus->type != NPC_HEALER)
-					{
-						//comprobar si estas a rang d'atac
-						//if (worldPosition.DistanceNoSqrt(enemyFocus->getWorldPosition()) < targetRadius*targetRadius)
-						if (collision)
-						{
-							//LOG("Detected click to attack, current direction: %d", current_direction);
-							current_input_event = I_ATTACK;
-							prevEnemyFocus = enemyFocus;
-							fPoint p;
-							p.x = enemyFocus->getWorldPosition().x;
-							p.y = enemyFocus->getWorldPosition().y;
-							setDirection(p);
-							//LOG("After setDirection, current direction: %d", current_direction);
-							/*switch (currentPhase)
-							{
-							case BARBARIAN:
-								break;
-							case BUTCHER:
-								break;
-							case DIABLO:
-								break;
-							default:
-								break;
-							}*/
-						}
-						else
-						{
-							getNewPath(target);
-							current_input_event = I_WALK;
-
-						}
-					}
-					else
-					{
-						getNewPath(target);
-						current_input_event = I_WALK;
-						prevEnemyFocus = enemyFocus;
-					}				
-					
-					
-					//Move
-					//Attack
-				}
+				current_input_event = I_ATTACK;
 				
 			}
+			if (app->input->getKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			{
+				iPoint tileCollision = app->map->WorldToMap(worldPosition.x, worldPosition.y-20);
+				
+				MapLayer* walkability = NULL;
+				std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
+				while (it != app->map->data.layers.end())
+				{
+					if ((*it)->name == "Navigation")
+					{
+						walkability = *it;
+						break;
+					}
+					it++;
+				}
+				if (!((walkability != NULL)))
+				{
+					LOG("Couldn't find 'Walkable' layer");
+				}
+
+				if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+				{
+					worldPosition.y -= attributes->getMovementSpeed()*dt;
+					collider->SetPos(worldPosition.x - collider->rect.w / 2, worldPosition.y - collider->rect.h);
+				}
+
+				
+			}
+			if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				iPoint tileCollision = app->map->WorldToMap(worldPosition.x - 50, worldPosition.y);
+
+				MapLayer* walkability = NULL;
+				std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
+				while (it != app->map->data.layers.end())
+				{
+					if ((*it)->name == "Navigation")
+					{
+						walkability = *it;
+						break;
+					}
+					it++;
+				}
+				if (!((walkability != NULL)))
+				{
+					LOG("Couldn't find 'Walkable' layer");
+				}
+
+				if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+				{
+					worldPosition.x -= attributes->getMovementSpeed()*dt;
+					collider->SetPos(worldPosition.x - collider->rect.w / 2, worldPosition.y - collider->rect.h);
+				}
+			}
+			if (app->input->getKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				iPoint tileCollision = app->map->WorldToMap(worldPosition.x + 50, worldPosition.y);
+
+				MapLayer* walkability = NULL;
+				std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
+				while (it != app->map->data.layers.end())
+				{
+					if ((*it)->name == "Navigation")
+					{
+						walkability = *it;
+						break;
+					}
+					it++;
+				}
+				if (!((walkability != NULL)))
+				{
+					LOG("Couldn't find 'Walkable' layer");
+				}
+
+				if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+				{
+					worldPosition.x += attributes->getMovementSpeed()*dt;
+					collider->SetPos(worldPosition.x - collider->rect.w / 2, worldPosition.y - collider->rect.h);
+				}
+			}
+			if (app->input->getKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			{
+				iPoint tileCollision = app->map->WorldToMap(worldPosition.x, worldPosition.y + 20);
+
+				MapLayer* walkability = NULL;
+				std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
+				while (it != app->map->data.layers.end())
+				{
+					if ((*it)->name == "Navigation")
+					{
+						walkability = *it;
+						break;
+					}
+					it++;
+				}
+				if (!((walkability != NULL)))
+				{
+					LOG("Couldn't find 'Walkable' layer");
+				}
+
+				if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+				{
+					worldPosition.y += attributes->getMovementSpeed()*dt;
+					collider->SetPos(worldPosition.x - collider->rect.w / 2, worldPosition.y - collider->rect.h);
+				}
+			}
+		}
+		else
+		{
+			
 		}
 	}
 	inputBlocked = false;
@@ -764,14 +763,14 @@ ACTION_STATE Player::updateAction()
 				case 1:
 					if (attributes->getRage() >= furySkill1Cost && rageCoolDown.ReadSec() >= cooldownRageDuration)
 					{
-						current_skill = SKILL1;
+						current_action = SKILL1;
 						rageCoolDown.start();
 					}
 					break;
 				case 2:
 					if (attributes->getRage() >= furySkill2Cost && skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
 					{
-						current_skill = SKILL2;
+						current_action = SKILL2;
 						skill2CoolDown.start();
 					}
 					break;
@@ -807,14 +806,14 @@ ACTION_STATE Player::updateAction()
 				case 1:
 					if (attributes->getRage() >= furySkill1Cost && rageCoolDown.ReadSec() >= cooldownRageDuration)
 					{
-						current_skill = SKILL1;
+						current_action = SKILL1;
 						rageCoolDown.start();
 					}
 					break;
 				case 2:
 					if (attributes->getRage() >= furySkill2Cost && skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
 					{
-						current_skill = SKILL2;
+						current_action = SKILL2;
 						skill2CoolDown.start();
 					}
 					break;
@@ -833,9 +832,13 @@ ACTION_STATE Player::updateAction()
 			{
 				current_action = DEATH;
 			}
-			else 	if (current_input_event == I_WALK)
+			else if (current_input_event == I_WALK)
 			{
 				current_action = WALKING;
+			}
+			else if (current_input_event == I_ATTACK)
+			{
+				current_action = BASIC_ATTACK;
 			}
 		}
 
@@ -872,12 +875,29 @@ ACTION_STATE Player::updateAction()
 			else if (current_input_event == I_SKILL)
 			{
 				//Maybe check here which hability is
-				current_action = SKILL;
+				switch (skill)
+				{
+				case 1:
+					if (attributes->getRage() >= furySkill1Cost && rageCoolDown.ReadSec() >= cooldownRageDuration)
+					{
+						current_action = SKILL1;
+						rageCoolDown.start();
+					}
+					break;
+				case 2:
+					if (attributes->getRage() >= furySkill2Cost && skill2CoolDown.ReadSec() >= cooldownSkill2Duration)
+					{
+						current_action = SKILL2;
+						skill2CoolDown.start();
+					}
+					break;
+				}
+				
 			}
 		}
 			break;
 
-		case SKILL:
+		case SKILL1:
 		{
 			if (current_input_event == I_STOP)
 			{
@@ -887,16 +907,18 @@ ACTION_STATE Player::updateAction()
 			{
 				current_action = DEATH;
 			}
+			else if (current_input_event == I_ATTACK)
+			{
+				current_action = BASIC_ATTACK;
+			}
+			else if (current_input_event == I_WALK)
+			{
+				current_action = WALKING;
+			}
 		}
 			break;
 		}
 
-		if (previous_action != current_action)
-		{
-			
-		}
-
-		previous_action = current_action;
 
 	}
 	current_input_event = I_NULL;

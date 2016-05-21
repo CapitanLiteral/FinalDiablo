@@ -13,7 +13,7 @@
 
 
 class Collider;
-
+class MapLayer;
 class Sprite;
 class SDL_Texture;
 class Entity;
@@ -31,7 +31,8 @@ enum ACTION_STATE
 	BASIC_ATTACK = 2,
 	DEATH = 3,
 	RUNNING = 4,
-	SKILL, // Do the skill things
+	SKILL1, // Do the skill things
+	SKILL2,
 	NOTHING,
 };
 
@@ -64,13 +65,6 @@ enum INPUT_EVENTS
 	I_ATTACK,
 	I_STOP,
 	I_DIE
-};
-
-enum SKILLS
-{
-	SKILL_NONE,
-	SKILL1, //Rage. Actually will be an attack more powerfull
-	SKILL2
 };
 
 class Player : public Module
@@ -110,13 +104,14 @@ private:
 	bool inputBlocked = false; // to do PAUSE
 	INPUT_EVENTS current_input_event;
 	ACTION_STATE updateAction();
-	void handleInput();
+	void handleInput(float dt);
 	void OnCollision(Collider* c1, Collider* c2);
 
 	void drawDebug() const;
 
 //Player movement
 private: //Do all getters and setters
+	
 	std::vector<iPoint> path;
 	iPoint target;
 	iPoint clickCoords;
@@ -131,7 +126,7 @@ private: //Do all getters and setters
 	void getNewTarget();
 	void setTarget(iPoint target);
 	void updateVelocity(float dt);
-	void updateMovement(float dt);
+	//void updateMovement(float dt);
 	bool isTargetReached();
 	void move(float dt);
 	void setMovement(int x, int y);
@@ -227,7 +222,6 @@ private:
 	DIRECTION current_direction = D_FRONT;
 	DIRECTION previous_direction;
 
-	SKILLS current_skill = SKILL_NONE;
 
 	SDL_Texture* barbarianImage = NULL;
 	SDL_Texture* butcherImage = NULL;
