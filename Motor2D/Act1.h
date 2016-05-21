@@ -2,6 +2,7 @@
 #define _Act1_H
 
 #include "Scene.h"
+#include "ParticleManager.h"
 #include "p2Point.h"
 #include <list>
 
@@ -13,6 +14,7 @@ struct SDL_Rect;
 class GuiElement;
 class Entity;
 class Map;
+class Particle;
 
 
 class Act1 : public Scene
@@ -51,41 +53,16 @@ public:
 	list<Entity*>		entity_list;
 
 	bool win;
-	
-	void createProps();
-
-	void createEnemies();
-
 
 	Entity* counselor;
 	Entity* healer;
 
 private:
-
-	Sprite* propProva;
-	Sprite* propParet;
-	Sprite* propParet1;
-	Sprite* fire;
-	Sprite* woodHouse;
-	Sprite* wood;
-	Sprite* woodUp;
-	Sprite* carriage;
-	Sprite* stuff;
-	Sprite* carriage1;
-	Sprite* treeCut;
-	Sprite* tent;
-	Sprite* wood1;
-	Sprite* wood2;
-	Sprite* wood3;
-	Sprite* woodUp1;
-	Sprite* tent1;
-	Sprite* carriage2;
-	Sprite* carriage3;
-	Sprite* carriage4;
-	SDL_Texture* propAtlas = nullptr;
-	std::string propFileName;
 	SDL_Texture* wallsTexture = nullptr;
 	Sprite* walls;
+
+	Particle hFire;
+	Particle* hollyFire=NULL;
 };
 
 #endif _Act1_H
