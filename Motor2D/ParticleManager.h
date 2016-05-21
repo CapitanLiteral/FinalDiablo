@@ -153,6 +153,42 @@ private:
 
 // ------------------------------------------------
 
+class CrossEmisor1 : public Emisor
+{
+public:
+	Particle particleEmited;
+	CrossEmisor1();
+	~CrossEmisor1();
+
+	bool update(float dt);
+	bool postUpdate();
+
+	void drawDebug();
+
+private:
+	float particleVelocity;
+};
+
+// ------------------------------------------------
+
+class CrossEmisor2 : public Emisor
+{
+public:
+	Particle particleEmited;
+	CrossEmisor2();
+	~CrossEmisor2();
+
+	bool update(float dt);
+	bool postUpdate();
+
+	void drawDebug();
+
+private:
+	float particleVelocity;
+};
+
+// ------------------------------------------------
+
 class ParticleManager : public Module
 {
 public:
@@ -200,6 +236,10 @@ public:
 	LineEmisor* createLineEmisor(int  x, int y, fPoint direction, Module* listener = NULL, bool active = true);
 
 	ConeEmisor* createConeEmisor(int x, int y, fPoint direction, Module* listener = NULL, bool active = true);
+
+	CrossEmisor1* createCross1Emisor(int x, int y, Module* listener = NULL, bool active = true);
+
+	CrossEmisor2* createCross2Emisor(int x, int y, Module* listener = NULL, bool active = true);
 
 	int fxPlayerSkill=0;
 };
