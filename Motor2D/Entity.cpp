@@ -45,88 +45,13 @@ bool Entity::start()
 
 bool Entity::entityUpdate(float internDT)
 {
-	bool ret = true;
-
-	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
-		app->audio->PlayFx(fxPlayerGetHit);
-
-	handleInput();
-
-	if (attributes->getLife() <= 0)
-	{
-		current_input = EI_DIE;
-		if (!died)
-		{
-			//player->attributes->addExp(100);
-		}
-	}
-
-	if (mouseHover() && getCollider()->type == COLLIDER_ENEMY){
-		lifeBar->Activate();
-	}
-	if (lifeBar->active == true){
-		SDL_Rect rect;
-		float dif;
-		float entityLife = attributes->getLife();
-		if (entityLife > 0.0f)
-		{
-			rect = lifeBarRect;
-			dif = attributes->getMaxLife() - entityLife;
-			//dif *= rect.w;
-		//	dif /= entityLife;
-			rect.w -= dif;
-
-			//rect.w -= int(dif);
-
-			lifeBar->SetTextureRect(rect);
-		}
-		else
-		{
-			lifeBar->SetTextureRect({ 0, 0, 0, 0 });
-		}
-	}
-
-	if (!mouseHover()){
-		lifeBar->Desactivate();
-	}
-	updateAction();
-
-	//LOG("currentState: %d", currentState);
-	if (currentState != E_DEATH)
-	{
-		switch (currentState)
-		{
-		case E_IDLE:
-			break;
-		case E_WALK:
-			updateMovement(internDT);
-			break;
-		case E_SKILL:
-			break;
-		case E_BASIC_ATTACK:
-			if (currentAnimation->isOver() && player != NULL)
-			{
-				player->attributes->damage(attributes,0);
-				app->audio->PlayFx(fxPlayerGetHit);
-				current_input = EI_STOP;
-				currentAnimation->Reset();
-			}
-			break;
-		}
-	}
-	else
-	{
-		collider->SetPos(10000, 0);
-	}
-
-	//LOG("Entity life: %f", attributes->getLife());
-
-	return ret;
+	return true;
 }
 
 bool Entity::entityPostUpdate()
 {
 	bool ret = true;
+
 	draw();
 
 	if (app->debug)
@@ -250,136 +175,10 @@ void Entity::drawDebug()
 		app->render->DrawLine(worldPosition.x, worldPosition.y, target.x, target.y, 0, 0, 255);
 		app->render->DrawLine(worldPosition.x, worldPosition.y, velocity.x + worldPosition.x, velocity.y + worldPosition.y, 0, 255, 255);
 	}
-	//Path
-	for (int i = 0; i < path.size(); i++)
-	{
-		iPoint tmp = path[i];
-		tmp = app->map->getTileBlit(tmp.x, tmp.y);
-		app->render->Blit(pDebug, tmp.x, tmp.y);
-	}
 }
 
 
 //Movement methods
-vector<iPoint> Entity::getNewPath(iPoint target)
-{
-	vector<iPoint> ret;
-
-	iPoint start = app->map->WorldToMap(worldPosition.x, worldPosition.y);
-	iPoint goal = target;
-	vector<iPoint> _path;
-	int steps = app->pathfinding->getNewPath(start, goal, path);
-	_path = path;
-	if (steps > 0)
-	{
-		//StateMachine change
-		current_input = EI_WALK;
-
-		movement = true;
-		currentNode = -1;
-		getNewTarget();
-	}
-
-	return ret;
-}
-
-void Entity::getNewTarget()
-{
-	if ((uint)currentNode + 1 < path.size())
-	{
-		currentNode++;
-		setTarget(app->map->getTileCenter(path[currentNode].x, path[currentNode].y));
-	}
-	else
-	{
-		//Maybe ERROR, watch out //setInput(INPUT_STOP_MOVE);
-		movement = false;
-	}
-}
-
-void Entity::setTarget(iPoint _target)
-{
-	target = _target;
-	movement = true;
-	targetReached = false;
-}
-
-void Entity::updateVelocity(float dt)
-{
-	velocity.x = target.x - worldPosition.x;
-	velocity.y = target.y - worldPosition.y;
-
-	velocity.SetModule(attributes->getMovementSpeed());
-
-	//Maybe ERROR, watch out //SetDirection();
-}
-
-void Entity::updateMovement(float dt)
-{
-	if (movement)
-	{
-		if (!targetReached)
-		{
-			updateVelocity(dt);
-			move(dt);
-			targetReached = isTargetReached();
-		}
-		else
-		{
-			getNewTarget();
-		}
-	}
-	if (isInDestiny() || (player != NULL && player->getMapPosition().DistanceTo(worldPosition) <= targetRadius && currentState == E_WALK))
-	{
-		current_input = EI_STOP;
-	}
-}
-
-bool Entity::isTargetReached()
-{
-	fPoint vel;
-
-	vel.x = target.x - worldPosition.x;
-	vel.y = target.y - worldPosition.y;
-
-	if (vel.getModule() <= targetRadius)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-void Entity::move(float dt)
-{
-	fPoint vel = velocity * dt;
-
-	worldPosition.x += int(vel.x);
-	worldPosition.y += int(vel.y);
-
-	
-	collider->SetPos(worldPosition.x - colliderOffset.x, worldPosition.y - colliderOffset.y); //Maybe ERROR, watch out
-	if (isInDestiny() || (player != NULL && player->getWorldPosition().DistanceNoSqrt(worldPosition) <= targetRadius * targetRadius && currentState == E_WALK))
-	{
-		path.clear();
-	}
-}
-
-void Entity::setMovement(int x, int y)
-{
-
-}
-
-bool Entity::isInDestiny()
-{
-	if (app->map->WorldToMap(player->worldPosition.x, player->worldPosition.y) == app->map->WorldToMap(worldPosition.x, worldPosition.y))
-	{
-		return true;
-	}
-
-	return false;
-}
-
 void Entity::setDirection()
 {
 	float angle = velocity.getAngle();
@@ -546,41 +345,6 @@ entityState Entity::updateAction()
 
 void Entity::handleInput()
 {
-	if (!inputBlocked)
-	{
-		if (attributes->getLife() <= 0)
-		{
-			current_input = EI_DIE;
-		}
-		if (currentState != E_DEATH)
-		{			
-			//LOG("life: %d", attributes->getLife());
-			//Do things
-			if (player)
-			{
-				if (worldPosition.DistanceNoSqrt(player->getWorldPosition()) <= visionRadius * visionRadius)//Range vision
-				{
-					//comprobar si estas a rang d'atac
-					if (worldPosition.DistanceNoSqrt(player->getWorldPosition()) < targetRadius * targetRadius)
-					{
-						current_input = EI_ATTACK;
-					}
-					else
-					{
-						target = app->game->player->getWorldPosition();
-						target = app->map->WorldToMap(target.x, target.y);
-						getNewPath(target);
-						current_input = EI_WALK;
-					}
-				}
-				else
-				{
-					current_input = EI_STOP;
-				}
-			}
-		}
-	}
-	inputBlocked = false;
 }
 
 

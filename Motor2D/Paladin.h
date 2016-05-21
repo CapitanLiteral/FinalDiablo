@@ -11,8 +11,18 @@ public:
 	Paladin(iPoint pos);
 	~Paladin();
 
-	//bool entityUpdate(float dt);
+	bool entityUpdate(float dt);
 
 private:
+	entityState updateAction();
+	void handleInput();
+
+	//Movement
+	void setInitVelocity();
+	void move(float dt);
+	bool isTargetReached();
+	void updateVelocity(float dt);
+
+	void updateMovement(float dt);
 };
 #endif
