@@ -94,4 +94,20 @@
 
 	</cross2_emisor>
 
+	<trident_emisor>
+
+		<anim x = "0" y = "0" w = "78" h = "156" frame_number = "9" speed = "0.1" loop = "true" margin = "0" pivot_x = "36" pivot_y = "104" />
+
+		<emisor_speed x = "0" y = "0" />
+
+		<particle_velocity value = "200" />
+
+		<particle_life value = "2" />
+
+		<open_angle value = "20.0f" />
+
+		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+
+	</trident_emisor>
+
 </particles>
