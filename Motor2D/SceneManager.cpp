@@ -7,6 +7,7 @@
 #include "snWin.h"
 #include "Render.h"
 #include "Textures.h"
+#include "Audio.h"
 
 #include "Game.h"
 
@@ -71,6 +72,7 @@ bool SceneManager::update(float dt)
 
 	bool ret = true;
 	
+
 
 	if (current_scene != nullptr)
 	{

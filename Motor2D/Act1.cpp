@@ -37,9 +37,10 @@ bool Act1::start()
 
 	win = false;
 
-	
+	//music act 1
 	app->audio->PlayMusic("audio/music/town1.ogg");
 
+	
 	if (debug == NULL)
 		debug = app->tex->Load("maps/mini_path.png");
 
@@ -109,7 +110,7 @@ bool Act1::preUpdate()
 // update
 bool Act1::update(float dt)
 {
-	
+
 	//Map
 	app->map->draw();
 
@@ -239,19 +240,19 @@ bool Act1::postUpdate()
 
 // Called before quitting
 bool Act1::cleanUp()
-{
-	// remove all entities
-	//list<Entity*>::iterator item;
-	//item = entity_list.begin();
+{/*
+	remove all entities
+	list<Entity*>::iterator item;
+	item = entity_list.begin();
 
-	//while (item != entity_list.end())
-	//{
-	//	app->game->em->remove((*item)->getId());
-	//	item++;
-	//}
-	//entity_list.clear();
-	//app->game->em->cleanUp();
-	//app->audio->cleanUp();
+	while (item != entity_list.end())
+	{
+		app->game->em->remove((*item)->getId());
+		item++;
+	}
+	entity_list.clear();
+	app->game->em->cleanUp();*/
+	
 	return true;
 }
 
