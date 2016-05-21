@@ -73,7 +73,7 @@ bool Act1::start()
 	hFire.life = 0;
 	hFire.texture = app->tex->Load("images/hollyFire.png");
 
-	hollyFire = app->particleManager->createParticle(hFire, -2700, 1800, INT_MAX, { 0, 0 }, { 25, 94 }, COLLIDER_PLAYER_PARTICLE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire = app->particleManager->createParticle(hFire, -2700, 1800, INT_MAX, { 0, 0 }, { 25, 94 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
 //	app->particleManager->createParticle(rageArround, worldPosition.x, worldPosition.y, rageDuration, { 0, 0 }, { 64, 64 }, COLLIDER_PLAYER_PARTICLE, this, true, particlesAtlas);
 	//hollyFire->texture = app->tex->Load("images/LogoAnim.png");
 	//hollyFire->anim.setAnimation(0, 0, 25, 94, 3, 2);
@@ -277,4 +277,25 @@ bool Act1::unLoad()
 	app->map->cleanUp();
 	app->pathfinding->cleanUp();
 	return true;
+}
+
+void Act1::OnCollision(Collider* c1, Collider* c2)
+{
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_HOLLYFIRE || c1->type == COLLIDER_HOLLYFIRE && c2->type == COLLIDER_PLAYER)
+	{
+		if (c1->type == COLLIDER_PLAYER)
+		{
+			int dmg = app->game->player->attributes->getMaxLife()*0.03;
+			//c1->entityLinked->attributes->addLife(-dmg);
+			app->game->player->attributes->setLife(-dmg);
+		}
+		else if (c2->type == COLLIDER_PLAYER)
+		{
+			int dmg = app->game->player->attributes->getMaxLife();
+				//c2->entityLinked->attributes->getMaxLife()*0.03;
+			//c2->entityLinked->attributes->addLife(-dmg);
+			app->game->player->attributes->setLife(-dmg);
+		}
+	}
+
 }
