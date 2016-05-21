@@ -53,6 +53,26 @@ bool Player::start()
 
 	currentPhase = BARBARIAN;
 
+	//Particles
+	//Basic attack
+	basicShot.texture = app->particleManager->getAtlas();
+	basicShot.anim.setAnimation(0, 0, 78, 156, 9, 0);
+	basicShot.anim.loop = true;
+	basicShot.anim.pivot.Set(36, 104);
+	basicShot.anim.speed = 0.1f;
+	basicShot.life = 1;
+	basicShot.speed.SetToZero();
+
+	//Boost
+	rageArround.anim.setAnimation(0, 132, 64, 64, 7, 0);
+	rageArround.active = true;
+	rageArround.anim.speed = 0.15f;
+	rageArround.anim.loop = true;
+	rageArround.anim.pivot.Set(30, 50);
+	rageArround.life = 10;
+	rageArround.texture = particlesAtlas;
+
+
 	if (attributes == NULL)
 	{
 		AttributeBuilder builder;
@@ -113,14 +133,7 @@ bool Player::start()
 	else
 		ret = false;
 
-	rageArround.anim.setAnimation(0, 132, 64, 64, 7, 0);
-	rageArround.active = true;
-	rageArround.anim.speed = 0.15f;
-	rageArround.anim.loop = true;
-	rageArround.anim.pivot.Set(30, 50);
-	rageArround.life = 10;
-	rageArround.texture = particlesAtlas;
-
+	
 
 	rageCoolDown.start();//tmp
 	skill2CoolDown.start();
@@ -144,6 +157,7 @@ bool Player::update(float dt)
 
 	updateAction();
 
+	
 	//LOG("Exp: %d", attributes->getExp());
 	//LOG("Level: %f", attributes->getLevel());
 	//LOG("Rage: %f", attributes->getRage());
@@ -228,12 +242,21 @@ bool Player::update(float dt)
 			//LowerStamina();
 			break;
 		case BASIC_ATTACK:
-			if (current_animation->isOver() && enemyFocus != NULL)
+			if (current_animation->isOver())
 			{
 				//Particula de atac basic
+				Particle* p = app->particleManager->createParticle(basicShot, worldPosition.x, worldPosition.y, 1, {25, 40}, {50, 50}, COLLIDER_PLAYER_PARTICLE, this);
+
+				fPoint mousePosition;
+				mousePosition.x = app->input->getMouseWorldPosition().x;
+				mousePosition.y = app->input->getMouseWorldPosition().y;
+
+				p->setLinearSpeed(200, { mousePosition.x - worldPosition.x, mousePosition.y - worldPosition.y });
+
 				current_input_event = I_STOP;
 				current_animation->Reset();
 			}
+			//LOG("Animation frame: %d", current_animation->getCurrentFrame());
 			break;
 		case SKILL1:
 			attributes->addMod(rageMod);
@@ -345,8 +368,8 @@ void Player::respawn()
 void Player::draw()
 {
 	//Not elegant, but works // May be the vibration of player comes from here ERROR
-	if (current_action == WALKING || current_action == RUNNING)
-		setDirection();
+	//if (current_action == WALKING || current_action == RUNNING)
+		//setDirection();
 	//if (previous_direction != current_direction || 
 	//	previous_action != current_action)
 	//{
@@ -541,10 +564,16 @@ void Player::handleInput(float dt)
 		
 		if (current_action != DEATH)
 		{
+
 			if (attributes->getLife() <= 0)
 			{
 				current_input_event = I_DIE;
 			}
+
+			fPoint mousePosition;
+			mousePosition.x = app->input->getMouseWorldPosition().x;
+			mousePosition.y = app->input->getMouseWorldPosition().y;
+			setDirection(mousePosition);
 
 			if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
@@ -576,16 +605,11 @@ void Player::handleInput(float dt)
 			}
 
 			//SKILLS
-			if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 			{
-				//Do skill
-				if (attributes->getLevel() >= 3)
-				{
-					current_input_event = I_SKILL;
-					skill = 2;
-				}
-			}
-			if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+				current_input_event = I_ATTACK;
+			}			
+			else if (app->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			{
 				//Do skill
 				if (attributes->getLevel() >= 5)
@@ -594,124 +618,182 @@ void Player::handleInput(float dt)
 					skill = 1;
 				}
 			}
-			if (app->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+			else if (app->input->getMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 			{
-				current_input_event = I_ATTACK;
+				//Do skill
+				if (attributes->getLevel() >= 3)
+				{
+					current_input_event = I_SKILL;
+					skill = 2;
+				}
+			}
+			else
+			{
+				current_action = IDLE;
+				if (app->input->getKey(SDL_SCANCODE_W) == KEY_REPEAT)
+				{
+					iPoint tileCollision = app->map->WorldToMap(worldPosition.x, worldPosition.y - 20);
+
+					MapLayer* walkability = NULL;
+					std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
+					while (it != app->map->data.layers.end())
+					{
+						if ((*it)->name == "Navigation")
+						{
+							walkability = *it;
+							break;
+						}
+						it++;
+					}
+					if (!((walkability != NULL)))
+					{
+						LOG("Couldn't find 'Walkable' layer");
+					}
+
+					if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+					{
+						worldPosition.y -= attributes->getMovementSpeed()*dt;
+						collider->rect.y -= attributes->getMovementSpeed()*dt;
+					}
+
+					current_input_event = I_WALK;
+
+				}
+				if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
+				{
+					iPoint tileCollision = app->map->WorldToMap(worldPosition.x - 50, worldPosition.y);
+
+					MapLayer* walkability = NULL;
+					std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
+					while (it != app->map->data.layers.end())
+					{
+						if ((*it)->name == "Navigation")
+						{
+							walkability = *it;
+							break;
+						}
+						it++;
+					}
+					if (!((walkability != NULL)))
+					{
+						LOG("Couldn't find 'Walkable' layer");
+					}
+
+					if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+					{
+						worldPosition.x -= attributes->getMovementSpeed()*dt;
+						collider->rect.x -= attributes->getMovementSpeed()*dt;
+					}
+					current_input_event = I_WALK;
+				}
+				if (app->input->getKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				{
+					iPoint tileCollision = app->map->WorldToMap(worldPosition.x + 50, worldPosition.y);
+
+					MapLayer* walkability = NULL;
+					std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
+					while (it != app->map->data.layers.end())
+					{
+						if ((*it)->name == "Navigation")
+						{
+							walkability = *it;
+							break;
+						}
+						it++;
+					}
+					if (!((walkability != NULL)))
+					{
+						LOG("Couldn't find 'Walkable' layer");
+					}
+
+					if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+					{
+						worldPosition.x += attributes->getMovementSpeed()*dt;
+						collider->rect.x += attributes->getMovementSpeed()*dt;
+					}
+					current_input_event = I_WALK;
+				}
+				if (app->input->getKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				{
+					iPoint tileCollision = app->map->WorldToMap(worldPosition.x, worldPosition.y + 20);
+
+					MapLayer* walkability = NULL;
+					std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
+					while (it != app->map->data.layers.end())
+					{
+						if ((*it)->name == "Navigation")
+						{
+							walkability = *it;
+							break;
+						}
+						it++;
+					}
+					if (!((walkability != NULL)))
+					{
+						LOG("Couldn't find 'Walkable' layer");
+					}
+
+					if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+					{
+						worldPosition.y += attributes->getMovementSpeed()*dt;
+						collider->rect.y += attributes->getMovementSpeed()*dt;
+					}
+					current_input_event = I_WALK;
+				}
+
 				
-			}
-			if (app->input->getKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			{
-				iPoint tileCollision = app->map->WorldToMap(worldPosition.x, worldPosition.y-20);
-				
-				MapLayer* walkability = NULL;
-				std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
-				while (it != app->map->data.layers.end())
+				/*
+				if (app->input->getKey(SDL_SCANCODE_S) == KEY_REPEAT)
 				{
-					if ((*it)->name == "Navigation")
+					if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
 					{
-						walkability = *it;
-						break;
+						current_direction = D_FRONT_LEFT;
 					}
-					it++;
-				}
-				if (!((walkability != NULL)))
-				{
-					LOG("Couldn't find 'Walkable' layer");
-				}
-
-				if (walkability->get(tileCollision.x, tileCollision.y) == 2)
-				{
-					worldPosition.y -= attributes->getMovementSpeed()*dt;
-					collider->SetPos(worldPosition.x - collider->rect.w / 2, worldPosition.y - collider->rect.h);
-				}
-
-				
-			}
-			if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				iPoint tileCollision = app->map->WorldToMap(worldPosition.x - 50, worldPosition.y);
-
-				MapLayer* walkability = NULL;
-				std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
-				while (it != app->map->data.layers.end())
-				{
-					if ((*it)->name == "Navigation")
+					else if (app->input->getKey(SDL_SCANCODE_D) == KEY_REPEAT)
 					{
-						walkability = *it;
-						break;
+						current_direction = D_FRONT_RIGHT;
 					}
-					it++;
-				}
-				if (!((walkability != NULL)))
-				{
-					LOG("Couldn't find 'Walkable' layer");
-				}
-
-				if (walkability->get(tileCollision.x, tileCollision.y) == 2)
-				{
-					worldPosition.x -= attributes->getMovementSpeed()*dt;
-					collider->SetPos(worldPosition.x - collider->rect.w / 2, worldPosition.y - collider->rect.h);
-				}
-			}
-			if (app->input->getKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				iPoint tileCollision = app->map->WorldToMap(worldPosition.x + 50, worldPosition.y);
-
-				MapLayer* walkability = NULL;
-				std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
-				while (it != app->map->data.layers.end())
-				{
-					if ((*it)->name == "Navigation")
+					else
 					{
-						walkability = *it;
-						break;
+						current_direction = D_FRONT;
 					}
-					it++;
-				}
-				if (!((walkability != NULL)))
-				{
-					LOG("Couldn't find 'Walkable' layer");
-				}
 
-				if (walkability->get(tileCollision.x, tileCollision.y) == 2)
-				{
-					worldPosition.x += attributes->getMovementSpeed()*dt;
-					collider->SetPos(worldPosition.x - collider->rect.w / 2, worldPosition.y - collider->rect.h);
 				}
-			}
-			if (app->input->getKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			{
-				iPoint tileCollision = app->map->WorldToMap(worldPosition.x, worldPosition.y + 20);
-
-				MapLayer* walkability = NULL;
-				std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
-				while (it != app->map->data.layers.end())
+				else if (app->input->getKey(SDL_SCANCODE_W) == KEY_REPEAT)
 				{
-					if ((*it)->name == "Navigation")
+					if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
 					{
-						walkability = *it;
-						break;
+						current_direction = D_BACK_LEFT;
 					}
-					it++;
+					else if (app->input->getKey(SDL_SCANCODE_D) == KEY_REPEAT)
+					{
+						current_direction = D_BACK_RIGHT;
+					}
+					else
+					{
+						current_direction = D_BACK;
+					}
 				}
-				if (!((walkability != NULL)))
+				else if (app->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
-					LOG("Couldn't find 'Walkable' layer");
+					current_direction = D_LEFT;
 				}
-
-				if (walkability->get(tileCollision.x, tileCollision.y) == 2)
+				else if (app->input->getKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
-					worldPosition.y += attributes->getMovementSpeed()*dt;
-					collider->SetPos(worldPosition.x - collider->rect.w / 2, worldPosition.y - collider->rect.h);
+					current_direction = D_RIGHT;
 				}
+				else
+				{
+					current_action = IDLE;
+				}*/
 			}
 		}
-		else
-		{
-			
-		}
+		
+
 	}
 	inputBlocked = false;
+
+	//LOG("Direction: %d", current_direction);
 	//LOG("Input: %d", current_input_event);
 	//LOG("Action: %d", current_action);
 }
