@@ -39,7 +39,9 @@ bool Act1::start()
 
 	//music act 1
 	app->audio->PlayMusic("audio/music/town1.ogg");
-
+	
+	//fx walls
+	hollyFireFx = app->audio->LoadFx("audio/fx/infernoloop.wav");
 	
 	if (debug == NULL)
 		debug = app->tex->Load("maps/mini_path.png");
@@ -258,14 +260,19 @@ void Act1::OnCollision(Collider* c1, Collider* c2)
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_HOLLYFIRE || c1->type == COLLIDER_HOLLYFIRE && c2->type == COLLIDER_PLAYER)
 	{
 		if (c1->type == COLLIDER_PLAYER)
-		{
+		{	
 			float dmg = app->game->player->attributes->getMaxLife()*0.6*app->getDT();
 			app->game->player->attributes->addLife(-dmg);
+			//fx sound
+			//app->audio->PlayFx(hollyFireFx, 0);
+
 		}
 		else if (c2->type == COLLIDER_PLAYER)
 		{
 			float dmg = app->game->player->attributes->getMaxLife()*0.6*app->getDT();
 			app->game->player->attributes->addLife(-dmg);
+			//fx sound
+			//app->audio->PlayFx(hollyFireFx, 0);
 		}
 	}
 
