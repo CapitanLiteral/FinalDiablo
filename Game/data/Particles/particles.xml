@@ -21,7 +21,7 @@
 
 		<duration value = "0.5f" />
 		
-		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+		<collider offsetX = "25" offsetY = "40" sizeW = "50" sizeH = "50" type = "3" />
 
 
 	</radial_emisor>
@@ -89,7 +89,7 @@
 
 		<particle_life value = "1" />
 		
-		<collider offsetX = "" offsetY = "" sizeW = "" sizeH = "" type = "" />
+		<collider offsetX = "25" offsetY = "40" sizeW = "50" sizeH = "50" type = "3" />
 
 
 	</cross2_emisor>
