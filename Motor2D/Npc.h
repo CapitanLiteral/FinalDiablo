@@ -37,6 +37,7 @@ public:
 	GuiImage* finalFightImage = NULL;
 	bool readed;
 	bool readyForSecondZone;
+	bool particleDestroyed;
 	float	playerRange;
 	Timer ret;
 	Timer ret1;

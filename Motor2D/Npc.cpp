@@ -31,6 +31,7 @@ NpcCounselor::NpcCounselor(const iPoint &p, uint ID)
 
 	readed = true;
 	readyForSecondZone = false;
+	particleDestroyed = true;
 
 	SDL_Rect rect = { worldPosition.x - colliderOffset.x,
 			worldPosition.y - colliderOffset.y,	// Position
@@ -58,9 +59,12 @@ bool NpcCounselor::entityUpdate(float dt)
 			if (app->game->player->attributes->getLevel() == 1  || readed)
 			{
 				introductionImage->Activate();
-				app->sm->act1->hollyFire->destroyParticle();
-				app->sm->act1->hollyFire1->destroyParticle();
-				app->sm->act1->hollyFire2->destroyParticle();
+				if (particleDestroyed){
+					app->sm->act1->hollyFire->destroyParticle();
+					app->sm->act1->hollyFire1->destroyParticle();
+					app->sm->act1->hollyFire2->destroyParticle();
+					particleDestroyed = false;
+				}
 				readed = false;
 			}
 			else if (app->game->player->attributes->getLevel() < 5)

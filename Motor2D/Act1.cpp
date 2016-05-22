@@ -67,6 +67,10 @@ bool Act1::start()
 	app->render->addSpriteToList(walls);
 	
 	createHollyFire();
+	iPoint p1;
+	p1.x = -1900;
+	p1.y = 1960;
+	app->game->em->createPaladin(p1);
 
 	app->game->player->setWorldPosition({ -2700, 1800 });
 	app->game->player->setStartingWorldPosition({ -2700, 1800 });
