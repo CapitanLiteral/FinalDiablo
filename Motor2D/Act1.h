@@ -62,12 +62,8 @@ public:
 	Entity* counselor;
 	Entity* healer;
 
-private:
-	SDL_Texture* wallsTexture = nullptr;
-	Sprite* walls;
-
 	Particle hFire;
-	Particle* hollyFire=NULL;
+	Particle* hollyFire = NULL;
 
 	Particle hFire1;
 	Particle* hollyFire1 = NULL;
@@ -80,6 +76,10 @@ private:
 
 	Particle hFire4;
 	Particle* hollyFire4 = NULL;
+
+private:
+	SDL_Texture* wallsTexture = nullptr;
+	Sprite* walls;
 
 };
 
