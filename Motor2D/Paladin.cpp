@@ -78,22 +78,11 @@ bool Paladin::entityUpdate(float dt)
 		case E_WALK:
 			updateMovement(dt);
 			break;
-		case E_SKILL:
-			break;
-		case E_BASIC_ATTACK:
-			if (currentAnimation->isOver() && player != NULL)
-			{
-				player->attributes->damage(attributes, 0);
-				//app->audio->PlayFx(fxPlayerGetHit);
-				current_input = EI_STOP;
-				currentAnimation->Reset();
-			}
-			break;
 		}
 	}
 	else
 	{
-		collider->SetPos(10000, 0);
+		collider->to_delete = true;
 	}
 
 	//LOG("Entity life: %f", attributes->getLife());
