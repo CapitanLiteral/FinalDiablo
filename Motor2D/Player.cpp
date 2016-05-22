@@ -245,7 +245,7 @@ bool Player::update(float dt)
 			if (current_animation->isOver())
 			{
 				//Particula de atac basic
-				Particle* p = app->particleManager->createParticle(basicShot, worldPosition.x, worldPosition.y, 1, {25, 40}, {50, 50}, COLLIDER_PLAYER_PARTICLE, this);
+				Particle* p = app->particleManager->createParticle(basicShot, worldPosition.x, worldPosition.y, 1.25f, {25, 40}, {50, 50}, COLLIDER_PLAYER_PARTICLE, this);
 
 				fPoint mousePosition;
 				mousePosition.x = app->input->getMouseWorldPosition().x;
