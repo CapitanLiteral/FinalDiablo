@@ -282,7 +282,7 @@ void Act1::createHollyFire()
 	hFire.life = 0;
 	hFire.texture = app->tex->Load("images/hollyFire.png");
 
-	hollyFire = app->particleManager->createParticle(hFire, -2300, 1900, INT_MAX, { 0, 0 }, { 25, 94 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire = app->particleManager->createParticle(hFire, -2300, 1900, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
 
 	//hollyFire1
 	hFire1.anim.setAnimation(0, 0, 25, 94, 3, 2);
@@ -293,7 +293,7 @@ void Act1::createHollyFire()
 	hFire1.life = 0;
 	hFire1.texture = app->tex->Load("images/hollyFire.png");
 
-	hollyFire1 = app->particleManager->createParticle(hFire1, -2250, 1930, INT_MAX, { 0, 0 }, { 25, 94 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire1 = app->particleManager->createParticle(hFire1, -2250, 1930, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
 
 	//hollyFire2
 	hFire2.anim.setAnimation(0, 0, 25, 94, 3, 2);
@@ -304,6 +304,6 @@ void Act1::createHollyFire()
 	hFire2.life = 0;
 	hFire2.texture = app->tex->Load("images/hollyFire.png");
 
-	hollyFire2 = app->particleManager->createParticle(hFire2, -2200, 1960, INT_MAX, { 0, 0 }, { 25, 94 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire2 = app->particleManager->createParticle(hFire2, -2200, 1960, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
 
 }
