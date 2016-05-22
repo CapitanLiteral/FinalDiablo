@@ -109,6 +109,7 @@ private:
 	Particle basicShot;
 
 	void drawDebug() const;
+	void debugTp(iPoint pos);
 
 //Player movement
 private: //Do all getters and setters

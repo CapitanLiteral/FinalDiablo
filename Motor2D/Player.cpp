@@ -147,7 +147,14 @@ bool Player::start()
 }
 bool Player::preUpdate()
 {
-	
+	if (app->debug)
+	{
+		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+		{
+			iPoint p = app->input->getMouseWorldPosition();
+			debugTp(p);
+		}
+	}
 
 	return true;
 }
@@ -1278,4 +1285,10 @@ void Player::setCurrentAnimation()
 	default:
 		break;
 	}
+}
+
+void Player::debugTp(iPoint pos)
+{
+	setWorldPosition(pos);
+	setColliderPosition(pos);
 }

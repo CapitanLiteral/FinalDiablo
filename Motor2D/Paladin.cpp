@@ -18,7 +18,7 @@ Paladin::Paladin(iPoint pos) : Entity()
 
 	type = PALADIN;
 
-	visionRadius = 120.0f;
+	visionRadius = 180.0f;
 	targetRadius = 30.0f;
 
 	entityAnim = app->game->em->getPaladinAnimation();

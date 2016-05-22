@@ -21,7 +21,7 @@ Boss::Boss(iPoint pos)
 	type = BOSS;
 	entityAnim = app->game->em->getBossAnimation();
 
-	visionRadius = 160.0f;
+	visionRadius = 200.0f;
 
 	currentState = E_IDLE;
 	currentDirection = E_DOWN;
@@ -78,7 +78,6 @@ bool Boss::entityUpdate(float dt)
 			break;
 		case E_BASIC_ATTACK:
 			int i = (rand() % 2);
-			LOG("I: %d", i);
 			switch (i)
 			{
 			case 0:
