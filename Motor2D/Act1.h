@@ -110,7 +110,27 @@ public:
 	Particle* hollyFire34 = NULL;
 	Particle* hollyFire35 = NULL;
 	Particle* hollyFire36 = NULL;
-
+	//ROAD7
+	Particle* hollyFire37 = NULL;
+	Particle* hollyFire38 = NULL;
+	Particle* hollyFire39 = NULL;
+	Particle* hollyFire40 = NULL;
+	Particle* hollyFire41 = NULL;
+	Particle* hollyFire42 = NULL;
+	//ROAD8
+	Particle* hollyFire43 = NULL;
+	Particle* hollyFire44 = NULL;
+	Particle* hollyFire45 = NULL;
+	Particle* hollyFire46 = NULL;
+	Particle* hollyFire47 = NULL;
+	Particle* hollyFire48 = NULL;
+	//ROAD9
+	Particle* hollyFire49 = NULL;
+	Particle* hollyFire50 = NULL;
+	Particle* hollyFire51 = NULL;
+	Particle* hollyFire52 = NULL;
+	Particle* hollyFire53 = NULL;
+	Particle* hollyFire54 = NULL;
 private:
 	SDL_Texture* wallsTexture = nullptr;
 	Sprite* walls;

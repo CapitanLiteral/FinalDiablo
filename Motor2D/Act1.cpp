@@ -72,7 +72,7 @@ bool Act1::start()
 	app->game->player->setStartingWorldPosition({ -2700, 1800 });
 	
 	counselor = app->game->em->createNpc({-2480,1800}, NPC_COUNSELOR);
-	//healer = app->game->em->createNpc({ 1440, 2265 }, NPC_HEALER);
+	healer = app->game->em->createNpc({ 960, 2800, }, NPC_HEALER);
 	return true;
 }
 
@@ -346,5 +346,29 @@ void Act1::createHollyFire()
 	hollyFire34 = app->particleManager->createParticle(hFire, 1940, 1460, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
 	hollyFire35 = app->particleManager->createParticle(hFire, 1990, 1480, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
 	hollyFire36 = app->particleManager->createParticle(hFire, 2040, 1500, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+
+	//ROAD7
+	hollyFire37 = app->particleManager->createParticle(hFire, 1490, 2040, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire38 = app->particleManager->createParticle(hFire, 1440, 2060, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire39 = app->particleManager->createParticle(hFire, 1390, 2080, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire40 = app->particleManager->createParticle(hFire, 1340, 2100, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire41 = app->particleManager->createParticle(hFire, 1290, 2120, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire42 = app->particleManager->createParticle(hFire, 1240, 2140, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+
+	//ROAD8
+	hollyFire43 = app->particleManager->createParticle(hFire, 690, 2360, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire44 = app->particleManager->createParticle(hFire, 640, 2380, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire45 = app->particleManager->createParticle(hFire, 590, 2400, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire46 = app->particleManager->createParticle(hFire, 540, 2420, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire47 = app->particleManager->createParticle(hFire, 490, 2440, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire48 = app->particleManager->createParticle(hFire, 450, 2460, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+
+	//ROAD9
+	hollyFire49 = app->particleManager->createParticle(hFire, -410, 2660, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire50 = app->particleManager->createParticle(hFire, -460, 2640, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire51 = app->particleManager->createParticle(hFire, -510, 2620, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire52 = app->particleManager->createParticle(hFire, -560, 2600, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire53 = app->particleManager->createParticle(hFire, -610, 2580, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+	hollyFire54 = app->particleManager->createParticle(hFire, -660, 2560, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
 
 }

@@ -21,7 +21,7 @@ Player::Player()
 	AttributeBuilder builder;
 	builder.base_damage = 50;
 	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
-	builder.base_lifeRegen = 15;
+	builder.base_lifeRegen = 5;
 	attributes = new PlayerAttributes(builder);
 
 	worldPosition.x = 0;
@@ -78,7 +78,7 @@ bool Player::start()
 		AttributeBuilder builder;
 		builder.base_damage = 50;
 		builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
-		builder.base_lifeRegen = 15;
+		builder.base_lifeRegen = 2;
 		attributes = new PlayerAttributes(builder);
 	}
 		
@@ -147,7 +147,14 @@ bool Player::start()
 }
 bool Player::preUpdate()
 {
-	
+	if (app->debug)
+	{
+		if (app->input->getMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN)
+		{
+			iPoint p = app->input->getMouseWorldPosition();
+			debugTp(p);
+		}
+	}
 
 	return true;
 }
@@ -1278,4 +1285,10 @@ void Player::setCurrentAnimation()
 	default:
 		break;
 	}
+}
+
+void Player::debugTp(iPoint pos)
+{
+	setWorldPosition(pos);
+	setColliderPosition(pos);
 }

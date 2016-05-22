@@ -76,14 +76,14 @@ bool EntityManager::preUpdate()
 
 	if (app->debug)
 	{
-		if (app->input->getKey(SDL_SCANCODE_1) == KEY_DOWN)
+		if (app->input->getKey(SDL_SCANCODE_7) == KEY_DOWN)
 		{
 			iPoint point = app->input->getMouseWorldPosition();
 
 			if (getEntityOnMouse()==NULL)
 				createPaladin(point);
 		}
-		if (app->input->getKey(SDL_SCANCODE_2) == KEY_DOWN)
+		if (app->input->getKey(SDL_SCANCODE_8) == KEY_DOWN)
 		{
 			iPoint point = app->input->getMouseWorldPosition();
 
@@ -102,12 +102,19 @@ bool EntityManager::preUpdate()
 			if (getEntityOnMouse() == NULL)
 				createWolf(point, points);//CARE: THIS IS TMP(vector)
 		}
-		if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN)
+		if (app->input->getKey(SDL_SCANCODE_9) == KEY_DOWN)
 		{
 			iPoint point = app->input->getMouseWorldPosition();
 
 			if (getEntityOnMouse() == NULL)
 				createGriswold(point);
+		}
+		if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
+		{
+			iPoint point = app->input->getMouseWorldPosition();
+
+			if (getEntityOnMouse() == NULL)
+				createBoss(point);
 		}
 	}
 
