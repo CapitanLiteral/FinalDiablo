@@ -263,16 +263,25 @@ void Act1::OnCollision(Collider* c1, Collider* c2)
 		{	
 			float dmg = app->game->player->attributes->getMaxLife()*0.6*app->getDT();
 			app->game->player->attributes->addLife(-dmg);
-			//fx sound
-			//app->audio->PlayFx(hollyFireFx, 0);
+			//fx sound for the dead
+			if (app->game->player->attributes->getLife() > 50)
+			{
+				app->audio->PlayFx(hollyFireFx, 0);
+				
+			}
+			
 
 		}
 		else if (c2->type == COLLIDER_PLAYER)
 		{
 			float dmg = app->game->player->attributes->getMaxLife()*0.6*app->getDT();
 			app->game->player->attributes->addLife(-dmg);
-			//fx sound
-			//app->audio->PlayFx(hollyFireFx, 0);
+			//fx sound for the dead
+			if (app->game->player->attributes->getLife() > 50)
+			{
+				app->audio->PlayFx(hollyFireFx, 0);
+				soundcheck = false;
+			}
 		}
 	}
 

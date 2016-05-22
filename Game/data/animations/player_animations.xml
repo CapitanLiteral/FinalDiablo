@@ -123,7 +123,7 @@
 			
 			<loop value = "0" />
 
-			<speed value = "0.5" />
+			<speed value = "0.15" />
 
 		</BASIC_ATTACK>
 
@@ -209,50 +209,9 @@
 
 		</GETHIT>
 
-		<ATTACK2> <!-- Attack2 5-->
+		<SPECIAL> <!-- Special 5-->
 
 			<name value = "5"  />
-			<UP> <!-- Up 0-->
-				<values name = "0" x ="0" y = "3600" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
-			</UP>
-
-			<UP_RIGHT> <!-- UP_RIGHT 1-->
-				<values name = "1" x ="0" y = "3840" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
-			</UP_RIGHT>
-
-				<RIGHT> <!-- RIGHT 2-->
-				<values name = "2" x ="0" y = "4080" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
-			</RIGHT>
-
-			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
-				<values name = "3" x ="0" y = "4320" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
-			</DOWN_RIGHT>
-
-			<DOWN> <!-- DOWN 4-->
-				<values name = "4" x ="0" y = "4560" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
-			</DOWN>
-
-			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
-				<values name = "5" x ="0" y = "4800" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
-			</DOWN_LEFT>
-
-			<LEFT> <!-- LEFT 6-->
-				<values name = "6" x ="0" y = "5040" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
-			</LEFT>
-
-			<UP_LEFT> <!-- UP_LEFT 7-->
-				<values name = "7" x ="0" y = "5280" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
-			</UP_LEFT>
-			
-			<loop value = "0" />
-
-			<speed value = "0.15" />
-
-		</ATTACK2>
-
-		<SPECIAL> <!-- Special 6-->
-
-			<name value = "6"  />
 			<UP> <!-- Up 0-->
 				<values name = "0" x ="2040" y = "120" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "92"/>
 			</UP>
@@ -291,6 +250,47 @@
 
 		</SPECIAL>
 
+		<ATTACK2> <!-- Attack2 6-->
+
+			<name value = "6"  />
+			<UP> <!-- Up 0-->
+				<values name = "0" x ="0" y = "3600" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
+			</UP>
+
+			<UP_RIGHT> <!-- UP_RIGHT 1-->
+				<values name = "1" x ="0" y = "3840" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
+			</UP_RIGHT>
+
+				<RIGHT> <!-- RIGHT 2-->
+				<values name = "2" x ="0" y = "4080" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
+			</RIGHT>
+
+			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
+				<values name = "3" x ="0" y = "4320" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
+			</DOWN_RIGHT>
+
+			<DOWN> <!-- DOWN 4-->
+				<values name = "4" x ="0" y = "4560" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
+			</DOWN>
+
+			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
+				<values name = "5" x ="0" y = "4800" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
+			</DOWN_LEFT>
+
+			<LEFT> <!-- LEFT 6-->
+				<values name = "6" x ="0" y = "5040" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
+			</LEFT>
+
+			<UP_LEFT> <!-- UP_LEFT 7-->
+				<values name = "7" x ="0" y = "5280" w = "240" h = "240" frameNumber = "18" margin = "" pivot_x = "120" pivot_y = "184"/>
+			</UP_LEFT>
+			
+			<loop value = "0" />
+
+			<speed value = "0.15" />
+
+		</ATTACK2>
+
 	</BARBARIAN>
 
 	<BUTCHER>
@@ -300,40 +300,40 @@
 		<IDLE> <!-- Idle -->
 			<name value = "0"  />
 			<UP> <!-- Up 0-->
-		<values name = "0" x ="0" y = "512" w = "128" h = "128" frameNumber = "10" margin = "" pivot_x = "55" pivot_y = "90"/>
-	</UP>
+				<values name = "0" x ="0" y = "120" w = "120" h = "120" frameNumber = "7" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP>
 
-	<UP_RIGHT> <!-- UP_RIGHT 1-->
-		<values name = "1" x ="0" y = "640" w = "128" h = "128" frameNumber = "10" margin = "" pivot_x = "63" pivot_y = "90"/>
-	</UP_RIGHT>
+			<UP_RIGHT> <!-- UP_RIGHT 1-->
+				<values name = "1" x ="0" y = "240" w = "120" h = "120" frameNumber = "7" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP_RIGHT>
 
-	<RIGHT> <!-- RIGHT 2-->
-		<values name = "2" x ="0" y = "768" w = "128" h = "128" frameNumber = "10" margin = "" pivot_x = "74" pivot_y = "90"/>
-	</RIGHT>
+			<RIGHT> <!-- RIGHT 2-->
+				<values name = "2" x ="0" y = "360" w = "120" h = "120" frameNumber = "7" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</RIGHT>
 
-	<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
-		<values name = "3" x ="0" y = "896" w = "128" h = "128" frameNumber = "10" margin = "" pivot_x = "79" pivot_y = "90"/>
-	</DOWN_RIGHT>
+			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
+				<values name = "3" x ="0" y = "480" w = "120" h = "120" frameNumber = "7" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_RIGHT>
 
-	<DOWN> <!-- DOWN 4-->
-		<values name = "4" x ="0" y = "0" w = "128" h = "128" frameNumber = "10" margin = "" pivot_x = "55" pivot_y = "90"/>
-	</DOWN>
+			<DOWN> <!-- DOWN 4-->
+				<values name = "4" x ="0" y = "600" w = "120" h = "120" frameNumber = "7" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN>
 
-	<DOWN_LEFT> <!-- DOWN_LEFT 5-->
-		<values name = "5" x ="0" y = "128" w = "128" h = "128" frameNumber = "10" margin = "" pivot_x = "50" pivot_y = "90"/>
-	</DOWN_LEFT>
+			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
+				<values name = "5" x ="0" y = "720" w = "120" h = "120" frameNumber = "7" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_LEFT>
 
-	<LEFT> <!-- LEFT 6-->
-		<values name = "6" x ="0" y = "256" w = "128" h = "128" frameNumber = "10" margin = "" pivot_x = "55" pivot_y = "90"/>
-	</LEFT>
+			<LEFT> <!-- LEFT 6-->
+				<values name = "6" x ="0" y = "840" w = "120" h = "120" frameNumber = "7" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</LEFT>
 
-	<UP_LEFT> <!-- UP_LEFT 7-->
-		<values name = "7" x ="0" y = "384" w = "128" h = "128" frameNumber = "10" margin = "" pivot_x = "60" pivot_y = "90"/>
-	</UP_LEFT>
-			
-	<loop value = "1" />
+			<UP_LEFT> <!-- UP_LEFT 7-->
+				<values name = "7" x ="0" y = "960" w = "120" h = "120" frameNumber = "7" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP_LEFT>
+					
+			<loop value = "1" />
 
-	<speed value = "0.15" />
+			<speed value = "0.15" />
 
 		</IDLE>
 
@@ -341,40 +341,40 @@
 
 			<name value = "1"  />
 			<UP> <!-- Up 0-->
-		<values name = "0" x ="0" y = "1536" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "77" pivot_y = "90"/>
-	</UP>
+				<values name = "0" x ="960" y = "120" w = "120" h = "120" frameNumber = "11" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP>
 
-	<UP_RIGHT> <!-- UP_RIGHT 1-->
-		<values name = "1" x ="0" y = "1664" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "65" pivot_y = "90"/>
-	</UP_RIGHT>
+			<UP_RIGHT> <!-- UP_RIGHT 1-->
+				<values name = "1" x ="960" y = "240" w = "120" h = "120" frameNumber = "11" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP_RIGHT>
 
-	<RIGHT> <!-- RIGHT 2-->
-		<values name = "2" x ="0" y = "1792" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "60" pivot_y = "90"/>
-	</RIGHT>
+			<RIGHT> <!-- RIGHT 2-->
+				<values name = "2" x ="960" y = "360" w = "120" h = "120" frameNumber = "11" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</RIGHT>
 
-	<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
-		<values name = "3" x ="0" y = "1920" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "58" pivot_y = "90"/>
-	</DOWN_RIGHT>
+			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
+				<values name = "3" x ="960" y = "480" w = "120" h = "120" frameNumber = "11" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_RIGHT>
 
-	<DOWN> <!-- DOWN 4-->
-		<values name = "4" x ="0" y = "1024" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "60" pivot_y = "90"/>
-	</DOWN>
+			<DOWN> <!-- DOWN 4-->
+				<values name = "4" x ="960" y = "600" w = "120" h = "120" frameNumber = "11" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN>
 
-	<DOWN_LEFT> <!-- DOWN_LEFT 5-->
-		<values name = "5" x ="0" y = "1152" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "65" pivot_y = "90"/>
-	</DOWN_LEFT>
+			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
+				<values name = "5" x ="960" y = "720" w = "120" h = "120" frameNumber = "11" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_LEFT>
 
-	<LEFT> <!-- LEFT 6-->
-		<values name = "6" x ="0" y = "1280" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "65" pivot_y = "100"/>
-	</LEFT>
+			<LEFT> <!-- LEFT 6-->
+				<values name = "6" x ="960" y = "840" w = "120" h = "120" frameNumber = "11" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</LEFT>
 
-	<UP_LEFT> <!-- UP_LEFT 7-->
-		<values name = "7" x ="0" y = "1408" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "77" pivot_y = "95"/>
-	</UP_LEFT>
-			
-	<loop value = "1" />
+			<UP_LEFT> <!-- UP_LEFT 7-->
+				<values name = "7" x ="960" y = "960" w = "120" h = "130" frameNumber = "11" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP_LEFT>
+					
+			<loop value = "1" />
 
-	<speed value = "0.15" />
+			<speed value = "0.15" />
 
 		</WALK>
 
@@ -382,40 +382,40 @@
 
 			<name value = "2"  />
 			<UP> <!-- Up 0-->
-		<values name = "0" x ="0" y = "3584" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "56" pivot_y = "90"/>
-	</UP>
+				<values name = "0" x ="0" y = "1200" w = "120" h = "120" frameNumber = "10" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP>
 
-	<UP_RIGHT> <!-- UP_RIGHT 1-->
-		<values name = "1" x ="0" y = "3712" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "50" pivot_y = "90"/>
-	</UP_RIGHT>
+			<UP_RIGHT> <!-- UP_RIGHT 1-->
+				<values name = "1" x ="0" y = "1320" w = "120" h = "120" frameNumber = "10" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP_RIGHT>
 
-	<RIGHT> <!-- RIGHT 2-->
-		<values name = "2" x ="0" y = "3840" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "56" pivot_y = "90"/>
-	</RIGHT>
+			<RIGHT> <!-- RIGHT 2-->
+				<values name = "2" x ="0" y = "1440" w = "120" h = "120" frameNumber = "10" margin = "" pivot_x = "49" pivot_y = "92"/>
+			</RIGHT>
 
-	<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
-		<values name = "3" x ="0" y = "3968" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "58" pivot_y = "90"/>
-	</DOWN_RIGHT>
+			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
+				<values name = "3" x ="0" y = "1560" w = "120" h = "120" frameNumber = "10" margin = "" pivot_x = "40" pivot_y = "92"/>
+			</DOWN_RIGHT>
 
-	<DOWN> <!-- DOWN 4-->
-		<values name = "4" x ="0" y = "3072" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "56" pivot_y = "90"/>
-	</DOWN>
+			<DOWN> <!-- DOWN 4-->
+				<values name = "4" x ="0" y = "1680" w = "120" h = "120" frameNumber = "10" margin = "" pivot_x = "49" pivot_y = "92"/>
+			</DOWN>
 
-	<DOWN_LEFT> <!-- DOWN_LEFT 5-->
-		<values name = "5" x ="0" y = "3200" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "56" pivot_y = "90"/>
-	</DOWN_LEFT>
+			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
+				<values name = "5" x ="0" y = "1800" w = "120" h = "120" frameNumber = "10" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_LEFT>
 
-	<LEFT> <!-- LEFT 6-->
-		<values name = "6" x ="0" y = "3328" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "56" pivot_y = "90"/>
-	</LEFT>
+			<LEFT> <!-- LEFT 6-->
+				<values name = "6" x ="0" y = "1920" w = "120" h = "120" frameNumber = "10" margin = "" pivot_x = "71" pivot_y = "92"/>
+			</LEFT>
 
-	<UP_LEFT> <!-- UP_LEFT 7-->
-		<values name = "7" x ="0" y = "3456" w = "128" h = "128" frameNumber = "12" margin = "" pivot_x = "70" pivot_y = "90"/>
-	</UP_LEFT>
-			
-	<loop value = "0" />
+			<UP_LEFT> <!-- UP_LEFT 7-->
+				<values name = "7" x ="0" y = "2040" w = "120" h = "120" frameNumber = "10" margin = "" pivot_x = "70" pivot_y = "92"/>
+			</UP_LEFT>
+					
+			<loop value = "0" />
 
-	<speed value = "0.15" />
+			<speed value = "0.15" />
 
 		</BASIC_ATTACK>
 
@@ -423,42 +423,124 @@
 
 			<name value = "3"  />
 			<UP> <!-- Up 0-->
-		<values name = "0" x ="0" y = "2560" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "70" pivot_y = "65"/>
-	</UP>
+				<values name = "0" x ="0" y = "2400" w = "240" h = "180" frameNumber = "19" margin = "" pivot_x = "120" pivot_y = "138"/>
+			</UP>
 
-	<UP_RIGHT> <!-- UP_RIGHT 1-->
-		<values name = "1" x ="0" y = "2688" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "70" pivot_y = "65"/>
-	</UP_RIGHT>
+			<UP_RIGHT> <!-- UP_RIGHT 1-->
+				<values name = "1" x ="0" y = "2580" w = "240" h = "180" frameNumber = "19" margin = "" pivot_x = "120" pivot_y = "138"/>
+			</UP_RIGHT>
 
-	<RIGHT> <!-- RIGHT 2-->
-		<values name = "2" x ="0" y = "2816" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "65" pivot_y = "65"/>
-	</RIGHT>
+			<RIGHT> <!-- RIGHT 2-->
+				<values name = "2" x ="0" y = "2760" w = "240" h = "180" frameNumber = "19" margin = "" pivot_x = "120" pivot_y = "138"/>
+			</RIGHT>
 
-	<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
-		<values name = "3" x ="0" y = "2944" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "70" pivot_y = "65"/>
-	</DOWN_RIGHT>
+			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
+				<values name = "3" x ="0" y = "2940" w = "240" h = "180" frameNumber = "19" margin = "" pivot_x = "120" pivot_y = "138"/>
+			</DOWN_RIGHT>
 
-	<DOWN> <!-- DOWN 4-->
-		<values name = "4" x ="0" y = "2048" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "70" pivot_y = "70"/>
-	</DOWN>
+			<DOWN> <!-- DOWN 4-->
+				<values name = "4" x ="0" y = "3120" w = "240" h = "180" frameNumber = "19" margin = "" pivot_x = "120" pivot_y = "138"/>
+			</DOWN>
 
-	<DOWN_LEFT> <!-- DOWN_LEFT 5-->
-		<values name = "5" x ="0" y = "2176" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "70" pivot_y = "60"/>
-	</DOWN_LEFT>
+			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
+				<values name = "5" x ="0" y = "3300" w = "240" h = "180" frameNumber = "19" margin = "" pivot_x = "120" pivot_y = "138"/>
+			</DOWN_LEFT>
 
-	<LEFT> <!-- LEFT 6-->
-		<values name = "6" x ="0" y = "2304" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "70" pivot_y = "60"/>
-	</LEFT>
+			<LEFT> <!-- LEFT 6-->
+				<values name = "6" x ="0" y = "3480" w = "240" h = "180" frameNumber = "19" margin = "" pivot_x = "120" pivot_y = "138"/>
+			</LEFT>
 
-	<UP_LEFT> <!-- UP_LEFT 7-->
-		<values name = "7" x ="0" y = "2432" w = "128" h = "128" frameNumber = "1" margin = "" pivot_x = "70" pivot_y = "50"/>
-	</UP_LEFT>
-			
-	<loop value = "0" />
+			<UP_LEFT> <!-- UP_LEFT 7-->
+				<values name = "7" x ="0" y = "3660" w = "240" h = "180" frameNumber = "19" margin = "" pivot_x = "120" pivot_y = "138"/>
+			</UP_LEFT>
+					
+			<loop value = "0" />
 
-	<speed value = "0.15" />
+			<speed value = "0.15" />
 
 		</DEATH>
+
+		<GETHIT> <!-- Gethit 4-->
+
+			<name value = "4"  />
+			<UP> <!-- Up 0-->
+				<values name = "0" x ="2400" y = "120" w = "120" h = "120" frameNumber = "4" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP>
+
+			<UP_RIGHT> <!-- UP_RIGHT 1-->
+				<values name = "1" x ="2400" y = "240" w = "120" h = "120" frameNumber = "4" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP_RIGHT>
+
+			<RIGHT> <!-- RIGHT 2-->
+				<values name = "2" x ="2400" y = "360" w = "120" h = "120" frameNumber = "4" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</RIGHT>
+
+			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
+				<values name = "3" x ="2400" y = "480" w = "120" h = "120" frameNumber = "4" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_RIGHT>
+
+			<DOWN> <!-- DOWN 4-->
+				<values name = "4" x ="2400" y = "600" w = "120" h = "120" frameNumber = "4" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN>
+
+			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
+				<values name = "5" x ="2400" y = "720" w = "120" h = "120" frameNumber = "4" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_LEFT>
+
+			<LEFT> <!-- LEFT 6-->
+				<values name = "6" x ="2400" y = "840" w = "120" h = "120" frameNumber = "4" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</LEFT>
+
+			<UP_LEFT> <!-- UP_LEFT 7-->
+				<values name = "7" x ="2400" y = "960" w = "120" h = "120" frameNumber = "4" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP_LEFT>
+			
+			<loop value = "0" />
+
+			<speed value = "0.15" />
+
+		</GETHIT>
+
+		<SPECIAL> <!-- Special 5-->
+
+			<name value = "5"  />
+			<UP> <!-- Up 0-->
+				<values name = "0" x ="1320" y = "1200" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "102"/>
+			</UP>
+
+			<UP_RIGHT> <!-- UP_RIGHT 1-->
+				<values name = "1" x ="1320" y = "1320" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "107m"/>
+			</UP_RIGHT>
+
+			<RIGHT> <!-- RIGHT 2-->
+				<values name = "2" x ="1320" y = "1440" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "104"/>
+			</RIGHT>
+
+			<DOWN_RIGHT> <!-- DOWN_RIGHT 3-->
+				<values name = "3" x ="1320" y = "1560" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_RIGHT>
+
+			<DOWN> <!-- DOWN 4-->
+				<values name = "4" x ="1320" y = "1680" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN>
+
+			<DOWN_LEFT> <!-- DOWN_LEFT 5-->
+				<values name = "5" x ="1320" y = "1800" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</DOWN_LEFT>
+
+			<LEFT> <!-- LEFT 6-->
+				<values name = "6" x ="1320" y = "1920" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</LEFT>
+
+			<UP_LEFT> <!-- UP_LEFT 7-->
+				<values name = "7" x ="1320" y = "2040" w = "120" h = "120" frameNumber = "14" margin = "" pivot_x = "60" pivot_y = "92"/>
+			</UP_LEFT>
+			
+			<loop value = "0" />
+
+			<speed value = "0.15" />
+
+		</SPECIAL>
 
 	</BUTCHER>
 
