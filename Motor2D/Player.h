@@ -247,6 +247,9 @@ private:
    int walkFx;
    int walkFxDiablo;
    int deathFx;
+   int deathFxbarb;
+   int fireLaunch;
+
 };
 
 #endif

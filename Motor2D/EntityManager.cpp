@@ -87,8 +87,20 @@ bool EntityManager::preUpdate()
 		{
 			iPoint point = app->input->getMouseWorldPosition();
 
+			std::vector<iPoint> points;//CARE: THIS IS TMP(vector)
+			points.push_back({ -1110, 1750 });//CARE: THIS IS TMP(vector)
+			points.push_back({ -860, 1750 });//CARE: THIS IS TMP(vector)
+			points.push_back({ -860, 1550 });//CARE: THIS IS TMP(vector)
+			points.push_back({ -960, 1650 });//CARE: THIS IS TMP(vector)
+			points.push_back({ -1260, 1670 });//CARE: THIS IS TMP(vector)
+			points.push_back({ -1160, 1590 });//CARE: THIS IS TMP(vector)
+			points.push_back({ -980, 1590 });//CARE: THIS IS TMP(vector)
+			points.push_back({ -980, 1760 });//CARE: THIS IS TMP(vector)
+			points.push_back({ -730, 1650 });//CARE: THIS IS TMP(vector)
+
+
 			if (getEntityOnMouse() == NULL)
-				createWolf(point);
+				createWolf(point, points);//CARE: THIS IS TMP(vector)
 		}
 		if (app->input->getKey(SDL_SCANCODE_3) == KEY_DOWN)
 		{
@@ -618,11 +630,11 @@ Paladin* EntityManager::createPaladin(iPoint pos)
 	return ret;
 }
 
-Wolf* EntityManager::createWolf(iPoint pos)
+Wolf* EntityManager::createWolf(iPoint pos, std::vector<iPoint> points)
 {
 	Wolf* ret = NULL;
 
-	ret = new Wolf(pos);
+	ret = new Wolf(pos, points);//CARE: THIS IS TMP(vector)
 
 	ret->setWorldPosition(pos);
 	ret->setId(nextId);

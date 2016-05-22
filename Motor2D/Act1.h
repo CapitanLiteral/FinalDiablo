@@ -111,6 +111,11 @@ private:
 	SDL_Texture* wallsTexture = nullptr;
 	Sprite* walls;
 
+private:
+    //Fx sounds
+	int hollyFireFx;
+
+
 };
 
 #endif _Act1_H

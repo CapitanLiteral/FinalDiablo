@@ -109,6 +109,8 @@ bool Player::start()
 	walkFxDiablo = app->audio->LoadFx("audio/fx/Diablo_Walk.wav");
 	abilitieFx = app->audio->LoadFx("audio/fx/Diablo_attack");
 	deathFx = app->audio->LoadFx("audio/fx/deathhit.wav");
+	fireLaunch = app->audio->LoadFx("audio/fx/firelaunch.wav");
+	deathFxbarb = app->audio->LoadFx("audio/fx/death.wav");
 	
 	// ANIMATION
 	if (loadAnimations())
@@ -244,6 +246,9 @@ bool Player::update(float dt)
 		case BASIC_ATTACK:
 			if (current_animation->isOver())
 			{
+				//Fx basic attack
+				app->audio->PlayFx(fireLaunch, 0);
+				
 				//Particula de atac basic
 				Particle* p = app->particleManager->createParticle(basicShot, worldPosition.x, worldPosition.y, 1.25f, {25, 40}, {50, 50}, COLLIDER_PLAYER_PARTICLE, this);
 
@@ -279,8 +284,13 @@ bool Player::update(float dt)
 		setCurrentAnimation();
 		inputBlocked = true;
 		dead = true;
+		
 		//death FX
+		if (currentPhase == BARBARIAN)
+		app->audio->PlayFx(deathFxbarb, 0);
+		else if (currentPhase == DIABLO)
 		app->audio->PlayFx(deathFx, 0);
+		
 		if (current_animation->isOver())
 		{
 			if (imageTimerStarted == false)
