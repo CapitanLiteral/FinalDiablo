@@ -23,6 +23,10 @@ class Act1 : public Scene
 public:
 	Act1();
 	~Act1();
+	
+	//sundcheck
+	bool soundcheck = true;
+
 	// Called before render is available
 	bool awake(pugi::xml_node& conf);
 
