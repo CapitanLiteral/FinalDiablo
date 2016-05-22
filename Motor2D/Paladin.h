@@ -28,5 +28,9 @@ private:
 
 	Timer timer;
 	uint32 timeMargin = 2;
+
+private:
+
+	int walkFx;
 };
 #endif

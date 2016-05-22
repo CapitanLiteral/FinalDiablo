@@ -1184,6 +1184,8 @@ void Player::setDirection(fPoint pos)
 	if (dir != current_direction)
 	{
 		current_direction = dir;
+		if (current_action == E_BASIC_ATTACK)
+			current_animation->Reset();
 	}
 
 }
