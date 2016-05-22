@@ -53,6 +53,8 @@ public:
 	//NOTE: provisional.
 	SDL_Texture* debug = NULL;
 
+	void createHollyFire();
+
 	list<Entity*>		entity_list;
 
 	bool win;
@@ -66,6 +68,19 @@ private:
 
 	Particle hFire;
 	Particle* hollyFire=NULL;
+
+	Particle hFire1;
+	Particle* hollyFire1 = NULL;
+
+	Particle hFire2;
+	Particle* hollyFire2 = NULL;
+
+	Particle hFire3;
+	Particle* hollyFire3 = NULL;
+
+	Particle hFire4;
+	Particle* hollyFire4 = NULL;
+
 };
 
 #endif _Act1_H
