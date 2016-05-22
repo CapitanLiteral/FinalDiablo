@@ -62,20 +62,50 @@ public:
 	Entity* counselor;
 	Entity* healer;
 
+	//ROAD1
 	Particle hFire;
 	Particle* hollyFire = NULL;
-
-	Particle hFire1;
 	Particle* hollyFire1 = NULL;
-
-	Particle hFire2;
 	Particle* hollyFire2 = NULL;
-
-	Particle hFire3;
+	//ROAD2
 	Particle* hollyFire3 = NULL;
-
-	Particle hFire4;
 	Particle* hollyFire4 = NULL;
+	Particle* hollyFire5 = NULL;
+	Particle* hollyFire6 = NULL;
+	Particle* hollyFire7 = NULL;
+	Particle* hollyFire8 = NULL;
+	//ROAD3
+	Particle* hollyFire9 = NULL;
+	Particle* hollyFire10 = NULL;
+	Particle* hollyFire11 = NULL;
+	Particle* hollyFire12 = NULL;
+	Particle* hollyFire13 = NULL;
+	Particle* hollyFire14 = NULL;
+	Particle* hollyFire15 = NULL;
+	//ROAD4
+	Particle* hollyFire16 = NULL;
+	Particle* hollyFire17 = NULL;
+	Particle* hollyFire18 = NULL;
+	Particle* hollyFire19 = NULL;
+	Particle* hollyFire20 = NULL;
+	Particle* hollyFire21 = NULL;
+	Particle* hollyFire22 = NULL;
+	Particle* hollyFire23 = NULL;
+	//ROAD5
+	Particle* hollyFire24 = NULL;
+	Particle* hollyFire25 = NULL;
+	Particle* hollyFire26 = NULL;
+	Particle* hollyFire27 = NULL;
+	Particle* hollyFire28 = NULL;
+	Particle* hollyFire29 = NULL;
+	Particle* hollyFire30 = NULL;
+	//ROAD6
+	Particle* hollyFire31 = NULL;
+	Particle* hollyFire32 = NULL;
+	Particle* hollyFire33 = NULL;
+	Particle* hollyFire34 = NULL;
+	Particle* hollyFire35 = NULL;
+	Particle* hollyFire36 = NULL;
 
 private:
 	SDL_Texture* wallsTexture = nullptr;
