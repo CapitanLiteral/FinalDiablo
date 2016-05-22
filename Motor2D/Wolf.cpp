@@ -11,9 +11,10 @@
 #include "Attributes.h"
 #include "Map.h"
 
-Wolf::Wolf(iPoint pos) : Entity()
+Wolf::Wolf(iPoint pos, std::vector<iPoint> points) : Entity()//CARE: THIS IS TMP(vector)
 {
 	setWorldPosition(pos);
+	possiblePoints = points;//CARE: THIS IS TMP
 
 	movement = true;
 
@@ -128,17 +129,12 @@ void Wolf::handleInput()
 		}
 		if (currentState != E_DEATH)
 		{
-			if (timerChangeDir.ReadSec() >= changeDir)
+			if (timerChangeDir.ReadSec() >= changeDir || isTargetReached())
 			{
-				iPoint displace;
-				do
-				{
-					displace.x = (rand() % 160) - 80;
-					displace.y = (rand() % 160) - 80;
-
-				} while (!isInWalkableTile(worldPosition + displace));
-				target = worldPosition + displace;
+				int p = (rand() % possiblePoints.size()) - 1;//CARE: THIS IS TMP
+				target = possiblePoints[p];//CARE: THIS IS TMP
 				setInitVelocity();
+				timerChangeDir.start();
 			}
 		}
 		inputBlocked = false;
@@ -227,30 +223,7 @@ void Wolf::updateMovement(float dt)
 	move(dt);
 }
 
-bool Wolf::isInWalkableTile(iPoint coords)
+bool Wolf::isTargetReached()
 {
-	bool ret = true;
-
-	iPoint tile = app->map->WorldToMap(coords.x, coords.y);
-
-	MapLayer* walkability = NULL;
-	std::list<MapLayer*>::iterator it = app->map->data.layers.begin();
-	while (it != app->map->data.layers.end())
-	{
-		if ((*it)->name == "Navigation")
-		{
-			walkability = *it;
-			break;
-		}
-		it++;
-	}
-	if (!((walkability != NULL)))
-	{
-		LOG("Couldn't find 'Walkable' layer");
-	}
-
-	if (walkability->get(tile.x, tile.y) == 2)
-		ret = false;
-
-	return ret;
+	return(target == worldPosition);
 }

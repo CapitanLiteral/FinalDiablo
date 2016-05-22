@@ -48,7 +48,7 @@ public:
 
 	Paladin* createPaladin(iPoint pos);
 
-	Wolf* createWolf(iPoint pos);
+	Wolf* createWolf(iPoint pos, std::vector<iPoint> points);//CARE: THIS IS TMP(vector)
 
 	Griswold* createGriswold(iPoint pos);
 

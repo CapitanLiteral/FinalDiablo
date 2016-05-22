@@ -7,7 +7,7 @@
 class Wolf : public Entity
 {
 public:
-	Wolf(iPoint pos);
+	Wolf(iPoint pos, std::vector<iPoint> points);//CARE: THIS IS TMP(vector)
 	~Wolf();
 
 	bool entityUpdate(float dt);
@@ -20,13 +20,13 @@ private:
 	void setInitVelocity();
 	void move(float dt);
 	void updateVelocity(float dt);
-
 	void updateMovement(float dt);
-
-	bool isInWalkableTile(iPoint coords);
+	bool isTargetReached();
 
 	Timer timerChangeDir;
-	uint32 changeDir = 1;
+	float changeDir = 1.5f;
+
+	std::vector<iPoint> possiblePoints;//CARE: THIS IS TMP
 
 };
 
