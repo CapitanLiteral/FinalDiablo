@@ -21,7 +21,7 @@ Player::Player()
 	AttributeBuilder builder;
 	builder.base_damage = 50;
 	builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
-	builder.base_lifeRegen = 15;
+	builder.base_lifeRegen = 5;
 	attributes = new PlayerAttributes(builder);
 
 	worldPosition.x = 0;
@@ -78,7 +78,7 @@ bool Player::start()
 		AttributeBuilder builder;
 		builder.base_damage = 50;
 		builder.base_movementSpeed = 200; //tmp maybe this speed is better, less strange movement in animation and more acurated with the game
-		builder.base_lifeRegen = 15;
+		builder.base_lifeRegen = 2;
 		attributes = new PlayerAttributes(builder);
 	}
 		
