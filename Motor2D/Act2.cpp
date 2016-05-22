@@ -38,10 +38,14 @@ bool Act2::start()
 
 	win = false;
 
-	//app->audio->PlayMusic("audio/music/town1.ogg", 0);
+
+
 
 	if (debug == NULL)
 		debug = app->tex->Load("maps/mini_path.png");
+	
+	//music act 2
+	app->audio->PlayMusic("audio/music/caves.mp3");
 
 	//Map
 	if (app->map->Load("map_act2.tmx") == true)
@@ -56,15 +60,15 @@ bool Act2::start()
 
 	app->render->sprites.clear(); //memory leak falta el RELEASE //Maybe ERROR, watch out
 	app->render->sprites.push_back(app->game->player->getSprite()); //Maybe ERROR, watch out
-	app->render->sprites.push_back(app->sm->act1->counselor->getSprite());
-	app->render->sprites.push_back(app->sm->act1->healer->getSprite());
+	//app->render->sprites.push_back(app->sm->act1->counselor->getSprite());
+	//app->render->sprites.push_back(app->sm->act1->healer->getSprite());
 	app->game->player->setWorldPosition({ 0, 1200 });
 	app->game->player->setStartingWorldPosition({ 0, 1200 });
-	app->sm->act1->counselor->setWorldPosition({ 40, 1200 });
+	/*app->sm->act1->counselor->setWorldPosition({ 40, 1200 });
 	app->sm->act1->counselor->setColliderPosition({ 16, 1120 });
 	app->sm->act1->healer->setWorldPosition({ 150, 1200 });
 	app->sm->act1->healer->setColliderPosition({ 130, 1130 });
-	app->game->em->createNpc({210, 1200 }, NPC_GOSSIP);
+	app->game->em->createNpc({210, 1200 }, NPC_GOSSIP);*/
 
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	//@@@@@              ENEMIES CREATION                @@@@@

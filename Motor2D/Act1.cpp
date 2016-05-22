@@ -37,9 +37,10 @@ bool Act1::start()
 
 	win = false;
 
-	
+	//music act 1
 	app->audio->PlayMusic("audio/music/town1.ogg");
 
+	
 	if (debug == NULL)
 		debug = app->tex->Load("maps/mini_path.png");
 
@@ -62,40 +63,14 @@ bool Act1::start()
 	piv.y = 0;
 	walls = new Sprite(wallsTexture, p, piv, wallsRect);
 	app->render->addSpriteToList(walls);
-
-	//hollyFire
-	hFire.anim.setAnimation(0, 0, 25, 94, 3, 2);
-	hFire.active = true;
-	hFire.anim.speed = 0.15f;
-	hFire.anim.loop = true;
-	hFire.anim.pivot.Set(0, 0);
-	hFire.life = 0;
-	hFire.texture = app->tex->Load("images/hollyFire.png");
-
-	hollyFire = app->particleManager->createParticle(hFire, -2700, 1800, INT_MAX, { 0, 0 }, { 25, 94 }, COLLIDER_PLAYER_PARTICLE, this, true, app->tex->Load("images/hollyFire.png"));
-//	app->particleManager->createParticle(rageArround, worldPosition.x, worldPosition.y, rageDuration, { 0, 0 }, { 64, 64 }, COLLIDER_PLAYER_PARTICLE, this, true, particlesAtlas);
-	//hollyFire->texture = app->tex->Load("images/LogoAnim.png");
-	//hollyFire->anim.setAnimation(0, 0, 25, 94, 3, 2);
-	//hollyFire->anim.speed = 0.2f;
 	
+	createHollyFire();
 
 	app->game->player->setWorldPosition({ -2700, 1800 });
 	app->game->player->setStartingWorldPosition({ -2700, 1800 });
-
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	//@@@@@              ENEMIES CREATION                @@@@@
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-	//############################
-	//###       PALADINS       ###
-	//############################
 	
-	//counselor = app->game->em->createNpc({515,2415}, NPC_COUNSELOR);
+	counselor = app->game->em->createNpc({-2480,1800}, NPC_COUNSELOR);
 	//healer = app->game->em->createNpc({ 1440, 2265 }, NPC_HEALER);
-
-	//createProps();
-	//createEnemies();
-	//app->audio->PlayMusic("audio/music/town1.ogg",0.5f);
 	return true;
 }
 
@@ -109,7 +84,7 @@ bool Act1::preUpdate()
 // update
 bool Act1::update(float dt)
 {
-	
+
 	//Map
 	app->map->draw();
 
@@ -239,19 +214,19 @@ bool Act1::postUpdate()
 
 // Called before quitting
 bool Act1::cleanUp()
-{
-	// remove all entities
-	//list<Entity*>::iterator item;
-	//item = entity_list.begin();
+{/*
+	remove all entities
+	list<Entity*>::iterator item;
+	item = entity_list.begin();
 
-	//while (item != entity_list.end())
-	//{
-	//	app->game->em->remove((*item)->getId());
-	//	item++;
-	//}
-	//entity_list.clear();
-	//app->game->em->cleanUp();
-	//app->audio->cleanUp();
+	while (item != entity_list.end())
+	{
+		app->game->em->remove((*item)->getId());
+		item++;
+	}
+	entity_list.clear();
+	app->game->em->cleanUp();*/
+	
 	return true;
 }
 
@@ -276,4 +251,59 @@ bool Act1::unLoad()
 	app->map->cleanUp();
 	app->pathfinding->cleanUp();
 	return true;
+}
+
+void Act1::OnCollision(Collider* c1, Collider* c2)
+{
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_HOLLYFIRE || c1->type == COLLIDER_HOLLYFIRE && c2->type == COLLIDER_PLAYER)
+	{
+		if (c1->type == COLLIDER_PLAYER)
+		{
+			float dmg = app->game->player->attributes->getMaxLife()*0.6*app->getDT();
+			app->game->player->attributes->addLife(-dmg);
+		}
+		else if (c2->type == COLLIDER_PLAYER)
+		{
+			float dmg = app->game->player->attributes->getMaxLife()*0.6*app->getDT();
+			app->game->player->attributes->addLife(-dmg);
+		}
+	}
+
+}
+
+void Act1::createHollyFire()
+{
+	//hollyFire
+	hFire.anim.setAnimation(0, 0, 25, 94, 3, 2);
+	hFire.active = true;
+	hFire.anim.speed = 0.15f;
+	hFire.anim.loop = true;
+	hFire.anim.pivot.Set(0, 0);
+	hFire.life = 0;
+	hFire.texture = app->tex->Load("images/hollyFire.png");
+
+	hollyFire = app->particleManager->createParticle(hFire, -2300, 1900, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+
+	//hollyFire1
+	hFire1.anim.setAnimation(0, 0, 25, 94, 3, 2);
+	hFire1.active = true;
+	hFire1.anim.speed = 0.15f;
+	hFire1.anim.loop = true;
+	hFire1.anim.pivot.Set(0, 0);
+	hFire1.life = 0;
+	hFire1.texture = app->tex->Load("images/hollyFire.png");
+
+	hollyFire1 = app->particleManager->createParticle(hFire1, -2250, 1930, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+
+	//hollyFire2
+	hFire2.anim.setAnimation(0, 0, 25, 94, 3, 2);
+	hFire2.active = true;
+	hFire2.anim.speed = 0.15f;
+	hFire2.anim.loop = true;
+	hFire2.anim.pivot.Set(0, 0);
+	hFire2.life = 0;
+	hFire2.texture = app->tex->Load("images/hollyFire.png");
+
+	hollyFire2 = app->particleManager->createParticle(hFire2, -2200, 1960, INT_MAX, { 0, -34 }, { 25, 50 }, COLLIDER_HOLLYFIRE, this, true, app->tex->Load("images/hollyFire.png"));
+
 }

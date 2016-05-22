@@ -79,6 +79,8 @@ private:
 
 	std::string filePropsVillage;
 	std::string fileWallsTexture;
+
+
 };
 
 #endif // __SCENEMANAGER_H__

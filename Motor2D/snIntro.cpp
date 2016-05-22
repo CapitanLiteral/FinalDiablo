@@ -31,6 +31,9 @@ bool snIntro::start()
 	//Background
 	background = app->gui->addGuiImage({ -83, 0 }, {0, 0, 800, 600}, NULL, this);
 	
+	//music intro
+	app->audio->PlayMusic("audio/music/introedit.ogg");
+	
 	//Logo
 	logoSprite = app->tex->Load("images/LogoAnim.png");
 

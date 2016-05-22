@@ -58,6 +58,9 @@ bool NpcCounselor::entityUpdate(float dt)
 			if (app->game->player->attributes->getLevel() == 1  || readed)
 			{
 				introductionImage->Activate();
+				app->sm->act1->hollyFire->destroyParticle();
+				app->sm->act1->hollyFire1->destroyParticle();
+				app->sm->act1->hollyFire2->destroyParticle();
 				readed = false;
 			}
 			else if (app->game->player->attributes->getLevel() < 5)

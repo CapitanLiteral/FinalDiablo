@@ -15,6 +15,7 @@ class GuiElement;
 class Entity;
 class Map;
 class Particle;
+class Collider;
 
 
 class Act1 : public Scene
@@ -46,9 +47,13 @@ public:
 	//Load/unLoad, called when the scene changes
 	bool Load();
 	bool unLoad();
+	//Collisions
+	void OnCollision(Collider* c1, Collider* c2);
 
 	//NOTE: provisional.
 	SDL_Texture* debug = NULL;
+
+	void createHollyFire();
 
 	list<Entity*>		entity_list;
 
@@ -57,12 +62,25 @@ public:
 	Entity* counselor;
 	Entity* healer;
 
+	Particle hFire;
+	Particle* hollyFire = NULL;
+
+	Particle hFire1;
+	Particle* hollyFire1 = NULL;
+
+	Particle hFire2;
+	Particle* hollyFire2 = NULL;
+
+	Particle hFire3;
+	Particle* hollyFire3 = NULL;
+
+	Particle hFire4;
+	Particle* hollyFire4 = NULL;
+
 private:
 	SDL_Texture* wallsTexture = nullptr;
 	Sprite* walls;
 
-	Particle hFire;
-	Particle* hollyFire=NULL;
 };
 
 #endif _Act1_H
