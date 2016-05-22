@@ -59,6 +59,8 @@ bool Paladin::entityUpdate(float dt)
 
 	updateAction();
 
+	checkMouseForBar();
+
 	if (attributes->getLife() <= 0)
 	{
 		current_input = EI_DIE;

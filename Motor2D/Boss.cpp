@@ -21,6 +21,8 @@ Boss::Boss(iPoint pos)
 	type = BOSS;
 	entityAnim = app->game->em->getBossAnimation();
 
+	visionRadius = 160.0f;
+
 	currentState = E_IDLE;
 	currentDirection = E_DOWN;
 
@@ -46,15 +48,15 @@ Boss::~Boss()
 {
 }
 
-/*
 bool Boss::entityUpdate(float dt)
 {
 	bool ret = true;
 
-	if (app->input->getKey(SDL_SCANCODE_0) == KEY_DOWN)
-		app->audio->PlayFx(fxPlayerGetHit);
-
 	handleInput();
+
+	updateAction();
+
+	checkMouseForBar();
 
 	if (attributes->getLife() <= 0)
 	{
@@ -65,37 +67,6 @@ bool Boss::entityUpdate(float dt)
 		}
 	}
 
-	if (mouseHover() && getCollider()->type == COLLIDER_ENEMY){
-		lifeBar->Activate();
-	}
-	if (lifeBar->active == true){
-		SDL_Rect rect;
-		float dif;
-		float entityLife = attributes->getLife();
-		if (entityLife > 0.0f)
-		{
-			rect = lifeBarRect;
-			dif = attributes->getMaxLife() - entityLife;
-			//dif *= rect.w;
-			//	dif /= entityLife;
-			rect.w -= dif;
-
-			//rect.w -= int(dif);
-
-			lifeBar->SetTextureRect(rect);
-		}
-		else
-		{
-			lifeBar->SetTextureRect({ 0, 0, 0, 0 });
-		}
-	}
-
-	if (!mouseHover()){
-		lifeBar->Desactivate();
-	}
-	updateAction();
-
-	//LOG("currentState: %d", currentState);
 	if (currentState != E_DEATH)
 	{
 		switch (currentState)
@@ -103,28 +74,265 @@ bool Boss::entityUpdate(float dt)
 		case E_IDLE:
 			break;
 		case E_WALK:
-			updateMovement(internDT);
-			break;
-		case E_SKILL:
+			updateMovement(dt);
 			break;
 		case E_BASIC_ATTACK:
-			if (currentAnimation->isOver() && player != NULL)
+			int i = (rand() % 2);
+			LOG("I: %d", i);
+			switch (i)
 			{
-				player->attributes->damage(attributes, 0);
-				app->audio->PlayFx(fxPlayerGetHit);
-				current_input = EI_STOP;
-				currentAnimation->Reset();
+			case 0:
+				if (player)
+					app->particleManager->createCross2Emisor(worldPosition.x, worldPosition.y, player);
+				break;
+			case 1:
+				if (player)
+					app->particleManager->createRadialEmisor(worldPosition.x, worldPosition.y, player);
+				break;
 			}
+			timerSpell.start();
 			break;
 		}
 	}
 	else
 	{
-		collider->SetPos(10000, 0);
+		collider->to_delete = true;
 	}
-
-	//LOG("Entity life: %f", attributes->getLife());
 
 	return ret;
 }
-*/
+
+void Boss::handleInput()
+{
+	if (!inputBlocked)
+	{
+		if (attributes->getLife() <= 0)
+		{
+			current_input = EI_DIE;
+		}
+		if (currentState != E_DEATH)
+		{
+			if (player)
+			{
+				if (worldPosition.DistanceNoSqrt(player->getWorldPosition()) <= visionRadius * visionRadius)//Range vision just follow you
+				{
+					int i = rand() % 2;
+					switch (i)
+					{
+					case 0:
+						if (timerChase.ReadSec() >= timeMarginChase)
+						{
+							setInitVelocity();
+							setDirection();
+							current_input = EI_WALK;
+						}
+						break;
+					case 1:
+						if (timerSpell.ReadSec() >= timeSpell)
+						{
+							current_input = EI_ATTACK;
+						}
+						break;
+					}
+				}
+				else
+				{
+					current_input = EI_STOP;
+				}
+			}
+		}
+	}
+	inputBlocked = false;
+}
+
+entityState Boss::updateAction()
+{
+	if (current_input != EI_NULL)
+	{
+		switch (currentState)
+		{
+		case E_IDLE:
+		{
+			if (current_input == EI_WALK)
+			{
+				currentState = E_WALK;
+			}
+			else if (current_input == EI_DIE)
+			{
+				currentState = E_DEATH;
+			}
+			else if (current_input == EI_ATTACK)
+			{
+				currentState = E_BASIC_ATTACK;
+			}
+		}
+		break;
+
+		case E_WALK:
+		{
+			if (current_input == EI_STOP)
+			{
+				currentState = E_IDLE;
+			}
+			else if (current_input == EI_DIE)
+			{
+				currentState = E_DEATH;
+			}
+			else if (current_input == EI_ATTACK)
+			{
+				currentState = E_BASIC_ATTACK;
+			}
+		}
+		break;
+
+		case E_BASIC_ATTACK:
+		{
+			if (current_input == EI_STOP)
+			{
+				currentState = E_IDLE;
+			}
+			else if (current_input == EI_DIE)
+			{
+				currentState = E_DEATH;
+			}
+			else if (current_input == EI_WALK)
+			{
+				currentState = E_WALK;
+			}
+		}
+		break;
+
+		case E_DEATH:
+		{
+			if (current_input == EI_STOP)
+			{
+				currentState = E_IDLE;
+			}
+		}
+
+		break;
+
+		if (previousState != currentState)
+		{
+			setDirection();
+		}
+
+		previousState = currentState;
+
+		}
+		current_input = EI_NULL;
+	}
+	return currentState;
+}
+
+void Boss::setInitVelocity()
+{
+	target = player->getWorldPosition();
+
+	velocity.x = target.x - worldPosition.x;
+	velocity.y = target.y - worldPosition.y;
+
+	velocity.SetModule(attributes->getMovementSpeed());
+
+	float angle = velocity.getAngle();
+	float escalar = 0.02;
+
+	if (angle < 22.5 && angle > -22.5)
+		target.x = target.x + (angle * escalar); //RIGHT
+	else if (angle >= 22.5 && angle <= 67.5)
+	{
+		target.x = target.x + (angle * escalar); //DOWN_RIGHT
+		target.y = target.y + (angle * escalar);
+	}
+	else if (angle > 67.5 && angle < 112.5)
+		target.y = target.y + (angle * escalar); //DOWN
+	else if (angle >= 112.5 && angle <= 157.5)
+	{
+		target.x = target.x + (angle * escalar);//DOWN_LEFT
+		target.y = target.y + (angle * escalar);
+	}
+	else if (angle > 157.5 || angle < -157.5)
+		target.x = target.x + (angle * escalar);//LEFT
+	else if (angle >= -157.5 && angle <= -112.5)
+	{
+		target.x = target.x + (angle * escalar);//UP_LEFT
+		target.y = target.y + (angle * escalar);
+	}
+	else if (angle > -112.5 && angle < -67.5)
+		target.y = target.y + (angle * escalar);//UP
+	else if (angle >= -67.5 && angle <= -22.5)
+	{
+		target.x = target.x + (angle * escalar);//UP_RIGHT
+		target.y = target.y + (angle * escalar);
+	}
+
+	velocity.x = target.x - worldPosition.x;
+	velocity.y = target.y - worldPosition.y;
+
+	velocity.SetModule(attributes->getMovementSpeed());
+
+	movement = true;
+}
+
+void Boss::move(float dt)
+{
+	fPoint vel = velocity * dt;
+
+	worldPosition.x += vel.x;
+	worldPosition.y += vel.y;
+
+	moveCollider();
+
+	movement = !isTargetReached();
+
+	if (movement)
+	{
+		updateVelocity(dt);
+
+		if (app->debug)
+		{
+			app->render->DrawLine(worldPosition.x, worldPosition.y, target.x, target.y, 0, 0, 255);
+
+			app->render->DrawLine(worldPosition.x, worldPosition.y, vel.x * 50 + target.x, vel.y * 50 + target.y, 0, 255, 255);
+		}
+	}
+	else
+	{
+		current_input = EI_STOP;
+	}
+}
+
+bool Boss::isTargetReached()
+{
+	fPoint vel;
+
+	vel.x = target.x - worldPosition.x;
+	vel.y = target.y - worldPosition.y;
+
+	if (vel.getModule() <= targetRadius)
+	{
+		timerChase.start();
+		return true;
+	}
+	return false;
+}
+
+void Boss::updateVelocity(float dt)
+{
+	velocity.x = target.x - worldPosition.x;
+	velocity.y = target.y - worldPosition.y;
+
+	velocity.SetModule(attributes->getMovementSpeed());
+}
+
+void Boss::updateMovement(float dt)
+{
+	if (movement)
+	{
+		if (!isTargetReached())
+		{
+			updateVelocity(dt);
+			move(dt);
+		}
+	}
+}
