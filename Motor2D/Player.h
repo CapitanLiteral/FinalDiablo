@@ -106,6 +106,7 @@ private:
 	ACTION_STATE updateAction();
 	void handleInput(float dt);
 	void OnCollision(Collider* c1, Collider* c2);
+	Particle basicShot;
 
 	void drawDebug() const;
 
