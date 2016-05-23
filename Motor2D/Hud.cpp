@@ -4,9 +4,12 @@
 #include "Attributes.h"
 #include "Fonts.h"
 #include "Input.h"
+#include "InputManager.h"
 #include "SceneManager.h"
+#include "Audio.h"
 #include "p2Log.h"
 #include <sstream>
+#include <queue>
 #include <string>
 
 template <typename T>
@@ -160,11 +163,19 @@ bool Hud::start()
 	// Pause Menu
 
 	pauseMenu = app->gui->addGuiImage({ 0, 0 }, { 0, 0, 1, 1 }, NULL, this);
+	p_options = app->gui->addGuiImage({ 223, 130 }, { 64, 704, 193, 30 }, pauseMenu, this);/**/
 	p_exit = app->gui->addGuiImage({ 54, 200 }, { 94, 642, 534, 35 }, pauseMenu, this);/**/
 	p_back = app->gui->addGuiImage({ 75, 270 }, { 629, 642, 438, 35 }, pauseMenu, this);/**/
 
 	p_exit->interactable = true;
 	p_back->interactable = true;
+
+
+	// Options Menu
+
+	optionsMenu = app->gui->addGuiImage({ 20, 50 }, { 100, 100, 600, 324 }, NULL, this);
+	o_exit = app->gui->addGuiImage({ 552, 10 }, { 1280, 576, 38, 38 }, optionsMenu, this);
+	app->inputManager->loadShortcutsInfo(optionsMenu);
 
 	// hide all tabs
 	characterMenu->Desactivate();
@@ -172,6 +183,7 @@ bool Hud::start()
 	treeMenu->Desactivate();
 	mapMenu->Desactivate();
 	pauseMenu->Desactivate();
+	optionsMenu->Desactivate();
 
 
 	// above menus
@@ -193,7 +205,7 @@ bool Hud::start()
 //Called before each loop iteration
 bool Hud::preUpdate()
 {
-	// Stamina
+	/*/ Stamina
 	if ((app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)
 		|| (app->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT))
 	{
@@ -202,10 +214,10 @@ bool Hud::preUpdate()
 	else
 	{
 		staminaDorn->SetTextureRect({ 1088, 576, 18, 22 });
-	}
+	}*/
 
 	// Pause menu
-	if (app->input->getKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->inputManager->CheckShortcut(Sid_MENU))
 	{
 		if (pauseMenu->active)
 		{
@@ -215,9 +227,11 @@ bool Hud::preUpdate()
 		else if (characterMenu->active
 			|| inventoryMenu->active
 			|| treeMenu->active
-			|| mapMenu->active)
+			|| mapMenu->active
+			|| optionsMenu->active)
 		{
 			clearTabs();
+			activatePanel();
 		}
 		else
 		{
@@ -227,7 +241,7 @@ bool Hud::preUpdate()
 	}
 	else
 	{
-		if (app->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+		if (app->inputManager->CheckShortcut(Sid_CHARACTER))
 		{
 			if (characterMenu->active)
 			{
@@ -240,7 +254,7 @@ bool Hud::preUpdate()
 				characterMenu->Activate();
 			}
 		}
-		else if(app->input->getKey(SDL_SCANCODE_I) == KEY_DOWN)
+		else if (app->inputManager->CheckShortcut(Sid_INVENTORY))
 		{
 			if (inventoryMenu->active)
 			{
@@ -254,19 +268,12 @@ bool Hud::preUpdate()
 				inventoryMenu->Activate();
 			}
 		}
-		else if(app->input->getKey(SDL_SCANCODE_P) == KEY_DOWN)
+		else if (app->inputManager->CheckShortcut(Sid_TREE))
 		{
 			if (treeMenu->active)
 			{
 				treeMenu->Desactivate();
 				if (!characterMenu->active) activatePanel();
-
-				t_1Label->active = false;
-				t_2Label->active = false;
-				t_3Label->active = false;
-				t_4Label->active = false;
-				t_5Label->active = false;
-				t_6Label->active = false;
 			}
 			else
 			{
@@ -294,7 +301,7 @@ bool Hud::preUpdate()
 	if (app->input->getKey(SDL_SCANCODE_4) == KEY_DOWN) useSlotItem(slot4);
 
 	// life & rage & stamina debug utility:
-	if (playerAtt != NULL)
+	if (playerAtt != NULL && app->debug)
 	{
 		if (app->input->getKey(SDL_SCANCODE_5) == KEY_REPEAT) playerAtt->addLife(-20.0f);
 		if (app->input->getKey(SDL_SCANCODE_6) == KEY_REPEAT) playerAtt->addRage(2.0f);
@@ -308,6 +315,9 @@ bool Hud::preUpdate()
 bool Hud::update(float dt)
 {
 	if (exit) return false;
+
+	if (app->inputManager->CheckShortcut(Sid_VOL_DOWN)) app->audio->volume -= 5.0f;
+	if (app->inputManager->CheckShortcut(Sid_VOL_UP)) app->audio->volume += 5.0f;
 
 	// exit if no character assigned
 	if (playerAtt == NULL)
@@ -404,8 +414,6 @@ bool Hud::update(float dt)
 	{
 		stamina->SetTextureRect({ 0, 0, 0, 0 });
 	}
-
-	//playerAtt->addExp(5 * playerAtt->getLevel());
 	
 	// update exp image
 	float maxExp = playerAtt->getMaxExp();
@@ -495,7 +503,7 @@ bool Hud::update(float dt)
 		t_3QuantLabel->SetText(text);
 		text.assign(NumberToString(int(t_4Mod->value / 0.02f)));
 		t_4QuantLabel->SetText(text);
-		text.assign(NumberToString(int(t_5Mod->value / 0.05f)));
+		text.assign(NumberToString(int(t_5Mod->value / 5.0f)));
 		t_5QuantLabel->SetText(text);
 		text.assign(NumberToString(int(t_6Mod->value / 0.01f)));
 		t_6QuantLabel->SetText(text);
@@ -549,6 +557,7 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 		}
 		else
 		{
+			clearTabs();
 			activatePanel();
 		}
 	}
@@ -719,13 +728,22 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	else if (t_exit == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
-		clearTabs();
+		treeMenu->Desactivate();
 	}
 
 	// Map
 
 
 	// Pause Menu
+	else if (p_options == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		hidePanel();
+		clearTabs();
+		optionsMenu->Activate();
+		app->inputManager->chooseKey->active = false;
+		app->inputManager->keyRepeated->active = false;
+	}
 	else if (p_exit == element
 		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
 	{
@@ -736,6 +754,13 @@ void Hud::OnEvent(GuiElement* element, GUI_Event even)
 	{
 		activatePanel();
 		pauseMenu->Desactivate();
+	}
+
+	// Options Menu
+	else if (o_exit == element
+		&& even == EVENT_MOUSE_LEFTCLICK_DOWN)
+	{
+		optionsMenu->Desactivate();
 	}
 }
 
@@ -752,6 +777,7 @@ void Hud::clearTabs()
 	if (characterMenu->active) characterMenu->Desactivate();
 	if (inventoryMenu->active) inventoryMenu->Desactivate();
 	if (treeMenu->active) treeMenu->Desactivate();
+	if (optionsMenu->active) optionsMenu->Desactivate();
 	if (pauseMenu->active) pauseMenu->Desactivate();
 
 	t_1Label->active = false;
@@ -766,12 +792,17 @@ void Hud::clearTabs()
 void Hud::clearLeftTabs()
 {
 	if (characterMenu->active) characterMenu->Desactivate();
+	if (optionsMenu->active) optionsMenu->Desactivate();
+	if (pauseMenu->active) pauseMenu->Desactivate();
+
 	activatePanel();
 }
 void Hud::clearRightTabs()
 {
 	if (inventoryMenu->active) inventoryMenu->Desactivate();
 	if (treeMenu->active) treeMenu->Desactivate();
+	if (optionsMenu->active) optionsMenu->Desactivate();
+	if (pauseMenu->active) pauseMenu->Desactivate();
 
 	t_1Label->active = false;
 	t_2Label->active = false;

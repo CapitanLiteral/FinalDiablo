@@ -1,0 +1,89 @@
+<inputs_data>
+
+  <!-- COMMANDS MUST BE CAPS -->
+
+  <shortcut>
+    <TYPE value = "DOWN"/>
+    <name value ="Character"/>
+    <command value ="C"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "DOWN"/>
+    <name value ="Inventory"/>
+    <command value ="I"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "DOWN"/>
+    <name value ="Skill Tree"/>
+    <command value ="P"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "DOWN"/>
+    <name value ="Menu"/>
+    <command value ="Escape"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "DOWN"/>
+    <name value ="Use Potion 1"/>
+    <command value ="1"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "DOWN"/>
+    <name value ="Use Potion 2"/>
+    <command value ="2"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "DOWN"/>
+    <name value ="Use Potion 3"/>
+    <command value ="3"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "DOWN"/>
+    <name value ="Use Potion 4"/>
+    <command value ="4"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "REPEAT"/>
+    <name value ="Move Up"/>
+    <command value ="W"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "REPEAT"/>
+    <name value ="Move Down"/>
+    <command value ="S"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "REPEAT"/>
+    <name value ="Move Left"/>
+    <command value ="A"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "REPEAT"/>
+    <name value ="Move Right"/>
+    <command value ="D"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "REPEAT"/>
+    <name value ="Volume Up"/>
+    <command value ="Up"/>
+  </shortcut>
+
+  <shortcut>
+    <TYPE value = "REPEAT"/>
+    <name value ="Volume Down"/>
+    <command value ="Down"/>
+  </shortcut>
+
+</inputs_data>

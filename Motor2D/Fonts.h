@@ -15,7 +15,7 @@ struct _TTF_Font;
 
 enum TextColor
 {
-	FONT_BLACK,
+	FONT_BLACK = 0,
 	FONT_RED,
 	FONT_GREEN,
 	FONT_BLUE,
@@ -52,7 +52,8 @@ public:
 
 	list<_TTF_Font*>	fonts;
 	_TTF_Font*			default;
-	_TTF_Font*			description;
+	_TTF_Font*			smallFont;
+	_TTF_Font*			bigAssFont;
 };
 
 

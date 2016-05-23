@@ -6,6 +6,7 @@
 
 #include "Window.h"
 #include "Input.h"
+#include "InputManager.h"
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -26,6 +27,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	PERF_start(ptimer);
 
 	input = new Input();
+	inputManager = new InputManager();
 	win = new Window();
 	render = new Render();
 	tex = new Textures();
@@ -44,6 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	// Reverse order of cleanUp
 	addModule(fs);
 	addModule(input);
+	addModule(inputManager);
 	addModule(win);
 	addModule(tex);
 	addModule(audio);

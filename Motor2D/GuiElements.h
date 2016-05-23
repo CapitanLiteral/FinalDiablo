@@ -111,7 +111,7 @@ public:
 
 	void draw();
 	void update(GuiElement* hover, GuiElement* focus){}
-	void SetText(std::string t);
+	void SetText(std::string t, _TTF_Font* font = NULL);
 
 public:
 	std::string text;

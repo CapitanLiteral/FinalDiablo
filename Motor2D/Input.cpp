@@ -1,7 +1,6 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "App.h"
-#include "Audio.h"
 #include "Input.h"
 #include "Render.h"
 #include "Window.h"
@@ -51,40 +50,46 @@ bool Input::start()
 bool Input::preUpdate()
 {
 	static SDL_Event event;
-	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
-	//you can up volume or down, 
-	if (keyboard[SDL_SCANCODE_KP_MINUS] == KEY_DOWN)
-	{
-		app->audio->volume -= 5;
-	}
+	//Clean queues
+	while (!down_queue.empty())		down_queue.pop();
+	while (!up_queue.empty())		up_queue.pop();
+	while (!repeat_queue.empty())	repeat_queue.pop();
 
-	if (keyboard[SDL_SCANCODE_KP_PLUS]== KEY_DOWN)
-	{
-		app->audio->volume += 5;
-	}
 
-	if (keyboard[SDL_SCANCODE_0] == KEY_DOWN)
+	for (int i = 0; i < MAX_KEYS; ++i)
 	{
-		app->audio->volume = 0.1f;
-	}
+		//Translate key number to scancode enum (ex: 14 is SDL_SCANCODE_K)
+		SDL_Scancode code = (SDL_Scancode)i;
 
-	for(int i = 0; i < MAX_KEYS; ++i)
-	{
-		if(keys[i] == 1)
+		if (keys[i] == 1)
 		{
-			if(keyboard[i] == KEY_IDLE)
+			if (keyboard[i] == KEY_IDLE)
+			{
 				keyboard[i] = KEY_DOWN;
+				down_queue.push(SDL_GetScancodeName(code));
+			}
 			else
+			{
 				keyboard[i] = KEY_REPEAT;
+				repeat_queue.push(SDL_GetScancodeName(code));
+			}
+
 		}
 		else
 		{
-			if(keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+			{
 				keyboard[i] = KEY_UP;
+				up_queue.push(SDL_GetScancodeName(code));
+			}
+
 			else
+			{
 				keyboard[i] = KEY_IDLE;
+			}
+
 		}
 	}
 

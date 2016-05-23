@@ -121,6 +121,9 @@
     <ClCompile Include="Boss.cpp">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -276,6 +279,9 @@
     <ClInclude Include="Boss.h">
       <Filter>Desenvolupament  ========\Modules\Engine Layer\EntityManager\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Desenvolupament  ========\Modules\Engine Layer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -344,5 +350,13 @@
     <Filter Include="Desenvolupament  ========\Modules\Game Layer\Scenes\Act2">
       <UniqueIdentifier>{a7e70fe4-72ad-477c-ac09-5c31be3c17f1}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\config.xml">
+      <Filter>Desenvolupament  ========</Filter>
+    </Xml>
+    <Xml Include="..\Game\inputs_data.xml">
+      <Filter>Desenvolupament  ========</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

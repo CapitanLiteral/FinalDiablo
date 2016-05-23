@@ -36,7 +36,8 @@ bool Fonts::awake(pugi::xml_node& conf)
 		default = Load(path, size);
 		path = conf.child("description_font").attribute("file").as_string();
 		size = conf.child("description_font").attribute("size").as_int();
-		description = Load(path, size);
+		smallFont = Load(path, 14);
+		bigAssFont = Load(path, 28);
 	}
 
 	return ret;

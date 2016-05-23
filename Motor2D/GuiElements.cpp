@@ -200,13 +200,11 @@ void GuiInputBox::update(GuiElement* hover, GuiElement* focus)
 }
 
 //GuiLabel Functions
-void GuiLabel::SetText(std::string t)
+void GuiLabel::SetText(std::string t, _TTF_Font* font)
 {
-	if (tex)
-		SDL_DestroyTexture(tex);
+	if (tex) SDL_DestroyTexture(tex);
 
-	text = t.c_str();
-	tex = app->font->Print(text.c_str(), color);
+	tex = app->font->Print(t.c_str(), color, font);
 	
 	uint w, h;
 	app->tex->getSize(tex, w, h);

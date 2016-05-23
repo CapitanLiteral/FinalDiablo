@@ -14,6 +14,7 @@ class GuiLabel;
 class GuiInventory;
 class Modifier;
 class PlayerAttributes;
+class ShortCut;
 
 
 class Hud : public Module
@@ -153,8 +154,12 @@ private:
 
 	// Pause Menu
 	GuiImage* pauseMenu = NULL;
+	GuiImage* p_options = NULL;
 	GuiImage* p_exit = NULL;
 	GuiImage* p_back = NULL;
+
+	GuiImage* optionsMenu = NULL;
+	GuiImage* o_exit = NULL;
 };
 
 #endif _HUD_H_

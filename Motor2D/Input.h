@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "p2Point.h"
+#include <queue>
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
@@ -82,6 +83,10 @@ public:
 	
 	iPoint getMouseMotion();
 	void getMouseMotion(int& x, int& y);
+
+	std::queue<const char*>		down_queue;
+	std::queue<const char*>		up_queue;
+	std::queue<const char*>		repeat_queue;
 
 private:
 	bool		windowEvents[WE_COUNT];

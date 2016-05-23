@@ -97,6 +97,7 @@
     <ClCompile Include="Fonts.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="Hud.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Audio.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="Hud.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="memleaks.h" />
     <ClInclude Include="Npc.h" />
@@ -172,6 +174,10 @@
     <ClInclude Include="ExtraSTL.h" />
     <ClInclude Include="snWin.h" />
     <ClInclude Include="Wolf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\config.xml" />
+    <Xml Include="..\Game\inputs_data.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
